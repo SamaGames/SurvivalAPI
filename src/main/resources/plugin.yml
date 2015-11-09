@@ -1,0 +1,8 @@
+name: SurvivalAPI
+main: net.samagames.survivalapi
+version: 1.0
+
+depend: [SamaGamesAPI]
+
+author: BlueSlime
+website: http://blueslime.fr

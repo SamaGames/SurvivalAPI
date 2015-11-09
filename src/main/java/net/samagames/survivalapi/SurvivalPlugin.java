@@ -11,10 +11,4 @@ public class SurvivalPlugin extends JavaPlugin
     {
         this.api = new SurvivalAPI(this);
     }
-
-    @Override
-    public void onDisable()
-    {
-        this.api.getModules().keySet().forEach(this.api::unloadModule);
-    }
 }

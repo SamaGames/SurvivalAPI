@@ -1,8 +1,12 @@
 package net.samagames.survivalapi;
 
-import net.samagames.survivalapi.modules.ISurvivalModule;
-import net.samagames.survivalapi.modules.SurvivalModules;
+import com.google.gson.JsonObject;
+import net.samagames.api.SamaGamesAPI;
+import net.samagames.api.games.Game;
+import net.samagames.api.games.GameHook;
+import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 public class SurvivalAPI
@@ -10,68 +14,52 @@ public class SurvivalAPI
     private static SurvivalAPI instance;
 
     private final SurvivalPlugin plugin;
-    private final HashMap<String, ISurvivalModule> modules;
+    private final HashMap<String, AbstractSurvivalModule> modulesLoaded;
 
     public SurvivalAPI(SurvivalPlugin plugin)
     {
         instance = this;
 
         this.plugin = plugin;
-        this.modules = new HashMap<>();
+        this.modulesLoaded = new HashMap<>();
+
+        SamaGamesAPI.get().getGameManager().registerGameHook(new GameHook(GameHook.Type.START)
+        {
+            @Override
+            public void run(Game game, Object... objects)
+            {
+                for (AbstractSurvivalModule module : modulesLoaded.values())
+                    module.onGameStart(game);
+            }
+        });
     }
 
-    public void loadModule(SurvivalModules module)
+    public void loadModule(Class<? extends AbstractSurvivalModule> moduleClass, JsonObject moduleConfiguration)
     {
-        try
+        if(!this.modulesLoaded.containsKey(moduleClass.getSimpleName()))
         {
-            this.loadModule(module.getModuleClass().newInstance());
-        }
-        catch (InstantiationException | IllegalAccessException e)
-        {
-            this.plugin.getLogger().severe("Failed to load module: " + module.name() + "!");
-            e.printStackTrace();
-        }
-    }
+            try
+            {
+                AbstractSurvivalModule module = moduleClass.getConstructor(SurvivalPlugin.class, SurvivalAPI.class, JsonObject.class).newInstance(this.plugin, this, moduleConfiguration);
 
-    public void loadModule(ISurvivalModule module)
-    {
-        if(!this.modules.containsKey(module.getIdentifier()))
-        {
-            module.enable(this.plugin);
-            this.modules.put(module.getIdentifier(), module);
+                for (Class<? extends AbstractSurvivalModule> requiredModule : module.getRequiredModules())
+                    this.loadModule(requiredModule, null);
 
-            this.plugin.getLogger().info("Module loaded: " + module.getIdentifier());
-        }
-        else
-        {
-            throw new IllegalStateException("Module already registered!");
-        }
-    }
+                this.plugin.getServer().getPluginManager().registerEvents(module, this.plugin);
 
-    public void unloadModule(SurvivalModules module)
-    {
-        this.unloadModule(module.name().toLowerCase());
-    }
-
-    public void unloadModule(String identifier)
-    {
-        if(this.modules.containsKey(identifier))
-        {
-            this.modules.get(identifier).disable(this.plugin);
-            this.modules.remove(identifier);
-
-            this.plugin.getLogger().info("Module unloaded: " + identifier);
+                this.modulesLoaded.put(moduleClass.getSimpleName(), module);
+                this.plugin.getLogger().info("Module loaded: " + moduleClass.getSimpleName());
+            }
+            catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
-    public HashMap<String, ISurvivalModule> getModules()
+    public boolean isModuleEnabled(Class<? extends AbstractSurvivalModule> moduleClass)
     {
-        return this.modules;
-    }
-
-    public boolean isLoaded(String identifier)
-    {
-        return this.modules.containsKey(identifier);
+        return this.modulesLoaded.containsKey(moduleClass.getSimpleName());
     }
 
     public static SurvivalAPI get()
