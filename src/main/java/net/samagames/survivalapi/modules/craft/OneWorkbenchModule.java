@@ -12,17 +12,23 @@ import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
-public class DisableNotchAppleModule extends AbstractSurvivalModule
+public class OneWorkbenchModule extends AbstractSurvivalModule
 {
-    public DisableNotchAppleModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    private final ArrayList<UUID> crafters;
+
+    public OneWorkbenchModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
+
+        this.crafters = new ArrayList<>();
     }
 
     /**
-     * Disable Notch's apple
+     * Accept only one bench crafting
      *
      * @param event Event
      */
@@ -30,10 +36,13 @@ public class DisableNotchAppleModule extends AbstractSurvivalModule
     public void onCraftItem(CraftItemEvent event)
     {
         this.onCraftItem(event.getRecipe(), event.getInventory(), event.getWhoClicked());
+
+        if (!this.crafters.contains(event.getWhoClicked().getUniqueId()))
+            this.crafters.add(event.getWhoClicked().getUniqueId());
     }
 
     /**
-     * Disable Notch's apple
+     * Accept only one bench crafting
      *
      * @param event Event
      */
@@ -45,7 +54,8 @@ public class DisableNotchAppleModule extends AbstractSurvivalModule
 
     private void onCraftItem(Recipe recipe, CraftingInventory inventory, HumanEntity human)
     {
-        if (recipe.getResult().getType() == Material.GOLDEN_APPLE && recipe.getResult().getDurability() == 1)
-            inventory.setResult(new ItemStack(Material.AIR));
+        if (recipe.getResult().getType() == Material.WORKBENCH)
+            if (this.crafters.contains(human.getUniqueId()))
+                inventory.setResult(new ItemStack(Material.AIR, 1));
     }
 }

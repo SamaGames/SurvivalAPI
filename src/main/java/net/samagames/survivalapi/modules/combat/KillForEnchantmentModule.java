@@ -1,4 +1,4 @@
-package net.samagames.survivalapi.modules.craft;
+package net.samagames.survivalapi.modules.combat;
 
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
@@ -6,6 +6,7 @@ import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.CraftingInventory;
@@ -14,15 +15,26 @@ import org.bukkit.inventory.Recipe;
 
 import java.util.HashMap;
 
-public class DisableNotchAppleModule extends AbstractSurvivalModule
+public class KillForEnchantmentModule extends AbstractSurvivalModule
 {
-    public DisableNotchAppleModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public KillForEnchantmentModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
     }
 
     /**
-     * Disable Notch's apple
+     * Drop an enchantment table when a player die
+     *
+     * @param event Event
+     */
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event)
+    {
+        event.getDrops().add(new ItemStack(Material.ENCHANTMENT_TABLE, 1));
+    }
+
+    /**
+     * Disable enchantment table craft
      *
      * @param event Event
      */
@@ -33,7 +45,7 @@ public class DisableNotchAppleModule extends AbstractSurvivalModule
     }
 
     /**
-     * Disable Notch's apple
+     * Disable enchantment table craft
      *
      * @param event Event
      */
@@ -45,7 +57,7 @@ public class DisableNotchAppleModule extends AbstractSurvivalModule
 
     private void onCraftItem(Recipe recipe, CraftingInventory inventory, HumanEntity human)
     {
-        if (recipe.getResult().getType() == Material.GOLDEN_APPLE && recipe.getResult().getDurability() == 1)
+        if (recipe.getResult().getType() == Material.ENCHANTMENT_TABLE)
             inventory.setResult(new ItemStack(Material.AIR));
     }
 }

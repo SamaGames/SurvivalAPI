@@ -4,8 +4,13 @@ import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 
 import java.util.HashMap;
 
@@ -21,10 +26,27 @@ public class DisableSpeckedMelonModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
+    @EventHandler
     public void onCraftItem(CraftItemEvent event)
     {
-        if(event.getRecipe().getResult().getType() == Material.SPECKLED_MELON)
-            if(event.getInventory().contains(Material.GOLD_NUGGET))
-                event.getInventory().setResult(new ItemStack(Material.AIR));
+        this.onCraftItem(event.getRecipe(), event.getInventory(), event.getWhoClicked());
+    }
+
+    /**
+     * Disable specked melon
+     *
+     * @param event Event
+     */
+    @EventHandler
+    public void onPrepareItemCraft(PrepareItemCraftEvent event)
+    {
+        this.onCraftItem(event.getRecipe(), event.getInventory(), event.getView().getPlayer());
+    }
+
+    private void onCraftItem(Recipe recipe, CraftingInventory inventory, HumanEntity human)
+    {
+        if (recipe.getResult().getType() == Material.SPECKLED_MELON)
+            if (inventory.contains(Material.GOLD_NUGGET))
+                inventory.setResult(new ItemStack(Material.AIR));
     }
 }

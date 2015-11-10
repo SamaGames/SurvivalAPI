@@ -1,8 +1,7 @@
-package net.samagames.survivalapi.modules.gameplay;
+package net.samagames.survivalapi.modules.block;
 
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
-import net.samagames.survivalapi.modules.AbstractConfigurationBuilder;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import net.samagames.survivalapi.modules.utility.DropTaggingModule;
 import org.apache.commons.lang.Validate;
@@ -61,7 +60,7 @@ public class RapidOresModule extends AbstractSurvivalModule
         return requiredModules;
     }
 
-    public static class ConfigurationBuilder extends AbstractConfigurationBuilder
+    public static class ConfigurationBuilder
     {
         private int coal, iron, gold, diamond, emerald;
 
