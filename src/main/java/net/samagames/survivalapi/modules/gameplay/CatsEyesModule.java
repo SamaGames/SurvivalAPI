@@ -1,9 +1,9 @@
 package net.samagames.survivalapi.modules.gameplay;
 
-import net.samagames.api.games.Game;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
+import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -27,7 +27,7 @@ public class CatsEyesModule extends AbstractSurvivalModule
      * @param game Game
      */
     @Override
-    public void onGameStart(Game game)
+    public void onGameStart(SurvivalGame game)
     {
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers())
             player.getPlayerIfOnline().addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 255, 255));

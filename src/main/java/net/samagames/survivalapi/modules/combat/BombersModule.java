@@ -1,9 +1,9 @@
 package net.samagames.survivalapi.modules.combat;
 
-import net.samagames.api.games.Game;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
+import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -27,7 +27,7 @@ public class BombersModule extends AbstractSurvivalModule
      * @param game Game
      */
     @Override
-    public void onGameStart(Game game)
+    public void onGameStart(SurvivalGame game)
     {
         ItemStack flintAndSteel = new ItemStack(Material.FLINT_AND_STEEL, 1);
         flintAndSteel.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
