@@ -3,7 +3,6 @@ package net.samagames.survivalapi.modules.gameplay;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Difficulty;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
@@ -25,20 +24,22 @@ public class UltraHardCoreModule extends AbstractSurvivalModule
     public UltraHardCoreModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
-        Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
-
         this.patchWorlds(plugin);
     }
 
     /**
-     * Setting world's difficulty
+     * Setting world's parameters
      *
      * @param plugin Plugin
      */
     public void patchWorlds(SurvivalPlugin plugin)
     {
         for (World world : plugin.getServer().getWorlds())
+        {
             world.setDifficulty(Difficulty.NORMAL);
+            world.setGameRuleValue("doDaylightCycle", "false");
+            world.setTime(1000L);
+        }
     }
 
     /**

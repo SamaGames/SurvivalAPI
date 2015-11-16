@@ -7,14 +7,18 @@ import net.samagames.api.games.GameHook;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SurvivalAPI
 {
+    public enum EventType { POSTINIT, AFTERGENERATION }
+
     private static SurvivalAPI instance;
 
     private final SurvivalPlugin plugin;
     private final HashMap<String, AbstractSurvivalModule> modulesLoaded;
+    private final HashMap<EventType, ArrayList<Runnable>> events;
 
     public SurvivalAPI(SurvivalPlugin plugin)
     {
@@ -22,6 +26,7 @@ public class SurvivalAPI
 
         this.plugin = plugin;
         this.modulesLoaded = new HashMap<>();
+        this.events = new HashMap<>();
 
         SamaGamesAPI.get().getGameManager().registerGameHook(new GameHook(GameHook.Type.START)
         {
@@ -32,6 +37,19 @@ public class SurvivalAPI
                     module.onGameStart(game);
             }
         });
+    }
+
+    public void registerEvent(EventType eventType, Runnable callback)
+    {
+        if (!this.events.containsKey(eventType))
+            this.events.put(eventType, new ArrayList<>());
+
+        this.events.get(eventType).add(callback);
+    }
+
+    public void fireEvents(EventType eventType)
+    {
+        this.events.get(eventType).forEach(Runnable::run);
     }
 
     public void loadModule(Class<? extends AbstractSurvivalModule> moduleClass, JsonObject moduleConfiguration)

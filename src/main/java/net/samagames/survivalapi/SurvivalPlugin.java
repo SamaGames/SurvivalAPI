@@ -7,9 +7,11 @@ import net.samagames.api.shadows.IPacketListener;
 import net.samagames.api.shadows.Packet;
 import net.samagames.api.shadows.ShadowsAPI;
 import net.samagames.api.shadows.play.server.PacketLogin;
+import net.samagames.survivalapi.game.WorldLoader;
 import net.samagames.survivalapi.nms.NMSPatcher;
 import net.samagames.tools.Reflection;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
@@ -24,12 +26,14 @@ import java.util.stream.Collectors;
 
 public class SurvivalPlugin extends JavaPlugin
 {
+    private SurvivalAPI api;
     private BukkitTask startTimer;
+    private WorldLoader worldLoader;
 
     @Override
     public void onEnable()
     {
-        new SurvivalAPI(this);
+        this.api = new SurvivalAPI(this);
 
         try
         {
@@ -65,9 +69,26 @@ public class SurvivalPlugin extends JavaPlugin
         });
     }
 
+    public void finishGeneration(World world, long time)
+    {
+        this.getLogger().info("Ready in " + time + "ms");
+
+        long lastTime = System.currentTimeMillis();
+
+        this.getLogger().info("Computing world top for tower detection...");
+        this.worldLoader.computeTop(world);
+        this.getLogger().info("Compute done in " + (System.currentTimeMillis() - lastTime) + " ms");
+        this.getLogger().info("Done!");
+
+        this.api.fireEvents(SurvivalAPI.EventType.AFTERGENERATION);
+    }
+
     private void postInit()
     {
         this.startTimer.cancel();
+
+        this.worldLoader = new WorldLoader(this);
+        this.worldLoader.begin(Bukkit.getWorlds().get(0));
 
         try
         {
@@ -77,6 +98,8 @@ public class SurvivalPlugin extends JavaPlugin
         {
             e.printStackTrace();
         }
+
+        this.api.fireEvents(SurvivalAPI.EventType.POSTINIT);
     }
 
     private void removeWorldEditCommand() throws NoSuchFieldException, IllegalAccessException

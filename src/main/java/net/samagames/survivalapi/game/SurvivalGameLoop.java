@@ -43,12 +43,14 @@ public class SurvivalGameLoop implements Runnable
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les dégats sont désormais actifs.", true);
             this.game.enableDamages();
+
+            this.createPvPEvent();
         });
     }
 
     public void createPvPEvent()
     {
-        this.nextEvent = new TimedEvent(10, 0, "Combats actifs", ChatColor.YELLOW, () ->
+        this.nextEvent = new TimedEvent(19, 0, "Combats actifs", ChatColor.YELLOW, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les combats sont désormais actifs.", true);
             this.game.enableDamages();
@@ -68,11 +70,11 @@ public class SurvivalGameLoop implements Runnable
     @Override
     public void run()
     {
-        ++this.seconds;
+        this.seconds++;
 
         if (this.seconds >= 60)
         {
-            ++this.minutes;
+            this.minutes++;
             this.seconds = 0;
         }
 
@@ -226,11 +228,11 @@ public class SurvivalGameLoop implements Runnable
 
         public void decrement()
         {
-            --this.seconds;
+            this.seconds--;
 
             if (this.seconds < 0)
             {
-                --this.minutes;
+                this.minutes--;
                 this.seconds = 59;
             }
 

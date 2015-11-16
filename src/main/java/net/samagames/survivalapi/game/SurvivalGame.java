@@ -6,6 +6,7 @@ import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.SpawnerCreature;
 import net.samagames.api.games.Game;
 import net.samagames.api.games.Status;
+import net.samagames.survivalapi.game.events.*;
 import net.samagames.tools.ColorUtils;
 import net.samagames.tools.Titles;
 import net.samagames.tools.scoreboards.ObjectiveSign;
@@ -63,6 +64,12 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.mainTask = null;
         this.damagesActivated = false;
         this.pvpActivated = false;
+
+        this.server.getPluginManager().registerEvents(new ChunkListener(plugin), plugin);
+        this.server.getPluginManager().registerEvents(new GameListener(this), plugin);
+        this.server.getPluginManager().registerEvents(new NaturalListener(), plugin);
+        this.server.getPluginManager().registerEvents(new OptimizationListener(), plugin);
+        this.server.getPluginManager().registerEvents(new SpectatorListener(this), plugin);
 
         SurvivalPlayer.setGame(this);
     }
