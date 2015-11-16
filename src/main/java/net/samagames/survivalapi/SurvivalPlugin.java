@@ -53,7 +53,7 @@ public class SurvivalPlugin extends JavaPlugin
 
                 packets.add(PacketLogin.class);
 
-                return null;
+                return packets;
             }
 
             @Override
