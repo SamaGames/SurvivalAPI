@@ -23,6 +23,11 @@ public class SpectatorListener implements Listener
         this.game = game;
     }
 
+    /**
+     * Teleport back the player in the waiting island if he fall
+     *
+     * @param event Event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event)
     {
@@ -34,18 +39,33 @@ public class SpectatorListener implements Listener
         }
     }
 
+    /**
+     * Disable food level changing
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent event)
     {
         event.setCancelled(this.hasToCancel((Player) event.getEntity()));
     }
 
+    /**
+     * Disable block breaking
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event)
     {
         event.setCancelled(this.hasToCancel(event.getPlayer()));
     }
 
+    /**
+     * Disable entity interaction
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event)
     {
@@ -53,36 +73,66 @@ public class SpectatorListener implements Listener
             event.setCancelled(this.hasToCancel((Player) event.getEntity()));
     }
 
+    /**
+     * Disable ability to pickup items
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onPlayerPickupItem(PlayerPickupItemEvent event)
     {
         event.setCancelled(this.hasToCancel(event.getPlayer()));
     }
 
+    /**
+     * Disable ability to drop items
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event)
     {
         event.setCancelled(this.hasToCancel(event.getPlayer()));
     }
 
+    /**
+     * Disable entity interaction
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event)
     {
         event.setCancelled(this.hasToCancel(event.getPlayer()));
     }
 
+    /**
+     * Disable bucket filling
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onPlayerBucketFill(PlayerBucketFillEvent event)
     {
         event.setCancelled(this.hasToCancel(event.getPlayer()));
     }
 
+    /**
+     * Disable bucket emptying
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event)
     {
         event.setCancelled(this.hasToCancel(event.getPlayer()));
     }
 
+    /**
+     * Disable pre-breaking blocks
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onHangingBreakByEntity(HangingBreakByEntityEvent event)
     {
@@ -90,6 +140,11 @@ public class SpectatorListener implements Listener
             event.setCancelled(this.hasToCancel((Player) event.getEntity()));
     }
 
+    /**
+     * Handle leaving door
+     *
+     * @param event Event
+     */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerInteract(PlayerInteractEvent event)
     {

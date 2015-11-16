@@ -1,12 +1,10 @@
 package net.samagames.survivalapi.game;
 
 import net.samagames.survivalapi.game.types.SurvivalTeamGame;
+import net.samagames.tools.Titles;
 import net.samagames.tools.chat.ActionBarAPI;
 import net.samagames.tools.scoreboards.ObjectiveSign;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Server;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
@@ -25,6 +23,7 @@ public class SurvivalGameLoop implements Runnable
     private TimedEvent nextEvent;
     private int minutes;
     private int seconds;
+    private int episode;
 
     public SurvivalGameLoop(JavaPlugin plugin, Server server, SurvivalGame game)
     {
@@ -34,12 +33,16 @@ public class SurvivalGameLoop implements Runnable
         this.world = server.getWorlds().get(0);
         this.objectives = new ConcurrentHashMap<>();
 
+        this.seconds = 0;
+        this.minutes = 0;
+        this.episode = 0;
+
         this.createDamageEvent();
     }
 
     public void createDamageEvent()
     {
-        this.nextEvent = new TimedEvent(1, 0, "Dégats actifs", ChatColor.YELLOW, () ->
+        this.nextEvent = new TimedEvent(1, 0, "Dégats actifs", ChatColor.GREEN, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les dégats sont désormais actifs.", true);
             this.game.enableDamages();
@@ -53,8 +56,30 @@ public class SurvivalGameLoop implements Runnable
         this.nextEvent = new TimedEvent(19, 0, "Combats actifs", ChatColor.YELLOW, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les combats sont désormais actifs.", true);
-            this.game.enableDamages();
+            this.game.enablePVP();
+
+            this.createReducingEvent();
         });
+    }
+
+    public void createReducingEvent()
+    {
+        this.nextEvent = new TimedEvent(40, 0, "Réduction des bordures", ChatColor.RED, () ->
+        {
+            this.game.getWorldBorder().setSize(100, 60L * 40L);
+            this.displayReducingMessage();
+        });
+    }
+
+    public void displayReducingMessage()
+    {
+        for (Player player : Bukkit.getOnlinePlayers())
+        {
+            Titles.sendTitle(player, 0, 60, 5, ChatColor.RED + "Attention !", ChatColor.YELLOW + "Les bordures se résuisent !");
+            player.playSound(player.getLocation(), Sound.WITHER_DEATH, 1.0F, 1.0F);
+        }
+
+        this.game.getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.RED + "Les bordures se réduisent !", true);
     }
 
     public void addPlayer(UUID uuid, ObjectiveSign sign)
@@ -76,6 +101,14 @@ public class SurvivalGameLoop implements Runnable
         {
             this.minutes++;
             this.seconds = 0;
+
+            if (this.minutes >= 20)
+            {
+                this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Fin de l'épisode " + this.episode, true);
+                this.episode++;
+
+                this.minutes = 0;
+            }
         }
 
         for (UUID playerUUID : this.objectives.keySet())

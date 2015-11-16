@@ -51,6 +51,8 @@ public class SurvivalTeam
             }
         }
 
+        Bukkit.getPlayer(player).sendMessage(this.game.getCoherenceMachine().getGameTag() + " " + ChatColor.YELLOW + "Vous avez rejoint l'équipe.");
+
         this.players.add(player);
     }
 
@@ -126,6 +128,11 @@ public class SurvivalTeam
     public boolean canJoin()
     {
         return !this.isLocked() && this.players.size() < this.maxSize;
+    }
+
+    public boolean isInvited(UUID player)
+    {
+        return this.invited.contains(player);
     }
 
     public boolean isLocked()

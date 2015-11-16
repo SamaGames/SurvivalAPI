@@ -53,6 +53,11 @@ public class ChunkListener implements Runnable, Listener
         toRemove.stream().filter(this.lastChunkCleanUp::containsKey).forEach(this.lastChunkCleanUp::remove);
     }
 
+    /**
+     * Save unloaded chunk
+     *
+     * @param event Event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent event)
     {

@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Game;
 import net.samagames.api.games.GameHook;
+import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 
 import java.lang.reflect.InvocationTargetException;
@@ -33,8 +34,11 @@ public class SurvivalAPI
             @Override
             public void run(Game game, Object... objects)
             {
+                if (!(game instanceof SurvivalGame))
+                    return;
+
                 for (AbstractSurvivalModule module : modulesLoaded.values())
-                    module.onGameStart(game);
+                    module.onGameStart((SurvivalGame) game);
             }
         });
     }

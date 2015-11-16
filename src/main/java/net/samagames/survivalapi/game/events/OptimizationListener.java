@@ -18,6 +18,11 @@ public class OptimizationListener implements Listener
         this.radius = 2;
     }
 
+    /**
+     * Concentrate stacks
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onItemSpawn(ItemSpawnEvent event)
     {

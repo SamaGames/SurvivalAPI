@@ -6,6 +6,11 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 
 public class NaturalListener implements Listener
 {
+    /**
+     * Disable weather
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onWeatherChange(WeatherChangeEvent event)
     {

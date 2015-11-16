@@ -1,8 +1,8 @@
 package net.samagames.survivalapi.modules;
 
-import net.samagames.api.games.Game;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
+import net.samagames.survivalapi.game.SurvivalGame;
 import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public abstract class AbstractSurvivalModule implements Listener
         this.moduleConfiguration = moduleConfiguration;
     }
 
-    public void onGameStart(Game game) {}
+    public void onGameStart(SurvivalGame game) {}
 
     public ArrayList<Class<? extends AbstractSurvivalModule>> getRequiredModules()
     {

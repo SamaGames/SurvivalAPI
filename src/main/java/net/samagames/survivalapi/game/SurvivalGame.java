@@ -6,6 +6,7 @@ import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.SpawnerCreature;
 import net.samagames.api.games.Game;
 import net.samagames.api.games.Status;
+import net.samagames.survivalapi.game.commands.CommandUHC;
 import net.samagames.survivalapi.game.events.*;
 import net.samagames.tools.ColorUtils;
 import net.samagames.tools.Titles;
@@ -44,6 +45,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     protected SURVIVALLOOP gameLoop;
     protected Scoreboard scoreboard;
     protected BukkitTask mainTask;
+    protected WorldBorder worldBorder;
     protected boolean damagesActivated;
     protected boolean pvpActivated;
 
@@ -64,6 +66,14 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.mainTask = null;
         this.damagesActivated = false;
         this.pvpActivated = false;
+
+        this.worldBorder = this.world.getWorldBorder();
+        this.worldBorder.setCenter(0.0D, 0.0D);
+        this.worldBorder.setWarningDistance(25);
+        this.worldBorder.setDamageAmount(2.0D);
+        this.worldBorder.setDamageBuffer(5.0D);
+
+        plugin.getCommand("uhc").setExecutor(new CommandUHC(this));
 
         this.server.getPluginManager().registerEvents(new ChunkListener(plugin), plugin);
         this.server.getPluginManager().registerEvents(new GameListener(this), plugin);
@@ -251,7 +261,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             {
                 Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> increaseStat(player.getUniqueId(), "deaths", 1));
 
-                Titles.sendTitle(player, 5, 70, 5, ChatColor.DARK_RED + "✞", ChatColor.RED + "Vous êtes mort !");
+                Titles.sendTitle(player, 0, 60, 5, ChatColor.DARK_RED + "✞", ChatColor.RED + "Vous êtes mort !");
                 player.setGameMode(GameMode.SPECTATOR);
                 player.setHealth(20.0D);
             }
@@ -386,6 +396,11 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     public SURVIVALLOOP getSurvivalGameLoop()
     {
         return this.gameLoop;
+    }
+
+    public WorldBorder getWorldBorder()
+    {
+        return this.worldBorder;
     }
 
     public boolean isDamagesActivated()

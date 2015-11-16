@@ -2,7 +2,15 @@ name: SurvivalAPI
 main: net.samagames.survivalapi
 version: 1.0
 
-depend: [SamaGamesAPI]
+depend: [WorldEdit]
+softdepend: [SamaGamesAPI]
+
+load: STARTUP
 
 author: BlueSlime
 website: http://blueslime.fr
+
+commands:
+   uhc:
+      description: Gestion d'équipe
+      usage: /uhc

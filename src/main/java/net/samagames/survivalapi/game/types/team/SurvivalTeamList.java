@@ -1,6 +1,7 @@
 package net.samagames.survivalapi.game.types.team;
 
 import net.samagames.survivalapi.game.SurvivalTeam;
+import org.bukkit.ChatColor;
 
 import java.util.*;
 
@@ -155,12 +156,18 @@ public class SurvivalTeamList implements List<SurvivalTeam>
     public SurvivalTeam getTeam(UUID player)
     {
         for (SurvivalTeam team : internalList)
-        {
             if (team.hasPlayer(player))
-            {
                 return team;
-            }
-        }
+
+        return null;
+    }
+
+    public SurvivalTeam getTeam(ChatColor color)
+    {
+        for (SurvivalTeam team : internalList)
+            if (team.getChatColor() == color)
+                return team;
+
         return null;
     }
 }

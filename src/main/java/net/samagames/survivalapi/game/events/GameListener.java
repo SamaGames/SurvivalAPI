@@ -9,14 +9,12 @@ import net.samagames.tools.GameUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.*;
@@ -41,6 +39,11 @@ public class GameListener implements Listener
         this.random = new Random();
     }
 
+    /**
+     * Save the last damager of a damaged player
+     *
+     * @param event Event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
     {
@@ -85,6 +88,11 @@ public class GameListener implements Listener
         }
     }
 
+    /**
+     * Increase the Renegartion boost when a golden apple is eaten
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onItemConsume(PlayerItemConsumeEvent event)
     {
@@ -92,34 +100,26 @@ public class GameListener implements Listener
             event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 10 * 20, 1));
     }
 
+    /**
+     * Block Minecraft utilization
+     *
+     * @param event Event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event)
     {
-        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getClickedBlock().getType().equals(Material.CHEST))
-        {
-            Chest chest = (Chest) event.getClickedBlock().getState();
-            int slot = 0;
-
-            while (slot < chest.getInventory().getSize())
-            {
-                ItemStack stack = chest.getInventory().getItem(slot);
-
-                if (stack == null)
-                {
-                    slot++;
-                    continue;
-                }
-
-                slot++;
-            }
-        }
-        else if (event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == (Material.MINECART))
+        if (event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == (Material.MINECART))
         {
             event.getPlayer().sendMessage(ChatColor.RED + "L'utilisation de Minecart est bloqué.");
             event.setCancelled(true);
         }
     }
 
+    /**
+     * Handle player death
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event)
     {
@@ -143,6 +143,11 @@ public class GameListener implements Listener
         }
     }
 
+    /**
+     * Disable Guardian spawn (Mining Fatique effect)
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onEntitySpawn(EntitySpawnEvent event)
     {
@@ -150,6 +155,11 @@ public class GameListener implements Listener
             event.setCancelled(true);
     }
 
+    /**
+     * Cancel damages if the game doesn't activate them
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onDamage(EntityDamageEvent event)
     {
@@ -157,12 +167,22 @@ public class GameListener implements Listener
             event.setCancelled(true);
     }
 
+    /**
+     * Keep the player's food level if the game isn't started
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onLoseFood(FoodLevelChangeEvent event)
     {
         event.setCancelled(this.game.getStatus() != Status.IN_GAME || (this.game.hasPlayer((Player) event.getEntity()) && !this.game.isSpectator((Player) event.getEntity())));
     }
 
+    /**
+     * Handle Towers
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event)
     {
@@ -173,7 +193,11 @@ public class GameListener implements Listener
         }
     }
 
-
+    /**
+     * Disable lava buckets if the PvP isn't activated
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event)
     {
@@ -187,6 +211,11 @@ public class GameListener implements Listener
         }
     }
 
+    /**
+     * Control sign contents
+     *
+     * @param event Event
+     */
     @EventHandler(ignoreCancelled = true)
     public void onSignChange(SignChangeEvent event)
     {
