@@ -1,14 +1,62 @@
 package net.samagames.survivalapi;
 
+import com.sk89q.bukkit.util.DynamicPluginCommand;
+import net.samagames.survivalapi.nms.NMSPatcher;
+import net.samagames.tools.Reflection;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SurvivalPlugin extends JavaPlugin
 {
-    private SurvivalAPI api;
+    private BukkitTask startTimer;
 
     @Override
     public void onEnable()
     {
-        this.api = new SurvivalAPI(this);
+        new SurvivalAPI(this);
+
+        try
+        {
+            NMSPatcher nmsPatcher = new NMSPatcher(this);
+            nmsPatcher.patchBiomes();
+            nmsPatcher.patchPotions();
+        }
+        catch (ReflectiveOperationException e)
+        {
+            e.printStackTrace();
+        }
+
+        this.startTimer = this.getServer().getScheduler().runTaskTimer(this, this::postInit, 20L, 20L);
+    }
+
+    private void postInit()
+    {
+        this.startTimer.cancel();
+
+        try
+        {
+            this.removeWorldEditCommand();
+        }
+        catch (NoSuchFieldException | IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void removeWorldEditCommand() throws NoSuchFieldException, IllegalAccessException
+    {
+        SimpleCommandMap scm = ((CraftServer) Bukkit.getServer()).getCommandMap();
+        Map<String, Command> knownCommands = (Map) Reflection.getValue(scm, true, "knownCommands");
+        List<String> toRemove = knownCommands.entrySet().stream().filter(entry -> entry.getValue() instanceof DynamicPluginCommand).map(Map.Entry::getKey).collect(Collectors.toList());
+
+        toRemove.forEach(knownCommands::remove);
     }
 }
