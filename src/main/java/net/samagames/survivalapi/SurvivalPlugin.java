@@ -1,15 +1,23 @@
 package net.samagames.survivalapi;
 
 import com.sk89q.bukkit.util.DynamicPluginCommand;
+import io.netty.channel.Channel;
+import net.samagames.api.shadows.EnumPacket;
+import net.samagames.api.shadows.IPacketListener;
+import net.samagames.api.shadows.Packet;
+import net.samagames.api.shadows.ShadowsAPI;
+import net.samagames.api.shadows.play.server.PacketLogin;
 import net.samagames.survivalapi.nms.NMSPatcher;
 import net.samagames.tools.Reflection;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,6 +43,26 @@ public class SurvivalPlugin extends JavaPlugin
         }
 
         this.startTimer = this.getServer().getScheduler().runTaskTimer(this, this::postInit, 20L, 20L);
+
+        ShadowsAPI.get().registerListener(new IPacketListener()
+        {
+            @Override
+            public List<Class<? extends Packet>> getWhiteListedPackets()
+            {
+                ArrayList<Class<? extends Packet>> packets = new ArrayList<>();
+
+                packets.add(PacketLogin.class);
+
+                return null;
+            }
+
+            @Override
+            public void onPacket(Player player, Channel channel, Packet packet, EnumPacket.EnumPacketDirection networkDirection)
+            {
+                if (packet instanceof PacketLogin)
+                    ((PacketLogin) packet).setHardcoreMode(true);
+            }
+        });
     }
 
     private void postInit()
