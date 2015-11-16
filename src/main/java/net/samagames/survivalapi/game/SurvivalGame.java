@@ -110,6 +110,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
             this.gameLoop = this.survivalGameLoopClass.getConstructor(JavaPlugin.class, Server.class, SurvivalGame.class).newInstance(this.plugin, this.server, this);
             this.scoreboard = this.server.getScoreboardManager().getMainScoreboard();
+
+            this.computeLocations();
         }
         catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e)
         {
