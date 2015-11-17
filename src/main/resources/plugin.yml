@@ -1,5 +1,5 @@
 name: SurvivalAPI
-main: net.samagames.survivalapi
+main: net.samagames.survivalapi.SurvivalAPI
 version: 1.0
 
 depend: [WorldEdit]
