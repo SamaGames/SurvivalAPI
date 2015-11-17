@@ -1,7 +1,9 @@
 package net.samagames.survivalapi;
 
+import com.google.gson.JsonPrimitive;
 import com.sk89q.bukkit.util.DynamicPluginCommand;
 import io.netty.channel.Channel;
+import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.shadows.EnumPacket;
 import net.samagames.api.shadows.IPacketListener;
 import net.samagames.api.shadows.Packet;
@@ -95,7 +97,7 @@ public class SurvivalPlugin extends JavaPlugin
             }
         });
 
-        this.worldLoader = new WorldLoader(this);
+        this.worldLoader = new WorldLoader(this, SamaGamesAPI.get().getGameManager().getGameProperties().getOption("size", new JsonPrimitive(2000)).getAsInt());
         this.worldLoader.begin(Bukkit.getWorlds().get(0));
 
         try

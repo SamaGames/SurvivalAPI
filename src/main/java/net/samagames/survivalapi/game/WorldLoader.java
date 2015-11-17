@@ -10,13 +10,16 @@ import java.util.ArrayList;
 public class WorldLoader
 {
     private final SurvivalPlugin plugin;
+    private final int size;
     private BukkitTask task;
     private int lastShow;
     private int numberChunk;
 
-    public WorldLoader(SurvivalPlugin plugin)
+    public WorldLoader(SurvivalPlugin plugin, int size)
     {
         this.plugin = plugin;
+        this.size = size;
+
         this.lastShow = -1;
     }
 
@@ -32,8 +35,8 @@ public class WorldLoader
         this.task = Bukkit.getScheduler().runTaskTimer(this.plugin, new Runnable()
         {
             private int todo = (1200 * 1200) / 256;
-            private int x = -600;
-            private int z = -600;
+            private int x = -(size + 100);
+            private int z = -(size + 100);
 
             @Override
             public void run()
@@ -51,13 +54,13 @@ public class WorldLoader
 
                     this.z += 16;
 
-                    if (this.z >= 600)
+                    if (this.z >= (size + 100))
                     {
-                        this.z = -600;
+                        this.z = -(size + 100);
                         this.x += 16;
                     }
 
-                    if (this.x >= 600)
+                    if (this.x >= (size + 100))
                     {
                         task.cancel();
                         plugin.finishGeneration(world, System.currentTimeMillis() - startTime);
@@ -73,13 +76,13 @@ public class WorldLoader
 
     public void computeTop(World world)
     {
-        int x = -500;
+        int x = -this.size;
 
-        while (x < 500)
+        while (x < this.size)
         {
-            int z = -500;
+            int z = -this.size;
 
-            while (z < 500)
+            while (z < this.size)
             {
                 Pos.registerY(x, world.getHighestBlockYAt(x, z), z);
                 z++;

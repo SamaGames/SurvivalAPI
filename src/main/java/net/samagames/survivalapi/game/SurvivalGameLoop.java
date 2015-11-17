@@ -76,7 +76,7 @@ public class SurvivalGameLoop implements Runnable
         for (Player player : Bukkit.getOnlinePlayers())
         {
             Titles.sendTitle(player, 0, 60, 5, ChatColor.RED + "Attention !", ChatColor.YELLOW + "Les bordures se résuisent !");
-            player.playSound(player.getLocation(), Sound.WITHER_DEATH, 1.0F, 1.0F);
+            player.playSound(player.getLocation(), Sound.BLAZE_DEATH, 1.0F, 1.0F);
         }
 
         this.game.getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.RED + "Les bordures se réduisent !", true);
