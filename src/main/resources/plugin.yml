@@ -11,6 +11,12 @@ author: BlueSlime
 website: http://blueslime.fr
 
 commands:
-   uhc:
-      description: Gestion d'équipe
-      usage: /uhc
+  uhc:
+    description: Team manager
+    usage: /uhc
+
+  nextevent:
+    description: Fire next event
+    usage: /nextevent
+    permission: sg.op
+    permission-message: Permission non accordée

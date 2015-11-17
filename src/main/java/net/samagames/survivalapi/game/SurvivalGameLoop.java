@@ -82,6 +82,12 @@ public class SurvivalGameLoop implements Runnable
         this.game.getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.RED + "Les bordures se réduisent !", true);
     }
 
+    public void forceNextEvent()
+    {
+        if (this.nextEvent != null)
+            this.nextEvent.run();
+    }
+
     public void addPlayer(UUID uuid, ObjectiveSign sign)
     {
         this.objectives.put(uuid, sign);

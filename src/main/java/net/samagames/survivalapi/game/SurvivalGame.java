@@ -7,6 +7,7 @@ import net.minecraft.server.v1_8_R3.SpawnerCreature;
 import net.samagames.api.games.Game;
 import net.samagames.api.games.Status;
 import net.samagames.survivalapi.SurvivalAPI;
+import net.samagames.survivalapi.game.commands.CommandNextEvent;
 import net.samagames.survivalapi.game.commands.CommandUHC;
 import net.samagames.survivalapi.game.events.*;
 import net.samagames.tools.ColorUtils;
@@ -71,10 +72,12 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.pvpActivated = false;
 
         this.worldBorder = this.world.getWorldBorder();
-        this.worldBorder.setCenter(0.0D, 0.0D);
-        this.worldBorder.setWarningDistance(25);
-        this.worldBorder.setDamageAmount(2.0D);
-        this.worldBorder.setDamageBuffer(5.0D);
+        this.worldBorder.setCenter(0D, 0D);
+        this.worldBorder.setSize(1000);
+        this.worldBorder.setWarningDistance(20);
+        this.worldBorder.setWarningTime(0);
+        this.worldBorder.setDamageBuffer(3D);
+        this.worldBorder.setDamageAmount(2D);
 
         this.server.getPluginManager().registerEvents(new ChunkListener(plugin), plugin);
         this.server.getPluginManager().registerEvents(new NaturalListener(), plugin);
@@ -91,6 +94,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         }
 
         CommandUHC.setGame(this);
+        CommandNextEvent.setGame(this);
         SurvivalPlayer.setGame(this);
 
         SurvivalAPI.get().registerEvent(SurvivalAPI.EventType.AFTERGENERATION, () ->
@@ -101,9 +105,9 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                 this.lobbyPopulator.place();
 
                 JsonArray defaults = new JsonArray();
-                defaults.add(new JsonPrimitive(6.0D));
-                defaults.add(new JsonPrimitive(199.0D));
-                defaults.add(new JsonPrimitive(7.0D));
+                defaults.add(new JsonPrimitive(0.5D));
+                defaults.add(new JsonPrimitive(200.0D));
+                defaults.add(new JsonPrimitive(0.5D));
 
                 JsonArray spawnPos = this.gameManager.getGameProperties().getOption("spawnPos", defaults).getAsJsonArray();
 

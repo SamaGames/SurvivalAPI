@@ -148,8 +148,9 @@ public class SpectatorListener implements Listener
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerInteract(PlayerInteractEvent event)
     {
-        if (this.game.getStatus() != Status.IN_GAME && event.getItem().isSimilar(SamaGamesAPI.get().getGameManager().getCoherenceMachine().getLeaveItem()))
-            SamaGamesAPI.get().getGameManager().kickPlayer(event.getPlayer(), "");
+        if (event.getItem() != null)
+            if (this.game.getStatus() != Status.IN_GAME && event.getItem().isSimilar(SamaGamesAPI.get().getGameManager().getCoherenceMachine().getLeaveItem()))
+                SamaGamesAPI.get().getGameManager().kickPlayer(event.getPlayer(), "");
     }
 
     private boolean hasToCancel(Player player)
