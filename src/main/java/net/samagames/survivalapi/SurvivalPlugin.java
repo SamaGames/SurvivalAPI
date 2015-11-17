@@ -8,6 +8,7 @@ import net.samagames.api.shadows.Packet;
 import net.samagames.api.shadows.ShadowsAPI;
 import net.samagames.api.shadows.play.server.PacketLogin;
 import net.samagames.survivalapi.game.WorldLoader;
+import net.samagames.survivalapi.game.commands.CommandUHC;
 import net.samagames.survivalapi.nms.NMSPatcher;
 import net.samagames.tools.Reflection;
 import org.bukkit.Bukkit;
@@ -45,6 +46,8 @@ public class SurvivalPlugin extends JavaPlugin
         {
             e.printStackTrace();
         }
+
+        this.getCommand("uhc").setExecutor(new CommandUHC());
 
         this.startTimer = this.getServer().getScheduler().runTaskTimer(this, this::postInit, 20L, 20L);
     }

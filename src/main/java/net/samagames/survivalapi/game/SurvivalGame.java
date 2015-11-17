@@ -73,14 +73,13 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.worldBorder.setDamageAmount(2.0D);
         this.worldBorder.setDamageBuffer(5.0D);
 
-        plugin.getCommand("uhc").setExecutor(new CommandUHC(this));
-
         this.server.getPluginManager().registerEvents(new ChunkListener(plugin), plugin);
         this.server.getPluginManager().registerEvents(new GameListener(this), plugin);
         this.server.getPluginManager().registerEvents(new NaturalListener(), plugin);
         this.server.getPluginManager().registerEvents(new OptimizationListener(), plugin);
         this.server.getPluginManager().registerEvents(new SpectatorListener(this), plugin);
 
+        CommandUHC.setGame(this);
         SurvivalPlayer.setGame(this);
     }
 

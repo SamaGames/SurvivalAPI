@@ -1,6 +1,5 @@
 package net.samagames.survivalapi;
 
-import com.google.gson.JsonObject;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Game;
 import net.samagames.api.games.GameHook;
@@ -53,16 +52,19 @@ public class SurvivalAPI
 
     public void fireEvents(EventType eventType)
     {
+        if (!this.events.containsKey(eventType))
+            return;
+
         this.events.get(eventType).forEach(Runnable::run);
     }
 
-    public void loadModule(Class<? extends AbstractSurvivalModule> moduleClass, JsonObject moduleConfiguration)
+    public void loadModule(Class<? extends AbstractSurvivalModule> moduleClass, HashMap<String, Object> moduleConfiguration)
     {
         if(!this.modulesLoaded.containsKey(moduleClass.getSimpleName()))
         {
             try
             {
-                AbstractSurvivalModule module = moduleClass.getConstructor(SurvivalPlugin.class, SurvivalAPI.class, JsonObject.class).newInstance(this.plugin, this, moduleConfiguration);
+                AbstractSurvivalModule module = moduleClass.getConstructor(SurvivalPlugin.class, SurvivalAPI.class, HashMap.class).newInstance(this.plugin, this, moduleConfiguration);
 
                 for (Class<? extends AbstractSurvivalModule> requiredModule : module.getRequiredModules())
                     this.loadModule(requiredModule, null);

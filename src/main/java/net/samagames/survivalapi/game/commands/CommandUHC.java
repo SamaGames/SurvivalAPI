@@ -14,11 +14,11 @@ import java.util.UUID;
 
 public class CommandUHC implements CommandExecutor
 {
-    private final SurvivalGame game;
+    private static SurvivalGame game;
 
-    public CommandUHC(SurvivalGame game)
+    public static void setGame(SurvivalGame instance)
     {
-        this.game = game;
+        game = instance;
     }
 
     @Override
@@ -31,14 +31,14 @@ public class CommandUHC implements CommandExecutor
         {
             if (strings[0].equals("invite"))
             {
-                if(this.game instanceof SurvivalTeamGame)
+                if(game instanceof SurvivalTeamGame)
                 {
-                    if(!this.game.isGameStarted())
+                    if(!game.isGameStarted())
                     {
                         String teamRaw = strings[1];
                         String playerRaw = strings[2];
-                        SurvivalPlayer player = (SurvivalPlayer) this.game.getPlayer(UUID.fromString(playerRaw));
-                        SurvivalTeam aTeam = ((SurvivalTeamGame) this.game).getTeams().getTeam(ChatColor.getByChar(teamRaw));
+                        SurvivalPlayer player = (SurvivalPlayer) game.getPlayer(UUID.fromString(playerRaw));
+                        SurvivalTeam aTeam = ((SurvivalTeamGame) game).getTeams().getTeam(ChatColor.getByChar(teamRaw));
 
                         if (aTeam == null)
                             return true;
@@ -51,14 +51,14 @@ public class CommandUHC implements CommandExecutor
             }
             else if (strings[0].equals("join"))
             {
-                if(this.game instanceof SurvivalTeamGame)
+                if(game instanceof SurvivalTeamGame)
                 {
-                    if(!this.game.isGameStarted())
+                    if(!game.isGameStarted())
                     {
                         String teamRaw = strings[1];
                         String playerRaw = strings[2];
-                        SurvivalPlayer player = (SurvivalPlayer) this.game.getPlayer(UUID.fromString(playerRaw));
-                        SurvivalTeam aTeam = ((SurvivalTeamGame) this.game).getTeams().getTeam(ChatColor.getByChar(teamRaw));
+                        SurvivalPlayer player = (SurvivalPlayer) game.getPlayer(UUID.fromString(playerRaw));
+                        SurvivalTeam aTeam = ((SurvivalTeamGame) game).getTeams().getTeam(ChatColor.getByChar(teamRaw));
 
                         if (aTeam == null)
                             return true;
