@@ -47,6 +47,25 @@ public class SurvivalPlugin extends JavaPlugin
         }
 
         this.startTimer = this.getServer().getScheduler().runTaskTimer(this, this::postInit, 20L, 20L);
+    }
+
+    public void finishGeneration(World world, long time)
+    {
+        this.getLogger().info("Ready in " + time + "ms");
+
+        long lastTime = System.currentTimeMillis();
+
+        this.getLogger().info("Computing world top for tower detection...");
+        this.worldLoader.computeTop(world);
+        this.getLogger().info("Compute done in " + (System.currentTimeMillis() - lastTime) + " ms");
+        this.getLogger().info("Done!");
+
+        this.api.fireEvents(SurvivalAPI.EventType.AFTERGENERATION);
+    }
+
+    private void postInit()
+    {
+        this.startTimer.cancel();
 
         ShadowsAPI.get().registerListener(new IPacketListener()
         {
@@ -67,25 +86,6 @@ public class SurvivalPlugin extends JavaPlugin
                     ((PacketLogin) packet).setHardcoreMode(true);
             }
         });
-    }
-
-    public void finishGeneration(World world, long time)
-    {
-        this.getLogger().info("Ready in " + time + "ms");
-
-        long lastTime = System.currentTimeMillis();
-
-        this.getLogger().info("Computing world top for tower detection...");
-        this.worldLoader.computeTop(world);
-        this.getLogger().info("Compute done in " + (System.currentTimeMillis() - lastTime) + " ms");
-        this.getLogger().info("Done!");
-
-        this.api.fireEvents(SurvivalAPI.EventType.AFTERGENERATION);
-    }
-
-    private void postInit()
-    {
-        this.startTimer.cancel();
 
         this.worldLoader = new WorldLoader(this);
         this.worldLoader.begin(Bukkit.getWorlds().get(0));

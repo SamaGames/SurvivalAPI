@@ -3,7 +3,7 @@ main: net.samagames.survivalapi.SurvivalPlugin
 version: 1.0
 
 depend: [WorldEdit]
-softdepend: [SamaGamesAPI]
+softdepend: [SamaGamesAPI, ShadowsAPI]
 
 load: STARTUP
 
