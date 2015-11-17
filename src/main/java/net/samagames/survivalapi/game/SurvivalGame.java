@@ -6,6 +6,7 @@ import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.SpawnerCreature;
 import net.samagames.api.games.Game;
 import net.samagames.api.games.Status;
+import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.game.commands.CommandUHC;
 import net.samagames.survivalapi.game.events.*;
 import net.samagames.tools.ColorUtils;
@@ -53,6 +54,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     {
         super(gameCodeName, gameName, gameDescription, SurvivalPlayer.class);
 
+        plugin.saveResource("lobby.schematic", false);
+
         this.plugin = plugin;
         this.server = plugin.getServer();
         this.magicSymbol = magicSymbol;
@@ -74,13 +77,51 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.worldBorder.setDamageBuffer(5.0D);
 
         this.server.getPluginManager().registerEvents(new ChunkListener(plugin), plugin);
-        this.server.getPluginManager().registerEvents(new GameListener(this), plugin);
         this.server.getPluginManager().registerEvents(new NaturalListener(), plugin);
         this.server.getPluginManager().registerEvents(new OptimizationListener(), plugin);
         this.server.getPluginManager().registerEvents(new SpectatorListener(this), plugin);
+        this.server.getPluginManager().registerEvents(new SecurityListener(this), plugin);
+        this.server.getPluginManager().registerEvents(new GameListener(this), plugin);
+
+        for (World world : plugin.getServer().getWorlds())
+        {
+            world.setDifficulty(Difficulty.NORMAL);
+            world.setGameRuleValue("doDaylightCycle", "false");
+            world.setTime(1000L);
+        }
 
         CommandUHC.setGame(this);
         SurvivalPlayer.setGame(this);
+
+        SurvivalAPI.get().registerEvent(SurvivalAPI.EventType.AFTERGENERATION, () ->
+        {
+            try
+            {
+                this.lobbyPopulator = new LobbyPopulator(this.plugin);
+                this.lobbyPopulator.place();
+
+                JsonArray defaults = new JsonArray();
+                defaults.add(new JsonPrimitive(6.0D));
+                defaults.add(new JsonPrimitive(199.0D));
+                defaults.add(new JsonPrimitive(7.0D));
+
+                JsonArray spawnPos = this.gameManager.getGameProperties().getOption("spawnPos", defaults).getAsJsonArray();
+
+                this.lobbySpawnLocation = new Location(this.world, spawnPos.get(0).getAsDouble(), spawnPos.get(1).getAsDouble(), spawnPos.get(2).getAsDouble());
+                this.world.setSpawnLocation(this.lobbySpawnLocation.getBlockX(), this.lobbySpawnLocation.getBlockY(), this.lobbySpawnLocation.getBlockZ());
+
+                this.gameLoop = this.survivalGameLoopClass.getConstructor(JavaPlugin.class, Server.class, SurvivalGame.class).newInstance(this.plugin, this.server, this);
+                this.scoreboard = this.server.getScoreboardManager().getMainScoreboard();
+
+                this.computeLocations();
+
+                this.setStatus(Status.WAITING_FOR_PLAYERS);
+            }
+            catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e)
+            {
+                e.printStackTrace();
+            }
+        });
     }
 
     public abstract void teleport();
@@ -90,34 +131,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     public void handlePostRegistration()
     {
         super.handlePostRegistration();
-
         this.setStatus(Status.STARTING);
-
-        try
-        {
-            this.lobbyPopulator = new LobbyPopulator(this.plugin);
-            this.lobbyPopulator.place();
-
-            JsonArray defaults = new JsonArray();
-            defaults.add(new JsonPrimitive(6D));
-            defaults.add(new JsonPrimitive(199D));
-            defaults.add(new JsonPrimitive(7));
-            JsonArray spawnPos = this.gameManager.getGameProperties().getOption("spawnPos", defaults).getAsJsonArray();
-
-            this.lobbySpawnLocation = new Location(this.world, spawnPos.get(0).getAsDouble(), spawnPos.get(1).getAsDouble(), spawnPos.get(2).getAsDouble());
-            this.world.setSpawnLocation(this.lobbySpawnLocation.getBlockX(), this.lobbySpawnLocation.getBlockY(), this.lobbySpawnLocation.getBlockZ());
-
-            this.gameLoop = this.survivalGameLoopClass.getConstructor(JavaPlugin.class, Server.class, SurvivalGame.class).newInstance(this.plugin, this.server, this);
-            this.scoreboard = this.server.getScoreboardManager().getMainScoreboard();
-
-            this.computeLocations();
-        }
-        catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e)
-        {
-            e.printStackTrace();
-        }
-
-        this.setStatus(Status.WAITING_FOR_PLAYERS);
     }
 
     @Override

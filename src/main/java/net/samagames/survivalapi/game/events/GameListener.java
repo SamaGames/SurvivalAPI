@@ -26,17 +26,13 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.Random;
-
 public class GameListener implements Listener
 {
     private SurvivalGame game;
-    private Random random;
 
     public GameListener(SurvivalGame game)
     {
         this.game = game;
-        this.random = new Random();
     }
 
     /**
