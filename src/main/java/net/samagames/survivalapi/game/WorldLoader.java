@@ -34,7 +34,7 @@ public class WorldLoader
 
         this.task = Bukkit.getScheduler().runTaskTimer(this.plugin, new Runnable()
         {
-            private int todo = ((size + 200) * (size + 200)) / 256;
+            private int todo = (((size + 100) * 2) * ((size + 100) * 2)) / 256;
             private int x = -(size + 100);
             private int z = -(size + 100);
 
