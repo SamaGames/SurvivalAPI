@@ -18,7 +18,7 @@ public class WorldLoader
     public WorldLoader(SurvivalPlugin plugin, int size)
     {
         this.plugin = plugin;
-        this.size = size;
+        this.size = (size + 100);
 
         this.lastShow = -1;
     }
@@ -34,9 +34,9 @@ public class WorldLoader
 
         this.task = Bukkit.getScheduler().runTaskTimer(this.plugin, new Runnable()
         {
-            private int todo = (((size + 100) * 2) * ((size + 100) * 2)) / 256;
-            private int x = -(size + 100);
-            private int z = -(size + 100);
+            private int todo = ((size * 2) * (size * 2)) / 256;
+            private int x = -size;
+            private int z = -size;
 
             @Override
             public void run()
@@ -45,6 +45,7 @@ public class WorldLoader
                 while (i < 50)
                 {
                     world.getChunkAt(world.getBlockAt(this.x, 64, this.z)).load(true);
+
                     int percentage = numberChunk * 100 / todo;
                     if (percentage > lastShow && percentage % 10 == 0)
                     {
@@ -54,13 +55,13 @@ public class WorldLoader
 
                     this.z += 16;
 
-                    if (this.z >= (size + 100))
+                    if (this.z >= size)
                     {
-                        this.z = -(size + 100);
+                        this.z = -size;
                         this.x += 16;
                     }
 
-                    if (this.x >= (size + 100))
+                    if (this.x >= size)
                     {
                         task.cancel();
                         plugin.finishGeneration(world, System.currentTimeMillis() - startTime);
