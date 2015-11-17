@@ -97,7 +97,7 @@ public class SurvivalPlugin extends JavaPlugin
             }
         });
 
-        this.worldLoader = new WorldLoader(this, SamaGamesAPI.get().getGameManager().getGameProperties().getOption("size", new JsonPrimitive(2000)).getAsInt());
+        this.worldLoader = new WorldLoader(this, SamaGamesAPI.get().getGameManager().getGameProperties().getOption("size", new JsonPrimitive(1000)).getAsInt());
         this.worldLoader.begin(Bukkit.getWorlds().get(0));
 
         try
