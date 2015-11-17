@@ -86,7 +86,10 @@ public class SurvivalPlugin extends JavaPlugin
             public void onPacket(Player player, Channel channel, Packet packet, EnumPacket.EnumPacketDirection networkDirection)
             {
                 if (packet instanceof PacketLogin)
+                {
                     ((PacketLogin) packet).setHardcoreMode(true);
+                    packet.markDirty();
+                }
             }
         });
 
