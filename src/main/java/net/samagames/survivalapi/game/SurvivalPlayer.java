@@ -51,8 +51,8 @@ public class SurvivalPlayer extends GamePlayer
                 ItemMeta starMeta = star.getItemMeta();
                 starMeta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "Sélectionner une équipe");
                 star.setItemMeta(starMeta);
-                player.getInventory().setItem(4, star);
-                player.getInventory().setHeldItemSlot(4);
+                player.getInventory().setItem(0, star);
+                player.getInventory().setHeldItemSlot(0);
             }
         }
         else
