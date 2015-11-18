@@ -216,7 +216,7 @@ public class SurvivalGameLoop implements Runnable
 
     private String getDirectionalArrow(Player base, Player teammate)
     {
-        Vector direction = base.getLocation().getDirection().subtract(teammate.getLocation().getDirection());
+        Vector direction = base.getLocation().getDirection().subtract(teammate.getLocation().toVector());
         double angle = Math.toDegrees(direction.angle(base.getLocation().getDirection())) % 360;
 
         if (angle < 0)
