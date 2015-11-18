@@ -75,7 +75,7 @@ public class SurvivalGameLoop implements Runnable
     {
         for (Player player : Bukkit.getOnlinePlayers())
         {
-            Titles.sendTitle(player, 0, 60, 5, ChatColor.RED + "Attention !", ChatColor.YELLOW + "Les bordures se résuisent !");
+            Titles.sendTitle(player, 0, 60, 5, ChatColor.RED + "Attention !", ChatColor.YELLOW + "Les bordures se réduisent !");
             player.playSound(player.getLocation(), Sound.BLAZE_DEATH, 1.0F, 1.0F);
         }
 
@@ -160,6 +160,9 @@ public class SurvivalGameLoop implements Runnable
 
                         for (UUID teammateUUID : gamePlayer.getTeam().getPlayersUUID())
                         {
+                            if (playerUUID.equals(teammateUUID))
+                                continue;
+
                             teammates++;
 
                             Player teammate = Bukkit.getPlayer(teammateUUID);
@@ -215,7 +218,7 @@ public class SurvivalGameLoop implements Runnable
         Vector direction = base.getLocation().getDirection().subtract(teammate.getLocation().getDirection());
         float angle = direction.angle(base.getLocation().getDirection());
 
-        if (angle > 337.5 || angle < 22.5)
+        /**if (angle > 337.5 || angle < 22.5)
             return "\u2b06";
         else if (angle > 22.5 && angle < 67.5)
             return "\u2b08";
@@ -230,7 +233,9 @@ public class SurvivalGameLoop implements Runnable
         else if (angle > 247.5 && angle < 292.5)
             return "\u2b05";
         else
-            return "\u2b09";
+            return "\u2b09";**/
+
+        return String.valueOf(angle);
     }
 
     private String toString(int minutes, int seconds)

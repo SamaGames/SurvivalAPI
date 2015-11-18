@@ -10,7 +10,7 @@ import org.bukkit.ChatColor;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class TeamWinTemplate extends WinMessageTemplate
+public class TeamWinTemplate
 {
     public ArrayList<String> prepare(SurvivalTeam team)
     {
@@ -23,11 +23,11 @@ public class TeamWinTemplate extends WinMessageTemplate
 
         custom.add(ChatUtils.getCenteredText(StringUtils.join(players, ", ")));
 
-        return super.prepare(custom);
+        return custom;
     }
 
     public void execute(SurvivalTeam team)
     {
-        this.execute(this.prepare(team));
+        new WinMessageTemplate().execute(this.prepare(team));
     }
 }
