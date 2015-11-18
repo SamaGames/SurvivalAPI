@@ -222,7 +222,7 @@ public class SurvivalGameLoop implements Runnable
     {
         double deltaX = teammate.getLocation().getX() - base.getLocation().getX();
         double deltaZ = teammate.getLocation().getZ() - base.getLocation().getZ();
-        double angle = (Math.toDegrees(Math.atan2(deltaZ, deltaX) * 180 / Math.PI) + base.getEyeLocation().getYaw()) % 360;
+        double angle = Math.toDegrees(Math.atan2(deltaZ, deltaX) * 180 / Math.PI);
 
         /**if (angle > 337.5 || angle < 22.5)
             return "⬆";
