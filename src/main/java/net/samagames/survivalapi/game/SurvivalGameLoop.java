@@ -74,7 +74,7 @@ public class SurvivalGameLoop implements Runnable
     {
         for (Player player : Bukkit.getOnlinePlayers())
         {
-            Titles.sendTitle(player, 0, 60, 5, ChatColor.RED + "Attention !", ChatColor.YELLOW + "Les bordures se réduisent !");
+            Titles.sendTitle(player, 0, 100, 5, ChatColor.RED + "Attention !", ChatColor.YELLOW + "Les bordures se réduisent !");
             player.playSound(player.getLocation(), Sound.BLAZE_DEATH, 1.0F, 1.0F);
         }
 
@@ -222,7 +222,7 @@ public class SurvivalGameLoop implements Runnable
     {
         double angle = Math.toDegrees(base.getLocation().getDirection().angle(teammate.getLocation().subtract(base.getEyeLocation()).toVector()));
 
-        if (angle > 337.5 || angle < 22.5)
+        /**if (angle > 337.5 || angle < 22.5)
             return "⬆";
         else if (angle > 22.5 && angle < 67.5)
             return "⬉";
@@ -237,7 +237,9 @@ public class SurvivalGameLoop implements Runnable
         else if (angle > 247.5 && angle < 292.5)
             return "➡";
         else
-            return "⬈";
+            return "⬈";**/
+
+        return String.valueOf((float) angle);
     }
 
     private String toString(int minutes, int seconds)

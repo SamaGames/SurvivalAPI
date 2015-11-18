@@ -285,7 +285,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             {
                 Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> increaseStat(player.getUniqueId(), "deaths", 1));
 
-                Titles.sendTitle(player, 0, 60, 5, ChatColor.RED + "✞", ChatColor.RED + "Vous êtes mort !");
+                Titles.sendTitle(player, 0, 100, 5, ChatColor.RED + "✞", ChatColor.RED + "Vous êtes mort !");
                 player.setGameMode(GameMode.SPECTATOR);
                 player.setHealth(20.0D);
             }
