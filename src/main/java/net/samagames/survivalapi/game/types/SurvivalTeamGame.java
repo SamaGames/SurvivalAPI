@@ -174,7 +174,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
 
                 if (!t.isEmpty())
                     for (UUID id : t.getPlayersUUID().keySet())
-                        if (this.server.getPlayer(id) != null)
+                        if (this.server.getPlayer(id) != null && !t.getPlayersUUID().get(id))
                             players1++;
 
                 if (players1 == 0)
