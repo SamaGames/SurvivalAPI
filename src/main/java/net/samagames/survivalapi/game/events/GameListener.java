@@ -81,6 +81,10 @@ public class GameListener implements Listener
                         event.setDamage(EntityDamageEvent.DamageModifier.MAGIC, event.getDamage(EntityDamageEvent.DamageModifier.MAGIC) / 2);
                 }
             }
+            else
+            {
+                damaged.setMetadata("lastDamager", new FixedMetadataValue(this.game.getPlugin(), damager));
+            }
         }
     }
 
@@ -157,7 +161,7 @@ public class GameListener implements Listener
      * @param event Event
      */
     @EventHandler
-    public void onDamage(EntityDamageEvent event)
+    public void onEntityDamage(EntityDamageEvent event)
     {
         if (event.getEntity() instanceof Player && !this.game.isDamagesActivated())
             event.setCancelled(true);

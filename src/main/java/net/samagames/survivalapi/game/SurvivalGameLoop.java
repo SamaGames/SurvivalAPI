@@ -171,7 +171,7 @@ public class SurvivalGameLoop implements Runnable
                             if (this.game.getPlayer(teammateUUID).isSpectator())
                                 objective.setLine((lastLine + teammates), ChatColor.GRAY + "× " + teammate.getName() + " : ✞");
                             else
-                                objective.setLine((lastLine + teammates), this.getPrefixColorByHealth(teammate.getHealth(), teammate.getMaxHealth()) + this.getDirectionalArrow(player, teammate) + " " + teammate.getName() + ChatColor.WHITE + " : " + (int) teammate.getHealth() + ChatColor.RED + " ♥");
+                                objective.setLine((lastLine + teammates), this.getPrefixColorByHealth(teammate.getHealth(), teammate.getMaxHealth()) + this.getDirectionalArrow(player, teammate) + " " + teammate.getName() + ChatColor.WHITE + " : " + (int) teammate.getHealth() + ChatColor.RED + " ❤");
                         }
 
                         objective.setLine((lastLine + (teammates + 1)), ChatColor.DARK_PURPLE + "");
@@ -217,7 +217,10 @@ public class SurvivalGameLoop implements Runnable
     private String getDirectionalArrow(Player base, Player teammate)
     {
         Vector direction = base.getLocation().getDirection().subtract(teammate.getLocation().getDirection());
-        double angle = Math.toDegrees(direction.angle(base.getLocation().getDirection()));
+        double angle = Math.toDegrees(direction.angle(base.getLocation().getDirection())) % 360;
+
+        if (angle < 0)
+            angle += 360;
 
         if (angle > 337.5 || angle < 22.5)
             return "\u2b06";
