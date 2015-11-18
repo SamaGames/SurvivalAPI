@@ -133,13 +133,13 @@ public class SurvivalGameLoop implements Runnable
                 objective.setLine(1, ChatColor.GRAY + "Joueurs : " + ChatColor.WHITE + this.game.getInGamePlayers().size());
                 objective.setLine(2, ChatColor.GRAY + "");
 
-                int lastLine = 3;
+                int lastLine = 2;
 
                 if (this.game instanceof SurvivalTeamGame)
                 {
-                    objective.setLine(1, ChatColor.GRAY + "Équipes : " + ChatColor.WHITE + ((SurvivalTeamGame) this.game).getTeams().size());
-                    objective.setLine(2, ChatColor.RED + "");
-                    lastLine = 2;
+                    objective.setLine(lastLine + 1, ChatColor.GRAY + "Équipes : " + ChatColor.WHITE + ((SurvivalTeamGame) this.game).getTeams().size());
+                    objective.setLine(lastLine + 2, ChatColor.RED + "");
+                    lastLine += 2;
                 }
 
                 if (this.nextEvent != null)
@@ -218,7 +218,7 @@ public class SurvivalGameLoop implements Runnable
 
     private String getDirectionalArrow(Player base, Player teammate)
     {
-        Vector direction = base.getLocation().getDirection().subtract(teammate.getLocation().toVector());
+        Vector direction = base.getLocation().toVector().subtract(teammate.getLocation().toVector());
         double angle = (Math.toDegrees(direction.angle(base.getLocation().getDirection())) % 360);
 
         /**if (angle < 0)

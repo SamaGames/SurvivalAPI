@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.SpawnerCreature;
+import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Game;
 import net.samagames.api.games.Status;
 import net.samagames.survivalapi.SurvivalAPI;
@@ -92,6 +93,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             world.setGameRuleValue("doDaylightCycle", "false");
             world.setTime(2000L);
         }
+
+        SamaGamesAPI.get().getGameManager().setMaxReconnectTime(this.gameManager.getGameProperties().getOption("reconnectTime", new JsonPrimitive(5)).getAsInt());
 
         CommandUHC.setGame(this);
         CommandNextEvent.setGame(this);
@@ -374,26 +377,36 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         {
             case SUFFOCATION:
                 return "Suffocation";
+
             case FALL:
                 return "Chute";
+
             case FIRE:
             case FIRE_TICK:
                 return "Feu";
+
             case LAVA:
                 return "Lave";
+
             case DROWNING:
                 return "Noyade";
+
             case BLOCK_EXPLOSION:
             case ENTITY_EXPLOSION:
                 return "Explosion";
+
             case LIGHTNING:
                 return "Foudre";
+
             case POISON:
                 return "Poison";
+
             case MAGIC:
                 return "Potion";
+
             case FALLING_BLOCK:
                 return "Chute de blocs";
+
             default:
                 return "Autre";
         }
