@@ -157,14 +157,24 @@ public class GameListener implements Listener
 
     /**
      * Cancel damages if the game doesn't activate them
+     * Also set last damage cause of the damaged player
      *
      * @param event Event
      */
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event)
     {
-        if (event.getEntity() instanceof Player && !this.game.isDamagesActivated())
-            event.setCancelled(true);
+        if (event.getEntity() instanceof Player)
+        {
+            if (!this.game.isDamagesActivated())
+            {
+                event.setCancelled(true);
+                return;
+            }
+
+            if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)
+                event.getEntity().setMetadata("lastDamager", new FixedMetadataValue(this.game.getPlugin(), event.getEntity()));
+        }
     }
 
     /**
