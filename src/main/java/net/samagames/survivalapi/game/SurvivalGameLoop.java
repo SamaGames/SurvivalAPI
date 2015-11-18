@@ -226,24 +226,22 @@ public class SurvivalGameLoop implements Runnable
 
         double angle = Math.toDegrees(Math.acos(a.dot(b)));
 
-        /**if (angle > 337.5 || angle < 22.5)
-            return "\u2b06";
+        if (angle > 337.5 || angle < 22.5)
+            return "⬆";
         else if (angle > 22.5 && angle < 67.5)
-            return "\u2b08";
+            return "⬉";
         else if (angle > 67.5 && angle < 112.5)
-            return "\u27a1";
+            return "⬅";
         else if (angle > 112.5 && angle < 157.5)
-            return "\u2b0a";
+            return "⬋";
         else if (angle > 157.5 && angle < 202.5)
-            return "\u2b07";
+            return "⬇";
         else if (angle > 202.5 && angle < 247.5)
-            return "\u2b0b";
+            return "⬊";
         else if (angle > 247.5 && angle < 292.5)
-            return "\u2b05";
+            return "➡";
         else
-            return "\u2b09";**/
-
-        return String.valueOf((int) angle);
+            return "⬈";
     }
 
     private String toString(int minutes, int seconds)
