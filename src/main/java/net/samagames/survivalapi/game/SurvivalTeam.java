@@ -10,13 +10,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class SurvivalTeam
 {
     private final SurvivalTeamGame game;
     private final ArrayList<UUID> invited;
-    private final ArrayList<UUID> players;
+    private final HashMap<UUID, Boolean> players;
     private final ItemStack icon;
     private final ChatColor chatColor;
 
@@ -33,7 +34,7 @@ public class SurvivalTeam
         this.maxSize = game.getPersonsPerTeam();
 
         this.invited = new ArrayList<>();
-        this.players = new ArrayList<>();
+        this.players = new HashMap<>();
     }
 
     public void join(UUID player)
@@ -42,7 +43,7 @@ public class SurvivalTeam
 
         if (newJoiner != null)
         {
-            for (UUID member : this.players)
+            for (UUID member : this.players.keySet())
             {
                 Player user = Bukkit.getPlayer(member);
 
@@ -53,7 +54,7 @@ public class SurvivalTeam
 
         ((SurvivalPlayer) this.game.getPlayer(player)).setTeam(this);
 
-        this.players.add(player);
+        this.players.put(player, false);
     }
 
     public void invite(String inviter, UUID invited)
@@ -70,18 +71,26 @@ public class SurvivalTeam
                 .send(Bukkit.getPlayer(invited));
     }
 
-    public void remove(UUID player)
+    public void remove(UUID player, boolean death)
     {
-        this.players.remove(player);
+        if (death)
+            this.players.put(player, true);
+        else
+            this.players.remove(player);
+
         this.lockCheck();
     }
 
-    public int removePlayer(UUID uniqueId)
+    public int removePlayer(UUID player, boolean death)
     {
-        this.players.remove(uniqueId);
+        if (death)
+            this.players.put(player, true);
+        else
+            this.players.remove(player);
+
         this.lockCheck();
 
-        return this.players.size();
+        return this.getAlivePlayers();
     }
 
     public void lockCheck()
@@ -105,9 +114,20 @@ public class SurvivalTeam
         return this.icon;
     }
 
-    public ArrayList<UUID> getPlayersUUID()
+    public HashMap<UUID, Boolean> getPlayersUUID()
     {
         return this.players;
+    }
+
+    public int getAlivePlayers()
+    {
+        int i = 0;
+
+        for (boolean dead : this.getPlayersUUID().values())
+            if (!dead)
+                i++;
+
+        return i;
     }
 
     public String getTeamName()
@@ -122,7 +142,7 @@ public class SurvivalTeam
 
     public boolean hasPlayer(UUID player)
     {
-        return this.players.contains(player);
+        return this.players.containsKey(player);
     }
 
     public boolean canJoin()

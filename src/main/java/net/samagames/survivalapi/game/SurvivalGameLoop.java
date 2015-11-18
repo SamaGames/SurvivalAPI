@@ -122,6 +122,8 @@ public class SurvivalGameLoop implements Runnable
             ObjectiveSign objective = this.objectives.get(playerUUID);
             Player player = this.server.getPlayer(playerUUID);
 
+            objective.clearScores();
+
             if (player == null)
             {
                 this.server.getLogger().info("Player null : " + playerUUID);
@@ -131,16 +133,17 @@ public class SurvivalGameLoop implements Runnable
             {
                 objective.setLine(0, ChatColor.DARK_RED + "");
                 objective.setLine(1, ChatColor.GRAY + "Joueurs : " + ChatColor.WHITE + this.game.getInGamePlayers().size());
-                objective.setLine(2, ChatColor.GRAY + "");
 
-                int lastLine = 2;
+                int lastLine = 1;
 
                 if (this.game instanceof SurvivalTeamGame)
                 {
                     objective.setLine(lastLine + 1, ChatColor.GRAY + "Équipes : " + ChatColor.WHITE + ((SurvivalTeamGame) this.game).getTeams().size());
-                    objective.setLine(lastLine + 2, ChatColor.RED + "");
-                    lastLine += 2;
+                    lastLine++;
                 }
+
+                objective.setLine(lastLine + 1, ChatColor.RED + "");
+                lastLine++;
 
                 if (this.nextEvent != null)
                     ActionBarAPI.sendMessage(player, this.nextEvent.color.toString() + this.nextEvent.name + " dans " + this.toString(this.nextEvent.seconds == 0 ? this.nextEvent.minutes - 1 : this.nextEvent.minutes, this.nextEvent.seconds == 0 ? 59 : this.nextEvent.seconds - 1));
@@ -159,7 +162,7 @@ public class SurvivalGameLoop implements Runnable
                     {
                         int teammates = 0;
 
-                        for (UUID teammateUUID : gamePlayer.getTeam().getPlayersUUID())
+                        for (UUID teammateUUID : gamePlayer.getTeam().getPlayersUUID().keySet())
                         {
                             if (playerUUID.equals(teammateUUID))
                                 continue;

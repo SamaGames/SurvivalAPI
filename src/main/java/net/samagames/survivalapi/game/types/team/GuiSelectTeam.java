@@ -69,12 +69,12 @@ public class GuiSelectTeam extends AbstractGui
                 lores.add("");
             }
 
-            for (UUID uuid : team.getPlayersUUID())
+            for (UUID uuid : team.getPlayersUUID().keySet())
             {
                 if (game.getPlugin().getServer().getPlayer(uuid) != null)
                     lores.add(team.getChatColor() + " - " + Bukkit.getPlayer(uuid).getName());
                 else
-                    team.remove(uuid);
+                    team.remove(uuid, false);
             }
 
             this.setSlotData(name, team.getIcon(), last, lores.toArray(new String[lores.size()]), "team_" + team.getChatColor());
@@ -111,7 +111,7 @@ public class GuiSelectTeam extends AbstractGui
                         if (team.canJoin())
                         {
                             if (game.getPlayerTeam(player.getUniqueId()) != null)
-                                game.getPlayerTeam(player.getUniqueId()).remove(player.getUniqueId());
+                                game.getPlayerTeam(player.getUniqueId()).remove(player.getUniqueId(), false);
 
                             team.join(player.getUniqueId());
                             player.sendMessage(game.getCoherenceMachine().getGameTag() + " " + ChatColor.YELLOW + "Vous êtes entré dans l'équipe " + team.getChatColor() + team.getTeamName() + ChatColor.YELLOW + " !");
@@ -240,7 +240,7 @@ public class GuiSelectTeam extends AbstractGui
         {
             if (game.getPlayerTeam(player.getUniqueId()) != null)
             {
-                game.getPlayerTeam(player.getUniqueId()).remove(player.getUniqueId());
+                game.getPlayerTeam(player.getUniqueId()).remove(player.getUniqueId(), false);
                 player.sendMessage(game.getCoherenceMachine().getGameTag() + " " + ChatColor.GREEN + "Vous avez quitté l'équipe !");
             }
             else

@@ -148,7 +148,7 @@ public class SurvivalTeamSelector implements Listener
                 event.setCancelled(true);
                 String message = team.getChatColor() + "(Equipe) " + event.getPlayer().getName() + " : " + ChatColor.GOLD + ChatColor.ITALIC + event.getMessage();
 
-                for (UUID id : team.getPlayersUUID())
+                for (UUID id : team.getPlayersUUID().keySet())
                 {
                     Player player = this.game.getPlugin().getServer().getPlayer(id);
 

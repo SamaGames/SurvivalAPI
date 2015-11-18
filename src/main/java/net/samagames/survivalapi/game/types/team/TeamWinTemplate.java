@@ -19,7 +19,7 @@ public class TeamWinTemplate
 
         custom.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Gagnant" + ChatColor.GRAY + " - Equipe " + ChatColor.RESET + team.getChatColor() + team.getTeamName()));
 
-        players.addAll(team.getPlayersUUID().stream().map(PlayerUtils::getColoredFormattedPlayerName).collect(Collectors.toList()));
+        players.addAll(team.getPlayersUUID().keySet().stream().map(PlayerUtils::getColoredFormattedPlayerName).collect(Collectors.toList()));
 
         custom.add(ChatUtils.getCenteredText(StringUtils.join(players, ", ")));
 

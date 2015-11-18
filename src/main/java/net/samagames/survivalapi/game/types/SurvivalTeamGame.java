@@ -1,5 +1,6 @@
 package net.samagames.survivalapi.game.types;
 
+import net.samagames.api.games.Status;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.game.SurvivalGameLoop;
 import net.samagames.survivalapi.game.SurvivalPlayer;
@@ -102,7 +103,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             {
                 toRemove.add(team);
 
-                for (UUID player : team.getPlayersUUID())
+                for (UUID player : team.getPlayersUUID().keySet())
                 {
                     Player p = this.server.getPlayer(player);
 
@@ -116,7 +117,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
 
             Location location = locationIterator.next();
 
-            for (UUID player : team.getPlayersUUID())
+            for (UUID player : team.getPlayersUUID().keySet())
             {
                 Player p = this.server.getPlayer(player);
 
@@ -142,7 +143,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             if (team == null)
                 return;
 
-            int left = team.removePlayer(player.getUniqueId());
+            int left = team.removePlayer(player.getUniqueId(), true);
 
             if (left == 0)
             {
@@ -172,7 +173,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 int players1 = 0;
 
                 if (!t.isEmpty())
-                    for (UUID id : t.getPlayersUUID())
+                    for (UUID id : t.getPlayersUUID().keySet())
                         if (this.server.getPlayer(id) != null)
                             players1++;
 
@@ -196,9 +197,24 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         }, 2L);
     }
 
+    @Override
+    public void stumpPlayer(Player player, boolean logout)
+    {
+        if (logout && !this.getStatus().equals(Status.IN_GAME))
+        {
+            SurvivalTeam team = this.teams.getTeam(player.getUniqueId());
+
+            if (team != null)
+                team.remove(player.getUniqueId(), true);
+
+        }
+
+        super.stumpPlayer(player, logout);
+    }
+
     public void win(final SurvivalTeam team)
     {
-        for (final UUID playerID : team.getPlayersUUID())
+        for (final UUID playerID : team.getPlayersUUID().keySet())
         {
             SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(playerID);
             playerData.addCoins(100, "Victoire !");
