@@ -7,6 +7,7 @@ import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.Vector;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -220,12 +221,12 @@ public class SurvivalGameLoop implements Runnable
 
     private String getDirectionalArrow(Player base, Player teammate)
     {
-        double angle = Math.toDegrees(base.getLocation().getDirection().angle(teammate.getLocation().subtract(base.getEyeLocation()).toVector()));
+        Vector a = base.getLocation().toVector().subtract(base.getLocation().toVector()).normalize();
+        Vector b = teammate.getLocation().getDirection();
 
-        if (angle < 0)
-            angle += 360;
+        double angle = Math.toDegrees(Math.acos(a.dot(b)));
 
-        if (angle > 337.5 || angle < 22.5)
+        /**if (angle > 337.5 || angle < 22.5)
             return "\u2b06";
         else if (angle > 22.5 && angle < 67.5)
             return "\u2b08";
@@ -240,7 +241,9 @@ public class SurvivalGameLoop implements Runnable
         else if (angle > 247.5 && angle < 292.5)
             return "\u2b05";
         else
-            return "\u2b09";
+            return "\u2b09";**/
+
+        return String.valueOf((int) angle);
     }
 
     private String toString(int minutes, int seconds)
