@@ -1,6 +1,5 @@
 package net.samagames.survivalapi.game.types;
 
-import net.samagames.api.games.Status;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.game.SurvivalGameLoop;
 import net.samagames.survivalapi.game.SurvivalPlayer;
@@ -195,21 +194,6 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
 
             this.teams.removeAll(toRemvove);
         }, 2L);
-    }
-
-    @Override
-    public void stumpPlayer(Player player, boolean logout)
-    {
-        if (logout && !this.getStatus().equals(Status.IN_GAME))
-        {
-            SurvivalTeam team = this.teams.getTeam(player.getUniqueId());
-
-            if (team != null)
-                team.remove(player.getUniqueId());
-
-        }
-
-        super.stumpPlayer(player, logout);
     }
 
     public void win(final SurvivalTeam team)
