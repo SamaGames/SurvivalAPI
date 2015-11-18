@@ -198,7 +198,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             displayNameLife.getScore(player.getName()).setScore((int) player.getHealth());
             playerListLife.getScore(player.getName()).setScore((int) player.getHealth());
 
-            ObjectiveSign sign = new ObjectiveSign("sggameloop", ChatColor.GOLD + (this.magicSymbol != null ? this.magicSymbol + " " : "") + this.getGameName() + " " + (this.magicSymbol != null ? this.magicSymbol + " " : ""));
+            ObjectiveSign sign = new ObjectiveSign("sggameloop", ChatColor.GOLD + "" + ChatColor.BOLD + (this.magicSymbol != null ? this.magicSymbol + " " : "") + this.getGameName() + " " + (this.magicSymbol != null ? this.magicSymbol + " " : ""));
             sign.addReceiver(player);
 
             this.gameLoop.addPlayer(player.getUniqueId(), sign);
@@ -228,7 +228,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             {
                 player.setScoreboard(this.scoreboard);
 
-                ObjectiveSign sign = new ObjectiveSign("sggameloop", ChatColor.GOLD + (this.magicSymbol != null ? this.magicSymbol + " " : "") + this.getGameName() + " " + (this.magicSymbol != null ? this.magicSymbol + " " : ""));
+                ObjectiveSign sign = new ObjectiveSign("sggameloop", ChatColor.GOLD + "" + ChatColor.BOLD + (this.magicSymbol != null ? this.magicSymbol + " " : "") + this.getGameName() + " " + (this.magicSymbol != null ? this.magicSymbol + " " : ""));
                 sign.addReceiver(player);
 
                 this.gameLoop.addPlayer(player.getUniqueId(), sign);
@@ -282,7 +282,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             {
                 Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> increaseStat(player.getUniqueId(), "deaths", 1));
 
-                Titles.sendTitle(player, 0, 60, 5, ChatColor.DARK_GRAY + "✞", ChatColor.RED + "Vous êtes mort !");
+                Titles.sendTitle(player, 0, 60, 5, ChatColor.RED + "✞", ChatColor.RED + "Vous êtes mort !");
                 player.setGameMode(GameMode.SPECTATOR);
                 player.setHealth(20.0D);
             }

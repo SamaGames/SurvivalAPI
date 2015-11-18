@@ -40,12 +40,12 @@ public class SurvivalPlayer extends GamePlayer
         if (!reconnect)
         {
             player.setGameMode(GameMode.ADVENTURE);
-            player.teleport(game.getLobbySpawn());
+            player.teleport(this.game.getLobbySpawn());
             player.getInventory().setItem(8, SamaGamesAPI.get().getGameManager().getCoherenceMachine().getLeaveItem());
             player.getInventory().setHeldItemSlot(0);
             player.updateInventory();
 
-            if (game instanceof SurvivalTeamGame)
+            if (this.game instanceof SurvivalTeamGame)
             {
                 ItemStack star = new ItemStack(Material.NETHER_STAR);
                 ItemMeta starMeta = star.getItemMeta();
@@ -57,7 +57,7 @@ public class SurvivalPlayer extends GamePlayer
         }
         else
         {
-            game.rejoinPlayer(player);
+            this.game.rejoinPlayer(player);
         }
     }
 

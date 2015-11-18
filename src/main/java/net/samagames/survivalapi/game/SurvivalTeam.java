@@ -51,7 +51,7 @@ public class SurvivalTeam
             }
         }
 
-        Bukkit.getPlayer(player).sendMessage(this.game.getCoherenceMachine().getGameTag() + " " + ChatColor.YELLOW + "Vous avez rejoint l'équipe.");
+        ((SurvivalPlayer) this.game.getPlayer(player)).setTeam(this);
 
         this.players.add(player);
     }
