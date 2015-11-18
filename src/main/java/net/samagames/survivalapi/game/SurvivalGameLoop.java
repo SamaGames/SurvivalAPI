@@ -7,7 +7,6 @@ import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Vector;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -172,9 +171,9 @@ public class SurvivalGameLoop implements Runnable
                             Player teammate = Bukkit.getPlayer(teammateUUID);
 
                             if (this.game.getPlayer(teammateUUID).isSpectator())
-                                objective.setLine((lastLine + teammates), ChatColor.GRAY + "× " + teammate.getName() + " : ✞");
+                                objective.setLine((lastLine + teammates), ChatColor.RED + "× " + teammate.getName() + " : ✞");
                             else if (teammate == null)
-                                objective.setLine((lastLine + teammates), ChatColor.GRAY + "× " + Bukkit.getOfflinePlayer(teammateUUID).getName() + " : Déconnecté");
+                                objective.setLine((lastLine + teammates), ChatColor.RED + "× " + Bukkit.getOfflinePlayer(teammateUUID).getName() + " : Déconnecté");
                             else
                                 objective.setLine((lastLine + teammates), this.getPrefixColorByHealth(teammate.getHealth(), teammate.getMaxHealth()) + this.getDirectionalArrow(player, teammate) + " " + teammate.getName() + ChatColor.WHITE + " : " + (int) teammate.getHealth() + ChatColor.RED + " ❤");
                         }
@@ -221,10 +220,9 @@ public class SurvivalGameLoop implements Runnable
 
     private String getDirectionalArrow(Player base, Player teammate)
     {
-        Vector direction = base.getLocation().toVector().subtract(teammate.getLocation().toVector());
-        double angle = (Math.toDegrees(direction.angle(base.getLocation().getDirection())) % 360);
+        double angle = Math.toDegrees(base.getLocation().getDirection().angle(teammate.getLocation().subtract(base.getEyeLocation()).toVector()));
 
-        /**if (angle < 0)
+        if (angle < 0)
             angle += 360;
 
         if (angle > 337.5 || angle < 22.5)
@@ -242,9 +240,7 @@ public class SurvivalGameLoop implements Runnable
         else if (angle > 247.5 && angle < 292.5)
             return "\u2b05";
         else
-            return "\u2b09";**/
-
-        return String.valueOf((int) angle);
+            return "\u2b09";
     }
 
     private String toString(int minutes, int seconds)

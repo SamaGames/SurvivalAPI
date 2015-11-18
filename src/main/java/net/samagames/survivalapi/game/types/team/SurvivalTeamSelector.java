@@ -125,6 +125,12 @@ public class SurvivalTeamSelector implements Listener
         if (!this.game.getStatus().equals(Status.IN_GAME))
             return;
 
+        if (this.game.isSpectator(event.getPlayer()))
+        {
+            event.setCancelled(true);
+            return;
+        }
+
         if (event.getMessage().startsWith("!"))
         {
             event.setCancelled(true);
