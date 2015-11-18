@@ -128,15 +128,11 @@ public class GameListener implements Listener
             this.game.stumpPlayer(event.getEntity(), false);
 
             event.getDrops().add(new ItemStack(Material.GOLDEN_APPLE));
+            event.setDeathMessage("");
 
             if (event.getEntity().getKiller() != null)
             {
                 event.getEntity().getKiller().addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 20 * 20, 1));
-                event.setDeathMessage("");
-            }
-            else
-            {
-                event.setDeathMessage(this.game.getCoherenceMachine().getGameTag() + " " + event.getDeathMessage());
             }
 
             GameUtils.broadcastSound(Sound.WITHER_SPAWN);
