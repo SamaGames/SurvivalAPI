@@ -170,6 +170,8 @@ public class SurvivalGameLoop implements Runnable
 
                             if (this.game.getPlayer(teammateUUID).isSpectator())
                                 objective.setLine((lastLine + teammates), ChatColor.GRAY + "× " + teammate.getName() + " : ✞");
+                            else if (teammate == null)
+                                objective.setLine((lastLine + teammates), ChatColor.GRAY + "× " + Bukkit.getOfflinePlayer(teammateUUID).getName() + " : Déconnecté");
                             else
                                 objective.setLine((lastLine + teammates), this.getPrefixColorByHealth(teammate.getHealth(), teammate.getMaxHealth()) + this.getDirectionalArrow(player, teammate) + " " + teammate.getName() + ChatColor.WHITE + " : " + (int) teammate.getHealth() + ChatColor.RED + " ❤");
                         }
@@ -239,7 +241,7 @@ public class SurvivalGameLoop implements Runnable
         else
             return "\u2b09";**/
 
-        return String.valueOf(angle);
+        return String.valueOf((int) angle);
     }
 
     private String toString(int minutes, int seconds)
