@@ -220,7 +220,9 @@ public class SurvivalGameLoop implements Runnable
 
     private String getDirectionalArrow(Player base, Player teammate)
     {
-        double angle = Math.toDegrees(base.getLocation().getDirection().angle(teammate.getLocation().subtract(base.getEyeLocation()).toVector()));
+        double deltaX = teammate.getLocation().getX() - base.getLocation().getX();
+        double deltaY = teammate.getLocation().getY() - base.getLocation().getY();
+        double angle = (Math.toDegrees(Math.atan2(deltaY, deltaX) * 180 / Math.PI) + base.getEyeLocation().getYaw()) % 360;
 
         /**if (angle > 337.5 || angle < 22.5)
             return "⬆";
@@ -239,7 +241,7 @@ public class SurvivalGameLoop implements Runnable
         else
             return "⬈";**/
 
-        return String.valueOf((float) angle);
+        return String.valueOf((int) angle);
     }
 
     private String toString(int minutes, int seconds)
