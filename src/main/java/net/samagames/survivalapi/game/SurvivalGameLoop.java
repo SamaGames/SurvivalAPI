@@ -226,7 +226,7 @@ public class SurvivalGameLoop implements Runnable
         double temp = Math.atan2(deltaZ, deltaX) * 180 / Math.PI + 180;
         double angle = Math.abs((base.getEyeLocation().getYaw() - 90 - temp) % 360);
 
-        /**if (angle > 337.5 || angle < 22.5)
+        if (angle > 337.5 || angle < 22.5)
             return "⬆";
         else if (angle > 22.5 && angle < 67.5)
             return "⬉";
@@ -241,9 +241,7 @@ public class SurvivalGameLoop implements Runnable
         else if (angle > 247.5 && angle < 292.5)
             return "➡";
         else
-            return "⬈";**/
-
-        return String.valueOf((int) angle);
+            return "⬈";
     }
 
     private String toString(int minutes, int seconds)
