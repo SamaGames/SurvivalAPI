@@ -243,7 +243,7 @@ public class SurvivalGameLoop implements Runnable
         else
             return "⬈";**/
 
-        return String.valueOf(angle);
+        return String.valueOf((int) angle);
     }
 
     private String toString(int minutes, int seconds)
