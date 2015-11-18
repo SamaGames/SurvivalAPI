@@ -129,10 +129,11 @@ public class SurvivalGameLoop implements Runnable
             }
             else
             {
-                objective.setLine(0, ChatColor.GRAY + "Joueurs : " + ChatColor.WHITE + this.game.getInGamePlayers().size());
-                objective.setLine(1, ChatColor.GRAY + "");
+                objective.setLine(0, ChatColor.DARK_RED + "");
+                objective.setLine(1, ChatColor.GRAY + "Joueurs : " + ChatColor.WHITE + this.game.getInGamePlayers().size());
+                objective.setLine(2, ChatColor.GRAY + "");
 
-                int lastLine = 1;
+                int lastLine = 3;
 
                 if (this.game instanceof SurvivalTeamGame)
                 {
