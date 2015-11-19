@@ -239,7 +239,7 @@ public class SurvivalGameLoop implements Runnable
         else if (angle > 202.5 && angle < 247.5)
             return "⬋";
         else if (angle > 247.5 && angle < 292.5)
-            return "➡";
+            return "⬅";
         else
             return "⬉";
     }
