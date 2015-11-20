@@ -53,31 +53,5 @@ public class RapidToolsModule extends AbstractSurvivalModule
             inventory.setResult(new ItemStack(Material.STONE_AXE));
         else if (recipe.getResult().getType() == Material.WOOD_SPADE)
             inventory.setResult(new ItemStack(Material.STONE_SPADE));
-
-        if (this.isPickaxe(inventory.getResult()))
-        {
-            ItemStack newStack = inventory.getResult();
-            newStack.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
-
-            inventory.setResult(newStack);
-        }
-    }
-
-    private boolean isPickaxe(ItemStack stack)
-    {
-        boolean flag = false;
-
-        if (stack.getType() == Material.WOOD_PICKAXE)
-            flag = true;
-        else if (stack.getType() == Material.STONE_PICKAXE)
-            flag = true;
-        else if (stack.getType() == Material.IRON_PICKAXE)
-            flag = true;
-        else if (stack.getType() == Material.GOLD_PICKAXE)
-            flag = true;
-        else if (stack.getType() == Material.DIAMOND_PICKAXE)
-            flag = true;
-
-        return flag;
     }
 }
