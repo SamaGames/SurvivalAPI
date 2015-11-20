@@ -100,6 +100,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         CommandNextEvent.setGame(this);
         SurvivalPlayer.setGame(this);
 
+        this.scoreboard = this.server.getScoreboardManager().getMainScoreboard();
+
         SurvivalAPI.get().registerEvent(SurvivalAPI.EventType.AFTERGENERATION, () ->
         {
             try
@@ -120,7 +122,6 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                 this.world.setSpawnLocation(this.lobbySpawnLocation.getBlockX(), this.lobbySpawnLocation.getBlockY(), this.lobbySpawnLocation.getBlockZ());
 
                 this.gameLoop = this.survivalGameLoopClass.getConstructor(JavaPlugin.class, Server.class, SurvivalGame.class).newInstance(this.plugin, this.server, this);
-                this.scoreboard = this.server.getScoreboardManager().getMainScoreboard();
 
                 this.computeLocations();
 
