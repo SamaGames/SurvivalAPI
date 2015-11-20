@@ -13,16 +13,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class SurvivalGameLoop implements Runnable
 {
-    private final JavaPlugin plugin;
-    private final Server server;
-    private final SurvivalGame game;
-    private final World world;
-    private final ConcurrentHashMap<UUID, ObjectiveSign> objectives;
+    protected final JavaPlugin plugin;
+    protected final Server server;
+    protected final SurvivalGame game;
+    protected final World world;
+    protected final ConcurrentHashMap<UUID, ObjectiveSign> objectives;
 
-    private TimedEvent nextEvent;
-    private int minutes;
-    private int seconds;
-    private int episode;
+    protected TimedEvent nextEvent;
+    protected int minutes;
+    protected int seconds;
+    protected int episode;
+    protected boolean episodeEnabled;
 
     public SurvivalGameLoop(JavaPlugin plugin, Server server, SurvivalGame game)
     {
@@ -35,6 +36,8 @@ public class SurvivalGameLoop implements Runnable
         this.seconds = 0;
         this.minutes = 0;
         this.episode = 0;
+
+        this.episodeEnabled = true;
 
         this.createDamageEvent();
     }
@@ -107,12 +110,15 @@ public class SurvivalGameLoop implements Runnable
             this.minutes++;
             this.seconds = 0;
 
-            if (this.minutes >= 20)
+            if (this.episodeEnabled)
             {
-                this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Fin de l'épisode " + this.episode, true);
-                this.episode++;
+                if (this.minutes >= 20)
+                {
+                    this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Fin de l'épisode " + this.episode, true);
+                    this.episode++;
 
-                this.minutes = 0;
+                    this.minutes = 0;
+                }
             }
         }
 

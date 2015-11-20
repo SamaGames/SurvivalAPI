@@ -22,8 +22,8 @@ import java.util.*;
 public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends SurvivalGame
 {
     private final int personsPerTeam;
-    private SurvivalTeamList teams;
     private SurvivalTeamSelector teamSelector;
+    protected SurvivalTeamList teams;
 
     public SurvivalTeamGame(JavaPlugin plugin, String gameCodeName, String gameName, String gameDescription, String magicSymbol, Class<? extends SURVIVALLOOP> survivalGameLoopClass, int personsPerTeam)
     {

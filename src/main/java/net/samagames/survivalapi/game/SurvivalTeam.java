@@ -8,6 +8,8 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +22,7 @@ public class SurvivalTeam
     private final HashMap<UUID, Boolean> players;
     private final ItemStack icon;
     private final ChatColor chatColor;
+    private final Team team;
 
     private String teamName;
     private int maxSize;
@@ -35,6 +38,14 @@ public class SurvivalTeam
 
         this.invited = new ArrayList<>();
         this.players = new HashMap<>();
+
+        Scoreboard board = game.getScoreboard();
+
+        this.team = board.registerNewTeam((name.contains("\u00a7") ? ChatColor.stripColor(name) : name));
+        this.team.setDisplayName(name);
+        this.team.setCanSeeFriendlyInvisibles(true);
+        this.team.setPrefix(chatColor + "");
+        this.team.setSuffix(ChatColor.RESET + "");
     }
 
     public void join(UUID player)
@@ -53,6 +64,7 @@ public class SurvivalTeam
         }
 
         ((SurvivalPlayer) this.game.getPlayer(player)).setTeam(this);
+        this.team.addPlayer(newJoiner);
 
         this.players.put(player, false);
     }
@@ -74,9 +86,14 @@ public class SurvivalTeam
     public void remove(UUID player, boolean death)
     {
         if (death)
+        {
             this.players.put(player, true);
+        }
         else
+        {
             this.players.remove(player);
+            this.team.removePlayer(Bukkit.getOfflinePlayer(player));
+        }
 
         this.lockCheck();
     }
@@ -84,9 +101,14 @@ public class SurvivalTeam
     public int removePlayer(UUID player, boolean death)
     {
         if (death)
+        {
             this.players.put(player, true);
+        }
         else
+        {
             this.players.remove(player);
+            this.team.removePlayer(Bukkit.getOfflinePlayer(player));
+        }
 
         this.lockCheck();
 

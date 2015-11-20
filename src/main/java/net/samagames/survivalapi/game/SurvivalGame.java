@@ -201,7 +201,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             displayNameLife.getScore(player.getName()).setScore((int) player.getHealth());
             playerListLife.getScore(player.getName()).setScore((int) player.getHealth());
 
-            ObjectiveSign sign = new ObjectiveSign("sggameloop", ChatColor.GOLD + "" + ChatColor.BOLD + (this.magicSymbol != null ? this.magicSymbol + " " : "") + this.getGameName() + " " + (this.magicSymbol != null ? this.magicSymbol + " " : ""));
+            ObjectiveSign sign = new ObjectiveSign("sggameloop", ChatColor.DARK_AQUA + "" + ChatColor.BOLD + (this.magicSymbol != null ? this.magicSymbol + " " : "") + this.getGameName() + (this.magicSymbol != null ? " " + this.magicSymbol : ""));
             sign.addReceiver(player);
 
             this.gameLoop.addPlayer(player.getUniqueId(), sign);
@@ -223,6 +223,16 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.pvpActivated = true;
     }
 
+    public void disableDamages()
+    {
+        this.damagesActivated = false;
+    }
+
+    public void disablePVP()
+    {
+        this.pvpActivated = false;
+    }
+
     public void rejoinPlayer(Player player)
     {
         if (player != null)
@@ -231,7 +241,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             {
                 player.setScoreboard(this.scoreboard);
 
-                ObjectiveSign sign = new ObjectiveSign("sggameloop", ChatColor.GOLD + "" + ChatColor.BOLD + (this.magicSymbol != null ? this.magicSymbol + " " : "") + this.getGameName() + " " + (this.magicSymbol != null ? this.magicSymbol + " " : ""));
+                ObjectiveSign sign = new ObjectiveSign("sggameloop", ChatColor.DARK_AQUA + "" + ChatColor.BOLD + (this.magicSymbol != null ? this.magicSymbol + " " : "") + this.getGameName() + (this.magicSymbol != null ? " " + this.magicSymbol : ""));
                 sign.addReceiver(player);
 
                 this.gameLoop.addPlayer(player.getUniqueId(), sign);
