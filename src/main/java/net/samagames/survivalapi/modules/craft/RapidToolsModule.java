@@ -4,6 +4,7 @@ import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
@@ -21,7 +22,7 @@ public class RapidToolsModule extends AbstractSurvivalModule
     }
 
     /**
-     * Craft stone tools than wood
+     * Craft stone tools than wood and add durability enchantment
      *
      * @param event Event
      */
@@ -32,7 +33,7 @@ public class RapidToolsModule extends AbstractSurvivalModule
     }
 
     /**
-     * Craft stone tools than wood
+     * Craft stone tools than wood add durability enchantment
      *
      * @param event Event
      */
@@ -52,5 +53,31 @@ public class RapidToolsModule extends AbstractSurvivalModule
             inventory.setResult(new ItemStack(Material.STONE_AXE));
         else if (recipe.getResult().getType() == Material.WOOD_SPADE)
             inventory.setResult(new ItemStack(Material.STONE_SPADE));
+
+        if (this.isPickaxe(inventory.getResult()))
+        {
+            ItemStack newStack = inventory.getResult();
+            newStack.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
+
+            inventory.setResult(newStack);
+        }
+    }
+
+    private boolean isPickaxe(ItemStack stack)
+    {
+        boolean flag = false;
+
+        if (stack.getType() == Material.WOOD_PICKAXE)
+            flag = true;
+        else if (stack.getType() == Material.STONE_PICKAXE)
+            flag = true;
+        else if (stack.getType() == Material.IRON_PICKAXE)
+            flag = true;
+        else if (stack.getType() == Material.GOLD_PICKAXE)
+            flag = true;
+        else if (stack.getType() == Material.DIAMOND_PICKAXE)
+            flag = true;
+
+        return flag;
     }
 }

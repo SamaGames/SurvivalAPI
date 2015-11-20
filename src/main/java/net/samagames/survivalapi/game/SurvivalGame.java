@@ -211,6 +211,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
         for (int i = 0; i < 3; i++)
             spawner.a(MinecraftServer.getServer().getWorldServer(0), false, true, true);
+
+        SurvivalAPI.get().fireGameStart(this);
     }
 
     public void enableDamages()

@@ -27,19 +27,12 @@ public class SurvivalAPI
         this.plugin = plugin;
         this.modulesLoaded = new HashMap<>();
         this.events = new HashMap<>();
+    }
 
-        SamaGamesAPI.get().getGameManager().registerGameHook(new GameHook(GameHook.Type.START)
-        {
-            @Override
-            public void run(Game game, Object... objects)
-            {
-                if (!(game instanceof SurvivalGame))
-                    return;
-
-                for (AbstractSurvivalModule module : modulesLoaded.values())
-                    module.onGameStart((SurvivalGame) game);
-            }
-        });
+    public void fireGameStart(SurvivalGame game)
+    {
+        for (AbstractSurvivalModule module : modulesLoaded.values())
+            module.onGameStart(game);
     }
 
     public void registerEvent(EventType eventType, Runnable callback)
