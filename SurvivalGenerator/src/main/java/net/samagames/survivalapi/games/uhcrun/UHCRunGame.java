@@ -15,7 +15,11 @@ public class UHCRunGame extends AbstractGame
     }
 
     @Override
-    public void preInit() {}
+    public void preInit()
+    {
+        this.plugin.saveResource("uhcrun_nether_1.schematic", true);
+        this.plugin.saveResource("uhcrun_nether_2.schematic", true);
+    }
 
     @Override
     public void init(WorldInitEvent event)
