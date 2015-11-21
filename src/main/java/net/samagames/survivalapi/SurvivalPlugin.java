@@ -67,6 +67,8 @@ public class SurvivalPlugin extends JavaPlugin
         this.getLogger().info("Compute done in " + (System.currentTimeMillis() - lastTime) + " ms");
         this.getLogger().info("Done!");
 
+        this.getServer().setSpawnRadius(0);
+
         this.api.fireEvents(SurvivalAPI.EventType.AFTERGENERATION);
     }
 

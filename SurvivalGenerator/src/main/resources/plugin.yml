@@ -1,0 +1,10 @@
+name: SurvivalGenerator
+main: net.samagames.survivalapi.SurvivalGenerator
+version: 1.0
+
+depend: [WorldEdit]
+
+load: STARTUP
+
+author: BlueSlime
+website: http://blueslime.fr
