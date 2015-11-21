@@ -1,0 +1,39 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+
+group 'net.samagames'
+version '1.0.0-SNAPSHOT'
+archivesBaseName = 'SurvivalGenerator'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+
+    maven { url "http://maven.samagames.net/public/" }
+    maven { url "http://maven.sk89q.com/repo/" }
+
+    maven {
+        url "http://maven.samagames.net/developpers/"
+        credentials {
+            username sguser
+            password sgpass
+        }
+    }
+}
+
+dependencies {
+    compile group: 'net.samagames', name: 'SamaGamesAPI', version: '1.0.0-SNAPSHOT', changing: true
+
+    compile(group: 'org.spigotmc', name: 'spigot', version: '1.8.8-R0.1-SNAPSHOT', changing: true) {
+        transitive = false
+    }
+
+    compile (group: 'com.sk89q.worldedit', name: 'worldedit-bukkit', version: '6.1.1-SNAPSHOT', changing: true) {
+        exclude module: 'bukkit'
+        exclude module: 'bukkit-classloader-check'
+    }
+}
