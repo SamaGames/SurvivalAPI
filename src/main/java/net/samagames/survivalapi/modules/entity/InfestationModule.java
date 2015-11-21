@@ -26,7 +26,7 @@ public class InfestationModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event)
     {
         if (event.getEntity().getType() == EntityType.PLAYER)

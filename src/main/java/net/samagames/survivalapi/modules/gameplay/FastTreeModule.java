@@ -39,7 +39,7 @@ public class FastTreeModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event)
     {
         Block block = event.getBlock();
@@ -53,7 +53,7 @@ public class FastTreeModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event)
     {
         Material material = event.getBlock().getType();

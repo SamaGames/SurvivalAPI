@@ -26,7 +26,7 @@ public class DisableSpeckedMelonModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onCraftItem(CraftItemEvent event)
     {
         this.onCraftItem(event.getRecipe(), event.getInventory(), event.getWhoClicked());
@@ -37,7 +37,7 @@ public class DisableSpeckedMelonModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPrepareItemCraft(PrepareItemCraftEvent event)
     {
         this.onCraftItem(event.getRecipe(), event.getInventory(), event.getView().getPlayer());

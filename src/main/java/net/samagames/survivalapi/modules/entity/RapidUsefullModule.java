@@ -26,7 +26,7 @@ public class RapidUsefullModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event)
     {
         LivingEntity entity = event.getEntity();

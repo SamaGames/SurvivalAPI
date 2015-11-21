@@ -33,7 +33,7 @@ public class RapidFoodModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event)
     {
         Material material = event.getBlock().getType();
@@ -47,7 +47,7 @@ public class RapidFoodModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onItemSpawn(ItemSpawnEvent event)
     {
         if (event.getEntityType() != EntityType.DROPPED_ITEM)
@@ -67,7 +67,7 @@ public class RapidFoodModule extends AbstractSurvivalModule
      * 
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event)
     {
         LivingEntity entity = event.getEntity();

@@ -21,7 +21,7 @@ public class DropTaggingModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerItemDrop(PlayerDropItemEvent event)
     {
         if (!event.getItemDrop().hasMetadata("playerDrop"))

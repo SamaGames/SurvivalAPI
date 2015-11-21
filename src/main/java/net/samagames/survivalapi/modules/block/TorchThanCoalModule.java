@@ -28,7 +28,7 @@ public class TorchThanCoalModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onItemSpawn(ItemSpawnEvent event)
     {
         if (event.getEntityType() != EntityType.DROPPED_ITEM)

@@ -37,6 +37,7 @@ public class PersonalBlocksModule extends AbstractSurvivalModule
         this.privateBlocks.add(Material.TRAPPED_CHEST);
         this.privateBlocks.add(Material.ENCHANTMENT_TABLE);
         this.privateBlocks.add(Material.ANVIL);
+        this.privateBlocks.add(Material.BREWING_STAND);
     }
 
     @Override
@@ -50,7 +51,7 @@ public class PersonalBlocksModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event)
     {
         if (this.privateBlocks.contains(event.getBlockPlaced().getType()))
@@ -62,7 +63,7 @@ public class PersonalBlocksModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event)
     {
         if (this.blocksOwner.containsKey(event.getBlock().getLocation()) && this.blocksOwner.get(event.getBlock().getLocation()) != event.getPlayer().getUniqueId())

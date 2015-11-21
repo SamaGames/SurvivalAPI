@@ -24,7 +24,7 @@ public class ThreeArrowModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onProjectileLaunch(ProjectileLaunchEvent event)
     {
         if (event.getEntity().getType() != EntityType.ARROW || !(event.getEntity().getShooter() instanceof Player))

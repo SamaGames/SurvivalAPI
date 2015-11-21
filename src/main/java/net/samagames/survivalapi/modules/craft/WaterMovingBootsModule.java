@@ -22,7 +22,7 @@ public class WaterMovingBootsModule extends AbstractSurvivalModule
      * Added automatically Depth Strider
      * @param event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onCraftItem(CraftItemEvent event)
     {
         if (
