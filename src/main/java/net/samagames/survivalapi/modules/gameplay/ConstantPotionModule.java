@@ -9,8 +9,8 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Set;
 
 public class ConstantPotionModule extends AbstractSurvivalModule
 {
@@ -30,7 +30,7 @@ public class ConstantPotionModule extends AbstractSurvivalModule
     {
         ArrayList<PotionEffect> potionEffects = (ArrayList<PotionEffect>) this.moduleConfiguration.get("potion-effects");
 
-        for (SurvivalPlayer player : (Set<SurvivalPlayer>) game.getInGamePlayers().values())
+        for (SurvivalPlayer player : (Collection<SurvivalPlayer>) game.getInGamePlayers().values())
             player.getPlayerIfOnline().addPotionEffects(potionEffects);
     }
 
