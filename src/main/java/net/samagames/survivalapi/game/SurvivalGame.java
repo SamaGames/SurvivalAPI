@@ -210,7 +210,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
         SpawnerCreature spawner = new SpawnerCreature();
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 2; i++)
             spawner.a(MinecraftServer.getServer().getWorldServer(0), false, true, true);
 
         SurvivalAPI.get().fireGameStart(this);

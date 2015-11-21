@@ -43,7 +43,7 @@ public class LobbyPopulator
                 BukkitWorld bwf = new BukkitWorld(world);
 
                 this.editSession = new EditSession(bwf, -1);
-                this.editSession.setFastMode(false);
+                this.editSession.setFastMode(true);
 
                 CuboidClipboard c1 = SchematicFormat.MCEDIT.load(this.file);
                 c1.paste(this.editSession, vector, true);

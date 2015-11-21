@@ -1,8 +1,5 @@
 package net.samagames.survivalapi;
 
-import net.samagames.api.SamaGamesAPI;
-import net.samagames.api.games.Game;
-import net.samagames.api.games.GameHook;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 
@@ -31,8 +28,7 @@ public class SurvivalAPI
 
     public void fireGameStart(SurvivalGame game)
     {
-        for (AbstractSurvivalModule module : modulesLoaded.values())
-            module.onGameStart(game);
+        this.modulesLoaded.values().stream().forEach(module -> module.onGameStart(game));
     }
 
     public void registerEvent(EventType eventType, Runnable callback)
