@@ -169,6 +169,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     {
         super.startGame();
 
+        SurvivalAPI.get().fireGameStart(this);
+
         this.lobbyPopulator.remove();
 
         Objective displayNameLife = this.scoreboard.registerNewObjective("vie", "health");
@@ -212,8 +214,6 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
         for (int i = 0; i < 2; i++)
             spawner.a(MinecraftServer.getServer().getWorldServer(0), false, true, true);
-
-        SurvivalAPI.get().fireGameStart(this);
     }
 
     public void enableDamages()

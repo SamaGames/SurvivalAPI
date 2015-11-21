@@ -61,7 +61,7 @@ public class SurvivalAPI
                 this.plugin.getServer().getPluginManager().registerEvents(module, this.plugin);
 
                 this.modulesLoaded.put(moduleClass.getSimpleName(), module);
-                this.plugin.getLogger().info("Module loaded: " + moduleClass.getSimpleName());
+                this.plugin.getLogger().info("Module loaded: " + moduleClass.getSimpleName() + " (" + this.modulesLoaded.size() + " modules loaded)");
             }
             catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e)
             {
