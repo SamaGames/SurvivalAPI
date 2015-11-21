@@ -2,7 +2,7 @@ package net.samagames.survivalapi.games.uhc;
 
 import net.samagames.survivalapi.SurvivalGenerator;
 import net.samagames.survivalapi.games.AbstractGame;
-import org.bukkit.event.world.WorldInitEvent;
+import org.bukkit.World;
 
 public class UHCGame extends AbstractGame
 {
@@ -15,5 +15,5 @@ public class UHCGame extends AbstractGame
     public void preInit() {}
 
     @Override
-    public void init(WorldInitEvent event) {}
+    public void init(World world) {}
 }

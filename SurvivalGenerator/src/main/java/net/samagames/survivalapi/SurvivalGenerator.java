@@ -17,6 +17,7 @@ public class SurvivalGenerator extends JavaPlugin
 {
     private AbstractGame game;
     private BukkitTask startTimer;
+    private boolean worldLoaded;
 
     @Override
     public void onEnable()
@@ -44,17 +45,22 @@ public class SurvivalGenerator extends JavaPlugin
 
     public void postInit()
     {
-        World world = getServer().getWorld("world");
         this.startTimer.cancel();
+        this.worldLoaded = true;
 
         WorldLoader worldLoader = new WorldLoader(this, this.getConfig().getInt("size", 1000));
-        worldLoader.begin(world);
+        worldLoader.begin(this.getServer().getWorld("world"));
     }
 
     public void finishGeneration(World world, long time)
     {
         this.getLogger().info("Ready in " + time + "ms");
         Bukkit.shutdown();
+    }
+
+    public boolean isWorldLoaded()
+    {
+        return this.worldLoaded;
     }
 
     private void patchBiomes() throws ReflectiveOperationException

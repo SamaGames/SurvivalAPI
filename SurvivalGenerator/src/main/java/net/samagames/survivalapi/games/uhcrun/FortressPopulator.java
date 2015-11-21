@@ -80,6 +80,9 @@ public class FortressPopulator extends BlockPopulator
 
     private void generateBlazeFortress(World world, int x, int z)
     {
+        if (!this.plugin.isWorldLoaded())
+            return;
+
         this.isFortess = !this.isFortess;
         this.generateCuboid(this.isFortess ? this.netherFortress : this.netherHouse, world, x, z);
     }

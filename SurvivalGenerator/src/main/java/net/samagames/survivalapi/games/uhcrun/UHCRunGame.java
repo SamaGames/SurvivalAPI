@@ -5,7 +5,6 @@ import net.samagames.survivalapi.games.AbstractGame;
 import net.samagames.survivalapi.gen.OrePopulator;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.event.world.WorldInitEvent;
 
 public class UHCRunGame extends AbstractGame
 {
@@ -22,29 +21,24 @@ public class UHCRunGame extends AbstractGame
     }
 
     @Override
-    public void init(WorldInitEvent event)
+    public void init(World world)
     {
-        World world = event.getWorld();
+        OrePopulator orePopulator = new OrePopulator();
 
-        if (world.getEnvironment() == World.Environment.NORMAL)
-        {
-            OrePopulator orePopulator = new OrePopulator();
+        orePopulator.addRule(new OrePopulator.Rule(Material.DIAMOND_ORE, 4, 0, 64, 5));
+        orePopulator.addRule(new OrePopulator.Rule(Material.IRON_ORE, 2, 0, 64, 15));
+        orePopulator.addRule(new OrePopulator.Rule(Material.GOLD_ORE, 2, 0, 64, 8));
+        orePopulator.addRule(new OrePopulator.Rule(Material.LAPIS_ORE, 3, 0, 64, 4));
+        orePopulator.addRule(new OrePopulator.Rule(Material.OBSIDIAN, 4, 0, 32, 6));
 
-            orePopulator.addRule(new OrePopulator.Rule(Material.DIAMOND_ORE, 4, 0, 64, 5));
-            orePopulator.addRule(new OrePopulator.Rule(Material.IRON_ORE, 2, 0, 64, 15));
-            orePopulator.addRule(new OrePopulator.Rule(Material.GOLD_ORE, 2, 0, 64, 8));
-            orePopulator.addRule(new OrePopulator.Rule(Material.LAPIS_ORE, 3, 0, 64, 4));
-            orePopulator.addRule(new OrePopulator.Rule(Material.OBSIDIAN, 4, 0, 32, 6));
+        FortressPopulator fortressPopulator = new FortressPopulator(this.plugin);
 
-            FortressPopulator fortressPopulator = new FortressPopulator(this.plugin);
+        fortressPopulator.addRule(new FortressPopulator.Rule(Material.GOLD_INGOT, 2, 1, 12, 30));
+        fortressPopulator.addRule(new FortressPopulator.Rule(Material.NETHER_STALK, 4, 1, 10, 30));
+        fortressPopulator.addRule(new FortressPopulator.Rule(Material.GLOWSTONE_DUST, 1, 1, 4, 30));
+        fortressPopulator.addRule(new FortressPopulator.Rule(Material.DIAMOND, 1, 1, 9, 30));
 
-            fortressPopulator.addRule(new FortressPopulator.Rule(Material.GOLD_INGOT, 2, 1, 12, 30));
-            fortressPopulator.addRule(new FortressPopulator.Rule(Material.NETHER_STALK, 4, 1, 10, 30));
-            fortressPopulator.addRule(new FortressPopulator.Rule(Material.GLOWSTONE_DUST, 1, 1, 4, 30));
-            fortressPopulator.addRule(new FortressPopulator.Rule(Material.DIAMOND, 1, 1, 9, 30));
-
-            world.getPopulators().add(orePopulator);
-            world.getPopulators().add(fortressPopulator);
-        }
+        world.getPopulators().add(orePopulator);
+        world.getPopulators().add(fortressPopulator);
     }
 }
