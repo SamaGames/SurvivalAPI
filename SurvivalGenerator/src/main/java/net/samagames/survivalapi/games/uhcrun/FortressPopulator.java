@@ -7,7 +7,6 @@ import com.sk89q.worldedit.world.DataException;
 import net.minecraft.server.v1_8_R3.MathHelper;
 import net.minecraft.server.v1_8_R3.StructurePieceTreasure;
 import net.samagames.survivalapi.SurvivalGenerator;
-import net.samagames.survivalapi.generation.OrePopulator;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -22,10 +21,8 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class FortressPopulator extends BlockPopulator
 {

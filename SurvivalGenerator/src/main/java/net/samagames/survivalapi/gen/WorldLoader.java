@@ -1,5 +1,6 @@
-package net.samagames.survivalapi;
+package net.samagames.survivalapi.gen;
 
+import net.samagames.survivalapi.SurvivalGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitTask;

@@ -2,7 +2,7 @@ package net.samagames.survivalapi.games.uhcrun;
 
 import net.samagames.survivalapi.SurvivalGenerator;
 import net.samagames.survivalapi.games.AbstractGame;
-import net.samagames.survivalapi.generation.OrePopulator;
+import net.samagames.survivalapi.gen.OrePopulator;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.event.world.WorldInitEvent;

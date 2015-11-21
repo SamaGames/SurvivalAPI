@@ -1,4 +1,4 @@
-package net.samagames.survivalapi.generation;
+package net.samagames.survivalapi.gen;
 
 import net.minecraft.server.v1_8_R3.ChunkSnapshot;
 import net.minecraft.server.v1_8_R3.WorldGenCanyon;
