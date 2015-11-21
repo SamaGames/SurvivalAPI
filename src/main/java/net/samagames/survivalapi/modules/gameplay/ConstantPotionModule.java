@@ -32,7 +32,7 @@ public class ConstantPotionModule extends AbstractSurvivalModule
 
         for (SurvivalPlayer player : (Collection<SurvivalPlayer>) game.getInGamePlayers().values())
             for (PotionEffect effect : potionEffects)
-                player.getPlayerIfOnline().addPotionEffect(effect, true);
+                this.plugin.getServer().getScheduler().runTask(this.plugin, () -> player.getPlayerIfOnline().addPotionEffect(effect, true));
     }
 
     public static class ConfigurationBuilder

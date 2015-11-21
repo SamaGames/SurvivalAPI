@@ -43,6 +43,10 @@ public class RapidUsefullModule extends AbstractSurvivalModule
 
         if (material == Material.CACTUS)
             event.getEntity().setItemStack(new ItemStack(Material.LOG, 2));
+        else if (material == Material.SAND)
+            event.getEntity().setItemStack(new ItemStack(Material.GLASS, 1));
+        else if (material == Material.GRAVEL)
+            event.getEntity().setItemStack(new ItemStack(Material.FLINT, 1));
     }
 
     /**
