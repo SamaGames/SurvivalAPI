@@ -34,7 +34,7 @@ public class KillToToggleTimeModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event)
     {
         for (World world : this.plugin.getServer().getWorlds())

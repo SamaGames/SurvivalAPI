@@ -41,7 +41,7 @@ public class BombersModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onEntityDeath(EntityDeathEvent event)
     {
         event.getDrops().add(new ItemStack(Material.TNT, 1));

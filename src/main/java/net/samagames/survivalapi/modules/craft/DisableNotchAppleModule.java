@@ -26,7 +26,7 @@ public class DisableNotchAppleModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onCraftItem(CraftItemEvent event)
     {
         this.onCraftItem(event.getRecipe(), event.getInventory(), event.getWhoClicked());
@@ -37,7 +37,7 @@ public class DisableNotchAppleModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onPrepareItemCraft(PrepareItemCraftEvent event)
     {
         this.onCraftItem(event.getRecipe(), event.getInventory(), event.getView().getPlayer());

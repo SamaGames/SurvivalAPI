@@ -23,7 +23,7 @@ public class BloodDiamondModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onBlockBreak(BlockBreakEvent event)
     {
         if (event.getBlock().getType() == Material.DIAMOND_ORE)

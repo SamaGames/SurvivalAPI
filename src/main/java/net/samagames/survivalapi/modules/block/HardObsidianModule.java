@@ -22,7 +22,7 @@ public class HardObsidianModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onBlockDamage(BlockDamageEvent event)
     {
         if (event.getBlock().getType() == Material.OBSIDIAN)
@@ -35,7 +35,7 @@ public class HardObsidianModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onBlockBreak(BlockBreakEvent event)
     {
         if (event.getBlock().getType() == Material.OBSIDIAN)

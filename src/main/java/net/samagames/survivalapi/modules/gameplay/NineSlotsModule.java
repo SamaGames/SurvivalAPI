@@ -39,7 +39,7 @@ public class NineSlotsModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onInventoryClick(InventoryClickEvent event)
     {
         if (event.getClickedInventory().getType() == InventoryType.PLAYER)

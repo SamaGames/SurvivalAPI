@@ -38,7 +38,7 @@ public class CatsEyesModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onPlayerItemConsume(PlayerItemConsumeEvent event)
     {
         if (event.getItem().getType() == Material.MILK_BUCKET)

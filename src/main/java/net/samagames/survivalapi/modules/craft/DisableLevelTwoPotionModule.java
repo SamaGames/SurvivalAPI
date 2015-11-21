@@ -21,7 +21,7 @@ public class DisableLevelTwoPotionModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onBrew(BrewEvent event)
     {
         if(event.getContents().getIngredient().getType() == Material.GLOWSTONE_DUST)

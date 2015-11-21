@@ -23,7 +23,7 @@ public class EntityDropModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onEntityDeath(EntityDeathEvent event)
     {
         HashMap<EntityType, ItemStack[]> drops = (HashMap<EntityType, ItemStack[]>) this.moduleConfiguration.get("drops");

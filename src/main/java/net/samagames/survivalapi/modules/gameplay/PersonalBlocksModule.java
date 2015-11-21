@@ -51,7 +51,7 @@ public class PersonalBlocksModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onBlockPlace(BlockPlaceEvent event)
     {
         if (this.privateBlocks.contains(event.getBlockPlaced().getType()))
@@ -63,7 +63,7 @@ public class PersonalBlocksModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onBlockBreak(BlockBreakEvent event)
     {
         if (this.blocksOwner.containsKey(event.getBlock().getLocation()) && this.blocksOwner.get(event.getBlock().getLocation()) != event.getPlayer().getUniqueId())

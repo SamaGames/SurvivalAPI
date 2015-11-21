@@ -1,13 +1,17 @@
-package net.samagames.survivalapi.modules.entity;
+package net.samagames.survivalapi.modules.gameplay;
 
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.survivalapi.modules.block.TorchThanCoalModule;
+import net.samagames.survivalapi.modules.utility.DropTaggingModule;
 import org.bukkit.Material;
 import org.bukkit.entity.Chicken;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -26,7 +30,27 @@ public class RapidUsefullModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
+    public void onItemSpawn(ItemSpawnEvent event)
+    {
+        if (event.getEntityType() != EntityType.DROPPED_ITEM)
+            return;
+
+        if (event.getEntity().hasMetadata("playerDrop"))
+            return;
+
+        Material material = event.getEntity().getItemStack().getType();
+
+        if (material == Material.CACTUS)
+            event.getEntity().setItemStack(new ItemStack(Material.LOG, 2));
+    }
+
+    /**
+     * Drop some utilities
+     *
+     * @param event Event
+     */
+    @EventHandler
     public void onEntityDeath(EntityDeathEvent event)
     {
         LivingEntity entity = event.getEntity();
@@ -48,5 +72,15 @@ public class RapidUsefullModule extends AbstractSurvivalModule
         }
 
         event.setDroppedExp(event.getDroppedExp() * 2);
+    }
+
+    @Override
+    public ArrayList<Class<? extends AbstractSurvivalModule>> getRequiredModules()
+    {
+        ArrayList<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
+
+        requiredModules.add(DropTaggingModule.class);
+
+        return requiredModules;
     }
 }

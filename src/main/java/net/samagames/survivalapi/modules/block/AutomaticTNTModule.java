@@ -22,7 +22,7 @@ public class AutomaticTNTModule extends AbstractSurvivalModule
      *
      * @param event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onBlockPlace(BlockPlaceEvent event)
     {
         if (event.getBlock().getType() == Material.TNT)

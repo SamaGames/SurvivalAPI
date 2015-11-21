@@ -1,6 +1,5 @@
 package net.samagames.survivalapi.game.events;
 
-import net.samagames.api.games.Status;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.game.SurvivalGameLoop;
 import net.samagames.survivalapi.game.WorldLoader;
@@ -171,17 +170,6 @@ public class GameListener implements Listener
             if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)
                 event.getEntity().setMetadata("lastDamager", new FixedMetadataValue(this.game.getPlugin(), event.getEntity()));
         }
-    }
-
-    /**
-     * Keep the player's food level if the game isn't started
-     *
-     * @param event Event
-     */
-    @EventHandler
-    public void onLoseFood(FoodLevelChangeEvent event)
-    {
-        event.setCancelled(this.game.getStatus() != Status.IN_GAME || (this.game.hasPlayer((Player) event.getEntity()) && !this.game.isSpectator((Player) event.getEntity())));
     }
 
     /**

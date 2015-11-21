@@ -23,7 +23,7 @@ public class DropMyEffectsModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event)
     {
         for (PotionEffect potionEffect : event.getEntity().getActivePotionEffects())
