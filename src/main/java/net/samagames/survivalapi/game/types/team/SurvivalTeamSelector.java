@@ -28,9 +28,7 @@ public class SurvivalTeamSelector implements Listener
     public SurvivalTeamSelector(SurvivalTeamGame game) throws IllegalAccessException
     {
         if (instance != null)
-        {
             throw new IllegalAccessException("Instance already defined!");
-        }
 
         instance = this;
 
@@ -44,7 +42,7 @@ public class SurvivalTeamSelector implements Listener
     }
 
     @EventHandler
-    public void playerInteractEvent(PlayerInteractEvent event)
+    public void onPlayerInteract(PlayerInteractEvent event)
     {
         if (this.game.getStatus().equals(Status.IN_GAME))
             event.getHandlers().unregister(this);
@@ -54,7 +52,7 @@ public class SurvivalTeamSelector implements Listener
 
 
     @EventHandler
-    public void clickEvent(InventoryClickEvent event)
+    public void onInventoryClick(InventoryClickEvent event)
     {
         if (this.game.getStatus().equals(Status.IN_GAME))
         {
