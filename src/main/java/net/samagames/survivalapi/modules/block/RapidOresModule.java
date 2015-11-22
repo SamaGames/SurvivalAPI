@@ -1,13 +1,19 @@
 package net.samagames.survivalapi.modules.block;
 
+import net.minecraft.server.v1_8_R3.EntityExperienceOrb;
+import net.minecraft.server.v1_8_R3.MathHelper;
+import net.minecraft.server.v1_8_R3.World;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import net.samagames.survivalapi.modules.utility.DropTaggingModule;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -48,6 +54,34 @@ public class RapidOresModule extends AbstractSurvivalModule
             event.getEntity().setItemStack(new ItemStack(Material.DIAMOND, (int) this.moduleConfiguration.get("diamond")));
         else if (material == Material.EMERALD)
             event.getEntity().setItemStack(new ItemStack(Material.DIAMOND, (int) this.moduleConfiguration.get("emerald")));
+
+        this.spawnXPFromItemStack(event.getEntity(), event.getEntity().getItemStack().getType());
+    }
+
+    /**
+     * Cancel ore break event
+     *
+     * @return event Event
+     */
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event)
+    {
+        switch (event.getBlock().getType())
+        {
+            case DIAMOND_ORE:
+            case LAPIS_ORE:
+            case GOLD_ORE:
+            case OBSIDIAN:
+            case IRON_ORE:
+            case REDSTONE_ORE:
+            case QUARTZ_ORE:
+                event.setExpToDrop(0);
+                event.getBlock().breakNaturally(new ItemStack(Material.DIAMOND_PICKAXE));
+                event.setCancelled(true);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -58,6 +92,45 @@ public class RapidOresModule extends AbstractSurvivalModule
         requiredModules.add(DropTaggingModule.class);
 
         return requiredModules;
+    }
+
+    private void spawnXPFromItemStack(Entity entity, Material ore)
+    {
+        World world = ((CraftEntity) entity).getHandle().getWorld();
+
+        int i = 0;
+
+        switch (ore)
+        {
+            case QUARTZ:
+            case INK_SACK:
+                i = MathHelper.nextInt(world.random, 2, 5);
+                break;
+            case EMERALD:
+            case DIAMOND:
+                i = MathHelper.nextInt(world.random, 3, 7);
+                break;
+            case COAL:
+            case GOLD_INGOT:
+            case IRON_INGOT:
+                i = MathHelper.nextInt(world.random, 0, 2);
+                break;
+            default:
+                break;
+
+        }
+
+        if (i == 0)
+            return;
+
+        int orbSize;
+
+        while (i > 0)
+        {
+            orbSize = EntityExperienceOrb.getOrbValue(i);
+            i -= orbSize;
+            world.addEntity(new EntityExperienceOrb(world, entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), orbSize));
+        }
     }
 
     public static class ConfigurationBuilder
