@@ -16,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,17 +44,41 @@ public class RapidOresModule extends AbstractSurvivalModule
             return;
 
         Material material = event.getEntity().getItemStack().getType();
+        boolean flag = false;
 
-        if (material == Material.COAL && !this.api.isModuleEnabled(TorchThanCoalModule.class))
-            event.getEntity().setItemStack(new ItemStack(Material.COAL, (int) this.moduleConfiguration.get("coal")));
-        else if (material == Material.IRON_ORE)
-            event.getEntity().setItemStack(new ItemStack(Material.IRON_INGOT, (int) this.moduleConfiguration.get("iron")));
-        else if (material == Material.GOLD_ORE)
-            event.getEntity().setItemStack(new ItemStack(Material.GOLD_INGOT, (int) this.moduleConfiguration.get("gold")));
-        else if (material == Material.DIAMOND)
-            event.getEntity().setItemStack(new ItemStack(Material.DIAMOND, (int) this.moduleConfiguration.get("diamond")));
-        else if (material == Material.EMERALD)
-            event.getEntity().setItemStack(new ItemStack(Material.DIAMOND, (int) this.moduleConfiguration.get("emerald")));
+        switch(material)
+        {
+            case COAL:
+                if (!this.api.isModuleEnabled(TorchThanCoalModule.class))
+                {
+                    event.getEntity().setItemStack(new ItemStack(Material.COAL, (int) this.moduleConfiguration.get("coal")));
+                    flag = true;
+                }
+                break;
+
+            case IRON_ORE:
+                event.getEntity().setItemStack(new ItemStack(Material.IRON_INGOT, (int) this.moduleConfiguration.get("iron")));
+                flag = true;
+                break;
+
+            case GOLD_ORE:
+                event.getEntity().setItemStack(new ItemStack(Material.GOLD_INGOT, (int) this.moduleConfiguration.get("gold")));
+                flag = true;
+                break;
+
+            case DIAMOND:
+                event.getEntity().setItemStack(new ItemStack(Material.DIAMOND, (int) this.moduleConfiguration.get("diamond")));
+                flag = true;
+                break;
+
+            case EMERALD:
+                event.getEntity().setItemStack(new ItemStack(Material.EMERALD, (int) this.moduleConfiguration.get("emerald")));
+                flag = true;
+                break;
+        }
+
+        if (flag)
+            event.getEntity().setMetadata("playerDrop", new FixedMetadataValue(this.plugin, true));
 
         this.spawnXPFromItemStack(event.getEntity(), event.getEntity().getItemStack().getType());
     }
@@ -79,6 +104,7 @@ public class RapidOresModule extends AbstractSurvivalModule
                 event.getBlock().breakNaturally(new ItemStack(Material.DIAMOND_PICKAXE));
                 event.setCancelled(true);
                 break;
+
             default:
                 break;
         }
