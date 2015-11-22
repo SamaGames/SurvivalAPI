@@ -47,7 +47,8 @@ public class WorldLoader
                     world.getChunkAt(world.getBlockAt(this.x, 64, this.z)).load(true);
 
                     int percentage = numberChunk * 100 / todo;
-                    if (percentage > lastShow && percentage % 10 == 0)
+
+                    if (percentage > lastShow)
                     {
                         lastShow = percentage;
                         plugin.getLogger().info("Loading chunks (" + percentage + "%)");
