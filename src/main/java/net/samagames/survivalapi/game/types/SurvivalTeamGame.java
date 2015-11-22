@@ -29,8 +29,6 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     {
         super(plugin, gameCodeName, gameName, gameDescription, magicSymbol, survivalGameLoopClass);
 
-        System.out.print("starting constructor");
-
         this.personsPerTeam = personsPerTeam;
         this.teams = new SurvivalTeamList();
 
@@ -45,8 +43,6 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
 
         plugin.getServer().getPluginManager().registerEvents(this.teamSelector, plugin);
 
-        System.out.print("finished team selector");
-
         this.registerTeam("Blanc", ChatColor.WHITE, DyeColor.WHITE);
         this.registerTeam("Orange", ChatColor.GOLD, DyeColor.ORANGE);
         this.registerTeam("Bleu Clair", ChatColor.BLUE, DyeColor.LIGHT_BLUE);
@@ -60,11 +56,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         this.registerTeam("Gris", ChatColor.GRAY, DyeColor.GRAY);
         this.registerTeam("Noir", ChatColor.BLACK, DyeColor.BLACK);
 
-        System.out.print("finished teams");
-
         GuiSelectTeam.setGame(this);
-
-        System.out.print("finished constructor");
     }
 
     @Override
