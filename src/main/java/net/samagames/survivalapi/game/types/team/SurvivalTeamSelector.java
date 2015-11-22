@@ -117,7 +117,7 @@ public class SurvivalTeamSelector implements Listener
         gui.display(player);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event)
     {
         if (!this.game.getStatus().equals(Status.IN_GAME))

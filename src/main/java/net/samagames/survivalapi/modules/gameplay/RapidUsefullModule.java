@@ -5,6 +5,7 @@ import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import net.samagames.survivalapi.modules.utility.DropTaggingModule;
 import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -12,16 +13,21 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Tree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class RapidUsefullModule extends AbstractSurvivalModule
 {
+    private final Random random;
+
     public RapidUsefullModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
+        this.random = new Random();
     }
 
     /**
@@ -40,12 +46,33 @@ public class RapidUsefullModule extends AbstractSurvivalModule
 
         Material material = event.getEntity().getItemStack().getType();
 
-        if (material == Material.CACTUS)
-            event.getEntity().setItemStack(new ItemStack(Material.LOG, 2));
-        else if (material == Material.SAND)
-            event.getEntity().setItemStack(new ItemStack(Material.GLASS_BOTTLE, 1));
-        else if (material == Material.GRAVEL)
-            event.getEntity().setItemStack(new ItemStack(Material.FLINT, 1));
+        switch(material)
+        {
+            case SAND:
+                event.getEntity().setItemStack(new ItemStack(Material.GLASS_BOTTLE, 1));
+                break;
+
+            case SAPLING:
+                double percent = ((Tree) event.getEntity().getItemStack().getData()).getSpecies().equals(TreeSpecies.GENERIC) ? 0.1 : 0.3;
+                if (this.random.nextDouble() <= percent)
+                    event.getEntity().setItemStack(new ItemStack(Material.APPLE));
+                else
+                    event.setCancelled(true);
+                break;
+
+            case GRAVEL:
+            case FLINT:
+                if (this.random.nextDouble() < 0.75)
+                {
+                    ItemStack loot = new ItemStack(Material.ARROW, 3);
+                    event.getEntity().setItemStack(loot);
+                }
+                break;
+
+            case CACTUS:
+                event.getEntity().setItemStack(new ItemStack(Material.LOG, 2));
+                break;
+        }
     }
 
     /**

@@ -146,7 +146,7 @@ public class GameListener implements Listener
     @EventHandler
     public void onEntitySpawn(EntitySpawnEvent event)
     {
-        if (event.getEntityType() == EntityType.GUARDIAN)
+        if (event.getEntityType() == EntityType.GUARDIAN || event.getEntityType() == EntityType.WITCH)
             event.setCancelled(true);
     }
 

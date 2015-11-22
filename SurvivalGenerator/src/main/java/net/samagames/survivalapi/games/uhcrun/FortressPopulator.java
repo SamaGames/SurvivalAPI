@@ -156,6 +156,8 @@ public class FortressPopulator extends BlockPopulator
                                 spawner.update();
 
                                 this.logger.info("Spawner configured at " + bx + " , " + by + " , " + bz);
+
+                                break;
                             }
                             else if (block.getType() == Material.CHEST && !this.chestLoots.isEmpty())
                             {
