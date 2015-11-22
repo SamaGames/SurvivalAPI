@@ -3,10 +3,9 @@ package net.samagames.survivalapi.modules.gameplay;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
-import net.samagames.survivalapi.modules.block.TorchThanCoalModule;
 import net.samagames.survivalapi.modules.utility.DropTaggingModule;
 import org.bukkit.Material;
-import org.bukkit.entity.Chicken;
+import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -44,7 +43,7 @@ public class RapidUsefullModule extends AbstractSurvivalModule
         if (material == Material.CACTUS)
             event.getEntity().setItemStack(new ItemStack(Material.LOG, 2));
         else if (material == Material.SAND)
-            event.getEntity().setItemStack(new ItemStack(Material.GLASS, 1));
+            event.getEntity().setItemStack(new ItemStack(Material.GLASS_BOTTLE, 1));
         else if (material == Material.GRAVEL)
             event.getEntity().setItemStack(new ItemStack(Material.FLINT, 1));
     }
@@ -60,7 +59,7 @@ public class RapidUsefullModule extends AbstractSurvivalModule
         LivingEntity entity = event.getEntity();
         List<ItemStack> newDrops = null;
 
-        if (entity instanceof Chicken)
+        if (entity instanceof Creeper)
         {
             newDrops = new ArrayList<>();
 
