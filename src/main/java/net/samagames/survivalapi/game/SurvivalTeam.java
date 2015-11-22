@@ -22,7 +22,7 @@ public class SurvivalTeam
     private final HashMap<UUID, Boolean> players;
     private final ItemStack icon;
     private final ChatColor chatColor;
-    private final Team team;
+    //private final Team team;
 
     private String teamName;
     private int maxSize;
@@ -41,11 +41,11 @@ public class SurvivalTeam
 
         Scoreboard board = game.getScoreboard();
 
-        this.team = board.registerNewTeam((name.contains("\u00a7") ? ChatColor.stripColor(name) : name));
+        /**this.team = board.registerNewTeam("meow" + chatColor.getChar());
         this.team.setDisplayName(name);
         this.team.setCanSeeFriendlyInvisibles(true);
         this.team.setPrefix(chatColor + "");
-        this.team.setSuffix(ChatColor.RESET + "");
+        this.team.setSuffix(ChatColor.RESET + "");**/
     }
 
     public void join(UUID player)
@@ -64,7 +64,7 @@ public class SurvivalTeam
         }
 
         ((SurvivalPlayer) this.game.getPlayer(player)).setTeam(this);
-        this.team.addPlayer(newJoiner);
+        //this.team.addPlayer(newJoiner);
 
         this.players.put(player, false);
     }
@@ -92,7 +92,7 @@ public class SurvivalTeam
         else
         {
             this.players.remove(player);
-            this.team.removePlayer(Bukkit.getOfflinePlayer(player));
+            //this.team.removePlayer(Bukkit.getOfflinePlayer(player));
         }
 
         this.lockCheck();
@@ -107,7 +107,7 @@ public class SurvivalTeam
         else
         {
             this.players.remove(player);
-            this.team.removePlayer(Bukkit.getOfflinePlayer(player));
+            //this.team.removePlayer(Bukkit.getOfflinePlayer(player));
         }
 
         this.lockCheck();

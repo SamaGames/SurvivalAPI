@@ -42,13 +42,14 @@ public class WorldLoader
             public void run()
             {
                 int i = 0;
+
                 while (i < 50)
                 {
                     world.getChunkAt(world.getBlockAt(this.x, 64, this.z)).load(true);
 
                     int percentage = numberChunk * 100 / todo;
 
-                    if (percentage > lastShow)
+                    if (percentage > lastShow && percentage % 10 == 0)
                     {
                         lastShow = percentage;
                         plugin.getLogger().info("Loading chunks (" + percentage + "%)");
