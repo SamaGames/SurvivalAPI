@@ -40,7 +40,7 @@ public class OrePopulator extends BlockPopulator
             return;
 
         CraftWorld handle = (CraftWorld) world;
-        int xr = randInt(random, -100, 100);
+        int xr = this.randInt(random, -200, 200);
 
         if (xr >= 50)
             new WorldGenCaves().a(handle.getHandle().chunkProviderServer, handle.getHandle(), chunk.getX(), chunk.getZ(), new ChunkSnapshot());
