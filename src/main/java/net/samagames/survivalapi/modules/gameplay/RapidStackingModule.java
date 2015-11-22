@@ -46,8 +46,6 @@ public class RapidStackingModule extends AbstractSurvivalModule
             event.getEntity().setItemStack(new ItemStack(Material.COBBLESTONE, event.getEntity().getItemStack().getAmount()));
         else if (material == Material.STONE)
             event.getEntity().setItemStack(new ItemStack(Material.COBBLESTONE, event.getEntity().getItemStack().getAmount()));
-        else if (material == Material.SAPLING)
-            event.getEntity().remove();
         else if (material == Material.SUGAR_CANE)
             event.getEntity().setItemStack(new ItemStack(Material.SUGAR_CANE, this.random.nextInt(3) + 1));
     }

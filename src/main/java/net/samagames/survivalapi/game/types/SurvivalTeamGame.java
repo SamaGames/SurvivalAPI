@@ -43,18 +43,18 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
 
         plugin.getServer().getPluginManager().registerEvents(this.teamSelector, plugin);
 
-        this.registerTeam("Blanche", ChatColor.WHITE, DyeColor.WHITE);
+        this.registerTeam("Blanc", ChatColor.WHITE, DyeColor.WHITE);
         this.registerTeam("Orange", ChatColor.GOLD, DyeColor.ORANGE);
-        this.registerTeam("Bleu Claire", ChatColor.BLUE, DyeColor.LIGHT_BLUE);
-        this.registerTeam("Bleu Foncée", ChatColor.DARK_BLUE, DyeColor.BLUE);
+        this.registerTeam("Bleu Clair", ChatColor.BLUE, DyeColor.LIGHT_BLUE);
+        this.registerTeam("Bleu Foncé", ChatColor.DARK_BLUE, DyeColor.BLUE);
         this.registerTeam("Cyan", ChatColor.AQUA, DyeColor.CYAN);
         this.registerTeam("Jaune", ChatColor.YELLOW, DyeColor.YELLOW);
         this.registerTeam("Rose", ChatColor.LIGHT_PURPLE, DyeColor.PINK);
-        this.registerTeam("Vert Foncée", ChatColor.DARK_GREEN, DyeColor.GREEN);
+        this.registerTeam("Vert Foncé", ChatColor.DARK_GREEN, DyeColor.GREEN);
         this.registerTeam("Rouge", ChatColor.RED, DyeColor.RED);
-        this.registerTeam("Violette", ChatColor.DARK_PURPLE, DyeColor.PURPLE);
-        this.registerTeam("Grise", ChatColor.GRAY, DyeColor.GRAY);
-        this.registerTeam("Noire", ChatColor.BLACK, DyeColor.BLACK);
+        this.registerTeam("Violet", ChatColor.DARK_PURPLE, DyeColor.PURPLE);
+        this.registerTeam("Gris", ChatColor.GRAY, DyeColor.GRAY);
+        this.registerTeam("Noir", ChatColor.BLACK, DyeColor.BLACK);
 
         GuiSelectTeam.setGame(this);
     }
