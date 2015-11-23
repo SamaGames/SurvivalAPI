@@ -5,6 +5,8 @@ import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
@@ -29,7 +31,15 @@ public class DropMyEffectsModule extends AbstractSurvivalModule
         for (PotionEffect potionEffect : event.getEntity().getActivePotionEffects())
         {
             Potion potion = new Potion(PotionType.getByEffect(potionEffect.getType()), potionEffect.getAmplifier());
-            event.getDrops().add(potion.toItemStack(1));
+            ItemStack stack = potion.toItemStack(1);
+
+            PotionMeta meta = (PotionMeta) stack.getItemMeta();
+            meta.clearCustomEffects();
+            meta.addCustomEffect(new PotionEffect(potionEffect.getType(), potionEffect.getDuration(), potionEffect.getAmplifier()), true);
+
+            stack.setItemMeta(meta);
+
+            event.getDrops().add(stack);
         }
     }
 }
