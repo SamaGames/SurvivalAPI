@@ -7,6 +7,7 @@ import net.samagames.survivalapi.game.SurvivalPlayer;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.apache.commons.lang.Validate;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,9 +54,9 @@ public class ConstantPotionModule extends AbstractSurvivalModule
             return moduleConfiguration;
         }
 
-        public ConfigurationBuilder addPotionEffect(PotionEffect potionEffect)
+        public ConfigurationBuilder addPotionEffect(PotionEffectType potionEffectType, int level)
         {
-            this.potionEffects.add(potionEffect);
+            this.potionEffects.add(new PotionEffect(potionEffectType, Integer.MAX_VALUE, level));
             return this;
         }
     }

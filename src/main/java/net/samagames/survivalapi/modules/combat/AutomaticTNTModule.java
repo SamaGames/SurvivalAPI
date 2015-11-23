@@ -1,7 +1,8 @@
-package net.samagames.survivalapi.modules.block;
+package net.samagames.survivalapi.modules.combat;
 
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
+import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
 import org.bukkit.entity.TNTPrimed;
@@ -12,9 +13,17 @@ import java.util.HashMap;
 
 public class AutomaticTNTModule extends AbstractSurvivalModule
 {
+    private SurvivalGame game;
+
     public AutomaticTNTModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
+    }
+
+    @Override
+    public void onGameStart(SurvivalGame game)
+    {
+        this.game = game;
     }
 
     /**
@@ -25,10 +34,13 @@ public class AutomaticTNTModule extends AbstractSurvivalModule
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event)
     {
-        if (event.getBlock().getType() == Material.TNT)
+        if (this.game.isPvPActivated())
         {
-            event.getBlock().setType(Material.AIR);
-            event.getBlock().getWorld().spawn(event.getBlock().getLocation(), TNTPrimed.class);
+            if (event.getBlock().getType() == Material.TNT)
+            {
+                event.getBlock().setType(Material.AIR);
+                event.getBlock().getWorld().spawn(event.getBlock().getLocation(), TNTPrimed.class);
+            }
         }
     }
 }

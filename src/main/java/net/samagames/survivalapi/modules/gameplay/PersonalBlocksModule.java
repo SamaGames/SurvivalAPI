@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
@@ -33,8 +34,6 @@ public class PersonalBlocksModule extends AbstractSurvivalModule
         this.privateBlocks.add(Material.WORKBENCH);
         this.privateBlocks.add(Material.FURNACE);
         this.privateBlocks.add(Material.BURNING_FURNACE);
-        this.privateBlocks.add(Material.CHEST);
-        this.privateBlocks.add(Material.TRAPPED_CHEST);
         this.privateBlocks.add(Material.ENCHANTMENT_TABLE);
         this.privateBlocks.add(Material.ANVIL);
         this.privateBlocks.add(Material.BREWING_STAND);
@@ -63,7 +62,7 @@ public class PersonalBlocksModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent event)
     {
         if (this.blocksOwner.containsKey(event.getBlock().getLocation()) && this.blocksOwner.get(event.getBlock().getLocation()) != event.getPlayer().getUniqueId())
@@ -80,7 +79,5 @@ public class PersonalBlocksModule extends AbstractSurvivalModule
                 event.setCancelled(true);
             }
         }
-
-        event.getPlayer().giveExp(event.getExpToDrop() * 2);
     }
 }
