@@ -140,7 +140,7 @@ public class FortressPopulator extends BlockPopulator
 
                     while (bz < maxZ)
                     {
-                        int by = 21;
+                        int by = 42;
 
                         while (by > 0)
                         {
@@ -156,8 +156,6 @@ public class FortressPopulator extends BlockPopulator
                                 spawner.update();
 
                                 this.logger.info("Spawner configured at " + bx + "; " + by + "; " + bz);
-
-                                break;
                             }
                             else if (block.getType() == Material.CHEST && !this.chestLoots.isEmpty())
                             {
