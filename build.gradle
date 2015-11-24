@@ -45,4 +45,6 @@ dependencies {
         exclude module: 'bukkit'
         exclude module: 'bukkit-classloader-check'
     }
+
+    compile group: 'org.rauschig', name: 'jarchivelib', version: '0.7.1'
 }

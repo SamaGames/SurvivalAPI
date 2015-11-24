@@ -9,6 +9,7 @@ import net.samagames.api.shadows.IPacketListener;
 import net.samagames.api.shadows.Packet;
 import net.samagames.api.shadows.ShadowsAPI;
 import net.samagames.api.shadows.play.server.PacketLogin;
+import net.samagames.survivalapi.game.WorldDownloader;
 import net.samagames.survivalapi.game.WorldLoader;
 import net.samagames.survivalapi.game.commands.CommandNextEvent;
 import net.samagames.survivalapi.game.commands.CommandUHC;
@@ -23,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +39,24 @@ public class SurvivalPlugin extends JavaPlugin
     @Override
     public void onEnable()
     {
+        File worldDir = new File(this.getDataFolder().getAbsoluteFile().getParentFile().getParentFile(), "world");
+        this.getLogger().info("Checking wether world exists at : " + worldDir.getAbsolutePath());
+
+        if (!worldDir.exists())
+        {
+            this.getLogger().severe("World's folder not found. Aborting!");
+            Bukkit.shutdown();
+        }
+
+        this.getLogger().info("World's folder found... Checking for arena file...");
+        WorldDownloader worldDownloader = new WorldDownloader(this);
+
+        if (!worldDownloader.checkAndDownloadWorld(worldDir))
+        {
+            this.getLogger().severe("Error during map downloading. Aborting!");
+            Bukkit.shutdown();
+        }
+
         this.api = new SurvivalAPI(this);
 
         try
