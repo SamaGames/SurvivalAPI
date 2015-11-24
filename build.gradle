@@ -33,6 +33,12 @@ repositories {
     }
 }
 
+configurations { providedCompile }
+
+sourceSets.main.compileClasspath += configurations.providedCompile
+sourceSets.test.compileClasspath += configurations.providedCompile
+sourceSets.test.runtimeClasspath += configurations.providedCompile
+
 dependencies {
     compile group: 'net.samagames', name: 'SamaGamesAPI', version: '1.0.0-SNAPSHOT', changing: true
     compile group: 'net.samagames.api', name: 'Shadows', version: '1.1-SNAPSHOT', changing: true
@@ -46,5 +52,5 @@ dependencies {
         exclude module: 'bukkit-classloader-check'
     }
 
-    compile group: 'org.rauschig', name: 'jarchivelib', version: '0.7.1'
+    providedCompile group: 'org.rauschig', name: 'jarchivelib', version: '0.7.1'
 }
