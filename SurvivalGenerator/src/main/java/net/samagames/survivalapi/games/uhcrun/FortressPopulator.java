@@ -155,7 +155,7 @@ public class FortressPopulator extends BlockPopulator
                                 spawner.setDelay(1);
                                 spawner.update();
 
-                                this.logger.info("Spawner configured at " + bx + " , " + by + " , " + bz);
+                                this.logger.info("Spawner configured at " + bx + "; " + by + "; " + bz);
 
                                 break;
                             }
@@ -164,6 +164,8 @@ public class FortressPopulator extends BlockPopulator
                                 CraftChest chest = (CraftChest) block.getState();
                                 chest.getBlockInventory().clear();
                                 StructurePieceTreasure.a(this.random, this.chestLoots, chest.getTileEntity(), 4);
+
+                                this.logger.info("Chest filled at " + bx + "; " + by + "; " + bz);
                             }
 
                             by--;
