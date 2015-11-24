@@ -54,3 +54,7 @@ dependencies {
 
     providedCompile group: 'org.rauschig', name: 'jarchivelib', version: '0.7.1'
 }
+
+jar {
+    from configurations.providedCompile.collect { it.isDirectory() ? it : zipTree(it) }
+}
