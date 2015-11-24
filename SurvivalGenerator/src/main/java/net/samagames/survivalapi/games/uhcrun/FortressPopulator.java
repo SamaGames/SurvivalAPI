@@ -136,7 +136,7 @@ public class FortressPopulator extends BlockPopulator
                 while (bx < maxX)
                 {
                     int bz = z - (cuboidClipboard.getLength() / 2);
-                    int maxZ = z + (cuboidClipboard.getWidth() / 2) + 1;
+                    int maxZ = z + (cuboidClipboard.getLength() / 2) + 1;
 
                     while (bz < maxZ)
                     {

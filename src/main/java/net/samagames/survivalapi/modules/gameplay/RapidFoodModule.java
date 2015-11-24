@@ -60,6 +60,12 @@ public class RapidFoodModule extends AbstractSurvivalModule
 
         if (material == Material.BROWN_MUSHROOM || material == Material.RED_MUSHROOM)
             event.getEntity().setItemStack(new ItemStack(Material.MUSHROOM_SOUP, 2));
+        else if (material == Material.POTATO_ITEM)
+            event.getEntity().setItemStack(new ItemStack(Material.BAKED_POTATO, 1));
+        else if (material == Material.CARROT_ITEM)
+            event.getEntity().setItemStack(new ItemStack(Material.GOLDEN_CARROT, 1));
+        else if (material == Material.WHEAT)
+            event.getEntity().setItemStack(new ItemStack(Material.BREAD, 1));
     }
 
     /**
