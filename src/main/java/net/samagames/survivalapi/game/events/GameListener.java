@@ -55,6 +55,9 @@ public class GameListener implements Listener
                     return;
                 }
 
+                if (damaged.hasMetadata("lastDamager"))
+                    damaged.removeMetadata("lastDamager", this.game.getPlugin());
+
                 damaged.setMetadata("lastDamager", new FixedMetadataValue(this.game.getPlugin(), damager));
 
                 if (((Player) damager).hasPotionEffect(PotionEffectType.INCREASE_DAMAGE))
@@ -74,6 +77,9 @@ public class GameListener implements Listener
                         return;
                     }
 
+                    if (damaged.hasMetadata("lastDamager"))
+                        damaged.removeMetadata("lastDamager", this.game.getPlugin());
+
                     damaged.setMetadata("lastDamager", new FixedMetadataValue(this.game.getPlugin(), shooter));
 
                     if (shooter.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE))
@@ -82,6 +88,9 @@ public class GameListener implements Listener
             }
             else
             {
+                if (damaged.hasMetadata("lastDamager"))
+                    damaged.removeMetadata("lastDamager", this.game.getPlugin());
+
                 damaged.setMetadata("lastDamager", new FixedMetadataValue(this.game.getPlugin(), damager));
             }
         }
@@ -168,7 +177,12 @@ public class GameListener implements Listener
             }
 
             if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)
-                event.getEntity().setMetadata("lastDamager", new FixedMetadataValue(this.game.getPlugin(), event.getEntity()));
+            {
+                if (event.getEntity().hasMetadata("lastDamager"))
+                    event.getEntity().removeMetadata("lastDamager", this.game.getPlugin());
+
+                event.getEntity().setMetadata("lastDamager", new FixedMetadataValue(this.game.getPlugin(), event.getCause()));
+            }
         }
     }
 

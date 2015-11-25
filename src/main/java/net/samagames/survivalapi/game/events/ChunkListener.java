@@ -58,7 +58,7 @@ public class ChunkListener implements Runnable, Listener
      *
      * @param event Event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event)
     {
         if (!this.lastChunkCleanUp.containsKey(event.getChunk()))
