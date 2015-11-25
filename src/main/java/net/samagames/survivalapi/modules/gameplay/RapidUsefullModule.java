@@ -14,6 +14,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Tree;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,6 +72,11 @@ public class RapidUsefullModule extends AbstractSurvivalModule
 
             case CACTUS:
                 event.getEntity().setItemStack(new ItemStack(Material.LOG, 2));
+                break;
+
+            case SUGAR_CANE:
+                event.getEntity().setItemStack(new ItemStack(Material.SUGAR_CANE, 2));
+                event.getEntity().setMetadata("playerDrop", new FixedMetadataValue(this.plugin, true));
                 break;
         }
     }
