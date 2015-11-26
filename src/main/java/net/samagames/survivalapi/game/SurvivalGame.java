@@ -157,8 +157,9 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     }
 
     @Override
-    public void handleReconnectTimeOut(Player player)
+    public void handleReconnectTimeOut(Player player, boolean silent)
     {
+        super.handleReconnectTimeOut(player, silent);
         this.stumpPlayer(player, true);
     }
 
