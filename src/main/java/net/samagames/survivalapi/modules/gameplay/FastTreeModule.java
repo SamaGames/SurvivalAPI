@@ -1,5 +1,7 @@
 package net.samagames.survivalapi.modules.gameplay;
 
+import net.minecraft.server.v1_8_R3.BlockLog1;
+import net.minecraft.server.v1_8_R3.BlockWood;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.SurvivalGame;
@@ -12,11 +14,13 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Leaves;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 public class FastTreeModule extends AbstractSurvivalModule
@@ -60,138 +64,19 @@ public class FastTreeModule extends AbstractSurvivalModule
 
         if (material == Material.LOG || material == Material.LOG_2)
         {
-            ArrayList<Block> bList = new ArrayList<>();
-            bList.add(event.getBlock());
 
-            this.checkLeaves(event.getBlock());
-
-            new BukkitRunnable()
-            {
-                @Override
-                public void run()
-                {
-                    for (int i = 0; i < bList.size(); i++)
-                    {
-                        Block block = bList.get(i);
-
-                        if (block.hasMetadata("placed"))
-                        {
-                            bList.remove(block);
-                            continue;
-                        }
-                        if (block.getType() == Material.LOG || block.getType() == Material.LOG_2)
-                        {
-                            for (ItemStack item : block.getDrops())
-                                block.getWorld().dropItemNaturally(block.getLocation(), item);
-
-                            block.setType(Material.AIR);
-                            checkLeaves(block);
-                        }
-                        for (BlockFace face : BlockFace.values())
-                            if (block.getRelative(face).getType() == Material.LOG || block.getRelative(face).getType() == Material.LOG_2)
-                                bList.add(block.getRelative(face));
-
-                        bList.remove(block);
-                    }
-
-                    if (bList.isEmpty())
-                        this.cancel();
-                }
-            }.runTaskTimer(this.plugin, 2, 1);
+            removeTree(event.getBlock(), true, 6);
         }
 
         event.getPlayer().giveExp(event.getExpToDrop() * 2);
     }
 
-    private void checkLeaves(Block block)
+    private void removeTree(Block block, boolean nearwood, int range)
     {
-        Location loc = block.getLocation();
-        final World world = loc.getWorld();
-        final int x = loc.getBlockX();
-        final int y = loc.getBlockY();
-        final int z = loc.getBlockZ();
-        final int range = 4;
-        final int off = range + 1;
-
-        if (!validChunk(world, x - off, y - off, z - off, x + off, y + off, z + off))
+        if(range < 0 || block.hasMetadata("placed"))
             return;
 
-        this.plugin.getServer().getScheduler().runTask(this.plugin, () ->
-        {
-            for (int offX = -range; offX <= range; offX++)
-                for (int offY = -range; offY <= range; offY++)
-                    for (int offZ = -range; offZ <= range; offZ++)
-                        if (world.getBlockAt(x + offX, y + offY, z + offZ).getType() == Material.LEAVES || world.getBlockAt(x + offX, y + offY, z + offZ).getType() == Material.LEAVES_2)
-                            breakLeaf(world, x + offX, y + offY, z + offZ);
-        });
-    }
-
-    private void breakLeaf(World world, int x, int y, int z)
-    {
-        Block block = world.getBlockAt(x, y, z);
-
-        byte range = 4;
-        byte max = 32;
-        int[] blocks = new int[max * max * max];
-        int off = range + 1;
-        int mul = max * max;
-        int div = max / 2;
-
-
-        if (validChunk(world, x - off, y - off, z - off, x + off, y + off, z + off))
-        {
-            int offX;
-            int offY;
-            int offZ;
-
-            for (offX = -range; offX <= range; offX++)
-            {
-                for (offY = -range; offY <= range; offY++)
-                {
-                    for (offZ = -range; offZ <= range; offZ++)
-                    {
-                        Material mat = world.getBlockAt(x + offX, y + offY, z + offZ).getType();
-                        blocks[(offX + div) * mul + (offY + div) * max + offZ + div] = mat == Material.LOG || mat == Material.LOG_2 ? 0 : mat == Material.LEAVES || mat == Material.LEAVES_2 ? -2 : -1;
-                    }
-                }
-            }
-
-            for (offX = 1; offX <= 4; offX++)
-            {
-                for (offY = -range; offY <= range; offY++)
-                {
-                    for (offZ = -range; offZ <= range; offZ++)
-                    {
-                        for (int i = -range; i <= range; i++)
-                        {
-                            if (blocks[(offY + div) * mul + (offZ + div) * max + i + div] == offX - 1)
-                            {
-                                if (blocks[(offY + div - 1) * mul + (offZ + div) * max + i + div] == -2)
-                                    blocks[(offY + div - 1) * mul + (offZ + div) * max + i + div] = offX;
-
-                                if (blocks[(offY + div + 1) * mul + (offZ + div) * max + i + div] == -2)
-                                    blocks[(offY + div + 1) * mul + (offZ + div) * max + i + div] = offX;
-
-                                if (blocks[(offY + div) * mul + (offZ + div - 1) * max + i + div] == -2)
-                                    blocks[(offY + div) * mul + (offZ + div - 1) * max + i + div] = offX;
-
-                                if (blocks[(offY + div) * mul + (offZ + div + 1) * max + i + div] == -2)
-                                    blocks[(offY + div) * mul + (offZ + div + 1) * max + i + div] = offX;
-
-                                if (blocks[(offY + div) * mul + (offZ + div) * max + (i + div - 1)] == -2)
-                                    blocks[(offY + div) * mul + (offZ + div) * max + (i + div - 1)] = offX;
-
-                                if (blocks[(offY + div) * mul + (offZ + div) * max + i + div + 1] == -2)
-                                    blocks[(offY + div) * mul + (offZ + div) * max + i + div + 1] = offX;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (blocks[div * mul + div * max + div] < 0)
-        {
+        if (block.getType() == Material.LEAVES || block.getType() == Material.LEAVES_2) {
             LeavesDecayEvent event = new LeavesDecayEvent(block);
             Bukkit.getServer().getPluginManager().callEvent(event);
 
@@ -200,26 +85,58 @@ public class FastTreeModule extends AbstractSurvivalModule
 
             block.breakNaturally();
 
-            if (10 > new Random().nextInt(100))
-                world.playEffect(block.getLocation(), Effect.STEP_SOUND, Material.LEAVES);
+            if (10 > new Random().nextInt(100)) {
+                block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, Material.LEAVES);
+            }
+        }
+
+        if (block.getType() == Material.LOG || block.getType() == Material.LOG_2) {
+            for (ItemStack item : block.getDrops())
+                block.getWorld().dropItemNaturally(block.getLocation(), item);
+
+            block.setType(Material.AIR);
+        }
+
+        for(int y = -1 ; y <= 1; y++)
+        {
+            for(int z = -1 ; z <= 1; z++)
+            {
+                for(int x = -1 ; x <= 1; x++)
+                {
+                    Block block1 = block.getRelative(x, y , z);
+                    if (block != null) {
+                        if (block1.getType() == Material.LOG || block1.getType() == Material.LOG_2)
+                        {
+                            removeTree(block1, nearwood, range - ((z == 0 && x == 0 || nearwood)?0:1));
+                        }else if(block1.getType() == Material.LEAVES || block1.getType() == Material.LEAVES_2) {
+                            final int finalZ = z;
+                            final int finalX = x;
+                            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                                if(!isNearWood(block1, 2))
+                                {
+                                    Bukkit.getScheduler().runTask(plugin, () -> removeTree(block1, false, (nearwood)?3:(range - ((finalZ == 0 && finalX == 0)?0:1))));
+                                }
+                            });
+                        }
+                    }
+                }
+            }
         }
     }
 
-    private boolean validChunk(World world, int minX, int minY, int minZ, int maxX, int maxY, int maxZ)
+    public boolean isNearWood(Block block, int range)
     {
-        if (maxY >= 0 && minY < world.getMaxHeight())
+        for(int y = -range ; y <= range; y++)
         {
-            minX >>= 4;
-            minZ >>= 4;
-            maxX >>= 4;
-            maxZ >>= 4;
-
-            for (int x = minX; x <= maxX; x++)
-                for (int z = minZ; z <= maxZ; z++)
-                    if (!world.isChunkLoaded(x, z))
-                        return false;
-
-            return true;
+            for(int z = -range ; z <= range; z++)
+            {
+                for(int x = -range ; x <= range; x++)
+                {
+                    Block block1 = block.getRelative(x, y , z);
+                    if(block1.getType() == Material.LOG || block1.getType() == Material.LOG_2)
+                        return true;
+                }
+            }
         }
 
         return false;

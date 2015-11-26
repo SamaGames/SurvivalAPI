@@ -106,12 +106,12 @@ public class NMSPatcher
 
         ArrayList<BiomeBase.BiomeMeta> mobs = new ArrayList<>();
 
-        mobs.add(new BiomeBase.BiomeMeta(EntitySheep.class, 30, 10, 10));
+        mobs.add(new BiomeBase.BiomeMeta(EntitySheep.class, 15, 10, 10));
         mobs.add(new BiomeBase.BiomeMeta(EntityRabbit.class, 4, 3, 5));
-        mobs.add(new BiomeBase.BiomeMeta(EntityPig.class, 30, 20, 40));
-        mobs.add(new BiomeBase.BiomeMeta(EntityChicken.class, 50, 20, 40));
-        mobs.add(new BiomeBase.BiomeMeta(EntityCow.class, 50, 20, 40));
-        mobs.add(new BiomeBase.BiomeMeta(EntityWolf.class, 5, 5, 30));
+        mobs.add(new BiomeBase.BiomeMeta(EntityPig.class, 15, 10, 20));
+        mobs.add(new BiomeBase.BiomeMeta(EntityChicken.class, 20, 10, 20));
+        mobs.add(new BiomeBase.BiomeMeta(EntityCow.class, 20, 10, 20));
+        mobs.add(new BiomeBase.BiomeMeta(EntityWolf.class, 5, 5, 10));
 
         defaultMobField.set(biomeBase, mobs);
         Reflection.setFinalStatic(biome, biomeBase);
@@ -124,12 +124,12 @@ public class NMSPatcher
 
         ArrayList<BiomeBase.BiomeMeta> mobs = new ArrayList<>();
 
-        mobs.add(new BiomeBase.BiomeMeta(EntitySheep.class, 30, 10, 10));
+        mobs.add(new BiomeBase.BiomeMeta(EntitySheep.class, 15, 10, 10));
         mobs.add(new BiomeBase.BiomeMeta(EntityRabbit.class, 4, 3, 5));
-        mobs.add(new BiomeBase.BiomeMeta(EntityPig.class, 30, 20, 40));
-        mobs.add(new BiomeBase.BiomeMeta(EntityChicken.class, 50, 20, 40));
-        mobs.add(new BiomeBase.BiomeMeta(EntityCow.class, 50, 20, 40));
-        mobs.add(new BiomeBase.BiomeMeta(EntityWolf.class, 5, 5, 30));
+        mobs.add(new BiomeBase.BiomeMeta(EntityPig.class, 15, 10, 20));
+        mobs.add(new BiomeBase.BiomeMeta(EntityChicken.class, 20, 10, 20));
+        mobs.add(new BiomeBase.BiomeMeta(EntityCow.class, 20, 10, 20));
+        mobs.add(new BiomeBase.BiomeMeta(EntityWolf.class, 5, 5, 10));
 
         defaultMobField.set(biomeBase, mobs);
 

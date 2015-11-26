@@ -56,5 +56,6 @@ dependencies {
 }
 
 jar {
-    from configurations.providedCompile.collect { it.isDirectory() ? it : zipTree(it) }
+    from { configurations.providedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
+    include '**'
 }
