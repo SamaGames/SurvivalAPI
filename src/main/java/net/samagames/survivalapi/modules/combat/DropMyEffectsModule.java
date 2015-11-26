@@ -30,7 +30,7 @@ public class DropMyEffectsModule extends AbstractSurvivalModule
     {
         for (PotionEffect potionEffect : event.getEntity().getActivePotionEffects())
         {
-            Potion potion = new Potion(PotionType.getByEffect(potionEffect.getType()), potionEffect.getAmplifier());
+            Potion potion = new Potion(PotionType.getByEffect(potionEffect.getType()), (potionEffect.getAmplifier() + 1));
             ItemStack stack = potion.toItemStack(1);
 
             PotionMeta meta = (PotionMeta) stack.getItemMeta();
