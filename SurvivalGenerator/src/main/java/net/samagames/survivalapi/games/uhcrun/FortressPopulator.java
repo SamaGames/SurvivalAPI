@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 
 public class FortressPopulator extends BlockPopulator
 {
-    private ArrayList<StructurePieceTreasure> chestLoots;
     private SurvivalGenerator plugin;
     private Logger logger;
     private com.sk89q.worldedit.world.World bukkitWorld;
@@ -39,7 +38,6 @@ public class FortressPopulator extends BlockPopulator
     {
         this.plugin = plugin;
         this.logger = plugin.getLogger();
-        this.chestLoots = new ArrayList<>();
 
         try
         {
@@ -52,11 +50,6 @@ public class FortressPopulator extends BlockPopulator
         }
 
         this.random = new Random();
-    }
-
-    public void addRule(Rule rule)
-    {
-        this.chestLoots.add(new StructurePieceTreasure(CraftItemStack.asNMSCopy(new ItemStack(rule.id, rule.stackSize)), rule.minimumChance, rule.maximumChance, rule.weight));
     }
 
     @Override
@@ -157,14 +150,6 @@ public class FortressPopulator extends BlockPopulator
 
                                 this.logger.info("Spawner configured at " + bx + "; " + by + "; " + bz);
                             }
-                            else if (block.getType() == Material.CHEST && !this.chestLoots.isEmpty())
-                            {
-                                CraftChest chest = (CraftChest) block.getState();
-                                chest.getBlockInventory().clear();
-                                StructurePieceTreasure.a(this.random, this.chestLoots, chest.getTileEntity(), 4);
-
-                                this.logger.info("Chest filled at " + bx + "; " + by + "; " + bz);
-                            }
 
                             by--;
                         }
@@ -179,24 +164,6 @@ public class FortressPopulator extends BlockPopulator
             {
                 ex.printStackTrace();
             }
-        }
-    }
-
-    public static class Rule
-    {
-        public Material id;
-        public int stackSize;
-        public int minimumChance;
-        public int maximumChance;
-        public int weight;
-
-        public Rule(Material type, int stackSize, int minimumChance, int maximumChance, int weight)
-        {
-            this.id = type;
-            this.stackSize = stackSize;
-            this.minimumChance = minimumChance;
-            this.maximumChance = maximumChance;
-            this.weight = weight;
         }
     }
 }

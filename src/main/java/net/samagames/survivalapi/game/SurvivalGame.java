@@ -80,7 +80,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.worldBorder.setDamageBuffer(3D);
         this.worldBorder.setDamageAmount(2D);
 
-        //this.server.getPluginManager().registerEvents(new ChunkListener(plugin), plugin);
+        this.server.getPluginManager().registerEvents(new ChunkListener(plugin), plugin);
         this.server.getPluginManager().registerEvents(new NaturalListener(), plugin);
         this.server.getPluginManager().registerEvents(new OptimizationListener(), plugin);
         this.server.getPluginManager().registerEvents(new SpectatorListener(this), plugin);
@@ -156,9 +156,10 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         super.handleGameEnd();
     }
 
-
-    public void handleReconnectTimeOut(Player player)
+    @Override
+    public void handleReconnectTimeOut(Player player, boolean silent)
     {
+        super.handleReconnectTimeOut(player, silent);
         this.stumpPlayer(player, true);
     }
 

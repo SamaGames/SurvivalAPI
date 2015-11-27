@@ -31,14 +31,7 @@ public class UHCRunGame extends AbstractGame
         orePopulator.addRule(new OrePopulator.Rule(Material.LAPIS_ORE, 3, 0, 64, 4));
         orePopulator.addRule(new OrePopulator.Rule(Material.OBSIDIAN, 4, 0, 32, 6));
 
-        FortressPopulator fortressPopulator = new FortressPopulator(this.plugin);
-
-        fortressPopulator.addRule(new FortressPopulator.Rule(Material.GOLD_INGOT, 2, 1, 12, 30));
-        fortressPopulator.addRule(new FortressPopulator.Rule(Material.NETHER_STALK, 4, 1, 10, 30));
-        fortressPopulator.addRule(new FortressPopulator.Rule(Material.REDSTONE, 1, 1, 4, 30));
-        fortressPopulator.addRule(new FortressPopulator.Rule(Material.DIAMOND, 1, 1, 9, 30));
-
         world.getPopulators().add(orePopulator);
-        world.getPopulators().add(fortressPopulator);
+        world.getPopulators().add(new FortressPopulator(this.plugin));
     }
 }
