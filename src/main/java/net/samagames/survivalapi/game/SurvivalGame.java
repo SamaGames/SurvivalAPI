@@ -273,6 +273,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             if (lastDamager != null && lastDamager.value() instanceof Player)
             {
                 killer = (Player) lastDamager.value();
+                if(killer == null)
+                    killer = player.getKiller();
 
                 if (killer.isOnline() && this.gamePlayers.containsKey(player.getUniqueId()) && !this.gamePlayers.get(player.getUniqueId()).isSpectator())
                 {
