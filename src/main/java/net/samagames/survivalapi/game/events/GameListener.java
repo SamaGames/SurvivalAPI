@@ -178,7 +178,7 @@ public class GameListener implements Listener
 
             if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)
             {
-                if (event.getEntity().hasMetadata("lastDamager"))
+                while (event.getEntity().hasMetadata("lastDamager"))
                     event.getEntity().removeMetadata("lastDamager", this.game.getPlugin());
 
                 event.getEntity().setMetadata("lastDamager", new FixedMetadataValue(this.game.getPlugin(), event.getCause()));
