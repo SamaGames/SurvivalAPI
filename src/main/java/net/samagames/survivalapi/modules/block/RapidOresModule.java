@@ -45,7 +45,8 @@ public class RapidOresModule extends AbstractSurvivalModule
     {
         if (event.getEntityType() != EntityType.DROPPED_ITEM)
             return;
-        ItemStack itemStack = event.getEntity().getItemStack();
+
+        ItemStack itemStack = event.getEntity().getItemStack().clone();
         if (itemStack != null)
         {
             AttributeStorage storage = AttributeStorage.newTarget(itemStack, ID);
