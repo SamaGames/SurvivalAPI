@@ -47,6 +47,9 @@ public class DropMyEffectsModule extends AbstractSurvivalModule
             if (PotionType.getByEffect(potionEffect.getType()) == null)
                 continue;
 
+            if(potionEffect.getDuration() > 10000)
+                continue;
+
             Potion potion = new Potion(PotionType.getByEffect(potionEffect.getType()), (potionEffect.getAmplifier() + 1));
             ItemStack stack = potion.toItemStack(1);
 
@@ -57,6 +60,7 @@ public class DropMyEffectsModule extends AbstractSurvivalModule
             stack.setItemMeta(meta);
 
             event.getDrops().add(stack);
+            event.getEntity().removePotionEffect(potionEffect.getType());
         }
     }
 
