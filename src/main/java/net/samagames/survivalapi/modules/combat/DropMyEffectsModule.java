@@ -3,7 +3,6 @@ package net.samagames.survivalapi.modules.combat;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
-import org.apache.commons.lang.Validate;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
@@ -14,6 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class DropMyEffectsModule extends AbstractSurvivalModule
@@ -23,9 +23,12 @@ public class DropMyEffectsModule extends AbstractSurvivalModule
     public DropMyEffectsModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
-        Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
 
-        this.blacklist = (ArrayList<PotionEffectType>) moduleConfiguration.get("blacklist");
+        blacklist = new ArrayList<>();
+        if(moduleConfiguration != null)
+        {
+            this.blacklist.addAll((Collection<? extends PotionEffectType>) moduleConfiguration.get("blacklist"));
+        }
     }
 
     /**
