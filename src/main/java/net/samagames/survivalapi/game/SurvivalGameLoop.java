@@ -37,7 +37,7 @@ public class SurvivalGameLoop implements Runnable
         this.minutes = 0;
         this.episode = 1;
 
-        this.episodeEnabled = true;
+        this.episodeEnabled = false;
 
         this.createDamageEvent();
     }
