@@ -1,7 +1,10 @@
 package net.samagames.survivalapi.game.events;
 
 import org.bukkit.Chunk;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Minecart;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkUnloadEvent;
@@ -20,37 +23,29 @@ public class ChunkListener implements Runnable, Listener
     {
         this.lastChunkCleanUp = new ConcurrentHashMap<>();
 
-        plugin.getServer().getScheduler().runTaskTimer(plugin, this, 20, 200);
+        //plugin.getServer().getScheduler().runTaskTimer(plugin, this, 20, 200);
     }
 
     @Override
     public void run()
     {
         long currentTime = System.currentTimeMillis();
-        List<Chunk> toRemove = new ArrayList<>();
 
-        for (Map.Entry<Chunk, Long> entry : this.lastChunkCleanUp.entrySet())
+        List<Map.Entry<Chunk, Long>> temp = new ArrayList<>();
+        temp.addAll(this.lastChunkCleanUp.entrySet());
+        for (Map.Entry<Chunk, Long> entry : temp)
         {
             Chunk chunk = entry.getKey();
 
             if (!chunk.isLoaded() || (currentTime - entry.getValue() <= 60000))
                 continue;
 
-            if (containPlayer(chunk))
-            {
-                toRemove.add(chunk);
-                continue;
-            }
-
-
             for (Entity entity : chunk.getEntities())
-                if (!(entity instanceof Item || entity instanceof HumanEntity || entity instanceof Animals || entity instanceof Minecart))
+                if (!(entity instanceof Item || entity instanceof HumanEntity || entity instanceof Minecart))
                     entity.remove();
 
-            toRemove.remove(chunk);
+            lastChunkCleanUp.remove(chunk);
         }
-
-        toRemove.stream().filter(this.lastChunkCleanUp::containsKey).forEach(this.lastChunkCleanUp::remove);
     }
 
     /**
@@ -61,8 +56,12 @@ public class ChunkListener implements Runnable, Listener
     @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event)
     {
-        if (!this.lastChunkCleanUp.containsKey(event.getChunk()))
-            this.lastChunkCleanUp.put(event.getChunk(), System.currentTimeMillis());
+        /*if (!this.lastChunkCleanUp.containsKey(event.getChunk()))
+            this.lastChunkCleanUp.put(event.getChunk(), System.currentTimeMillis());*/
+
+        for (Entity entity : event.getChunk().getEntities())
+            if (!(entity instanceof Item || entity instanceof HumanEntity || entity instanceof Minecart))
+                entity.remove();
 
         event.setCancelled(true);
     }
