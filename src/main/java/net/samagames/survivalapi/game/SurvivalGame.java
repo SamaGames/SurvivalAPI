@@ -147,6 +147,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     public void handleLogin(Player player)
     {
         super.handleLogin(player);
+        player.setGameMode(GameMode.SURVIVAL);
         player.setGameMode(GameMode.ADVENTURE);
     }
 
