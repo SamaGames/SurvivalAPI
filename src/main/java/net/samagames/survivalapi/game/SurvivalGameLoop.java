@@ -176,10 +176,10 @@ public class SurvivalGameLoop implements Runnable
 
                             Player teammate = Bukkit.getPlayer(teammateUUID);
 
-                            if (this.game.getPlayer(teammateUUID).isSpectator())
-                                objective.setLine((lastLine + teammates), ChatColor.RED + "× " + teammate.getName() + " : ✞");
-                            else if (teammate == null)
+                            if (teammate == null)
                                 objective.setLine((lastLine + teammates), ChatColor.RED + "× " + Bukkit.getOfflinePlayer(teammateUUID).getName() + " : Déconnecté");
+                            else if (this.game.getPlayer(teammateUUID).isSpectator())
+                                objective.setLine((lastLine + teammates), ChatColor.RED + "× " + teammate.getName() + " : ✞");
                             else
                                 objective.setLine((lastLine + teammates), this.getPrefixColorByHealth(teammate.getHealth(), teammate.getMaxHealth()) + this.getDirectionalArrow(player, teammate) + " " + teammate.getName() + ChatColor.WHITE + " : " + (int) teammate.getHealth() + ChatColor.RED + " ❤");
                         }
