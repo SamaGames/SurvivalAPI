@@ -20,6 +20,7 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -257,12 +258,12 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     {
         if (this.status == Status.IN_GAME)
         {
-            Object lastDamager = player.getMetadata("lastDamager").get(0);
+            MetadataValue lastDamager = player.getMetadata("lastDamager").get(0);
             Player killer = null;
 
-            if (lastDamager != null && lastDamager instanceof Player)
+            if (lastDamager != null && lastDamager.value() instanceof Player)
             {
-                killer = (Player) lastDamager;
+                killer = (Player) lastDamager.value();
 
                 if (killer.isOnline() && this.gamePlayers.containsKey(player.getUniqueId()) && !this.gamePlayers.get(player.getUniqueId()).isSpectator())
                 {

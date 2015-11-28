@@ -42,7 +42,7 @@ public class GameListener implements Listener
     @EventHandler(ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
     {
-        if (event.getEntity() instanceof Player)
+        if (event.getEntityType().equals(EntityType.PLAYER))
         {
             Player damaged = (Player) event.getEntity();
             Entity damager = event.getDamager();
