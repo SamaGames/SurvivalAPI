@@ -20,7 +20,6 @@ import java.util.Random;
 public class RandomChestModule extends AbstractSurvivalModule
 {
     private final HashMap<ItemStack, Integer> items;
-    private final Random random;
 
     public RandomChestModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
     {
@@ -28,7 +27,6 @@ public class RandomChestModule extends AbstractSurvivalModule
         Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
 
         this.items = (HashMap<ItemStack, Integer>) moduleConfiguration.get("items");
-        this.random = new Random();
     }
 
     /**
@@ -59,10 +57,11 @@ public class RandomChestModule extends AbstractSurvivalModule
 
                 int frequency = this.items.get(item);
 
-                if (this.random.nextInt(100) <= frequency)
+                Random random = new Random();
+                if (random.nextInt(100) <= frequency)
                 {
                     ItemStack stack = item.clone();
-                    stack.setAmount((this.random.nextInt(3) + 1) * stack.getAmount());
+                    stack.setAmount((random.nextInt(3) + 1) * stack.getAmount());
 
                     while (inventory.getItem(slot) != null)
                         slot++;

@@ -10,23 +10,60 @@ import net.samagames.survivalapi.modules.utility.DropTaggingModule;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RapidOresModule extends AbstractSurvivalModule
 {
+    private Enchantment doubledEnchant;
+
     public RapidOresModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
         Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
+
+        doubledEnchant = new Enchantment(100000) {
+            @Override
+            public String getName() {
+                return "DoubleDroppedItem";
+            }
+
+            @Override
+            public int getMaxLevel() {
+                return 1;
+            }
+
+            @Override
+            public int getStartLevel() {
+                return 0;
+            }
+
+            @Override
+            public EnchantmentTarget getItemTarget() {
+                return EnchantmentTarget.ALL;
+            }
+
+            @Override
+            public boolean conflictsWith(Enchantment enchantment) {
+                return false;
+            }
+
+            @Override
+            public boolean canEnchantItem(ItemStack itemStack) {
+                return true;
+            }
+        };
     }
 
     /**
@@ -39,9 +76,12 @@ public class RapidOresModule extends AbstractSurvivalModule
     {
         if (event.getEntityType() != EntityType.DROPPED_ITEM)
             return;
-
-        if (event.getEntity().hasMetadata("playerDrop"))
-            return;
+        ItemStack itemStack = event.getEntity().getItemStack();
+        if (itemStack != null && itemStack.getItemMeta() != null)
+        {
+            if(itemStack.getItemMeta().hasEnchant(doubledEnchant))
+                return;
+        }
 
         Material material = event.getEntity().getItemStack().getType();
         boolean flag = false;
@@ -78,9 +118,20 @@ public class RapidOresModule extends AbstractSurvivalModule
         }
 
         if (flag)
-            event.getEntity().setMetadata("playerDrop", new FixedMetadataValue(this.plugin, true));
+        {
+            event.getEntity().setItemStack(addMeta(event.getEntity().getItemStack()));
+            this.spawnXPFromItemStack(event.getEntity(), event.getEntity().getItemStack().getType());
+        }
+    }
 
-        this.spawnXPFromItemStack(event.getEntity(), event.getEntity().getItemStack().getType());
+    public ItemStack addMeta(ItemStack stack)
+    {
+        ItemMeta meta = stack.getItemMeta();
+        meta.addEnchant(doubledEnchant, 0, false);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        stack.setItemMeta(meta);
+
+        return stack;
     }
 
     /**
