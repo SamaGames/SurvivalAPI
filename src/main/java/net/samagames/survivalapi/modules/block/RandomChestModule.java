@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -41,9 +42,8 @@ public class RandomChestModule extends AbstractSurvivalModule
         if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getClickedBlock().getType().equals(Material.CHEST))
         {
             Chest chest = (Chest) event.getClickedBlock().getState();
-            boolean interacted = chest.hasMetadata("playerInteracted");
 
-            if (interacted)
+            if (chest.hasMetadata("playerInteracted"))
                 return;
 
             Inventory inventory = chest.getInventory();
@@ -78,6 +78,20 @@ public class RandomChestModule extends AbstractSurvivalModule
             }
 
             chest.setMetadata("playerInteracted", new FixedMetadataValue(this.plugin, true));
+        }
+    }
+
+    /**
+     * Don't fill a chest placed by player
+     *
+     * @param event Event
+     */
+    @EventHandler
+    public void onPlayerPlaceBlock(BlockPlaceEvent event)
+    {
+        if(event.getBlockPlaced().getType().equals(Material.CHEST))
+        {
+            event.getBlockPlaced().getState().setMetadata("playerInteracted", new FixedMetadataValue(this.plugin, true));
         }
     }
 

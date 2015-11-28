@@ -144,6 +144,13 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     public abstract void checkStump(Player player);
 
     @Override
+    public void handleLogin(Player player)
+    {
+        super.handleLogin(player);
+        player.setGameMode(GameMode.ADVENTURE);
+    }
+
+    @Override
     public void handlePostRegistration()
     {
         super.handlePostRegistration();
