@@ -14,8 +14,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
+import java.security.SecureRandom;
 import java.util.HashMap;
-import java.util.Random;
 
 public class RandomChestModule extends AbstractSurvivalModule
 {
@@ -57,8 +57,8 @@ public class RandomChestModule extends AbstractSurvivalModule
 
                 int frequency = this.items.get(item);
 
-                Random random = new Random();
-                if (random.nextInt(100) <= frequency)
+                SecureRandom random = new SecureRandom();
+                if (random.nextInt(1000) <= frequency*10)
                 {
                     ItemStack stack = item.clone();
                     stack.setAmount((random.nextInt(3) + 1) * stack.getAmount());
