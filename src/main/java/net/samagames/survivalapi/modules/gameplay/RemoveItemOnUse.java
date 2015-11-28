@@ -26,10 +26,9 @@ public class RemoveItemOnUse extends AbstractSurvivalModule
     {
         if(event.getItem() == null)
             return;
-
-        if(event.getItem().getType() == Material.BOWL ||
-                event.getItem().getType() == Material.MUSHROOM_SOUP
-                || event.getItem().getType() == Material.POTION)
+        ItemStack stack = event.getItem();
+        if(stack.getType().equals(Material.MUSHROOM_SOUP)
+                || stack.getType().equals(Material.POTION))
         {
             event.setItem(new ItemStack(Material.AIR));
         }
