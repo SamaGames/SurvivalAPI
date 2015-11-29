@@ -22,8 +22,13 @@ public class RemoveItemOnUse extends AbstractSurvivalModule
         super(plugin, api, moduleConfiguration);
     }
 
+    /**
+     * Delete the ItemStack
+     *
+     * @param event
+     */
     @EventHandler
-    public void onPlayerEat(PlayerItemConsumeEvent event)
+    public void onPlayerItemConsume(PlayerItemConsumeEvent event)
     {
         if(event.getItem() == null)
             return;
