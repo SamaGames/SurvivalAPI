@@ -102,7 +102,8 @@ public class RapidOresModule extends AbstractSurvivalModule
 
     public boolean hasMeta(ItemStack stack)
     {
-        ItemStack itemStack = stack.clone();
+        //Maybe nullpointer fuckoff
+        ItemStack itemStack = new ItemStack(stack.clone());
         if (itemStack != null)
         {
             AttributeStorage storage = AttributeStorage.newTarget(itemStack, ID);
