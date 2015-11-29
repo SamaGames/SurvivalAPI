@@ -3,6 +3,8 @@ package net.samagames.survivalapi.nms;
 import net.minecraft.server.v1_8_R3.*;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.nms.potions.PotionAttackDamageNerf;
+import net.samagames.survivalapi.nms.stack.ItemSoup;
+import net.samagames.survivalapi.nms.stack.Potion;
 import net.samagames.tools.Reflection;
 import org.bukkit.potion.PotionEffectType;
 
@@ -159,7 +161,7 @@ public class NMSPatcher
         try {
             Method register = Item.class.getDeclaredMethod("a", int.class, String.class, Item.class);
             register.setAccessible(true);
-            Item potion = new ItemPotion().c(64).c("potion");
+            Item potion = new Potion().c(64).c("potion");
             Item soup = new ItemSoup(6).c(64).c("mushroomStew");
             register.invoke(null, 373, "potion", potion);
             register.invoke(null, 282, "mushroom_stew", soup);
