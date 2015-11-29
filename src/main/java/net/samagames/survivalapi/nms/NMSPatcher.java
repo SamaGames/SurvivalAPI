@@ -159,13 +159,20 @@ public class NMSPatcher
         try {
             Method register = Item.class.getDeclaredMethod("a", int.class, String.class, Item.class);
             register.setAccessible(true);
-            register.invoke(null, 373, "potion", new ItemPotion().c(64).c("potion"));
+            Item item = new ItemPotion().c(64).c("potion");
+            register.invoke(null, 373, "potion", item);
             register.invoke(null, 282, "mushroom_stew", new ItemSoup(6).c(64).c("mushroomStew"));
+
+            Reflection.setFinalStatic(Items.class.getDeclaredField("POTION"), item);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (ReflectiveOperationException e) {
             e.printStackTrace();
         }
     }
