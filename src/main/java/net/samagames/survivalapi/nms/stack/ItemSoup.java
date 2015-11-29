@@ -7,7 +7,7 @@ import net.minecraft.server.v1_8_R3.*;
  */
 public class ItemSoup extends ItemFood {
     public ItemSoup(int var1) {
-        super(var1, false);
+        super(var1, true);
         this.c(64);
     }
 

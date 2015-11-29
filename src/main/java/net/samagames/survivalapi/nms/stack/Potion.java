@@ -14,9 +14,7 @@ public class Potion extends ItemPotion {
     private static final Map<List<MobEffect>, Integer> b = Maps.newLinkedHashMap();
 
     public Potion() {
-        super();
         this.c(64);
-        this.a(true);
         this.setMaxDurability(0);
         this.a(CreativeModeTab.k);
     }
