@@ -27,7 +27,7 @@ import java.util.UUID;
 public class RapidOresModule extends AbstractSurvivalModule
 {
 
-    private static UUID ID = UUID.fromString("3745e6a8-821a-4c53-bd7c-3a1246a458f0");
+    public static final UUID ID = UUID.fromString("3745e6a8-821a-4c53-bd7c-3a1246a458f0");
 
     public RapidOresModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
     {
@@ -46,13 +46,8 @@ public class RapidOresModule extends AbstractSurvivalModule
         if (event.getEntityType() != EntityType.DROPPED_ITEM)
             return;
 
-        ItemStack itemStack = event.getEntity().getItemStack().clone();
-        if (itemStack != null)
-        {
-            AttributeStorage storage = AttributeStorage.newTarget(itemStack, ID);
-            if(storage.getData("").equals("dropped"))
-                return;
-        }
+        if(hasMeta(event.getEntity().getItemStack()))
+            return;
 
         Material material = event.getEntity().getItemStack().getType();
         boolean flag = false;
@@ -103,6 +98,23 @@ public class RapidOresModule extends AbstractSurvivalModule
         AttributeStorage storage = AttributeStorage.newTarget(stack, ID);
         storage.setData("dropped");
         return storage.getTarget();
+    }
+
+    public boolean hasMeta(ItemStack stack)
+    {
+        ItemStack itemStack = stack.clone();
+        if (itemStack != null)
+        {
+            AttributeStorage storage = AttributeStorage.newTarget(itemStack, ID);
+            return storage.getData("").equals("dropped");
+        }
+
+        return false;
+    }
+
+    public boolean isDoubledType(Material type)
+    {
+        return moduleConfiguration.containsKey(type.name());
     }
 
     /**

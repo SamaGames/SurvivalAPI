@@ -31,7 +31,7 @@ public class RemoveItemOnUse extends AbstractSurvivalModule
         ItemStack stack = event.getItem();
         if(stack.getType().equals(Material.MUSHROOM_SOUP))
         {
-            Bukkit.getScheduler().runTask(plugin, () -> event.getPlayer().setItemInHand(new ItemStack(Material.AIR)));
+            Bukkit.getScheduler().runTask(plugin, () -> event.getPlayer().getInventory().remove(Material.BOWL));
         }
     }
 }

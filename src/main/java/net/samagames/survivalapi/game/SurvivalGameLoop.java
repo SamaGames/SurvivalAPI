@@ -7,6 +7,7 @@ import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.Vector;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -181,7 +182,7 @@ public class SurvivalGameLoop implements Runnable
                             else if (this.game.getPlayer(teammateUUID).isSpectator())
                                 objective.setLine((lastLine + teammates), ChatColor.RED + "× " + teammate.getName() + " : ✞");
                             else
-                                objective.setLine((lastLine + teammates), this.getPrefixColorByHealth(teammate.getHealth(), teammate.getMaxHealth()) + this.getDirectionalArrow(player, teammate) + " " + teammate.getName() + ChatColor.WHITE + " : " + (int) teammate.getHealth() + ChatColor.RED + " ❤");
+                                objective.setLine((lastLine + teammates), this.getPrefixColorByHealth(teammate.getHealth(), teammate.getMaxHealth()) + this.getDirection(player, teammate) + " " + teammate.getName() + ChatColor.WHITE + " : " + (int) teammate.getHealth() + ChatColor.RED + " ❤");
                         }
 
                         objective.setLine((lastLine + (teammates + 1)), ChatColor.DARK_PURPLE + "");
@@ -224,6 +225,36 @@ public class SurvivalGameLoop implements Runnable
             return ChatColor.DARK_GREEN;
     }
 
+    private String getDirection(Player p, Player mate)
+    {
+        Location ploc = p.getLocation().clone();
+        Location point = mate.getLocation().clone();
+
+        // on ignore l'axe y
+        ploc.setY(0);
+        point.setY(0);
+
+        // on récupère la  direction de la tête du player
+        Vector d = ploc.getDirection();
+
+        // on récupère la direction du point par rapport au player
+        Vector v = point.subtract(ploc).toVector().normalize();
+
+        // on convertit le tout en un angle en degrés
+        double a = Math.toDegrees(Math.atan2(d.getX(), d.getZ()));
+        a -= Math.toDegrees(Math.atan2(v.getX(), v.getZ()));
+
+        // on se décale de 22.5 degrés pour se caler sur les demi points cardinaux
+        a = (int)(a + 22.5) % 360;
+
+        // on  s'assure d'avoir un angle strictement positif
+        if (a < 0)
+            a += 360;
+
+        return "" + "↑↗→↘↓↙←↖".charAt((int)a / 45);
+    }
+
+    //OLD
     private String getDirectionalArrow(Player base, Player teammate)
     {
         double deltaX = teammate.getLocation().getX() - base.getLocation().getX();

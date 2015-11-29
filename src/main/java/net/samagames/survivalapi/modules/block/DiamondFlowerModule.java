@@ -18,11 +18,15 @@ public class DiamondFlowerModule extends AbstractSurvivalModule
 {
     private final Random random;
 
+    private RapidOresModule rapidOresModule;
+
     public DiamondFlowerModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
 
         this.random = new Random();
+
+        rapidOresModule = SurvivalAPI.get().getModule(RapidOresModule.class);
     }
 
     /**
@@ -43,7 +47,16 @@ public class DiamondFlowerModule extends AbstractSurvivalModule
             return;
 
         if (this.random.nextInt(100) <= 30)
-            event.getEntity().getWorld().dropItemNaturally(event.getLocation(), new ItemStack(Material.DIAMOND, 1));
+            event.getEntity().getWorld().dropItemNaturally(event.getLocation(), verifyStack(new ItemStack(Material.DIAMOND, 1)));
+    }
+
+    private ItemStack verifyStack(ItemStack stack)
+    {
+        if(rapidOresModule != null)
+        {
+            stack = rapidOresModule.addMeta(stack);
+        }
+        return stack;
     }
 
     @Override

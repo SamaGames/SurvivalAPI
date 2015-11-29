@@ -15,7 +15,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class RandomChestModule extends AbstractSurvivalModule
 {
@@ -27,6 +30,21 @@ public class RandomChestModule extends AbstractSurvivalModule
         Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
 
         this.items = (HashMap<ItemStack, Integer>) moduleConfiguration.get("items");
+
+        if (SurvivalAPI.get().isModuleEnabled(RapidOresModule.class))
+        {
+            RapidOresModule rapidOresModule = SurvivalAPI.get().getModule(RapidOresModule.class);
+            List<Map.Entry<ItemStack, Integer>> temp = new ArrayList<>();
+            temp.addAll(items.entrySet());
+            for (Map.Entry<ItemStack, Integer> item : temp)
+            {
+                if (rapidOresModule.isDoubledType(item.getKey().getType()))
+                {
+                    items.put(rapidOresModule.addMeta(item.getKey()), item.getValue());
+                }
+                break;
+            }
+        }
     }
 
     /**

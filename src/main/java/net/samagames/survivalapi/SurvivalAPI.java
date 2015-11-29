@@ -75,6 +75,15 @@ public class SurvivalAPI
         return this.modulesLoaded.containsKey(moduleClass.getSimpleName());
     }
 
+    public <T extends AbstractSurvivalModule> T getModule(Class<T> type)
+    {
+        if(isModuleEnabled(type))
+        {
+            return (T) this.modulesLoaded.get(type.getSimpleName());
+        }
+        return null;
+    }
+
     public static SurvivalAPI get()
     {
         return instance;

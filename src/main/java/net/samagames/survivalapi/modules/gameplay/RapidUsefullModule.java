@@ -3,6 +3,7 @@ package net.samagames.survivalapi.modules.gameplay;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.survivalapi.modules.block.RapidOresModule;
 import net.samagames.survivalapi.modules.utility.DropTaggingModule;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
@@ -14,7 +15,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Tree;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,10 +25,14 @@ public class RapidUsefullModule extends AbstractSurvivalModule
 {
     private final Random random;
 
+    private RapidOresModule rapidOresModule;
+
     public RapidUsefullModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
         this.random = new Random();
+
+        rapidOresModule = SurvivalAPI.get().getModule(RapidOresModule.class);
     }
 
     /**
@@ -42,7 +46,7 @@ public class RapidUsefullModule extends AbstractSurvivalModule
         if (event.getEntityType() != EntityType.DROPPED_ITEM)
             return;
 
-        if (event.getEntity().hasMetadata("playerDrop"))
+        if (hasMeta(event.getEntity().getItemStack()))
             return;
 
         Material material = event.getEntity().getItemStack().getType();
@@ -75,10 +79,27 @@ public class RapidUsefullModule extends AbstractSurvivalModule
                 break;
 
             case SUGAR_CANE:
-                event.getEntity().setItemStack(new ItemStack(Material.SUGAR_CANE, 2));
-                event.getEntity().setMetadata("playerDrop", new FixedMetadataValue(this.plugin, true));
+                event.getEntity().setItemStack(verifyStack(new ItemStack(Material.SUGAR_CANE, 2)));
                 break;
         }
+    }
+
+    private ItemStack verifyStack(ItemStack stack)
+    {
+        if(rapidOresModule != null)
+        {
+            stack = rapidOresModule.addMeta(stack);
+        }
+        return stack;
+    }
+
+    private boolean hasMeta(ItemStack stack)
+    {
+        if(rapidOresModule != null)
+        {
+            return rapidOresModule.hasMeta(stack);
+        }
+        return false;
     }
 
     /**
@@ -116,6 +137,7 @@ public class RapidUsefullModule extends AbstractSurvivalModule
         ArrayList<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
 
         requiredModules.add(DropTaggingModule.class);
+        requiredModules.add(RapidOresModule.class);
 
         return requiredModules;
     }
