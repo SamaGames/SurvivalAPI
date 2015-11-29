@@ -29,7 +29,7 @@ public class StackableItemModule extends AbstractSurvivalModule
         {
             ItemStack cursor = event.getCursor();
             ItemStack clicked = event.getCurrentItem();
-            if(clicked.isSimilar(cursor))
+            if(clicked.isSimilar(cursor) && clicked.getAmount() + cursor.getAmount() <= clicked.getMaxStackSize() )
             {
                 event.setResult(Event.Result.ALLOW);
             }
