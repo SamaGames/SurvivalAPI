@@ -92,6 +92,7 @@ public class RapidOresModule extends AbstractSurvivalModule
 
     public ItemStack addMeta(ItemStack stack)
     {
+        stack = new ItemStack(stack.getType(), stack.getAmount());
         AttributeStorage storage = AttributeStorage.newTarget(stack, ID);
         storage.setData("dropped");
         ItemMeta itemMeta = stack.getItemMeta();
@@ -118,8 +119,8 @@ public class RapidOresModule extends AbstractSurvivalModule
         switch(name)
         {
             case COAL:
-            case IRON_ORE:
-            case GOLD_ORE:
+            case IRON_INGOT:
+            case GOLD_INGOT:
             case DIAMOND:
             case EMERALD:
                 return true;
