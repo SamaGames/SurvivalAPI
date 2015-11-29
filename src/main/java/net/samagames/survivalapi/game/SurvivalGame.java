@@ -303,7 +303,28 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             else if (killer != null)
                 this.server.broadcastMessage(this.coherenceMachine.getGameTag() + " " + player.getDisplayName() + ChatColor.YELLOW + " a été tué par " + killer.getDisplayName());
             else
-                this.server.broadcastMessage(this.coherenceMachine.getGameTag() + " " + player.getDisplayName() + ChatColor.YELLOW + " est mort.");
+            {
+                String message = " est mort.";
+                switch (player.getLastDamageCause().getCause())
+                {
+                    case FALL:
+                        message = " est mort de chute.";
+                        break;
+                    case FIRE:
+                        message = " a fini carbonisé.";
+                        break;
+                    case DROWNING:
+                        message = " s'est noyé.";
+                        break;
+                    case LAVA:
+                        message = " a essayé de nager dans la lave. Résultat peu concluant.";
+                        break;
+                    case SUFFOCATION:
+                        message = " a essayé de se cacher dans un mur";
+                        break;
+                }
+                this.server.broadcastMessage(this.coherenceMachine.getGameTag() + " " + player.getDisplayName() + ChatColor.YELLOW + message);
+            }
 
             this.checkStump(player);
             this.removeFromGame(player.getUniqueId());
