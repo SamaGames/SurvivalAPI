@@ -15,14 +15,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class RandomChestModule extends AbstractSurvivalModule
 {
     private final HashMap<ItemStack, Integer> items;
+
+    private RapidOresModule rapidOresModule;
 
     public RandomChestModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
     {
@@ -31,20 +30,7 @@ public class RandomChestModule extends AbstractSurvivalModule
 
         this.items = (HashMap<ItemStack, Integer>) moduleConfiguration.get("items");
 
-        if (SurvivalAPI.get().isModuleEnabled(RapidOresModule.class))
-        {
-            RapidOresModule rapidOresModule = SurvivalAPI.get().getModule(RapidOresModule.class);
-            List<Map.Entry<ItemStack, Integer>> temp = new ArrayList<>();
-            temp.addAll(items.entrySet());
-            for (Map.Entry<ItemStack, Integer> item : temp)
-            {
-                if (rapidOresModule.isDoubledType(item.getKey().getType()))
-                {
-                    items.put(rapidOresModule.addMeta(item.getKey()), item.getValue());
-                }
-                break;
-            }
-        }
+        rapidOresModule = SurvivalAPI.get().getModule(RapidOresModule.class);
     }
 
     /**
@@ -84,7 +70,7 @@ public class RandomChestModule extends AbstractSurvivalModule
                     while (inventory.getItem(slot) != null)
                         slot++;
 
-                    inventory.setItem(slot, stack);
+                    inventory.setItem(slot, verifyStack(stack));
                     addedItems++;
                 }
 
@@ -96,6 +82,18 @@ public class RandomChestModule extends AbstractSurvivalModule
 
             chest.setMetadata("playerInteracted", new FixedMetadataValue(this.plugin, true));
         }
+    }
+
+    public ItemStack verifyStack(ItemStack stack)
+    {
+        if(rapidOresModule != null)
+        {
+            if (rapidOresModule.isDoubledType(stack.getType()))
+            {
+                return rapidOresModule.addMeta(stack);
+            }
+        }
+        return stack;
     }
 
     /**
