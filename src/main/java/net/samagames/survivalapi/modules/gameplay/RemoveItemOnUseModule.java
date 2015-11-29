@@ -14,10 +14,10 @@ import java.util.HashMap;
 /**
  * Created by Silva on 28/11/2015.
  */
-public class RemoveItemOnUse extends AbstractSurvivalModule
+public class RemoveItemOnUseModule extends AbstractSurvivalModule
 {
 
-    public RemoveItemOnUse(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public RemoveItemOnUseModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
     }
