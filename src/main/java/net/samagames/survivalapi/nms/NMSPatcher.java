@@ -7,6 +7,8 @@ import net.samagames.tools.Reflection;
 import org.bukkit.potion.PotionEffectType;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -148,5 +150,23 @@ public class NMSPatcher
         this.logger.info("Patching Strength Potion (130% => 43.3%, 260% => 86.6%)");
         Reflection.setFinalStatic(MobEffectList.class.getDeclaredField("INCREASE_DAMAGE"), (new PotionAttackDamageNerf(5, new MinecraftKey("strength"), false, 9643043)).c("potion.damageBoost").a(GenericAttributes.ATTACK_DAMAGE, "648D7064-6A60-4F59-8ABE-C2C23A6DD7A9", 2.5D, 2));
         this.logger.info("Potions patched");
+
+        patchStackable();
+    }
+
+    public void patchStackable()
+    {
+        try {
+            Method register = Item.class.getDeclaredMethod("a", int.class, String.class, Item.class);
+            register.setAccessible(true);
+            register.invoke(null, 373, "potion", new ItemPotion().c(64).c("potion"));
+            register.invoke(null, 282, "mushroom_stew", new ItemSoup(6).c(64).c("mushroomStew"));
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 }
