@@ -65,6 +65,7 @@ public class DiamondFlowerModule extends AbstractSurvivalModule
         ArrayList<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
 
         requiredModules.add(DropTaggingModule.class);
+        requiredModules.add(RapidOresModule.class);
 
         return requiredModules;
     }

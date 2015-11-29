@@ -3,6 +3,7 @@ package net.samagames.survivalapi.modules.block;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.survivalapi.modules.utility.DropTaggingModule;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RandomChestModule extends AbstractSurvivalModule
@@ -108,6 +110,16 @@ public class RandomChestModule extends AbstractSurvivalModule
         {
             event.getBlockPlaced().getState().setMetadata("playerInteracted", new FixedMetadataValue(this.plugin, true));
         }
+    }
+
+    @Override
+    public ArrayList<Class<? extends AbstractSurvivalModule>> getRequiredModules()
+    {
+        ArrayList<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
+
+        requiredModules.add(RapidOresModule.class);
+
+        return requiredModules;
     }
 
     public static class ConfigurationBuilder

@@ -112,9 +112,18 @@ public class RapidOresModule extends AbstractSurvivalModule
         return false;
     }
 
-    public boolean isDoubledType(Material type)
+    public boolean isDoubledType(Material name)
     {
-        return moduleConfiguration.containsKey(type.name());
+        switch(name)
+        {
+            case COAL:
+            case IRON_ORE:
+            case GOLD_ORE:
+            case DIAMOND:
+            case EMERALD:
+                return true;
+        }
+        return false;
     }
 
     /**
