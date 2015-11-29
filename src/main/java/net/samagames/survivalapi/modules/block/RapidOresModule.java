@@ -92,11 +92,11 @@ public class RapidOresModule extends AbstractSurvivalModule
 
     public ItemStack addMeta(ItemStack stack)
     {
+        AttributeStorage storage = AttributeStorage.newTarget(stack, ID);
+        storage.setData("dropped");
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         stack.setItemMeta(itemMeta);
-        AttributeStorage storage = AttributeStorage.newTarget(stack, ID);
-        storage.setData("dropped");
         return storage.getTarget();
     }
 
