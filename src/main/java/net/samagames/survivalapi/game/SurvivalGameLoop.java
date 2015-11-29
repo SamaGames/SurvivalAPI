@@ -251,7 +251,7 @@ public class SurvivalGameLoop implements Runnable
         if (a < 0)
             a += 360;
 
-        return "" + "↑↗→↘↓↙←↖".charAt((int)a / 45);
+        return "" + "⬆⬈➡⬊⬇⬋⬅⬉".charAt((int)a / 45);
     }
 
     //OLD
