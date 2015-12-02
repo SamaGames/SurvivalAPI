@@ -40,7 +40,7 @@ public class AutomaticTNTModule extends AbstractSurvivalModule
             {
                 event.getBlock().setType(Material.AIR);
                 TNTPrimed tnt = event.getBlock().getWorld().spawn(event.getBlock().getLocation(), TNTPrimed.class);
-                tnt.setFuseTicks(tnt.getFuseTicks()/2);
+                tnt.setFuseTicks(tnt.getFuseTicks() / 2);
             }
         }
     }

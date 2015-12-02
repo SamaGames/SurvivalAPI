@@ -151,13 +151,14 @@ public class NMSPatcher
         ((PotionEffectType[]) byIdField.get(null))[5] = null;
 
         this.logger.info("Patching Strength Potion (130% => 43.3%, 260% => 86.6%)");
-        Reflection.setFinalStatic(MobEffectList.class.getDeclaredField("INCREASE_DAMAGE"), (new PotionAttackDamageNerf(5, new MinecraftKey("strength"), false, 9643043)).c("potion.damageBoost").a(GenericAttributes.ATTACK_DAMAGE, "648D7064-6A60-4F59-8ABE-C2C23A6DD7A9", 2.5D, 2));
+        Reflection.setFinalStatic(MobEffectList.class.getDeclaredField("INCREASE_DAMAGE"), new PotionAttackDamageNerf(5, new MinecraftKey("strength"), false, 9643043));
         this.logger.info("Potions patched");
     }
 
     public void patchStackable()
     {
-        try {
+        try
+        {
             Field maxStack = Material.POTION.getClass().getDeclaredField("maxStack");
             maxStack.setAccessible(true);
             maxStack.set(Material.POTION, 64);
@@ -171,15 +172,9 @@ public class NMSPatcher
 
             Reflection.setFinalStatic(Items.class.getDeclaredField("POTION"), potion);
             Reflection.setFinalStatic(Items.class.getDeclaredField("MUSHROOM_STEW"), soup);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (ReflectiveOperationException e) {
+        }
+        catch (ReflectiveOperationException e)
+        {
             e.printStackTrace();
         }
     }
