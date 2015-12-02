@@ -85,8 +85,6 @@ public class SurvivalTeamSelector implements Listener
 
         if (!this.game.getStatus().equals(Status.IN_GAME))
         {
-            event.getBlock().setType(Material.AIR);
-
             SurvivalTeam team = this.game.getPlayerTeam(event.getPlayer().getUniqueId());
             String name = event.getLine(0);
             name = name.trim();
@@ -118,7 +116,7 @@ public class SurvivalTeamSelector implements Listener
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onChat(AsyncPlayerChatEvent event)
+    public void onPlayerChat(AsyncPlayerChatEvent event)
     {
         if (!this.game.getStatus().equals(Status.IN_GAME))
             return;

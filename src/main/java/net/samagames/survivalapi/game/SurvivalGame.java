@@ -147,8 +147,6 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     public void handleLogin(Player player)
     {
         super.handleLogin(player);
-        player.setGameMode(GameMode.SURVIVAL);
-        player.setGameMode(GameMode.ADVENTURE);
     }
 
     @Override
@@ -267,13 +265,13 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     {
         if (this.status == Status.IN_GAME)
         {
-
-            MetadataValue lastDamager = (player.getMetadata("lastDamager").size()>0)?player.getMetadata("lastDamager").get(0):null;
+            MetadataValue lastDamager = (player.getMetadata("lastDamager").size() > 0) ? player.getMetadata("lastDamager").get(0) : null;
             Player killer = null;
 
             if (lastDamager != null && lastDamager.value() instanceof Player)
             {
                 killer = (Player) lastDamager.value();
+
                 if(killer == null)
                     killer = player.getKiller();
 
@@ -281,7 +279,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                 {
                     final Player finalKiller = killer;
 
-                    Bukkit.getScheduler().runTaskAsynchronously(plugin, () ->
+                    Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () ->
                     {
                         SurvivalPlayer gamePlayer = this.getPlayer(finalKiller.getUniqueId());
                         gamePlayer.addKill(player.getUniqueId());
@@ -299,31 +297,61 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             }
 
             if (logout)
+            {
                 this.coherenceMachine.getMessageManager().writePlayerReconnectTimeOut(player);
+            }
             else if (killer != null)
+            {
                 this.server.broadcastMessage(this.coherenceMachine.getGameTag() + " " + player.getDisplayName() + ChatColor.YELLOW + " a été tué par " + killer.getDisplayName());
+            }
             else
             {
-                String message = " est mort.";
+                String message;
+
                 switch (player.getLastDamageCause().getCause())
                 {
                     case FALL:
-                        message = " est mort de chute.";
+                    case FALLING_BLOCK:
+                        message = "est mort de chute.";
                         break;
+
                     case FIRE:
-                        message = " a fini carbonisé.";
+                    case FIRE_TICK:
+                        message = "a fini carbonisé.";
                         break;
+
                     case DROWNING:
-                        message = " s'est noyé.";
+                        message = "s'est noyé.";
                         break;
+
                     case LAVA:
-                        message = " a essayé de nager dans la lave. Résultat peu concluant.";
+                        message = "a essayé de nager dans la lave. Résultat peu concluant.";
                         break;
+
                     case SUFFOCATION:
-                        message = " a essayé de se cacher dans un mur";
+                        message = "a essayé de se cacher dans un mur";
+                        break;
+
+                    case BLOCK_EXPLOSION:
+                    case ENTITY_EXPLOSION:
+                        message = "a mangé un pétard. Allez savoir pourquoi.";
+                        break;
+
+                    case POISON:
+                    case MAGIC:
+                        message = "a s'est confronté à meilleur sorcier que lui.";
+                        break;
+
+                    case LIGHTNING:
+                        message = "s'est transformé en Pikachu !";
+                        break;
+
+                    default:
+                        message = "est mort.";
                         break;
                 }
-                this.server.broadcastMessage(this.coherenceMachine.getGameTag() + " " + player.getDisplayName() + ChatColor.YELLOW + message);
+
+                this.coherenceMachine.getMessageManager().writeCustomMessage(player.getDisplayName() + ChatColor.YELLOW + " " + message, true);
             }
 
             this.checkStump(player);

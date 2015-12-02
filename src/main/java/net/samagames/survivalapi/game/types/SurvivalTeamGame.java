@@ -88,6 +88,8 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             }
         }
 
+        this.teams.stream().filter(team -> team.isEmpty()).forEach(team -> this.teams.remove(team));
+
         super.startGame();
     }
 
@@ -168,19 +170,19 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 }
             }
 
-            for (SurvivalTeam t : this.teams)
+            for (SurvivalTeam team_ : this.teams)
             {
                 int players1 = 0;
 
-                if (!t.isEmpty())
-                    for (UUID id : t.getPlayersUUID().keySet())
-                        if (this.server.getPlayer(id) != null && !t.getPlayersUUID().get(id))
+                if (!team_.isEmpty())
+                    for (UUID id : team.getPlayersUUID().keySet())
+                        if (this.server.getPlayer(id) != null && !team_.getPlayersUUID().get(id))
                             players1++;
 
                 if (players1 == 0)
                 {
-                    this.server.broadcastMessage(ChatColor.GOLD + "L'équipe " + t.getChatColor() + t.getTeamName() + ChatColor.GOLD + " a été éliminée !");
-                    toRemvove.add(t);
+                    this.server.broadcastMessage(ChatColor.GOLD + "L'équipe " + team_.getChatColor() + team_.getTeamName() + ChatColor.GOLD + " a été éliminée !");
+                    toRemvove.add(team_);
 
                     left = this.teams.size();
 
@@ -216,17 +218,16 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     {
         for (final UUID playerID : team.getPlayersUUID().keySet())
         {
+            if (!Bukkit.getPlayer(playerID).isOnline())
+                continue;
+
             SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(playerID);
             playerData.addCoins(100, "Victoire !");
             playerData.addStars(2, "Victoire !");
 
-            try
-            {
-                this.increaseStat(playerID, "wins", 1);
-            }
-            catch (Exception ignored) {}
+            this.increaseStat(playerID, "wins", 1);
 
-            final Player player = server.getPlayer(playerID);
+            final Player player = this.server.getPlayer(playerID);
 
             if (player == null)
                 continue;
