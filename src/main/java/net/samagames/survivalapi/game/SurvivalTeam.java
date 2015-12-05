@@ -69,6 +69,11 @@ public class SurvivalTeam
         this.players.put(player, false);
     }
 
+    public void rejoin(Player player)
+    {
+        this.team.addPlayer(player);
+    }
+
     public void invite(String inviter, UUID invited)
     {
         this.invited.add(invited);

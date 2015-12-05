@@ -329,5 +329,10 @@ public class SurvivalGameLoop implements Runnable
                 this.run();
             }
         }
+
+        public TimedEvent copy(int minute, int seconds)
+        {
+            return new TimedEvent(minute, seconds, this.name, this.color, this.callback);
+        }
     }
 }

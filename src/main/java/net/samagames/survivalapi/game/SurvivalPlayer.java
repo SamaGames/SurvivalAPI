@@ -58,6 +58,9 @@ public class SurvivalPlayer extends GamePlayer
         else
         {
             this.game.rejoinPlayer(player);
+
+            if (this.team != null)
+                this.team.rejoin(player);
         }
     }
 
