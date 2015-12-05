@@ -22,20 +22,20 @@ public interface RunBasedGame
         SurvivalAPI.get().loadModule(DisableLevelTwoPotionModule.class, null);
         SurvivalAPI.get().loadModule(DisableNotchAppleModule.class, null);
         SurvivalAPI.get().loadModule(DisableSpeckedMelonModule.class, null);
-        SurvivalAPI.get().loadModule(DisableFlintAndSteelModule.class, null);
+        //SurvivalAPI.get().loadModule(StackableItemModule.class, null); //WIP
 
+        SurvivalAPI.get().loadModule(RapidOresModule.class, new RapidOresModule.ConfigurationBuilder().build());
         SurvivalAPI.get().loadModule(RapidToolsModule.class, null);
         SurvivalAPI.get().loadModule(RapidFoodModule.class, null);
         SurvivalAPI.get().loadModule(RapidStackingModule.class, null);
         SurvivalAPI.get().loadModule(RapidUsefullModule.class, null);
-        SurvivalAPI.get().loadModule(RapidOresModule.class, new RapidOresModule.ConfigurationBuilder().build());
 
         SurvivalAPI.get().loadModule(AutomaticTNTModule.class, null);
         SurvivalAPI.get().loadModule(FastTreeModule.class, null);
         SurvivalAPI.get().loadModule(PersonalBlocksModule.class, null);
-        SurvivalAPI.get().loadModule(LoveMachineModule.class, null);
         SurvivalAPI.get().loadModule(TorchThanCoalModule.class, new TorchThanCoalModule.ConfigurationBuilder().build());
         SurvivalAPI.get().loadModule(RemoveItemOnUseModule.class, null);
+
 
         ConstantPotionModule.ConfigurationBuilder constantPotionConfiguration = new ConstantPotionModule.ConfigurationBuilder();
         constantPotionConfiguration.addPotionEffect(PotionEffectType.SPEED, 0);
