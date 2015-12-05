@@ -81,13 +81,17 @@ public class RapidOresModule extends AbstractSurvivalModule
                 event.getEntity().setItemStack(new ItemStack(Material.EMERALD, (int) this.moduleConfiguration.get("emerald")));
                 flag = true;
                 break;
+            case INK_SACK:
+            case QUARTZ:
+            	flag = true;
+            default:
         }
 
         if (flag)
         {
             event.getEntity().setItemStack(addMeta(event.getEntity().getItemStack()));
         }
-        this.spawnXPFromItemStack(event.getEntity(), event.getEntity().getItemStack().getType());
+        this.spawnXPFromItemStack(event.getEntity(), event.getEntity().getItemStack());
     }
 
     public ItemStack addMeta(ItemStack stack)
@@ -124,6 +128,7 @@ public class RapidOresModule extends AbstractSurvivalModule
             case DIAMOND:
             case EMERALD:
                 return true;
+            default:
         }
         return false;
     }
@@ -165,17 +170,20 @@ public class RapidOresModule extends AbstractSurvivalModule
         return requiredModules;
     }
 
-    private void spawnXPFromItemStack(Entity entity, Material ore)
+    private void spawnXPFromItemStack(Entity entity, ItemStack ore)
     {
         World world = ((CraftEntity) entity).getHandle().getWorld();
 
         int i = 0;
 
-        switch (ore)
+        switch (ore.getType())
         {
             case QUARTZ:
+            	i = MathHelper.nextInt(world.random, 2, 5);
+            	break ;
             case INK_SACK:
-                i = MathHelper.nextInt(world.random, 2, 5);
+                if (ore.getDurability() == 4)
+                	i = MathHelper.nextInt(world.random, 2, 5);
                 break;
             case EMERALD:
             case DIAMOND:
@@ -187,8 +195,6 @@ public class RapidOresModule extends AbstractSurvivalModule
                 i = MathHelper.nextInt(world.random, 0, 2);
                 break;
             default:
-                break;
-
         }
 
         if (i == 0)
