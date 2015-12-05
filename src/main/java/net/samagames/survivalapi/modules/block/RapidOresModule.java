@@ -26,8 +26,7 @@ import java.util.UUID;
 
 public class RapidOresModule extends AbstractSurvivalModule
 {
-
-    public static final UUID ID = UUID.fromString("3745e6a8-821a-4c53-bd7c-3a1246a458f0");
+    public final UUID ID = UUID.fromString("3745e6a8-821a-4c53-bd7c-3a1246a458f0");
 
     public RapidOresModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
     {
@@ -81,56 +80,27 @@ public class RapidOresModule extends AbstractSurvivalModule
                 event.getEntity().setItemStack(new ItemStack(Material.EMERALD, (int) this.moduleConfiguration.get("emerald")));
                 flag = true;
                 break;
+
             case INK_SACK:
+                if (event.getEntity().getItemStack().getDurability() == 4)
+                {
+                    event.getEntity().setItemStack(new ItemStack(Material.INK_SACK, (int) this.moduleConfiguration.get("emerald"), (short) 4));
+                    flag = true;
+                }
+                break;
+
             case QUARTZ:
             	flag = true;
+                break;
+
             default:
+                break;
         }
 
         if (flag)
-        {
-            event.getEntity().setItemStack(addMeta(event.getEntity().getItemStack()));
-        }
+            event.getEntity().setItemStack(this.addMeta(event.getEntity().getItemStack()));
+
         this.spawnXPFromItemStack(event.getEntity(), event.getEntity().getItemStack());
-    }
-
-    public ItemStack addMeta(ItemStack stack)
-    {
-        stack = new ItemStack(stack.getType(), stack.getAmount());
-        AttributeStorage storage = AttributeStorage.newTarget(stack, ID);
-        storage.setData("dropped");
-        ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        stack.setItemMeta(itemMeta);
-        return storage.getTarget();
-    }
-
-    public boolean hasMeta(ItemStack stack)
-    {
-        //Maybe nullpointer fuckoff
-        ItemStack itemStack = new ItemStack(stack.clone());
-        if (itemStack != null)
-        {
-            AttributeStorage storage = AttributeStorage.newTarget(itemStack, ID);
-            return storage.getData("").equals("dropped");
-        }
-
-        return false;
-    }
-
-    public boolean isDoubledType(Material name)
-    {
-        switch(name)
-        {
-            case COAL:
-            case IRON_INGOT:
-            case GOLD_INGOT:
-            case DIAMOND:
-            case EMERALD:
-                return true;
-            default:
-        }
-        return false;
     }
 
     /**
@@ -170,6 +140,48 @@ public class RapidOresModule extends AbstractSurvivalModule
         return requiredModules;
     }
 
+    public ItemStack addMeta(ItemStack stack)
+    {
+        stack = new ItemStack(stack.getType(), stack.getAmount());
+
+        AttributeStorage storage = AttributeStorage.newTarget(stack, ID);
+        storage.setData("dropped");
+
+        ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+
+        stack.setItemMeta(itemMeta);
+
+        return storage.getTarget();
+    }
+
+    public boolean hasMeta(ItemStack stack)
+    {
+        if (stack == null)
+            return false;
+
+        ItemStack itemStack = new ItemStack(stack.clone());
+        AttributeStorage storage = AttributeStorage.newTarget(itemStack, ID);
+        
+        return storage.getData("").equals("dropped");
+    }
+
+    public boolean isDoubledType(Material name)
+    {
+        switch(name)
+        {
+            case COAL:
+            case IRON_INGOT:
+            case GOLD_INGOT:
+            case DIAMOND:
+            case EMERALD:
+                return true;
+
+            default:
+        }
+        return false;
+    }
+
     private void spawnXPFromItemStack(Entity entity, ItemStack ore)
     {
         World world = ((CraftEntity) entity).getHandle().getWorld();
@@ -180,21 +192,26 @@ public class RapidOresModule extends AbstractSurvivalModule
         {
             case QUARTZ:
             	i = MathHelper.nextInt(world.random, 2, 5);
-            	break ;
+            	break;
+
             case INK_SACK:
                 if (ore.getDurability() == 4)
                 	i = MathHelper.nextInt(world.random, 2, 5);
                 break;
+
             case EMERALD:
             case DIAMOND:
                 i = MathHelper.nextInt(world.random, 3, 7);
                 break;
+
             case COAL:
             case GOLD_INGOT:
             case IRON_INGOT:
                 i = MathHelper.nextInt(world.random, 0, 2);
                 break;
+
             default:
+                break;
         }
 
         if (i == 0)
