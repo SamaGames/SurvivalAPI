@@ -16,6 +16,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Team;
 
 import java.util.*;
 
@@ -88,7 +89,9 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             }
         }
 
-        this.teams.stream().filter(team -> team.isEmpty()).forEach(team -> this.teams.remove(team));
+        ArrayList<SurvivalTeam> toRemove = new ArrayList<>();
+        this.teams.stream().filter(SurvivalTeam::isEmpty).forEach(toRemove::add);
+        this.teams.removeAll(toRemove);
 
         super.startGame();
     }
