@@ -74,3 +74,4 @@ gradle-app.setting
 !gradle-wrapper.jar
 
 
+/bin/
