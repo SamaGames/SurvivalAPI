@@ -22,16 +22,20 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.UUID;
 
 public class RapidOresModule extends AbstractSurvivalModule
 {
-    public final UUID ID = UUID.fromString("3745e6a8-821a-4c53-bd7c-3a1246a458f0");
+    private final UUID ID = UUID.fromString("3745e6a8-821a-4c53-bd7c-3a1246a458f0");
+    private final Random random;
 
     public RapidOresModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
         Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
+
+        this.random = new Random();
     }
 
     /**
@@ -84,7 +88,7 @@ public class RapidOresModule extends AbstractSurvivalModule
             case INK_SACK:
                 if (event.getEntity().getItemStack().getDurability() == 4)
                 {
-                    event.getEntity().setItemStack(new ItemStack(Material.INK_SACK, (int) this.moduleConfiguration.get("emerald"), (short) 4));
+                    event.getEntity().setItemStack(new ItemStack(Material.INK_SACK, event.getEntity().getItemStack().getAmount() + (this.random.nextInt(5) + 1), (short) 4));
                     flag = true;
                 }
                 break;
@@ -142,7 +146,7 @@ public class RapidOresModule extends AbstractSurvivalModule
 
     public ItemStack addMeta(ItemStack stack)
     {
-        stack = new ItemStack(stack.getType(), stack.getAmount());
+        stack = new ItemStack(stack.getType(), stack.getAmount(), stack.getDurability());
 
         AttributeStorage storage = AttributeStorage.newTarget(stack, ID);
         storage.setData("dropped");
@@ -164,22 +168,6 @@ public class RapidOresModule extends AbstractSurvivalModule
         AttributeStorage storage = AttributeStorage.newTarget(itemStack, ID);
 
         return storage.getData("").equals("dropped");
-    }
-
-    public boolean isDoubledType(Material name)
-    {
-        switch(name)
-        {
-            case COAL:
-            case IRON_INGOT:
-            case GOLD_INGOT:
-            case DIAMOND:
-            case EMERALD:
-                return true;
-
-            default:
-        }
-        return false;
     }
 
     private void spawnXPFromItemStack(Entity entity, ItemStack ore)

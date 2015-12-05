@@ -218,7 +218,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             displayNameLife.getScore(player.getName()).setScore((int) player.getHealth());
             playerListLife.getScore(player.getName()).setScore((int) player.getHealth());
 
-            ObjectiveSign sign = new ObjectiveSign("sggameloop", ChatColor.DARK_AQUA + "" + ChatColor.BOLD + (this.magicSymbol != null ? this.magicSymbol + " " : "") + this.getGameName() + (this.magicSymbol != null ? " " + this.magicSymbol : ""));
+            ObjectiveSign sign = new ObjectiveSign("sggameloop", ChatColor.DARK_AQUA + "" + (this.magicSymbol != null ? this.magicSymbol + " " : "") + ChatColor.BOLD + this.getGameName() + ChatColor.RESET + ChatColor.DARK_AQUA + (this.magicSymbol != null ? " " + this.magicSymbol : ""));
             sign.addReceiver(player);
 
             this.gameLoop.addPlayer(player.getUniqueId(), sign);
