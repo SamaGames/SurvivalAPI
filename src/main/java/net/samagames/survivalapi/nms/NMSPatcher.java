@@ -151,7 +151,7 @@ public class NMSPatcher
         ((PotionEffectType[]) byIdField.get(null))[5] = null;
 
         this.logger.info("Patching Strength Potion (130% => 43.3%, 260% => 86.6%)");
-        Reflection.setFinalStatic(MobEffectList.class.getDeclaredField("INCREASE_DAMAGE"), new PotionAttackDamageNerf(5, new MinecraftKey("strength"), false, 9643043));
+        Reflection.setFinalStatic(MobEffectList.class.getDeclaredField("INCREASE_DAMAGE"), (new PotionAttackDamageNerf(5, new MinecraftKey("strength"), false, 9643043)).c("potion.damageBoost").a(GenericAttributes.ATTACK_DAMAGE, "648D7064-6A60-4F59-8ABE-C2C23A6DD7A9", 2.5D, 2));
         this.logger.info("Potions patched");
     }
 
