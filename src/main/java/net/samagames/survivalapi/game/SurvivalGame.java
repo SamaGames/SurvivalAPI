@@ -329,7 +329,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                         break;
 
                     case SUFFOCATION:
-                        message = "a essayé de se cacher dans un mur";
+                        message = "a essayé de se cacher dans un mur.";
                         break;
 
                     case BLOCK_EXPLOSION:
