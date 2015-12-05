@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.*;
@@ -197,7 +198,15 @@ public class GameListener implements Listener
         if (this.game.isPvPActivated() && event.getBlockPlaced().getY() > WorldLoader.getHighestNaturalBlockAt(event.getBlockPlaced().getX(), event.getBlockPlaced().getZ()) + 15)
         {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(ChatColor.DARK_RED + "[" + ChatColor.RED + "Tours" + ChatColor.DARK_RED + "] " + ChatColor.RED + "Les Tours sont interdites.");
+            event.getPlayer().sendMessage(ChatColor.DARK_RED + "[" + ChatColor.RED + "Tours" + ChatColor.DARK_RED + "] " + ChatColor.RED + "Les Tours sont interdites !");
+
+            return;
+        }
+
+        if (!this.game.isPvPActivated() && event.getBlock().getType() == Material.TNT)
+        {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(ChatColor.RED + "Vous ne pouvez pas utiliser de la TNT tant que le PvP est désactivé !");
         }
     }
 

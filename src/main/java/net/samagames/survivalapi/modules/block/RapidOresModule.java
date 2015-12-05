@@ -162,7 +162,7 @@ public class RapidOresModule extends AbstractSurvivalModule
 
         ItemStack itemStack = new ItemStack(stack.clone());
         AttributeStorage storage = AttributeStorage.newTarget(itemStack, ID);
-        
+
         return storage.getData("").equals("dropped");
     }
 
