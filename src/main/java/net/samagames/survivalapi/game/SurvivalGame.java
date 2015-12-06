@@ -472,6 +472,11 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         return this.worldBorder;
     }
 
+    public ArrayList<Location> getSpawns()
+    {
+        return this.spawns;
+    }
+
     public boolean isDamagesActivated()
     {
         return this.damagesActivated;
