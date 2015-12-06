@@ -192,6 +192,17 @@ public class SurvivalTeam
         return this.players.isEmpty();
     }
 
+    public boolean isDead()
+    {
+        boolean flag = true;
+
+        for (boolean dead : this.getPlayersUUID().values())
+            if (!dead)
+                flag = false;
+
+        return flag;
+    }
+
     public boolean isFull()
     {
         return this.players.size() == this.game.getPersonsPerTeam();
