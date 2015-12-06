@@ -24,7 +24,7 @@ public class RunBasedGameLoop extends SurvivalGameLoop
     @Override
     public void createDamageEvent()
     {
-        this.nextEvent = new TimedEvent(1, 0, "Dégats actifs", ChatColor.GREEN, () ->
+        this.nextEvent = new TimedEvent(1, 0, "Dégats actifs", ChatColor.GREEN, false, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les dégats sont désormais actifs.", true);
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Le map sera réduite dans 19 minutes. Le PvP sera activé à ce moment là.", true);
@@ -36,7 +36,7 @@ public class RunBasedGameLoop extends SurvivalGameLoop
 
     public void createTeleportationEvent()
     {
-        this.nextEvent = new TimedEvent(19, 0, "Téléportation", ChatColor.YELLOW, () ->
+        this.nextEvent = new TimedEvent(19, 0, "Téléportation", ChatColor.YELLOW, true, () ->
         {
             SamaGamesAPI.get().getGameManager().setMaxReconnectTime(-1);
 
@@ -68,7 +68,7 @@ public class RunBasedGameLoop extends SurvivalGameLoop
 
     public void createDeathmatchEvent()
     {
-        this.nextEvent = new TimedEvent(0, 30, "PvP activé", ChatColor.RED, () ->
+        this.nextEvent = new TimedEvent(0, 30, "PvP activé", ChatColor.RED, false, () ->
         {
             this.game.enableDamages();
             this.game.enablePVP();
@@ -83,7 +83,7 @@ public class RunBasedGameLoop extends SurvivalGameLoop
     @Override
     public void createReducingEvent()
     {
-        this.nextEvent = new TimedEvent(9, 30, "Fin de la réduction", ChatColor.RED, () ->
+        this.nextEvent = new TimedEvent(9, 30, "Fin de la réduction", ChatColor.RED, false, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("La map est désormais réduite. Fin de la partie forcée dans 2 minutes !", true);
 
@@ -93,7 +93,7 @@ public class RunBasedGameLoop extends SurvivalGameLoop
 
     public void createEndEvent()
     {
-        this.nextEvent = new TimedEvent(2, 0, "Fin de la partie", ChatColor.RED, () ->
+        this.nextEvent = new TimedEvent(2, 0, "Fin de la partie", ChatColor.RED, true, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("La partie se termine.", true);
             this.server.shutdown();

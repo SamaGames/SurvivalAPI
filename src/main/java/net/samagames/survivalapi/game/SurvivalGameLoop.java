@@ -46,7 +46,7 @@ public class SurvivalGameLoop implements Runnable
 
     public void createDamageEvent()
     {
-        this.nextEvent = new TimedEvent(1, 0, "Dégats actifs", ChatColor.GREEN, () ->
+        this.nextEvent = new TimedEvent(1, 0, "Dégats actifs", ChatColor.GREEN, false, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les dégats sont désormais actifs.", true);
             this.game.enableDamages();
@@ -57,7 +57,7 @@ public class SurvivalGameLoop implements Runnable
 
     public void createPvPEvent()
     {
-        this.nextEvent = new TimedEvent(19, 0, "Combats actifs", ChatColor.YELLOW, () ->
+        this.nextEvent = new TimedEvent(19, 0, "Combats actifs", ChatColor.YELLOW, false, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les combats sont désormais actifs.", true);
             this.game.enablePVP();
@@ -68,7 +68,7 @@ public class SurvivalGameLoop implements Runnable
 
     public void createReducingEvent()
     {
-        this.nextEvent = new TimedEvent(40, 0, "Réduction des bordures", ChatColor.RED, () ->
+        this.nextEvent = new TimedEvent(40, 0, "Réduction des bordures", ChatColor.RED, false, () ->
         {
             this.game.getWorldBorder().setSize(100, 60L * 40L);
             this.displayReducingMessage();
@@ -204,7 +204,13 @@ public class SurvivalGameLoop implements Runnable
         }
 
         if (this.nextEvent.getSeconds() == 0 && this.nextEvent.getMinutes() <= 3 && this.nextEvent.getMinutes() > 0 || this.nextEvent.getMinutes() == 0 && (this.nextEvent.getSeconds() <= 5 || this.nextEvent.getSeconds() == 10 || this.nextEvent.getSeconds() == 30))
-            this.game.getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.YELLOW + this.nextEvent.getName() + ChatColor.YELLOW + " dans " + (this.nextEvent.getMinutes() != 0 ? this.nextEvent.getMinutes() + " minutes" : this.nextEvent.getSeconds() + " secondes") + ".", true);
+        {
+            this.game.getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.YELLOW + this.nextEvent.getName() + ChatColor.YELLOW + " dans " + (this.nextEvent.getMinutes() != 0 ? this.nextEvent.getMinutes() + " minute" + (this.nextEvent.getMinutes() > 1 ? "s" : "") : this.nextEvent.getSeconds() + " seconde" + (this.nextEvent.getSeconds() > 1 ? "s" : "")) + ".", true);
+
+            if (this.nextEvent.isTitle() && this.nextEvent.getSeconds() <= 5 && this.nextEvent.getSeconds() > 0)
+                for (Player player : Bukkit.getOnlinePlayers())
+                    Titles.sendTitle(player, 0, 21, 10, ChatColor.RED + "" + this.nextEvent.getSeconds(), this.nextEvent.getName());
+        }
 
         if (this.nextEvent.getSeconds() == 0 && this.nextEvent.getMinutes() == 0)
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.YELLOW + this.nextEvent.getName() + ChatColor.YELLOW + " maintenant !", true);
@@ -253,33 +259,6 @@ public class SurvivalGameLoop implements Runnable
             a += 360;
 
         return "" + "⬆⬈➡⬊⬇⬋⬅⬉".charAt((int)a / 45);
-    }
-
-    //OLD
-    private String getDirectionalArrow(Player base, Player teammate)
-    {
-        double deltaX = teammate.getLocation().getX() - base.getLocation().getX();
-        double deltaZ = teammate.getLocation().getZ() - base.getLocation().getZ();
-
-        double temp = Math.atan2(deltaZ, deltaX) * 180 / Math.PI + 180;
-        double angle = Math.abs((base.getEyeLocation().getYaw() - 90 - temp) % 360);
-
-        if (angle > 337.5 || angle < 22.5)
-            return "⬆";
-        else if (angle > 22.5 && angle < 67.5)
-            return "⬈";
-        else if (angle > 67.5 && angle < 112.5)
-            return "➡";
-        else if (angle > 112.5 && angle < 157.5)
-            return "⬊";
-        else if (angle > 157.5 && angle < 202.5)
-            return "⬇";
-        else if (angle > 202.5 && angle < 247.5)
-            return "⬋";
-        else if (angle > 247.5 && angle < 292.5)
-            return "⬅";
-        else
-            return "⬉";
     }
 
     private String toString(int minutes, int seconds)

@@ -7,15 +7,17 @@ public class TimedEvent implements Runnable
     private final String name;
     private final ChatColor color;
     private final Runnable callback;
+    private final boolean title;
 
     private int minutes;
     private int seconds;
     private boolean wasRun;
 
-    public TimedEvent(int minutes, int seconds, String name, ChatColor color, Runnable callback)
+    public TimedEvent(int minutes, int seconds, String name, ChatColor color, boolean title, Runnable callback)
     {
         this.name = name;
         this.color = color;
+        this.title = title;
         this.callback = callback;
 
         this.minutes = minutes;
@@ -48,7 +50,7 @@ public class TimedEvent implements Runnable
 
     public TimedEvent copy(int minute, int seconds)
     {
-        return new TimedEvent(minute, seconds, this.name, this.color, this.callback);
+        return new TimedEvent(minute, seconds, this.name, this.color, this.title, this.callback);
     }
 
     public String getName() {
@@ -65,6 +67,11 @@ public class TimedEvent implements Runnable
 
     public int getSeconds() {
         return seconds;
+    }
+
+    public boolean isTitle()
+    {
+        return this.title;
     }
 
     public boolean isWasRun() {
