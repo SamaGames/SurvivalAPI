@@ -168,7 +168,7 @@ public class SpectatorListener implements Listener
     {
         if (!this.game.getStatus().equals(Status.IN_GAME))
             return;
-        
+
         if (!this.game.isSpectator(event.getPlayer()))
             return;
 

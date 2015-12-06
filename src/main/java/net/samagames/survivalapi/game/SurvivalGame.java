@@ -265,106 +265,106 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     {
         if (this.status == Status.IN_GAME)
         {
-            MetadataValue lastDamager = (player.getMetadata("lastDamager").size() > 0) ? player.getMetadata("lastDamager").get(0) : null;
-            Player killer = null;
-
-            if (lastDamager != null && lastDamager.value() instanceof Player)
+            if (!logout)
             {
-                killer = (Player) lastDamager.value();
+                MetadataValue lastDamager = (player.getMetadata("lastDamager").size() > 0) ? player.getMetadata("lastDamager").get(0) : null;
+                Player killer = null;
 
-                if(killer == null)
-                    killer = player.getKiller();
-
-                if (killer.isOnline() && this.gamePlayers.containsKey(player.getUniqueId()) && !this.gamePlayers.get(player.getUniqueId()).isSpectator())
+                if (lastDamager != null && lastDamager.value() instanceof Player)
                 {
-                    final Player finalKiller = killer;
+                    killer = (Player) lastDamager.value();
 
-                    Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () ->
+                    if(killer == null)
+                        killer = player.getKiller();
+
+                    if (killer.isOnline() && this.gamePlayers.containsKey(player.getUniqueId()) && !this.gamePlayers.get(player.getUniqueId()).isSpectator())
                     {
-                        SurvivalPlayer gamePlayer = this.getPlayer(finalKiller.getUniqueId());
-                        gamePlayer.addKill(player.getUniqueId());
-                        gamePlayer.addCoins(20, "Meurtre de " + player.getName());
+                        final Player finalKiller = killer;
 
-                        this.increaseStat(finalKiller.getUniqueId(), "kills", 1);
-                    });
+                        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () ->
+                        {
+                            SurvivalPlayer gamePlayer = this.getPlayer(finalKiller.getUniqueId());
+                            gamePlayer.addKill(player.getUniqueId());
+                            gamePlayer.addCoins(20, "Meurtre de " + player.getName());
 
-                    killer.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 400, 1));
+                            this.increaseStat(finalKiller.getUniqueId(), "kills", 1);
+                        });
+
+                        killer.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 400, 1));
+                    }
+                    else
+                    {
+                        killer = null;
+                    }
+                }
+
+                if (killer != null)
+                {
+                    this.server.broadcastMessage(this.coherenceMachine.getGameTag() + " " + player.getDisplayName() + ChatColor.YELLOW + " a été tué par " + killer.getDisplayName());
                 }
                 else
                 {
-                    killer = null;
-                }
-            }
+                    String message;
 
-            if (logout)
-            {
-                this.coherenceMachine.getMessageManager().writePlayerReconnectTimeOut(player);
-            }
-            else if (killer != null)
-            {
-                this.server.broadcastMessage(this.coherenceMachine.getGameTag() + " " + player.getDisplayName() + ChatColor.YELLOW + " a été tué par " + killer.getDisplayName());
+                    switch (player.getLastDamageCause().getCause())
+                    {
+                        case FALL:
+                        case FALLING_BLOCK:
+                            message = "est mort de chute.";
+                            break;
+
+                        case FIRE:
+                        case FIRE_TICK:
+                            message = "a fini carbonisé.";
+                            break;
+
+                        case DROWNING:
+                            message = "s'est noyé.";
+                            break;
+
+                        case LAVA:
+                            message = "a essayé de nager dans la lave. Résultat peu concluant.";
+                            break;
+
+                        case SUFFOCATION:
+                            message = "a essayé de se cacher dans un mur.";
+                            break;
+
+                        case BLOCK_EXPLOSION:
+                        case ENTITY_EXPLOSION:
+                            message = "a mangé un pétard. Allez savoir pourquoi.";
+                            break;
+
+                        case POISON:
+                        case MAGIC:
+                            message = "a s'est confronté à meilleur sorcier que lui.";
+                            break;
+
+                        case LIGHTNING:
+                            message = "s'est transformé en Pikachu !";
+                            break;
+
+                        default:
+                            message = "est mort.";
+                            break;
+                    }
+
+                    this.coherenceMachine.getMessageManager().writeCustomMessage(player.getDisplayName() + ChatColor.YELLOW + " " + message, true);
+
+                    Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> increaseStat(player.getUniqueId(), "deaths", 1));
+
+                    Titles.sendTitle(player, 0, 100, 5, ChatColor.RED + "✞", ChatColor.RED + "Vous êtes mort !");
+                    player.setGameMode(GameMode.SPECTATOR);
+                    player.setHealth(20.0D);
+                }
             }
             else
             {
-                String message;
-
-                switch (player.getLastDamageCause().getCause())
-                {
-                    case FALL:
-                    case FALLING_BLOCK:
-                        message = "est mort de chute.";
-                        break;
-
-                    case FIRE:
-                    case FIRE_TICK:
-                        message = "a fini carbonisé.";
-                        break;
-
-                    case DROWNING:
-                        message = "s'est noyé.";
-                        break;
-
-                    case LAVA:
-                        message = "a essayé de nager dans la lave. Résultat peu concluant.";
-                        break;
-
-                    case SUFFOCATION:
-                        message = "a essayé de se cacher dans un mur.";
-                        break;
-
-                    case BLOCK_EXPLOSION:
-                    case ENTITY_EXPLOSION:
-                        message = "a mangé un pétard. Allez savoir pourquoi.";
-                        break;
-
-                    case POISON:
-                    case MAGIC:
-                        message = "a s'est confronté à meilleur sorcier que lui.";
-                        break;
-
-                    case LIGHTNING:
-                        message = "s'est transformé en Pikachu !";
-                        break;
-
-                    default:
-                        message = "est mort.";
-                        break;
-                }
-
-                this.coherenceMachine.getMessageManager().writeCustomMessage(player.getDisplayName() + ChatColor.YELLOW + " " + message, true);
+                this.coherenceMachine.getMessageManager().writePlayerReconnectTimeOut(player);
             }
 
             this.checkStump(player);
             this.removeFromGame(player.getUniqueId());
-
-            if (!logout)
-            {
-                Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> increaseStat(player.getUniqueId(), "deaths", 1));
-
-                Titles.sendTitle(player, 0, 100, 5, ChatColor.RED + "✞", ChatColor.RED + "Vous êtes mort !");
-                player.setGameMode(GameMode.SPECTATOR);
-                player.setHealth(20.0D);
-            }
         }
     }
 
@@ -445,47 +445,6 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                 }
             }
         }, 5L, 5L);
-    }
-
-    private String getDamageCause(EntityDamageEvent.DamageCause cause)
-    {
-        switch (cause)
-        {
-            case SUFFOCATION:
-                return "Suffocation";
-
-            case FALL:
-                return "Chute";
-
-            case FIRE:
-            case FIRE_TICK:
-                return "Feu";
-
-            case LAVA:
-                return "Lave";
-
-            case DROWNING:
-                return "Noyade";
-
-            case BLOCK_EXPLOSION:
-            case ENTITY_EXPLOSION:
-                return "Explosion";
-
-            case LIGHTNING:
-                return "Foudre";
-
-            case POISON:
-                return "Poison";
-
-            case MAGIC:
-                return "Potion";
-
-            case FALLING_BLOCK:
-                return "Chute de blocs";
-
-            default:
-                return "Autre";
-        }
     }
 
     public JavaPlugin getPlugin()

@@ -142,7 +142,6 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     {
         this.server.getScheduler().runTaskLater(this.plugin, () ->
         {
-            List<SurvivalTeam> toRemvove = new ArrayList<>();
             SurvivalTeam team = this.teams.getTeam(player.getUniqueId());
 
             if (team == null)
@@ -172,33 +171,6 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                     this.server.broadcastMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + this.teams.size() + ChatColor.YELLOW + " équipes en jeu.");
                 }
             }
-
-            for (SurvivalTeam team_ : this.teams)
-            {
-                int players1 = 0;
-
-                if (!team_.isEmpty())
-                    for (UUID id : team.getPlayersUUID().keySet())
-                        if (this.server.getPlayer(id) != null && !team_.getPlayersUUID().get(id))
-                            players1++;
-
-                if (players1 == 0)
-                {
-                    this.server.broadcastMessage(ChatColor.GOLD + "L'équipe " + team_.getChatColor() + team_.getTeamName() + ChatColor.GOLD + " a été éliminée !");
-                    toRemvove.add(team_);
-
-                    left = this.teams.size();
-
-                    if (left == 2)
-                        this.win(this.teams.get(0));
-                    else if (left < 2)
-                        this.handleGameEnd();
-                    else
-                        this.server.broadcastMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + this.teams.size() + ChatColor.YELLOW + " équipes en jeu.");
-                }
-            }
-
-            this.teams.removeAll(toRemvove);
         }, 2L);
     }
 
