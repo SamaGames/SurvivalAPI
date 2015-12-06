@@ -1,6 +1,7 @@
 package net.samagames.survivalapi.game;
 
 import net.samagames.survivalapi.game.types.SurvivalTeamGame;
+import net.samagames.survivalapi.utils.TimedEvent;
 import net.samagames.tools.Titles;
 import net.samagames.tools.chat.ActionBarAPI;
 import net.samagames.tools.scoreboards.ObjectiveSign;
@@ -152,7 +153,7 @@ public class SurvivalGameLoop implements Runnable
                 lastLine++;
 
                 if (this.nextEvent != null)
-                    ActionBarAPI.sendMessage(player, this.nextEvent.color.toString() + this.nextEvent.name + " dans " + this.toString(this.nextEvent.seconds == 0 ? this.nextEvent.minutes - 1 : this.nextEvent.minutes, this.nextEvent.seconds == 0 ? 59 : this.nextEvent.seconds - 1));
+                    ActionBarAPI.sendMessage(player, this.nextEvent.getColor().toString() + this.nextEvent.getName() + " dans " + this.toString(this.nextEvent.getSeconds() == 0 ? this.nextEvent.getMinutes() - 1 : this.nextEvent.getMinutes(), this.nextEvent.getSeconds() == 0 ? 59 : this.nextEvent.getSeconds() - 1));
 
                 SurvivalPlayer gamePlayer = (SurvivalPlayer) this.game.getPlayer(playerUUID);
                 int kills = gamePlayer == null ? 0 : gamePlayer.getKills().size();
@@ -202,11 +203,11 @@ public class SurvivalGameLoop implements Runnable
             }
         }
 
-        if (this.nextEvent.seconds == 0 && this.nextEvent.minutes <= 3 && this.nextEvent.minutes > 0 || this.nextEvent.minutes == 0 && (this.nextEvent.seconds <= 5 || this.nextEvent.seconds == 10 || this.nextEvent.seconds == 30))
-            this.game.getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.YELLOW + this.nextEvent.name + ChatColor.YELLOW + " dans " + (this.nextEvent.minutes != 0 ? this.nextEvent.minutes + " minutes" : this.nextEvent.seconds + " secondes") + ".", true);
+        if (this.nextEvent.getSeconds() == 0 && this.nextEvent.getMinutes() <= 3 && this.nextEvent.getMinutes() > 0 || this.nextEvent.getMinutes() == 0 && (this.nextEvent.getSeconds() <= 5 || this.nextEvent.getSeconds() == 10 || this.nextEvent.getSeconds() == 30))
+            this.game.getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.YELLOW + this.nextEvent.getName() + ChatColor.YELLOW + " dans " + (this.nextEvent.getMinutes() != 0 ? this.nextEvent.getMinutes() + " minutes" : this.nextEvent.getSeconds() + " secondes") + ".", true);
 
-        if (this.nextEvent.seconds == 0 && this.nextEvent.minutes == 0)
-            this.game.getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.YELLOW + this.nextEvent.name + ChatColor.YELLOW + " maintenant !", true);
+        if (this.nextEvent.getSeconds() == 0 && this.nextEvent.getMinutes() == 0)
+            this.game.getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.YELLOW + this.nextEvent.getName() + ChatColor.YELLOW + " maintenant !", true);
 
         this.nextEvent.decrement();
     }
@@ -284,55 +285,5 @@ public class SurvivalGameLoop implements Runnable
     private String toString(int minutes, int seconds)
     {
         return (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-    }
-
-    public class TimedEvent implements Runnable
-    {
-        private final String name;
-        private final ChatColor color;
-        private final Runnable callback;
-
-        private int minutes;
-        private int seconds;
-        private boolean wasRun;
-
-        public TimedEvent(int minutes, int seconds, String name, ChatColor color, Runnable callback)
-        {
-            this.name = name;
-            this.color = color;
-            this.callback = callback;
-
-            this.minutes = minutes;
-            this.seconds = seconds;
-            this.wasRun = false;
-        }
-
-        @Override
-        public void run()
-        {
-            this.callback.run();
-        }
-
-        public void decrement()
-        {
-            this.seconds--;
-
-            if (this.seconds < 0)
-            {
-                this.minutes--;
-                this.seconds = 59;
-            }
-
-            if ((this.minutes < 0 || this.seconds == 0 && this.minutes == 0) && !this.wasRun)
-            {
-                this.wasRun = true;
-                this.run();
-            }
-        }
-
-        public TimedEvent copy(int minute, int seconds)
-        {
-            return new TimedEvent(minute, seconds, this.name, this.color, this.callback);
-        }
     }
 }

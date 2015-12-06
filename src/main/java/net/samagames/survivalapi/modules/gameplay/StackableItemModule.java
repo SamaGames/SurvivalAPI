@@ -35,9 +35,6 @@ public class StackableItemModule extends AbstractSurvivalModule
         ItemStack cursor = event.getCursor();
         ItemStack clicked = event.getCurrentItem();
 
-
-        InventoryType.SlotType slotType = event.getSlotType();
-
         Inventory top = event.getView().getTopInventory();
         InventoryType topType = top.getType();
 

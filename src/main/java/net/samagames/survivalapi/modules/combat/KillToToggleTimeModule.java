@@ -11,8 +11,8 @@ import java.util.HashMap;
 
 public class KillToToggleTimeModule extends AbstractSurvivalModule
 {
-    private final int DAY = 6000;
-    private final int NIGHT = 18000;
+    private static final int DAY = 6000;
+    private static final int NIGHT = 18000;
 
     private boolean isDay;
 

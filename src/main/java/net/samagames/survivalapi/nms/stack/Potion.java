@@ -10,7 +10,6 @@ import java.util.Map;
  * Created by Silva on 29/11/2015.
  */
 public class Potion extends ItemPotion {
-    private Map<Integer, List<MobEffect>> a = Maps.newHashMap();
     private static final Map<List<MobEffect>, Integer> b = Maps.newLinkedHashMap();
 
     public Potion() {

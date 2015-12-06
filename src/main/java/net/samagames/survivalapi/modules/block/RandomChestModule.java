@@ -3,7 +3,6 @@ package net.samagames.survivalapi.modules.block;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
-import net.samagames.survivalapi.modules.utility.DropTaggingModule;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
@@ -18,6 +17,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class RandomChestModule extends AbstractSurvivalModule
 {
@@ -61,7 +61,13 @@ public class RandomChestModule extends AbstractSurvivalModule
                 if (addedItems > 20)
                     break;
 
-                int frequency = this.items.get(item);
+                //More efficient #firebug
+                int frequency = 0;
+                for(Map.Entry<ItemStack, Integer> entry : this.items.entrySet())
+                {
+                    if(entry.getKey().equals(item))
+                        frequency = entry.getValue();
+                }
 
                 SecureRandom random = new SecureRandom();
                 if (random.nextInt(1000) <= frequency*10)
