@@ -1,5 +1,6 @@
 package net.samagames.survivalapi.game.types.run;
 
+import net.samagames.api.SamaGamesAPI;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.modules.block.RandomChestModule;
 import net.samagames.survivalapi.modules.block.RapidOresModule;
@@ -36,7 +37,6 @@ public interface RunBasedGame
         SurvivalAPI.get().loadModule(TorchThanCoalModule.class, new TorchThanCoalModule.ConfigurationBuilder().build());
         SurvivalAPI.get().loadModule(RemoveItemOnUseModule.class, null);
 
-
         ConstantPotionModule.ConfigurationBuilder constantPotionConfiguration = new ConstantPotionModule.ConfigurationBuilder();
         constantPotionConfiguration.addPotionEffect(PotionEffectType.SPEED, 0);
         constantPotionConfiguration.addPotionEffect(PotionEffectType.FAST_DIGGING, 0);
@@ -56,6 +56,8 @@ public interface RunBasedGame
         dropMyEffectsConfiguration.blacklistPotionEffect(PotionEffectType.FAST_DIGGING);
 
         SurvivalAPI.get().loadModule(DropMyEffectsModule.class, dropMyEffectsConfiguration.build());
+
+        SamaGamesAPI.get().getGameManager().setMaxReconnectTime(20);
     }
 
     default void removeEffects(Player player)

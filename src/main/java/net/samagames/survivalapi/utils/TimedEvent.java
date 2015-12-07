@@ -61,6 +61,11 @@ public class TimedEvent implements Runnable
         return color;
     }
 
+    public Runnable getCallback()
+    {
+        return this.callback;
+    }
+
     public int getMinutes() {
         return minutes;
     }

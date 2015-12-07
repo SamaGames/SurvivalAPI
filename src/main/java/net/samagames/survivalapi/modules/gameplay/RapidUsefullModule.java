@@ -84,24 +84,6 @@ public class RapidUsefullModule extends AbstractSurvivalModule
         }
     }
 
-    private ItemStack verifyStack(ItemStack stack)
-    {
-        if(rapidOresModule != null)
-        {
-            stack = rapidOresModule.addMeta(stack);
-        }
-        return stack;
-    }
-
-    private boolean hasMeta(ItemStack stack)
-    {
-        if(rapidOresModule != null)
-        {
-            return rapidOresModule.hasMeta(stack);
-        }
-        return false;
-    }
-
     /**
      * Drop some utilities
      *
@@ -119,7 +101,7 @@ public class RapidUsefullModule extends AbstractSurvivalModule
 
             for (ItemStack stack : event.getDrops())
                 if (stack.getType() == Material.SULPHUR)
-                    newDrops.add(new ItemStack(Material.TNT, stack.getAmount() * 2));
+                    newDrops.add(new ItemStack(Material.TNT, stack.getAmount()));
         }
 
         if (newDrops != null)
@@ -140,5 +122,23 @@ public class RapidUsefullModule extends AbstractSurvivalModule
         requiredModules.add(RapidOresModule.class);
 
         return requiredModules;
+    }
+
+    private ItemStack verifyStack(ItemStack stack)
+    {
+        if(rapidOresModule != null)
+        {
+            stack = rapidOresModule.addMeta(stack);
+        }
+        return stack;
+    }
+
+    private boolean hasMeta(ItemStack stack)
+    {
+        if(rapidOresModule != null)
+        {
+            return rapidOresModule.hasMeta(stack);
+        }
+        return false;
     }
 }

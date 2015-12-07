@@ -66,6 +66,8 @@ public class RapidFoodModule extends AbstractSurvivalModule
             event.getEntity().setItemStack(new ItemStack(Material.GOLDEN_CARROT, 1));
         else if (material == Material.WHEAT)
             event.getEntity().setItemStack(new ItemStack(Material.BREAD, 1));
+        else if (material == Material.PUMPKIN)
+            event.getEntity().setItemStack(new ItemStack(Material.PUMPKIN_PIE, 1));
     }
 
     /**
