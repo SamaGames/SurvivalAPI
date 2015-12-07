@@ -11,6 +11,7 @@ import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.game.commands.CommandNextEvent;
 import net.samagames.survivalapi.game.commands.CommandUHC;
 import net.samagames.survivalapi.game.events.*;
+import net.samagames.survivalapi.game.types.SurvivalTeamGame;
 import net.samagames.tools.ColorUtils;
 import net.samagames.tools.Titles;
 import net.samagames.tools.scoreboards.ObjectiveSign;
@@ -300,7 +301,18 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
                 if (killer != null)
                 {
-                    this.server.broadcastMessage(this.coherenceMachine.getGameTag() + " " + player.getDisplayName() + ChatColor.YELLOW + " a été tué par " + killer.getDisplayName());
+                    String message = player.getDisplayName() + ChatColor.YELLOW + " a été tué par ";
+
+                    if (this instanceof SurvivalTeamGame)
+                    {
+                        message += this.getPlayer(killer.getUniqueId()).getTeam().getChatColor() + killer.getName();
+                    }
+                    else
+                    {
+                        message += killer.getDisplayName();
+                    }
+
+                    this.coherenceMachine.getMessageManager().writeCustomMessage(message, true);
                 }
                 else
                 {
