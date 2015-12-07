@@ -316,7 +316,18 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                 }
                 else
                 {
-                    String message;
+                    String message = "";
+
+                    if (this instanceof SurvivalTeamGame)
+                    {
+                        message += this.getPlayer(killer.getUniqueId()).getTeam().getChatColor() + killer.getName();
+                    }
+                    else
+                    {
+                        message += killer.getDisplayName();
+                    }
+
+                    message += " " + ChatColor.YELLOW;
 
                     switch (player.getLastDamageCause().getCause())
                     {
@@ -361,7 +372,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                             break;
                     }
 
-                    this.coherenceMachine.getMessageManager().writeCustomMessage(player.getDisplayName() + ChatColor.YELLOW + " " + message, true);
+
+                    this.coherenceMachine.getMessageManager().writeCustomMessage(message, true);
 
                     Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> increaseStat(player.getUniqueId(), "deaths", 1));
 
