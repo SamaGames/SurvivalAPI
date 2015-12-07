@@ -312,16 +312,12 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                 }
                 else
                 {
-                    String message = "";
+                    String message;
 
                     if (this instanceof SurvivalTeamGame)
-                    {
-                        message += this.getPlayer(player.getUniqueId()).getTeam().getChatColor() + player.getName();
-                    }
+                        message = this.getPlayer(player.getUniqueId()).getTeam().getChatColor() + player.getName();
                     else
-                    {
-                        message += player.getDisplayName();
-                    }
+                        message = player.getDisplayName();
 
                     message += " " + ChatColor.YELLOW;
 
@@ -329,42 +325,42 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                     {
                         case FALL:
                         case FALLING_BLOCK:
-                            message = "est mort de chute.";
+                            message += "est mort de chute.";
                             break;
 
                         case FIRE:
                         case FIRE_TICK:
-                            message = "a fini carbonisé.";
+                            message += "a fini carbonisé.";
                             break;
 
                         case DROWNING:
-                            message = "s'est noyé.";
+                            message += "s'est noyé.";
                             break;
 
                         case LAVA:
-                            message = "a essayé de nager dans la lave. Résultat peu concluant.";
+                            message += "a essayé de nager dans la lave. Résultat peu concluant.";
                             break;
 
                         case SUFFOCATION:
-                            message = "a essayé de se cacher dans un mur.";
+                            message += "a essayé de se cacher dans un mur.";
                             break;
 
                         case BLOCK_EXPLOSION:
                         case ENTITY_EXPLOSION:
-                            message = "a mangé un pétard. Allez savoir pourquoi.";
+                            message += "a mangé un pétard. Allez savoir pourquoi.";
                             break;
 
                         case POISON:
                         case MAGIC:
-                            message = "a s'est confronté à meilleur sorcier que lui.";
+                            message += "a s'est confronté à meilleur sorcier que lui.";
                             break;
 
                         case LIGHTNING:
-                            message = "s'est transformé en Pikachu !";
+                            message += "s'est transformé en Pikachu !";
                             break;
 
                         default:
-                            message = "est mort.";
+                            message += "est mort.";
                             break;
                     }
 
