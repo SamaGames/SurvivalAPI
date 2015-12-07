@@ -1,5 +1,6 @@
 package net.samagames.survivalapi.game.types;
 
+import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Status;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.game.SurvivalGameLoop;
@@ -16,7 +17,6 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.Team;
 
 import java.util.*;
 
@@ -29,6 +29,9 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     public SurvivalTeamGame(JavaPlugin plugin, String gameCodeName, String gameName, String gameDescription, String magicSymbol, Class<? extends SURVIVALLOOP> survivalGameLoopClass, int personsPerTeam)
     {
         super(plugin, gameCodeName, gameName, gameDescription, magicSymbol, survivalGameLoopClass);
+
+        //Disable rank tab
+        SamaGamesAPI.get().getServerOptions().setRankTabColorEnable(false);
 
         this.personsPerTeam = personsPerTeam;
         this.teams = new SurvivalTeamList();
