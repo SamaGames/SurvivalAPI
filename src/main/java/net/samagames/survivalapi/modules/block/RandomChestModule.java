@@ -31,8 +31,7 @@ public class RandomChestModule extends AbstractSurvivalModule
         Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
 
         this.items = (HashMap<ItemStack, Integer>) moduleConfiguration.get("items");
-
-        rapidOresModule = SurvivalAPI.get().getModule(RapidOresModule.class);
+        this.rapidOresModule = SurvivalAPI.get().getModule(RapidOresModule.class);
     }
 
     /**
@@ -61,31 +60,32 @@ public class RandomChestModule extends AbstractSurvivalModule
                 if (addedItems > 20)
                     break;
 
-                //More efficient #firebug
                 int frequency = 0;
+
                 for(Map.Entry<ItemStack, Integer> entry : this.items.entrySet())
-                {
                     if(entry.getKey().equals(item))
                         frequency = entry.getValue();
-                }
 
                 SecureRandom random = new SecureRandom();
-                if (random.nextInt(1000) <= frequency*10)
+
+                if (random.nextInt(1000) <= frequency * 10)
                 {
                     ItemStack stack = item.clone();
                     stack.setAmount((random.nextInt(3) + 1) * stack.getAmount());
 
+                    slot = random.nextInt(inventory.getSize());
+
                     while (inventory.getItem(slot) != null)
+                    {
                         slot++;
+
+                        if (slot > inventory.getSize())
+                            slot = 0;
+                    }
 
                     inventory.setItem(slot, verifyStack(stack));
                     addedItems++;
                 }
-
-                slot++;
-
-                if (slot > 26)
-                    slot = 0;
             }
 
             chest.setMetadata("playerInteracted", new FixedMetadataValue(this.plugin, true));
@@ -94,13 +94,10 @@ public class RandomChestModule extends AbstractSurvivalModule
 
     public ItemStack verifyStack(ItemStack stack)
     {
-        if(rapidOresModule != null)
-        {
-            if (rapidOresModule.isDoubledType(stack.getType()))
-            {
-                return rapidOresModule.addMeta(stack);
-            }
-        }
+        if(this.rapidOresModule != null)
+            if (this.rapidOresModule.isDoubledType(stack.getType()))
+                return this.rapidOresModule.addMeta(stack);
+
         return stack;
     }
 
@@ -113,9 +110,7 @@ public class RandomChestModule extends AbstractSurvivalModule
     public void onPlayerPlaceBlock(BlockPlaceEvent event)
     {
         if(event.getBlockPlaced().getType().equals(Material.CHEST))
-        {
             event.getBlockPlaced().getState().setMetadata("playerInteracted", new FixedMetadataValue(this.plugin, true));
-        }
     }
 
     @Override
