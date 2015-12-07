@@ -301,16 +301,12 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
                 if (killer != null)
                 {
-                    String message = player.getDisplayName() + ChatColor.YELLOW + " a été tué par ";
+                    String message;
 
                     if (this instanceof SurvivalTeamGame)
-                    {
-                        message += this.getPlayer(killer.getUniqueId()).getTeam().getChatColor() + killer.getName();
-                    }
+                        message = this.getPlayer(player.getUniqueId()).getTeam().getChatColor() + player.getName() + ChatColor.YELLOW + " a été tué par " + this.getPlayer(killer.getUniqueId()).getTeam().getChatColor() + killer.getName();
                     else
-                    {
-                        message += killer.getDisplayName();
-                    }
+                        message = player.getDisplayName() + ChatColor.YELLOW + " a été tué par " + killer.getDisplayName();
 
                     this.coherenceMachine.getMessageManager().writeCustomMessage(message, true);
                 }
@@ -320,11 +316,11 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
                     if (this instanceof SurvivalTeamGame)
                     {
-                        message += this.getPlayer(killer.getUniqueId()).getTeam().getChatColor() + killer.getName();
+                        message += this.getPlayer(player.getUniqueId()).getTeam().getChatColor() + player.getName();
                     }
                     else
                     {
-                        message += killer.getDisplayName();
+                        message += player.getDisplayName();
                     }
 
                     message += " " + ChatColor.YELLOW;
