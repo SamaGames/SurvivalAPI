@@ -180,6 +180,8 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     @Override
     public void stumpPlayer(Player player, boolean logout)
     {
+        super.stumpPlayer(player, logout);
+
         if (logout && !this.getStatus().equals(Status.IN_GAME))
         {
             SurvivalTeam team = this.teams.getTeam(player.getUniqueId());
@@ -188,8 +190,6 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 team.remove(player.getUniqueId(), true);
 
         }
-
-        super.stumpPlayer(player, logout);
     }
 
     public void win(final SurvivalTeam team)

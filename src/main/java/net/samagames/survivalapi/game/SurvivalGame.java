@@ -11,6 +11,7 @@ import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.game.commands.CommandNextEvent;
 import net.samagames.survivalapi.game.commands.CommandUHC;
 import net.samagames.survivalapi.game.events.*;
+import net.samagames.survivalapi.game.types.SurvivalTeamGame;
 import net.samagames.tools.ColorUtils;
 import net.samagames.tools.Titles;
 import net.samagames.tools.scoreboards.ObjectiveSign;
@@ -300,56 +301,71 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
                 if (killer != null)
                 {
-                    this.server.broadcastMessage(this.coherenceMachine.getGameTag() + " " + player.getDisplayName() + ChatColor.YELLOW + " a été tué par " + killer.getDisplayName());
+                    String message;
+
+                    if (this instanceof SurvivalTeamGame)
+                        message = this.getPlayer(player.getUniqueId()).getTeam().getChatColor() + player.getName() + ChatColor.YELLOW + " a été tué par " + this.getPlayer(killer.getUniqueId()).getTeam().getChatColor() + killer.getName();
+                    else
+                        message = player.getDisplayName() + ChatColor.YELLOW + " a été tué par " + killer.getDisplayName();
+
+                    this.coherenceMachine.getMessageManager().writeCustomMessage(message, true);
                 }
                 else
                 {
                     String message;
 
+                    if (this instanceof SurvivalTeamGame)
+                        message = this.getPlayer(player.getUniqueId()).getTeam().getChatColor() + player.getName();
+                    else
+                        message = player.getDisplayName();
+
+                    message += " " + ChatColor.YELLOW;
+
                     switch (player.getLastDamageCause().getCause())
                     {
                         case FALL:
                         case FALLING_BLOCK:
-                            message = "est mort de chute.";
+                            message += "est mort de chute.";
                             break;
 
                         case FIRE:
                         case FIRE_TICK:
-                            message = "a fini carbonisé.";
+                            message += "a fini carbonisé.";
                             break;
 
                         case DROWNING:
-                            message = "s'est noyé.";
+                            message += "s'est noyé.";
                             break;
 
                         case LAVA:
-                            message = "a essayé de nager dans la lave. Résultat peu concluant.";
+                            message += "a essayé de nager dans la lave. Résultat peu concluant.";
                             break;
 
                         case SUFFOCATION:
-                            message = "a essayé de se cacher dans un mur.";
+                            message += "a essayé de se cacher dans un mur.";
                             break;
 
                         case BLOCK_EXPLOSION:
                         case ENTITY_EXPLOSION:
-                            message = "a mangé un pétard. Allez savoir pourquoi.";
+                            message += "a mangé un pétard. Allez savoir pourquoi.";
                             break;
 
                         case POISON:
                         case MAGIC:
-                            message = "a s'est confronté à meilleur sorcier que lui.";
+                            message += "a s'est confronté à meilleur sorcier que lui.";
                             break;
 
                         case LIGHTNING:
-                            message = "s'est transformé en Pikachu !";
+                            message += "s'est transformé en Pikachu !";
                             break;
 
                         default:
-                            message = "est mort.";
+                            message += "est mort.";
                             break;
                     }
 
-                    this.coherenceMachine.getMessageManager().writeCustomMessage(player.getDisplayName() + ChatColor.YELLOW + " " + message, true);
+
+                    this.coherenceMachine.getMessageManager().writeCustomMessage(message, true);
 
                     Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> increaseStat(player.getUniqueId(), "deaths", 1));
 
