@@ -69,7 +69,9 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         if (this.getInGamePlayers().size() <= this.personsPerTeam)
             return;
 
-        for (UUID uuid : (Set<UUID>) this.getInGamePlayers().keySet())
+        List<UUID> uuids = new ArrayList<>();
+        uuids.addAll(this.getInGamePlayers().keySet());
+        for (UUID uuid : uuids)
         {
             Player player = Bukkit.getPlayer(uuid);
 

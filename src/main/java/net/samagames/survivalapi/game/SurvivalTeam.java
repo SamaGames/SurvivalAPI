@@ -64,14 +64,14 @@ public class SurvivalTeam
         }
 
         ((SurvivalPlayer) this.game.getPlayer(player)).setTeam(this);
-        this.team.addPlayer(newJoiner);
+        this.team.addEntry(newJoiner.getName());
 
         this.players.put(player, false);
     }
 
     public void rejoin(Player player)
     {
-        this.team.addPlayer(player);
+        this.team.addEntry(player.getName());
     }
 
     public void invite(String inviter, UUID invited)
@@ -97,7 +97,7 @@ public class SurvivalTeam
         else
         {
             this.players.remove(player);
-            this.team.removePlayer(Bukkit.getOfflinePlayer(player));
+            this.team.removeEntry(Bukkit.getOfflinePlayer(player).getName());
         }
 
         this.lockCheck();
@@ -112,7 +112,7 @@ public class SurvivalTeam
         else
         {
             this.players.remove(player);
-            this.team.removePlayer(Bukkit.getOfflinePlayer(player));
+            this.team.removeEntry(Bukkit.getOfflinePlayer(player).getName());
         }
 
         this.lockCheck();

@@ -45,6 +45,9 @@ public class RunBasedGameLoop extends SurvivalGameLoop
 
             for (SurvivalPlayer player : (Collection<SurvivalPlayer>) this.game.getInGamePlayers().values())
             {
+                if(!player.isOnline())
+                    continue;
+
                 try
                 {
                     player.getPlayerIfOnline().removePotionEffect(PotionEffectType.SPEED);
