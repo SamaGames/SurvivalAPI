@@ -88,4 +88,8 @@ public class SurvivalAPI
     {
         return instance;
     }
+
+    public SurvivalPlugin getPlugin() {
+        return plugin;
+    }
 }

@@ -196,7 +196,8 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     {
         for (final UUID playerID : team.getPlayersUUID().keySet())
         {
-            if (!Bukkit.getPlayer(playerID).isOnline())
+            Player player = Bukkit.getPlayer(playerID);
+            if (player == null)
                 continue;
 
             SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(playerID);
@@ -204,11 +205,6 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             playerData.addStars(2, "Victoire !");
 
             this.increaseStat(playerID, "wins", 1);
-
-            final Player player = this.server.getPlayer(playerID);
-
-            if (player == null)
-                continue;
 
             this.effectsOnWinner(player);
         }

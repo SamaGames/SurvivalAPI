@@ -10,7 +10,6 @@ import org.bukkit.Material;
 import org.bukkit.potion.PotionEffectType;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map;
@@ -55,6 +54,8 @@ public class NMSPatcher
         }
 
         Reflection.setFinalStatic(BiomeBase.class.getDeclaredField("biomes"), biomes);
+
+       //patchObsidian();
     }
 
     private void setReedsPerChunk(BiomeBase biome, int value) throws NoSuchFieldException, IllegalAccessException
@@ -172,6 +173,20 @@ public class NMSPatcher
 
             Reflection.setFinalStatic(Items.class.getDeclaredField("POTION"), potion);
             Reflection.setFinalStatic(Items.class.getDeclaredField("MUSHROOM_STEW"), soup);
+        }
+        catch (ReflectiveOperationException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void patchObsidian()
+    {
+        try
+        {
+            Field field = net.minecraft.server.v1_8_R3.Block.class.getDeclaredField("strength");
+            field.setAccessible(true);
+            field.setFloat(Blocks.OBSIDIAN, 1.5F);
         }
         catch (ReflectiveOperationException e)
         {

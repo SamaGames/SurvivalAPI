@@ -8,16 +8,19 @@ import net.samagames.tools.GameUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -26,13 +29,18 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.HashMap;
+
 public class GameListener implements Listener
 {
     private SurvivalGame game;
 
+    private HashMap<Block, Long> breakingBlock;
+
     public GameListener(SurvivalGame game)
     {
         this.game = game;
+        breakingBlock = new HashMap<>();
     }
 
     /**
@@ -122,6 +130,16 @@ public class GameListener implements Listener
             event.getPlayer().sendMessage(ChatColor.RED + "L'utilisation de Minecart est bloqué.");
             event.setCancelled(true);
         }
+
+       /* if(event.getAction().equals(Action.LEFT_CLICK_BLOCK))
+        {
+            Block block = event.getClickedBlock();
+
+            if(block.getType().equals(Material.OBSIDIAN))
+            {
+                Bukkit.getScheduler().runTaskLater(SurvivalAPI.get().getPlugin(), () -> block.breakNaturally(), 30L);
+            }
+        }*/
     }
 
     /**
