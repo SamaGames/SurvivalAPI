@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
 
@@ -25,13 +24,11 @@ public class RunBasedTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     public void teleportDeathMatch()
     {
         Iterator<Location> locationIterator = this.spawns.iterator();
-        ArrayList<SurvivalTeam> toRemove = new ArrayList<>();
 
         for (SurvivalTeam team : this.teams)
         {
             if (!locationIterator.hasNext())
             {
-                toRemove.add(team);
 
                 for (UUID playerUUID : team.getPlayersUUID().keySet())
                 {
@@ -63,8 +60,5 @@ public class RunBasedTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 }
             }
         }
-
-        this.teams.removeAll(toRemove);
-        toRemove.clear();
     }
 }

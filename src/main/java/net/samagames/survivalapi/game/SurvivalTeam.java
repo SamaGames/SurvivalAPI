@@ -57,7 +57,6 @@ public class SurvivalTeam
             for (UUID member : this.players.keySet())
             {
                 Player user = Bukkit.getPlayer(member);
-
                 if (user != null)
                     user.sendMessage(this.game.getCoherenceMachine().getGameTag() + " " + ChatColor.AQUA + newJoiner.getName() + ChatColor.YELLOW + " a rejoint l'équipe.");
             }
@@ -88,32 +87,17 @@ public class SurvivalTeam
                 .send(Bukkit.getPlayer(invited));
     }
 
-    public void remove(UUID player, boolean death)
+    public int playerDied(UUID player)
     {
-        if (death)
-        {
-            this.players.put(player, true);
-        }
-        else
-        {
-            this.players.remove(player);
-            this.team.removeEntry(Bukkit.getOfflinePlayer(player).getName());
-        }
+        this.players.put(player, true);
 
-        this.lockCheck();
+        return this.getAlivePlayers();
     }
 
-    public int removePlayer(UUID player, boolean death)
+    public int removePlayer(UUID player)
     {
-        if (death)
-        {
-            this.players.put(player, true);
-        }
-        else
-        {
-            this.players.remove(player);
-            this.team.removeEntry(Bukkit.getOfflinePlayer(player).getName());
-        }
+        this.players.remove(player);
+        this.team.removeEntry(Bukkit.getOfflinePlayer(player).getName());
 
         this.lockCheck();
 
@@ -143,7 +127,7 @@ public class SurvivalTeam
 
     public HashMap<UUID, Boolean> getPlayersUUID()
     {
-        return this.players;
+        return (HashMap<UUID, Boolean>) this.players.clone();
     }
 
     public int getAlivePlayers()
@@ -194,13 +178,7 @@ public class SurvivalTeam
 
     public boolean isDead()
     {
-        boolean flag = true;
-
-        for (boolean dead : this.getPlayersUUID().values())
-            if (!dead)
-                flag = false;
-
-        return flag;
+        return getAlivePlayers() == 0;
     }
 
     public boolean isFull()

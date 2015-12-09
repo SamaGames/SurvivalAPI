@@ -19,7 +19,6 @@ import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -422,6 +421,9 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
     public void effectsOnWinner(Player player)
     {
+        if (player == null || !player.isOnline())
+            return;
+
         this.server.getScheduler().scheduleSyncRepeatingTask(this.plugin, new Runnable()
         {
             int timer = 0;

@@ -66,9 +66,6 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     @Override
     public void startGame()
     {
-        if (this.getInGamePlayers().size() <= this.personsPerTeam)
-            return;
-
         List<UUID> uuids = new ArrayList<>();
         uuids.addAll(this.getInGamePlayers().keySet());
         for (UUID uuid : uuids)
@@ -94,10 +91,6 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             }
         }
 
-        ArrayList<SurvivalTeam> toRemove = new ArrayList<>();
-        this.teams.stream().filter(SurvivalTeam::isEmpty).forEach(toRemove::add);
-        this.teams.removeAll(toRemove);
-
         super.startGame();
     }
 
@@ -105,13 +98,11 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     public void teleport()
     {
         Iterator<Location> locationIterator = this.spawns.iterator();
-        List<SurvivalTeam> toRemove = new ArrayList<>();
 
         for (SurvivalTeam team : this.teams)
         {
             if (!locationIterator.hasNext() || team.isEmpty())
             {
-                toRemove.add(team);
 
                 for (UUID player : team.getPlayersUUID().keySet())
                 {
@@ -120,6 +111,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                     if (p != null)
                         p.kickPlayer(ChatColor.RED + "Plus de place dans la partie.");
 
+                    team.removePlayer(player);
                     this.gamePlayers.remove(player);
                 }
                 continue;
@@ -132,14 +124,13 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 Player p = this.server.getPlayer(player);
 
                 if (p == null)
+                {
                     this.gamePlayers.remove(player);
+                }
                 else
                     p.teleport(location);
             }
         }
-
-        this.teams.removeAll(toRemove);
-        toRemove.clear();
     }
 
     @Override
@@ -152,28 +143,27 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             if (team == null)
                 return;
 
-            int left = team.removePlayer(player.getUniqueId(), true);
+            int left = team.playerDied(player.getUniqueId());
 
             if (left == 0)
             {
                 this.server.broadcastMessage(ChatColor.GOLD + "L'équipe " + team.getChatColor() + team.getTeamName() + ChatColor.GOLD + " a été éliminée !");
-                this.teams.remove(team);
 
-                left = this.teams.size();
+                int teamLeft = countAliveTeam();
 
-                if (left == 1)
+                if (teamLeft == 1)
                 {
                     this.win(this.teams.get(0));
                     return;
                 }
-                else if (left < 1)
+                else if (teamLeft < 1)
                 {
                     this.handleGameEnd();
                     return;
                 }
                 else
                 {
-                    this.server.broadcastMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + this.teams.size() + ChatColor.YELLOW + " équipes en jeu.");
+                    this.server.broadcastMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + teamLeft + ChatColor.YELLOW + " équipes en jeu.");
                 }
             }
         }, 2L);
@@ -189,7 +179,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             SurvivalTeam team = this.teams.getTeam(player.getUniqueId());
 
             if (team != null)
-                team.remove(player.getUniqueId(), true);
+                team.playerDied(player.getUniqueId());
 
         }
     }
@@ -198,15 +188,19 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     {
         for (final UUID playerID : team.getPlayersUUID().keySet())
         {
+
+            SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(playerID);
+            if(playerData != null)
+            {
+                playerData.addCoins(100, "Victoire !");
+                playerData.addStars(2, "Victoire !");
+            }
+
+            this.increaseStat(playerID, "wins", 1);
+
             Player player = Bukkit.getPlayer(playerID);
             if (player == null)
                 continue;
-
-            SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(playerID);
-            playerData.addCoins(100, "Victoire !");
-            playerData.addStars(2, "Victoire !");
-
-            this.increaseStat(playerID, "wins", 1);
 
             this.effectsOnWinner(player);
         }
@@ -232,6 +226,19 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     public SurvivalTeamList getTeams()
     {
         return this.teams;
+    }
+
+    public int countAliveTeam()
+    {
+        int nb = 0;
+
+        for(SurvivalTeam team : teams)
+        {
+            if (!team.isDead())
+                nb++;
+        }
+
+        return nb;
     }
 
     public int getPersonsPerTeam()
