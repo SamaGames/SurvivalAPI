@@ -29,7 +29,6 @@ public class RunBasedTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         {
             if (!locationIterator.hasNext())
             {
-
                 for (UUID playerUUID : team.getPlayersUUID().keySet())
                 {
                     Player player = this.server.getPlayer(playerUUID);
@@ -51,7 +50,7 @@ public class RunBasedTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
 
                 if (player == null)
                 {
-                    this.gamePlayers.remove(playerUUID);
+                    continue;
                 }
                 else
                 {
