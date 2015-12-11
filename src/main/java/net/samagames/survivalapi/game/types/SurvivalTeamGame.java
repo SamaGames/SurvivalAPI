@@ -123,12 +123,10 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             {
                 Player p = this.server.getPlayer(player);
 
-                if (p == null)
+                if (p != null)
                 {
-                    this.gamePlayers.remove(player);
-                }
-                else
                     p.teleport(location);
+                }
             }
         }
     }
