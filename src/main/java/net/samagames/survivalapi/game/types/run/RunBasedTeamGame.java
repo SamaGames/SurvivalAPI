@@ -48,7 +48,7 @@ public class RunBasedTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             {
                 Player player = this.server.getPlayer(playerUUID);
 
-                if (player == null)
+                if (player != null)
                 {
                     this.removeEffects(player);
                     player.teleport(new Location(location.getWorld(), location.getX() * 4 / 10, 150.0, location.getZ() * 4 / 10));
