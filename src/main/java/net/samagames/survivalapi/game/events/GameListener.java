@@ -152,7 +152,7 @@ public class GameListener implements Listener
     {
         if (this.game.hasPlayer(event.getEntity()) && !this.game.isSpectator(event.getEntity()))
         {
-            this.game.stumpPlayer(event.getEntity(), false);
+            this.game.stumpPlayer(event.getEntity().getUniqueId(), false);
 
             event.getDrops().add(new ItemStack(Material.GOLDEN_APPLE));
             event.setDeathMessage("");
