@@ -141,7 +141,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     }
 
     public abstract void teleport();
-    public abstract void checkStump(Player player);
+    public abstract void checkStump(UUID playerUUID);
 
     @Override
     public void handleLogin(Player player)
@@ -167,7 +167,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     public void handleReconnectTimeOut(OfflinePlayer player, boolean silent)
     {
         super.handleReconnectTimeOut(player, silent);
-        this.stumpPlayer(player.getPlayer(), true);
+        this.stumpPlayer(player.getUniqueId(), true);
     }
 
     @Override
@@ -261,12 +261,13 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         }
     }
 
-    public void stumpPlayer(Player player, boolean logout)
+    public void stumpPlayer(UUID playerUUID, boolean logout)
     {
         if (this.status == Status.IN_GAME)
         {
             if (!logout)
             {
+                Player player = Bukkit.getPlayer(playerUUID);
                 MetadataValue lastDamager = (player.getMetadata("lastDamager").size() > 0) ? player.getMetadata("lastDamager").get(0) : null;
                 Player killer = null;
 
@@ -375,11 +376,11 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             }
             else
             {
-                this.coherenceMachine.getMessageManager().writePlayerReconnectTimeOut(player);
+                this.coherenceMachine.getMessageManager().writePlayerReconnectTimeOut(Bukkit.getOfflinePlayer(playerUUID));
             }
 
-            this.checkStump(player);
-            this.removeFromGame(player.getUniqueId());
+            this.checkStump(playerUUID);
+            this.removeFromGame(playerUUID);
         }
     }
 

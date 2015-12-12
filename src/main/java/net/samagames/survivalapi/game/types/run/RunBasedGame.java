@@ -26,7 +26,7 @@ public interface RunBasedGame
         //SurvivalAPI.get().loadModule(StackableItemModule.class, null); //WIP
 
         SurvivalAPI.get().loadModule(RapidOresModule.class, new RapidOresModule.ConfigurationBuilder().build());
-        SurvivalAPI.get().loadModule(RapidToolsModule.class, null);
+        SurvivalAPI.get().loadModule(RapidToolsModule.class, new RapidToolsModule.ConfigurationBuilder().build());
         SurvivalAPI.get().loadModule(RapidFoodModule.class, null);
         SurvivalAPI.get().loadModule(RapidStackingModule.class, null);
         SurvivalAPI.get().loadModule(RapidUsefullModule.class, null);

@@ -132,16 +132,16 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     }
 
     @Override
-    public void checkStump(Player player)
+    public void checkStump(UUID playerUUID)
     {
         this.server.getScheduler().runTaskLater(this.plugin, () ->
         {
-            SurvivalTeam team = this.teams.getTeam(player.getUniqueId());
+            SurvivalTeam team = this.teams.getTeam(playerUUID);
 
             if (team == null)
                 return;
 
-            int left = team.playerDied(player.getUniqueId());
+            int left = team.playerDied(playerUUID);
 
             if (left == 0)
             {
@@ -168,16 +168,16 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     }
 
     @Override
-    public void stumpPlayer(Player player, boolean logout)
+    public void stumpPlayer(UUID playerUUID, boolean logout)
     {
-        super.stumpPlayer(player, logout);
+        super.stumpPlayer(playerUUID, logout);
 
         if (logout && !this.getStatus().equals(Status.IN_GAME))
         {
-            SurvivalTeam team = this.teams.getTeam(player.getUniqueId());
+            SurvivalTeam team = this.teams.getTeam(playerUUID);
 
             if (team != null)
-                team.playerDied(player.getUniqueId());
+                team.playerDied(playerUUID);
 
         }
     }

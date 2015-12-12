@@ -21,9 +21,9 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     }
 
     @Override
-    public void checkStump(Player player)
+    public void checkStump(UUID playerUUID)
     {
-        SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(player.getUniqueId());
+        SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(playerUUID);
 
         if (getInGamePlayers().size() == 3)
         {

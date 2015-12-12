@@ -2,6 +2,7 @@ package net.samagames.survivalapi;
 
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import org.bukkit.event.HandlerList;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -67,6 +68,19 @@ public class SurvivalAPI
             {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void unloadModule(Class<? extends AbstractSurvivalModule> moduleClass)
+    {
+        if(this.modulesLoaded.containsKey(moduleClass.getSimpleName()))
+        {
+            AbstractSurvivalModule module = this.modulesLoaded.get(moduleClass.getSimpleName());
+
+            HandlerList.unregisterAll(module);
+
+            this.modulesLoaded.remove(moduleClass.getSimpleName());
+            this.plugin.getLogger().info("Module unloaded: " + moduleClass.getSimpleName() + " (" + this.modulesLoaded.size() + " modules loaded)");
         }
     }
 
