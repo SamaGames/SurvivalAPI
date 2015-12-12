@@ -59,7 +59,7 @@ public class RapidToolsModule extends AbstractSurvivalModule
 
     public Material getMaterial(Material material)
     {
-        return Material.valueOf(((String) this.moduleConfiguration.get("material")).toUpperCase() + "_" + material.name().split("_")[1]);
+        return Material.valueOf(((ConfigurationBuilder.ToolMaterial) this.moduleConfiguration.get("material")).name().toUpperCase() + "_" + material.name().split("_")[1]);
     }
 
     public static class ConfigurationBuilder
