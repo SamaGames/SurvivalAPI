@@ -147,11 +147,11 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             {
                 this.server.broadcastMessage(ChatColor.GOLD + "L'équipe " + team.getChatColor() + team.getTeamName() + ChatColor.GOLD + " a été éliminée !");
 
-                int teamLeft = countAliveTeam();
+                int teamLeft = this.countAliveTeam();
 
                 if (teamLeft == 1)
                 {
-                    this.win(this.teams.get(0));
+                    this.win(this.getLastAliveTeam());
                     return;
                 }
                 else if (teamLeft < 1)
@@ -178,7 +178,6 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
 
             if (team != null)
                 team.playerDied(playerUUID);
-
         }
     }
 
@@ -186,8 +185,8 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     {
         for (final UUID playerID : team.getPlayersUUID().keySet())
         {
-
             SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(playerID);
+
             if(playerData != null)
             {
                 playerData.addCoins(100, "Victoire !");
@@ -221,6 +220,15 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         return this.teams.getTeam(uniqueId);
     }
 
+    public SurvivalTeam getLastAliveTeam()
+    {
+        for(SurvivalTeam team : this.teams)
+            if (!team.isDead())
+                return team;
+
+        return null;
+    }
+
     public SurvivalTeamList getTeams()
     {
         return this.teams;
@@ -230,11 +238,9 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     {
         int nb = 0;
 
-        for(SurvivalTeam team : teams)
-        {
+        for(SurvivalTeam team : this.teams)
             if (!team.isDead())
                 nb++;
-        }
 
         return nb;
     }
