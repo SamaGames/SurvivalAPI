@@ -145,7 +145,7 @@ public class SurvivalGameLoop implements Runnable
 
                 if (this.game instanceof SurvivalTeamGame)
                 {
-                    objective.setLine(lastLine + 1, ChatColor.GRAY + "Équipes : " + ChatColor.WHITE + ((SurvivalTeamGame) this.game).getTeams().size());
+                    objective.setLine(lastLine + 1, ChatColor.GRAY + "Équipes : " + ChatColor.WHITE + ((SurvivalTeamGame) this.game).countAliveTeam());
                     lastLine++;
                 }
 

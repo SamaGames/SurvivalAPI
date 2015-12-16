@@ -57,7 +57,7 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
 
     public void win(final Player player)
     {
-        final SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(player.getUniqueId());
+        SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(player.getUniqueId());
 
         if (playerData != null)
         {

@@ -12,14 +12,10 @@ import net.samagames.survivalapi.game.commands.CommandNextEvent;
 import net.samagames.survivalapi.game.commands.CommandUHC;
 import net.samagames.survivalapi.game.events.*;
 import net.samagames.survivalapi.game.types.SurvivalTeamGame;
-import net.samagames.tools.ColorUtils;
 import net.samagames.tools.Titles;
 import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.bukkit.*;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
@@ -32,7 +28,6 @@ import org.bukkit.scoreboard.Scoreboard;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 import java.util.UUID;
 
 public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extends Game<SurvivalPlayer>
@@ -418,52 +413,6 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.spawns.add(new Location(this.world, 200, 150, -200));
 
         Collections.shuffle(this.spawns);
-    }
-
-    public void effectsOnWinner(Player player)
-    {
-        if (player == null || !player.isOnline())
-            return;
-
-        this.server.getScheduler().scheduleSyncRepeatingTask(this.plugin, new Runnable()
-        {
-            int timer = 0;
-
-            @Override
-            public void run()
-            {
-                if (this.timer < 20)
-                {
-                    Firework fw = (Firework) player.getWorld().spawnEntity(player.getPlayer().getLocation(), EntityType.FIREWORK);
-                    FireworkMeta fwm = fw.getFireworkMeta();
-                    Random r = new Random();
-                    int rt = r.nextInt(4) + 1;
-                    FireworkEffect.Type type = FireworkEffect.Type.BALL;
-
-                    if (rt == 1)
-                        type = FireworkEffect.Type.BALL;
-                    else if (rt == 2)
-                        type = FireworkEffect.Type.BALL_LARGE;
-                    else if (rt == 3)
-                        type = FireworkEffect.Type.BURST;
-                    else if (rt == 4)
-                        type = FireworkEffect.Type.CREEPER;
-                    else if (rt == 5)
-                        type = FireworkEffect.Type.STAR;
-
-                    int r1i = r.nextInt(15) + 1;
-                    int r2i = r.nextInt(15) + 1;
-                    Color c1 = ColorUtils.getColor(r1i);
-                    Color c2 = ColorUtils.getColor(r2i);
-                    FireworkEffect effect = FireworkEffect.builder().flicker(r.nextBoolean()).withColor(c1).withFade(c2).with(type).trail(r.nextBoolean()).build();
-                    fwm.addEffect(effect);
-                    int rp = r.nextInt(2) + 1;
-                    fwm.setPower(rp);
-                    fw.setFireworkMeta(fwm);
-                    this.timer++;
-                }
-            }
-        }, 5L, 5L);
     }
 
     public JavaPlugin getPlugin()
