@@ -10,11 +10,11 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class ParanoidModule extends AbstractSurvivalModule
 {
-    public ParanoidModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public ParanoidModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
     }
@@ -37,7 +37,7 @@ public class ParanoidModule extends AbstractSurvivalModule
         builder.append("Paranoïa");
         builder.append(ChatColor.GOLD).append("]").append(ChatColor.YELLOW);
         builder.append(" Le joueur ").append(ChatColor.GOLD).append(event.getPlayer().getName()).append(ChatColor.YELLOW);
-        builder.append(" à miné un bloc de diamant aux coordonnées ").append(ChatColor.GOLD);
+        builder.append(" a miné un bloc de diamant aux coordonnées ").append(ChatColor.GOLD);
         builder.append(location.getBlockX()).append("; ").append(location.getBlockY()).append("; ").append(location.getBlockZ());
         builder.append(ChatColor.YELLOW).append(" !");
 

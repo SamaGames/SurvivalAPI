@@ -12,11 +12,11 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Map;
 
 public class CatsEyesModule extends AbstractSurvivalModule
 {
-    public CatsEyesModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public CatsEyesModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
     }

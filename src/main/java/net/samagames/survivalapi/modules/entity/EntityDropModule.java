@@ -10,10 +10,11 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 public class EntityDropModule extends AbstractSurvivalModule
 {
-    public EntityDropModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public EntityDropModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
     }
@@ -34,16 +35,16 @@ public class EntityDropModule extends AbstractSurvivalModule
 
     public static class ConfigurationBuilder
     {
-        private HashMap<EntityType, ItemStack[]> drops;
+        private final Map<EntityType, ItemStack[]> drops;
 
         public ConfigurationBuilder()
         {
             this.drops = new HashMap<>();
         }
 
-        public HashMap<String, Object> build()
+        public Map<String, Object> build()
         {
-            HashMap<String, Object> moduleConfiguration = new HashMap<>();
+            Map<String, Object> moduleConfiguration = new HashMap<>();
 
             moduleConfiguration.put("drops", this.drops);
 

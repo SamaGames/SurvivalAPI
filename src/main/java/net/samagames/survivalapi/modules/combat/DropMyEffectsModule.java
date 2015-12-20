@@ -12,23 +12,20 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
 public class DropMyEffectsModule extends AbstractSurvivalModule
 {
-    private final ArrayList<PotionEffectType> blacklist;
+    private final List<PotionEffectType> blacklist;
 
-    public DropMyEffectsModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public DropMyEffectsModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
 
-        blacklist = new ArrayList<>();
+        this.blacklist = new ArrayList<>();
+
         if(moduleConfiguration != null)
-        {
             this.blacklist.addAll((Collection<? extends PotionEffectType>) moduleConfiguration.get("blacklist"));
-        }
     }
 
     /**
@@ -50,7 +47,7 @@ public class DropMyEffectsModule extends AbstractSurvivalModule
             if(potionEffect.getDuration() > 10000)
                 continue;
 
-            Potion potion = new Potion(PotionType.getByEffect(potionEffect.getType()), (potionEffect.getAmplifier() + 1));
+            Potion potion = new Potion(PotionType.getByEffect(potionEffect.getType()), potionEffect.getAmplifier() + 1);
             ItemStack stack = potion.toItemStack(1);
 
             PotionMeta meta = (PotionMeta) stack.getItemMeta();
@@ -66,14 +63,14 @@ public class DropMyEffectsModule extends AbstractSurvivalModule
 
     public static class ConfigurationBuilder
     {
-        private ArrayList<PotionEffectType> blacklist;
+        private final ArrayList<PotionEffectType> blacklist;
 
         public ConfigurationBuilder()
         {
             this.blacklist = new ArrayList<>();
         }
 
-        public HashMap<String, Object> build()
+        public Map<String, Object> build()
         {
             HashMap<String, Object> moduleConfiguration = new HashMap<>();
 

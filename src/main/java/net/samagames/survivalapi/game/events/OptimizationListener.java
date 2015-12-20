@@ -49,7 +49,8 @@ public class OptimizationListener implements Listener
                             {
                                 if (Math.abs(curEntity.getLocation().getX() - newEntity.getLocation().getX()) <= this.radius
                                         && Math.abs(curEntity.getLocation().getY() - newEntity.getLocation().getY()) <= this.radius
-                                        && Math.abs(curEntity.getLocation().getZ() - newEntity.getLocation().getZ()) <= this.radius)
+                                        && Math.abs(curEntity.getLocation().getZ() - newEntity.getLocation().getZ()) <= this.radius
+                                )
                                 {
 
                                     int newAmount = newEntity.getItemStack().getAmount();

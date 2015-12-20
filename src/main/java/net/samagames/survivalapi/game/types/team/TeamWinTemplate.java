@@ -8,14 +8,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class TeamWinTemplate
 {
-    public ArrayList<String> prepare(SurvivalTeam team)
+    public List<String> prepare(SurvivalTeam team)
     {
-        ArrayList<String> custom = new ArrayList<>();
-        ArrayList<String> players = new ArrayList<>();
+        List<String> custom = new ArrayList<>();
+        List<String> players = new ArrayList<>();
 
         custom.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Gagnant" + ChatColor.GRAY + " - Equipe " + ChatColor.RESET + team.getChatColor() + team.getTeamName()));
 

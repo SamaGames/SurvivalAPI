@@ -34,7 +34,7 @@ public class WorldDownloader
             return false;
         }
 
-        URL worldStorageURL = null;
+        URL worldStorageURL;
         String mapID = "No file found";
 
         try
@@ -52,7 +52,7 @@ public class WorldDownloader
             return false;
         }
 
-        if ("No file found".equals(mapID))
+        if (mapID.equals("No file found"))
         {
             if (worldTar.exists())
             {
@@ -91,9 +91,12 @@ public class WorldDownloader
         try
         {
             worldStorageURL = new URL(worldStorage.getAsString() + "download.php?name=" + mapID);
+
             ReadableByteChannel rbc = Channels.newChannel(worldStorageURL.openStream());
             FileOutputStream fos = new FileOutputStream(worldTar);
+
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            fos.close();
         }
         catch (IOException e)
         {
@@ -104,6 +107,7 @@ public class WorldDownloader
         try
         {
             worldStorageURL = new URL(worldStorage.getAsString() + "clean.php?name=" + mapID);
+
             URLConnection connection = worldStorageURL.openConnection();
             connection.connect();
         }
@@ -112,10 +116,10 @@ public class WorldDownloader
             e.printStackTrace();
         }
 
-        return this.extractWorld(worldTar, worldDir);
+        return extractWorld(worldTar, worldDir);
     }
 
-    private boolean extractWorld(File worldTar, File worldDir)
+    private static boolean extractWorld(File worldTar, File worldDir)
     {
         Archiver archiver = ArchiverFactory.createArchiver("tar", "gz");
 

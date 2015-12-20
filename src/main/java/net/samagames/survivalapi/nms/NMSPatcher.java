@@ -24,7 +24,7 @@ public class NMSPatcher
         this.logger = plugin.getLogger();
     }
 
-    public void patchBiomes() throws ReflectiveOperationException
+    public void patchBiomes() throws Exception
     {
         BiomeBase[] biomes = BiomeBase.getBiomes();
         Map<String, BiomeBase> biomesMap = BiomeBase.o;
@@ -54,8 +54,6 @@ public class NMSPatcher
         }
 
         Reflection.setFinalStatic(BiomeBase.class.getDeclaredField("biomes"), biomes);
-
-       //patchObsidian();
     }
 
     private void setReedsPerChunk(BiomeBase biome, int value) throws NoSuchFieldException, IllegalAccessException
@@ -123,7 +121,7 @@ public class NMSPatcher
         Reflection.setFinalStatic(biome, biomeBase);
     }
 
-    public BiomeBase addAnimals(BiomeBase biomeBase) throws NoSuchFieldException, IllegalAccessException
+    public BiomeBase addAnimals(BiomeBase biomeBase) throws Exception
     {
         Field defaultMobField = BiomeBase.class.getDeclaredField("au");
         defaultMobField.setAccessible(true);

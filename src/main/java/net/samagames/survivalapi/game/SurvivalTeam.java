@@ -13,6 +13,7 @@ import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class SurvivalTeam
@@ -125,9 +126,9 @@ public class SurvivalTeam
         return this.icon;
     }
 
-    public HashMap<UUID, Boolean> getPlayersUUID()
+    public Map<UUID, Boolean> getPlayersUUID()
     {
-        return (HashMap<UUID, Boolean>) this.players.clone();
+        return (Map<UUID, Boolean>) this.players.clone();
     }
 
     public int getAlivePlayers()

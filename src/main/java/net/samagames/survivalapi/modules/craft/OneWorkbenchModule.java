@@ -13,14 +13,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class OneWorkbenchModule extends AbstractSurvivalModule
 {
-    private final ArrayList<UUID> crafters;
+    private final List<UUID> crafters;
 
-    public OneWorkbenchModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public OneWorkbenchModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
 
@@ -54,8 +55,7 @@ public class OneWorkbenchModule extends AbstractSurvivalModule
 
     private void onCraftItem(Recipe recipe, CraftingInventory inventory, HumanEntity human)
     {
-        if (recipe.getResult().getType() == Material.WORKBENCH)
-            if (this.crafters.contains(human.getUniqueId()))
-                inventory.setResult(new ItemStack(Material.AIR, 1));
+        if (recipe.getResult().getType() == Material.WORKBENCH && this.crafters.contains(human.getUniqueId()))
+            inventory.setResult(new ItemStack(Material.AIR, 1));
     }
 }

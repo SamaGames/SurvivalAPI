@@ -4,7 +4,6 @@ import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
@@ -12,11 +11,11 @@ import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class DisableSpeckedMelonModule extends AbstractSurvivalModule
 {
-    public DisableSpeckedMelonModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public DisableSpeckedMelonModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
     }
@@ -29,7 +28,7 @@ public class DisableSpeckedMelonModule extends AbstractSurvivalModule
     @EventHandler
     public void onCraftItem(CraftItemEvent event)
     {
-        this.onCraftItem(event.getRecipe(), event.getInventory(), event.getWhoClicked());
+        onCraftItem(event.getRecipe(), event.getInventory());
     }
 
     /**
@@ -40,13 +39,12 @@ public class DisableSpeckedMelonModule extends AbstractSurvivalModule
     @EventHandler
     public void onPrepareItemCraft(PrepareItemCraftEvent event)
     {
-        this.onCraftItem(event.getRecipe(), event.getInventory(), event.getView().getPlayer());
+        onCraftItem(event.getRecipe(), event.getInventory());
     }
 
-    private void onCraftItem(Recipe recipe, CraftingInventory inventory, HumanEntity human)
+    private static void onCraftItem(Recipe recipe, CraftingInventory inventory)
     {
-        if (recipe.getResult().getType() == Material.SPECKLED_MELON)
-            if (inventory.contains(Material.GOLD_NUGGET))
-                inventory.setResult(new ItemStack(Material.AIR));
+        if (recipe.getResult().getType() == Material.SPECKLED_MELON && inventory.contains(Material.GOLD_NUGGET))
+            inventory.setResult(new ItemStack(Material.AIR));
     }
 }

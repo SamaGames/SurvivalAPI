@@ -9,13 +9,13 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class AutomaticTNTModule extends AbstractSurvivalModule
 {
     private SurvivalGame game;
 
-    public AutomaticTNTModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public AutomaticTNTModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
     }
@@ -29,19 +29,17 @@ public class AutomaticTNTModule extends AbstractSurvivalModule
     /**
      * Fire the TNT's automatically
      *
-     * @param event
+     * @param event Event
      */
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event)
     {
-        if (this.game.isPvPActivated())
+        if (this.game.isPvPActivated() && event.getBlock().getType() == Material.TNT)
         {
-            if (event.getBlock().getType() == Material.TNT)
-            {
-                event.getBlock().setType(Material.AIR);
-                TNTPrimed tnt = event.getBlock().getWorld().spawn(event.getBlock().getLocation(), TNTPrimed.class);
-                tnt.setFuseTicks(tnt.getFuseTicks() / 2);
-            }
+            event.getBlock().setType(Material.AIR);
+
+            TNTPrimed tnt = event.getBlock().getWorld().spawn(event.getBlock().getLocation(), TNTPrimed.class);
+            tnt.setFuseTicks(tnt.getFuseTicks() / 2);
         }
     }
 }

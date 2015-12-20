@@ -10,11 +10,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class ThreeArrowModule extends AbstractSurvivalModule
 {
-    public ThreeArrowModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public ThreeArrowModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
     }
@@ -31,9 +31,6 @@ public class ThreeArrowModule extends AbstractSurvivalModule
             return;
 
         for(int i = 0; i < 2; i++)
-        {
-            Bukkit.getScheduler().runTaskLater(this.plugin, () ->
-                    event.getEntity().getShooter().launchProjectile(Arrow.class, event.getEntity().getVelocity()), 5L * (i + 1));
-        }
+            Bukkit.getScheduler().runTaskLater(this.plugin, () -> event.getEntity().getShooter().launchProjectile(Arrow.class, event.getEntity().getVelocity()), 5L * (i + 1));
     }
 }

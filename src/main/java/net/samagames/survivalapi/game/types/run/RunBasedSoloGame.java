@@ -25,9 +25,10 @@ public class RunBasedSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         Collections.shuffle(this.spawns);
         Iterator<Location> locationIterator = this.spawns.iterator();
 
-        List<UUID> uuids = new ArrayList<>();
-        uuids.addAll(this.getInGamePlayers().keySet());
-        for (UUID uuid : uuids)
+        List<UUID> players = new ArrayList<>();
+        players.addAll(this.getInGamePlayers().keySet());
+
+        for (UUID uuid : players)
         {
             Player player = Bukkit.getPlayer(uuid);
 

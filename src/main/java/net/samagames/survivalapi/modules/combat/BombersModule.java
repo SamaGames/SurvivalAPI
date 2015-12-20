@@ -12,11 +12,11 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Map;
 
 public class BombersModule extends AbstractSurvivalModule
 {
-    public BombersModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public BombersModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
     }

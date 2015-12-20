@@ -28,6 +28,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extends Game<SurvivalPlayer>
@@ -36,7 +37,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     protected final Server server;
     protected final String magicSymbol;
     protected final Class<? extends SURVIVALLOOP> survivalGameLoopClass;
-    protected final ArrayList<Location> spawns;
+    protected final List<Location> spawns;
     protected final World world;
 
     protected LobbyPopulator lobbyPopulator;
@@ -76,18 +77,18 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.worldBorder.setDamageBuffer(3D);
         this.worldBorder.setDamageAmount(2D);
 
-        this.server.getPluginManager().registerEvents(new ChunkListener(plugin), plugin);
+        this.server.getPluginManager().registerEvents(new ChunkListener(), plugin);
         this.server.getPluginManager().registerEvents(new NaturalListener(), plugin);
         this.server.getPluginManager().registerEvents(new OptimizationListener(), plugin);
         this.server.getPluginManager().registerEvents(new SpectatorListener(this), plugin);
         this.server.getPluginManager().registerEvents(new SecurityListener(this), plugin);
         this.server.getPluginManager().registerEvents(new GameListener(this), plugin);
 
-        for (World world : plugin.getServer().getWorlds())
+        for (World serverWorld : plugin.getServer().getWorlds())
         {
-            world.setDifficulty(Difficulty.NORMAL);
-            world.setGameRuleValue("doDaylightCycle", "false");
-            world.setTime(2000L);
+            serverWorld.setDifficulty(Difficulty.NORMAL);
+            serverWorld.setGameRuleValue("doDaylightCycle", "false");
+            serverWorld.setTime(2000L);
         }
 
         SamaGamesAPI.get().getGameManager().setMaxReconnectTime(this.gameManager.getGameProperties().getOption("reconnectTime", new JsonPrimitive(5)).getAsInt());
@@ -137,12 +138,6 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
     public abstract void teleport();
     public abstract void checkStump(UUID playerUUID);
-
-    @Override
-    public void handleLogin(Player player)
-    {
-        super.handleLogin(player);
-    }
 
     @Override
     public void handlePostRegistration()
@@ -263,7 +258,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             if (!logout)
             {
                 Player player = Bukkit.getPlayer(playerUUID);
-                MetadataValue lastDamager = (player.getMetadata("lastDamager").size() > 0) ? player.getMetadata("lastDamager").get(0) : null;
+                MetadataValue lastDamager = (!player.getMetadata("lastDamager").isEmpty()) ? player.getMetadata("lastDamager").get(0) : null;
                 Player killer = null;
 
                 if (lastDamager != null && lastDamager.value() instanceof Player)
@@ -440,7 +435,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         return this.worldBorder;
     }
 
-    public ArrayList<Location> getSpawns()
+    public List<Location> getSpawns()
     {
         return this.spawns;
     }

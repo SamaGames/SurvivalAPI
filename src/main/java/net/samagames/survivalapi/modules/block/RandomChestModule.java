@@ -17,20 +17,20 @@ import org.bukkit.metadata.FixedMetadataValue;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RandomChestModule extends AbstractSurvivalModule
 {
-    private final HashMap<ItemStack, Integer> items;
+    private final Map<ItemStack, Integer> items;
+    private final RapidOresModule rapidOresModule;
 
-    private RapidOresModule rapidOresModule;
-
-    public RandomChestModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public RandomChestModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
         Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
 
-        this.items = (HashMap<ItemStack, Integer>) moduleConfiguration.get("items");
+        this.items = (Map<ItemStack, Integer>) moduleConfiguration.get("items");
         this.rapidOresModule = SurvivalAPI.get().getModule(RapidOresModule.class);
     }
 
@@ -53,7 +53,7 @@ public class RandomChestModule extends AbstractSurvivalModule
             inventory.clear();
 
             int addedItems = 0;
-            int slot = 0;
+            int slot;
 
             for (ItemStack item : this.items.keySet())
             {
@@ -94,9 +94,8 @@ public class RandomChestModule extends AbstractSurvivalModule
 
     public ItemStack verifyStack(ItemStack stack)
     {
-        if(this.rapidOresModule != null)
-            if (this.rapidOresModule.isDoubledType(stack.getType()))
-                return this.rapidOresModule.addMeta(stack);
+        if(this.rapidOresModule != null && this.rapidOresModule.isDoubledType(stack.getType()))
+            return this.rapidOresModule.addMeta(stack);
 
         return stack;
     }
@@ -114,9 +113,9 @@ public class RandomChestModule extends AbstractSurvivalModule
     }
 
     @Override
-    public ArrayList<Class<? extends AbstractSurvivalModule>> getRequiredModules()
+    public List<Class<? extends AbstractSurvivalModule>> getRequiredModules()
     {
-        ArrayList<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
+        List<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
 
         requiredModules.add(RapidOresModule.class);
 
@@ -125,16 +124,16 @@ public class RandomChestModule extends AbstractSurvivalModule
 
     public static class ConfigurationBuilder
     {
-        private HashMap<ItemStack, Integer> items;
+        private final Map<ItemStack, Integer> items;
 
         public ConfigurationBuilder()
         {
             this.items = new HashMap<>();
         }
 
-        public HashMap<String, Object> build()
+        public Map<String, Object> build()
         {
-            HashMap<String, Object> moduleConfiguration = new HashMap<>();
+            Map<String, Object> moduleConfiguration = new HashMap<>();
 
             moduleConfiguration.put("items", this.items);
 

@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
+@FunctionalInterface
 public interface RunBasedGame
 {
     void teleportDeathMatch();

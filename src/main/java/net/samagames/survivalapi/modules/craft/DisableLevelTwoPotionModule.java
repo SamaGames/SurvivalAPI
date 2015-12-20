@@ -7,11 +7,11 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.BrewEvent;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class DisableLevelTwoPotionModule extends AbstractSurvivalModule
 {
-    public DisableLevelTwoPotionModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public DisableLevelTwoPotionModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
     }

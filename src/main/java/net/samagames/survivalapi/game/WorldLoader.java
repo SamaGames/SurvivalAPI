@@ -18,7 +18,7 @@ public class WorldLoader
     public WorldLoader(SurvivalPlugin plugin, int size)
     {
         this.plugin = plugin;
-        this.size = (size + 100);
+        this.size = size + 100;
 
         this.lastShow = -1;
     }

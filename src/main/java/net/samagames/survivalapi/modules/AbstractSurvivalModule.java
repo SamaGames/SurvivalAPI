@@ -6,15 +6,16 @@ import net.samagames.survivalapi.game.SurvivalGame;
 import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractSurvivalModule implements Listener
 {
     protected final SurvivalPlugin plugin;
     protected final SurvivalAPI api;
-    protected final HashMap<String, Object> moduleConfiguration;
+    protected final Map<String, Object> moduleConfiguration;
 
-    public AbstractSurvivalModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public AbstractSurvivalModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         this.plugin = plugin;
         this.api = api;
@@ -23,7 +24,7 @@ public abstract class AbstractSurvivalModule implements Listener
 
     public void onGameStart(SurvivalGame game) {}
 
-    public ArrayList<Class<? extends AbstractSurvivalModule>> getRequiredModules()
+    public List<Class<? extends AbstractSurvivalModule>> getRequiredModules()
     {
         return new ArrayList<>();
     }

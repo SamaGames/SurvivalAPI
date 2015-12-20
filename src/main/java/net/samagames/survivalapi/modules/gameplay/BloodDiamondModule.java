@@ -9,10 +9,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class BloodDiamondModule extends AbstractSurvivalModule
 {
-    public BloodDiamondModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public BloodDiamondModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
         Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
@@ -39,7 +40,7 @@ public class BloodDiamondModule extends AbstractSurvivalModule
             this.damages = 0.5D;
         }
 
-        public HashMap<String, Object> build()
+        public Map<String, Object> build()
         {
             HashMap<String, Object> moduleConfiguration = new HashMap<>();
 

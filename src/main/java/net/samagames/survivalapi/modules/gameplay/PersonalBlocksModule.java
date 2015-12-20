@@ -14,17 +14,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class PersonalBlocksModule extends AbstractSurvivalModule
 {
-    private final HashMap<Location, UUID> blocksOwner;
-    private final ArrayList<Material> privateBlocks;
+    private final Map<Location, UUID> blocksOwner;
+    private final List<Material> privateBlocks;
     private SurvivalGame game;
 
-    public PersonalBlocksModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public PersonalBlocksModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
 

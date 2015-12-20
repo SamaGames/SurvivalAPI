@@ -7,11 +7,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class DropTaggingModule extends AbstractSurvivalModule
 {
-    public DropTaggingModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public DropTaggingModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
     }

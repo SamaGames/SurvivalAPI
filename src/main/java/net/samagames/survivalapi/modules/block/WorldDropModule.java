@@ -13,10 +13,12 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class WorldDropModule extends AbstractSurvivalModule
 {
-    public WorldDropModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public WorldDropModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
         Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
@@ -45,9 +47,9 @@ public class WorldDropModule extends AbstractSurvivalModule
     }
 
     @Override
-    public ArrayList<Class<? extends AbstractSurvivalModule>> getRequiredModules()
+    public List<Class<? extends AbstractSurvivalModule>> getRequiredModules()
     {
-        ArrayList<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
+        List<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
 
         requiredModules.add(DropTaggingModule.class);
 
@@ -56,16 +58,16 @@ public class WorldDropModule extends AbstractSurvivalModule
 
     public static class ConfigurationBuilder
     {
-        private HashMap<Material, ItemStack> drops;
+        private final Map<Material, ItemStack> drops;
 
         public ConfigurationBuilder()
         {
             this.drops = new HashMap<>();
         }
 
-        public HashMap<String, Object> build()
+        public Map<String, Object> build()
         {
-            HashMap<String, Object> moduleConfiguration = new HashMap<>();
+            Map<String, Object> moduleConfiguration = new HashMap<>();
 
             moduleConfiguration.put("drops", this.drops);
 

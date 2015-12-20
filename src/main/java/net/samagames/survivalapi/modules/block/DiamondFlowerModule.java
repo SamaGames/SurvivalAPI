@@ -10,23 +10,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class DiamondFlowerModule extends AbstractSurvivalModule
 {
     private final Random random;
+    private final RapidOresModule rapidOresModule;
 
-    private RapidOresModule rapidOresModule;
-
-    public DiamondFlowerModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public DiamondFlowerModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
 
         this.random = new Random();
-
-        rapidOresModule = SurvivalAPI.get().getModule(RapidOresModule.class);
+        this.rapidOresModule = SurvivalAPI.get().getModule(RapidOresModule.class);
     }
 
     /**
@@ -52,15 +48,14 @@ public class DiamondFlowerModule extends AbstractSurvivalModule
 
     private ItemStack verifyStack(ItemStack stack)
     {
-        if(rapidOresModule != null)
-        {
-            stack = rapidOresModule.addMeta(stack);
-        }
+        if(this.rapidOresModule != null)
+            return this.rapidOresModule.addMeta(stack);
+
         return stack;
     }
 
     @Override
-    public ArrayList<Class<? extends AbstractSurvivalModule>> getRequiredModules()
+    public List<Class<? extends AbstractSurvivalModule>> getRequiredModules()
     {
         ArrayList<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
 

@@ -9,14 +9,14 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class RottenPotions extends AbstractSurvivalModule
 {
     private final Random random;
 
-    public RottenPotions(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public RottenPotions(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
 

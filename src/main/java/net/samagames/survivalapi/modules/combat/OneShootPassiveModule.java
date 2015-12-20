@@ -7,11 +7,11 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class OneShootPassiveModule extends AbstractSurvivalModule
 {
-    public OneShootPassiveModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public OneShootPassiveModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
     }
@@ -24,8 +24,7 @@ public class OneShootPassiveModule extends AbstractSurvivalModule
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
     {
-        if (event.getDamager() instanceof Player)
-            if (event.getEntity() instanceof Animals || event.getEntity() instanceof Ambient)
-                ((LivingEntity) event.getEntity()).damage(Double.MAX_VALUE);
+        if (event.getDamager() instanceof Player && (event.getEntity() instanceof Animals || event.getEntity() instanceof Ambient))
+            ((LivingEntity) event.getEntity()).damage(Double.MAX_VALUE);
     }
 }

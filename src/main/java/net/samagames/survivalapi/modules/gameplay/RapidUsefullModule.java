@@ -16,23 +16,19 @@ import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Tree;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class RapidUsefullModule extends AbstractSurvivalModule
 {
     private final Random random;
+    private final RapidOresModule rapidOresModule;
 
-    private RapidOresModule rapidOresModule;
-
-    public RapidUsefullModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public RapidUsefullModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
-        this.random = new Random();
 
-        rapidOresModule = SurvivalAPI.get().getModule(RapidOresModule.class);
+        this.random = new Random();
+        this.rapidOresModule = SurvivalAPI.get().getModule(RapidOresModule.class);
     }
 
     /**
@@ -81,6 +77,9 @@ public class RapidUsefullModule extends AbstractSurvivalModule
             case SUGAR_CANE:
                 event.getEntity().setItemStack(verifyStack(new ItemStack(Material.SUGAR_CANE, 2)));
                 break;
+
+            default:
+                break;
         }
     }
 
@@ -113,32 +112,27 @@ public class RapidUsefullModule extends AbstractSurvivalModule
         event.setDroppedExp(event.getDroppedExp() * 2);
     }
 
-    @Override
-    public ArrayList<Class<? extends AbstractSurvivalModule>> getRequiredModules()
-    {
-        ArrayList<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
-
-        requiredModules.add(DropTaggingModule.class);
-        requiredModules.add(RapidOresModule.class);
-
-        return requiredModules;
-    }
-
     private ItemStack verifyStack(ItemStack stack)
     {
-        if(rapidOresModule != null)
-        {
-            stack = rapidOresModule.addMeta(stack);
-        }
+        if(this.rapidOresModule != null)
+            return this.rapidOresModule.addMeta(stack);
+
         return stack;
     }
 
     private boolean hasMeta(ItemStack stack)
     {
-        if(rapidOresModule != null)
-        {
-            return rapidOresModule.hasMeta(stack);
-        }
-        return false;
+        return this.rapidOresModule != null && this.rapidOresModule.hasMeta(stack);
+    }
+
+    @Override
+    public List<Class<? extends AbstractSurvivalModule>> getRequiredModules()
+    {
+        List<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
+
+        requiredModules.add(DropTaggingModule.class);
+        requiredModules.add(RapidOresModule.class);
+
+        return requiredModules;
     }
 }

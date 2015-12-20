@@ -3,6 +3,7 @@ package net.samagames.survivalapi.game.types.team;
 import net.samagames.survivalapi.game.SurvivalTeam;
 import org.bukkit.ChatColor;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
 public class SurvivalTeamList implements List<SurvivalTeam>
@@ -33,21 +34,23 @@ public class SurvivalTeamList implements List<SurvivalTeam>
     }
 
     @Override
+    @Nonnull
     public Iterator<SurvivalTeam> iterator()
     {
         return internalList.iterator();
     }
 
     @Override
+    @Nonnull
     public Object[] toArray()
     {
         return internalList.toArray();
     }
 
     @Override
-    public <T> T[] toArray(T[] a)
+    @Nonnull
+    public <T> T[] toArray(@Nonnull T[] a)
     {
-        //noinspection SuspiciousToArrayCall
         return internalList.toArray(a);
     }
 
@@ -64,31 +67,31 @@ public class SurvivalTeamList implements List<SurvivalTeam>
     }
 
     @Override
-    public boolean containsAll(Collection<?> c)
+    public boolean containsAll(@Nonnull Collection<?> c)
     {
         return internalList.containsAll(c);
     }
 
     @Override
-    public boolean addAll(Collection<? extends SurvivalTeam> c)
+    public boolean addAll(@Nonnull Collection<? extends SurvivalTeam> c)
     {
         return internalList.addAll(c);
     }
 
     @Override
-    public boolean addAll(int index, Collection<? extends SurvivalTeam> c)
+    public boolean addAll(int index, @Nonnull Collection<? extends SurvivalTeam> c)
     {
         return internalList.addAll(index, c);
     }
 
     @Override
-    public boolean removeAll(Collection<?> c)
+    public boolean removeAll(@Nonnull Collection<?> c)
     {
         return internalList.removeAll(c);
     }
 
     @Override
-    public boolean retainAll(Collection<?> c)
+    public boolean retainAll(@Nonnull Collection<?> c)
     {
         return internalList.retainAll(c);
     }
@@ -136,18 +139,21 @@ public class SurvivalTeamList implements List<SurvivalTeam>
     }
 
     @Override
+    @Nonnull
     public ListIterator<SurvivalTeam> listIterator()
     {
         return internalList.listIterator();
     }
 
     @Override
+    @Nonnull
     public ListIterator<SurvivalTeam> listIterator(int index)
     {
         return internalList.listIterator(index);
     }
 
     @Override
+    @Nonnull
     public List<SurvivalTeam> subList(int fromIndex, int toIndex)
     {
         return internalList.subList(fromIndex, toIndex);

@@ -7,6 +7,8 @@ import org.bukkit.event.HandlerList;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SurvivalAPI
 {
@@ -15,8 +17,8 @@ public class SurvivalAPI
     private static SurvivalAPI instance;
 
     private final SurvivalPlugin plugin;
-    private final HashMap<String, AbstractSurvivalModule> modulesLoaded;
-    private final HashMap<EventType, ArrayList<Runnable>> events;
+    private final Map<String, AbstractSurvivalModule> modulesLoaded;
+    private final Map<EventType, List<Runnable>> events;
 
     public SurvivalAPI(SurvivalPlugin plugin)
     {
@@ -48,7 +50,7 @@ public class SurvivalAPI
         this.events.get(eventType).forEach(Runnable::run);
     }
 
-    public void loadModule(Class<? extends AbstractSurvivalModule> moduleClass, HashMap<String, Object> moduleConfiguration)
+    public void loadModule(Class<? extends AbstractSurvivalModule> moduleClass, Map<String, Object> moduleConfiguration)
     {
         if(!this.modulesLoaded.containsKey(moduleClass.getSimpleName()))
         {

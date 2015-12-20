@@ -20,17 +20,14 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class RapidOresModule extends AbstractSurvivalModule
 {
     public final UUID ID = UUID.fromString("3745e6a8-821a-4c53-bd7c-3a1246a458f0");
     private final Random random;
 
-    public RapidOresModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public RapidOresModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
         Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
@@ -94,7 +91,7 @@ public class RapidOresModule extends AbstractSurvivalModule
                 break;
 
             case QUARTZ:
-            	flag = true;
+                flag = true;
                 break;
 
             default:
@@ -110,7 +107,7 @@ public class RapidOresModule extends AbstractSurvivalModule
     /**
      * Cancel ore break event
      *
-     * @return event Event
+     * @param event Event
      */
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event)
@@ -132,16 +129,6 @@ public class RapidOresModule extends AbstractSurvivalModule
             default:
                 break;
         }
-    }
-
-    @Override
-    public ArrayList<Class<? extends AbstractSurvivalModule>> getRequiredModules()
-    {
-        ArrayList<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
-
-        requiredModules.add(DropTaggingModule.class);
-
-        return requiredModules;
     }
 
     public ItemStack addMeta(ItemStack stack)
@@ -195,12 +182,12 @@ public class RapidOresModule extends AbstractSurvivalModule
         switch (ore.getType())
         {
             case QUARTZ:
-            	i = MathHelper.nextInt(world.random, 2, 5);
-            	break;
+                i = MathHelper.nextInt(world.random, 2, 5);
+                break;
 
             case INK_SACK:
                 if (ore.getDurability() == 4)
-                	i = MathHelper.nextInt(world.random, 2, 5);
+                    i = MathHelper.nextInt(world.random, 2, 5);
                 break;
 
             case EMERALD:
@@ -231,6 +218,16 @@ public class RapidOresModule extends AbstractSurvivalModule
         }
     }
 
+    @Override
+    public List<Class<? extends AbstractSurvivalModule>> getRequiredModules()
+    {
+        List<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
+
+        requiredModules.add(DropTaggingModule.class);
+
+        return requiredModules;
+    }
+
     public static class ConfigurationBuilder
     {
         private int coal, iron, gold, diamond, emerald;
@@ -244,9 +241,9 @@ public class RapidOresModule extends AbstractSurvivalModule
             this.emerald = 2;
         }
 
-        public HashMap<String, Object> build()
+        public Map<String, Object> build()
         {
-            HashMap<String, Object> moduleConfiguration = new HashMap<>();
+            Map<String, Object> moduleConfiguration = new HashMap<>();
 
             moduleConfiguration.put("coal", this.coal);
             moduleConfiguration.put("iron", this.iron);

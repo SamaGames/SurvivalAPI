@@ -13,10 +13,12 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TorchThanCoalModule extends AbstractSurvivalModule
 {
-    public TorchThanCoalModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public TorchThanCoalModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
         Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
@@ -42,9 +44,9 @@ public class TorchThanCoalModule extends AbstractSurvivalModule
     }
 
     @Override
-    public ArrayList<Class<? extends AbstractSurvivalModule>> getRequiredModules()
+    public List<Class<? extends AbstractSurvivalModule>> getRequiredModules()
     {
-        ArrayList<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
+        List<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
 
         requiredModules.add(DropTaggingModule.class);
 
@@ -60,9 +62,9 @@ public class TorchThanCoalModule extends AbstractSurvivalModule
             this.torch = 3;
         }
 
-        public HashMap<String, Object> build()
+        public Map<String, Object> build()
         {
-            HashMap<String, Object> moduleConfiguration = new HashMap<>();
+            Map<String, Object> moduleConfiguration = new HashMap<>();
 
             moduleConfiguration.put("torch", this.torch);
 

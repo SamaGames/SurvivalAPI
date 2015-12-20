@@ -8,11 +8,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class HardObsidianModule extends AbstractSurvivalModule
 {
-    public HardObsidianModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public HardObsidianModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
     }
@@ -25,9 +25,8 @@ public class HardObsidianModule extends AbstractSurvivalModule
     @EventHandler
     public void onBlockDamage(BlockDamageEvent event)
     {
-        if (event.getBlock().getType() == Material.OBSIDIAN)
-            if (event.getItemInHand().getType() != Material.DIAMOND_PICKAXE)
-                event.setCancelled(true);
+        if (event.getBlock().getType() == Material.OBSIDIAN && event.getItemInHand().getType() != Material.DIAMOND_PICKAXE)
+            event.setCancelled(true);
     }
 
     /**

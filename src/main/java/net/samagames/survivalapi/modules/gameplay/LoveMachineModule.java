@@ -6,7 +6,7 @@ import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import net.samagames.tools.ParticleEffect;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class LoveMachineModule extends AbstractSurvivalModule implements Runnable
@@ -14,7 +14,7 @@ public class LoveMachineModule extends AbstractSurvivalModule implements Runnabl
     private final UUID a;
     private final UUID b;
 
-    public LoveMachineModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public LoveMachineModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
 

@@ -12,11 +12,11 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Map;
 
 public class NineSlotsModule extends AbstractSurvivalModule
 {
-    public NineSlotsModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public NineSlotsModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
     }
@@ -42,8 +42,7 @@ public class NineSlotsModule extends AbstractSurvivalModule
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event)
     {
-        if (event.getClickedInventory().getType() == InventoryType.PLAYER)
-            if (event.getCurrentItem().getType() == Material.BARRIER)
-                event.setCancelled(true);
+        if (event.getClickedInventory().getType() == InventoryType.PLAYER && event.getCurrentItem().getType() == Material.BARRIER)
+            event.setCancelled(true);
     }
 }

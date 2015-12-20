@@ -10,13 +10,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class SurvivalPlayer extends GamePlayer
 {
     private static SurvivalGame game;
 
-    private final ArrayList<UUID> kills;
+    private final List<UUID> kills;
     private SurvivalTeam team;
 
     public SurvivalPlayer(Player player)
@@ -40,12 +41,12 @@ public class SurvivalPlayer extends GamePlayer
         if (!reconnect)
         {
             player.setGameMode(GameMode.ADVENTURE);
-            player.teleport(this.game.getLobbySpawn());
+            player.teleport(game.getLobbySpawn());
             player.getInventory().setItem(8, SamaGamesAPI.get().getGameManager().getCoherenceMachine().getLeaveItem());
             player.getInventory().setHeldItemSlot(0);
             player.updateInventory();
 
-            if (this.game instanceof SurvivalTeamGame)
+            if (game instanceof SurvivalTeamGame)
             {
                 ItemStack star = new ItemStack(Material.NETHER_STAR);
                 ItemMeta starMeta = star.getItemMeta();
@@ -57,7 +58,7 @@ public class SurvivalPlayer extends GamePlayer
         }
         else
         {
-            this.game.rejoinPlayer(player);
+            game.rejoinPlayer(player);
 
             if (this.team != null)
                 this.team.rejoin(player);
@@ -103,7 +104,7 @@ public class SurvivalPlayer extends GamePlayer
         this.team = team;
     }
 
-    public ArrayList<UUID> getKills()
+    public List<UUID> getKills()
     {
         return this.kills;
     }

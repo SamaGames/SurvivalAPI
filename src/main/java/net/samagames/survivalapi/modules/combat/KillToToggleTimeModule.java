@@ -7,7 +7,7 @@ import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class KillToToggleTimeModule extends AbstractSurvivalModule
 {
@@ -16,13 +16,13 @@ public class KillToToggleTimeModule extends AbstractSurvivalModule
 
     private boolean isDay;
 
-    public KillToToggleTimeModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public KillToToggleTimeModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
 
         for (World world : plugin.getServer().getWorlds())
         {
-            world.setTime(this.DAY);
+            world.setTime(DAY);
             world.setGameRuleValue("doDaylightCycle", "false");
         }
 
@@ -38,7 +38,7 @@ public class KillToToggleTimeModule extends AbstractSurvivalModule
     public void onPlayerDeath(PlayerDeathEvent event)
     {
         for (World world : this.plugin.getServer().getWorlds())
-            world.setTime((this.isDay ? this.NIGHT : this.DAY));
+            world.setTime(this.isDay ? NIGHT : DAY);
 
         this.isDay = !this.isDay;
     }

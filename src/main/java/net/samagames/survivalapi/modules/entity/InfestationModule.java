@@ -7,14 +7,14 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class InfestationModule extends AbstractSurvivalModule
 {
     private final Random random;
 
-    public InfestationModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public InfestationModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
 

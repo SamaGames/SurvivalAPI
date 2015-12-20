@@ -15,6 +15,8 @@ import org.bukkit.entity.Player;
  */
 public class SafePortalsUtils
 {
+    private SafePortalsUtils() {}
+
     public static boolean isInsideBorder(Location location)
     {
         if(location == null)
@@ -33,7 +35,7 @@ public class SafePortalsUtils
         Double x = location.getX();
         Double z = location.getZ();
 
-        return ((x > xMin && x < xMax) && (z > zMin && z < zMax));
+        return (x > xMin && x < xMax) && (z > zMin && z < zMax);
     }
 
     public static boolean safeTP(Player player, Location location, boolean force)
@@ -63,11 +65,6 @@ public class SafePortalsUtils
                 return false;
             }
         }
-    }
-
-    public static boolean safeTP(Player player, Location location)
-    {
-        return safeTP(player, location, false);
     }
 
     public static Location searchSafeSpot(Location location)
@@ -115,19 +112,8 @@ public class SafePortalsUtils
         Block blockBelow = location.getWorld().getBlockAt(location.getBlockX(), location.getBlockY() - 1, location.getBlockZ());
 
         if((blockCenter.getType().isTransparent() || (blockCenter.isLiquid() && !blockCenter.getType().equals(Material.LAVA) && !blockCenter.getType().equals(Material.STATIONARY_LAVA))) && (blockAbove.getType().isTransparent() || (blockAbove.isLiquid() && !blockAbove.getType().equals(Material.LAVA) && !blockCenter.getType().equals(Material.STATIONARY_LAVA))))
-        {
-            if(blockBelow.getType().isSolid() || blockBelow.getType().equals(Material.WATER) || blockBelow.getType().equals(Material.STATIONARY_WATER))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+            return blockBelow.getType().isSolid() || blockBelow.getType().equals(Material.WATER) || blockBelow.getType().equals(Material.STATIONARY_WATER);
         else
-        {
             return false;
-        }
     }
 }

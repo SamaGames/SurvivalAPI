@@ -12,10 +12,11 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ConstantPotionModule extends AbstractSurvivalModule
 {
-    public ConstantPotionModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public ConstantPotionModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
         Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
@@ -45,7 +46,7 @@ public class ConstantPotionModule extends AbstractSurvivalModule
             this.potionEffects = new ArrayList<>();
         }
 
-        public HashMap<String, Object> build()
+        public Map<String, Object> build()
         {
             HashMap<String, Object> moduleConfiguration = new HashMap<>();
 

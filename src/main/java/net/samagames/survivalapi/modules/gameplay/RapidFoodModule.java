@@ -12,17 +12,14 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RapidFoodModule extends AbstractSurvivalModule
 {
     private final Random random;
 
-    public RapidFoodModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public RapidFoodModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
         this.random = new Random();
@@ -167,9 +164,9 @@ public class RapidFoodModule extends AbstractSurvivalModule
     }
 
     @Override
-    public ArrayList<Class<? extends AbstractSurvivalModule>> getRequiredModules()
+    public List<Class<? extends AbstractSurvivalModule>> getRequiredModules()
     {
-        ArrayList<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
+        List<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
 
         requiredModules.add(DropTaggingModule.class);
 

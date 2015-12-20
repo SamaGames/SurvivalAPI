@@ -31,42 +31,34 @@ public class CommandUHC implements CommandExecutor
         {
             if (strings[0].equals("invite"))
             {
-                if(game instanceof SurvivalTeamGame)
+                if(game instanceof SurvivalTeamGame && !game.isGameStarted())
                 {
-                    if(!game.isGameStarted())
-                    {
-                        String teamRaw = strings[1];
-                        String playerRaw = strings[2];
-                        SurvivalPlayer player = (SurvivalPlayer) game.getPlayer(UUID.fromString(playerRaw));
-                        SurvivalTeam aTeam = ((SurvivalTeamGame) game).getTeams().getTeam(ChatColor.getByChar(teamRaw));
+                    String teamRaw = strings[1];
+                    String playerRaw = strings[2];
+                    SurvivalPlayer player = (SurvivalPlayer) game.getPlayer(UUID.fromString(playerRaw));
+                    SurvivalTeam aTeam = ((SurvivalTeamGame) game).getTeams().getTeam(ChatColor.getByChar(teamRaw));
 
-                        if (aTeam == null)
-                            return true;
+                    if (aTeam == null)
+                        return true;
 
-                        if(!player.hasTeam())
-                            if(!aTeam.isInvited(player.getUUID()))
-                                aTeam.invite(commandSender.getName(), player.getUUID());
-                    }
+                    if(!player.hasTeam() && !aTeam.isInvited(player.getUUID()))
+                        aTeam.invite(commandSender.getName(), player.getUUID());
                 }
             }
             else if (strings[0].equals("join"))
             {
-                if(game instanceof SurvivalTeamGame)
+                if(game instanceof SurvivalTeamGame && !game.isGameStarted())
                 {
-                    if(!game.isGameStarted())
-                    {
-                        String teamRaw = strings[1];
-                        String playerRaw = strings[2];
-                        SurvivalPlayer player = (SurvivalPlayer) game.getPlayer(UUID.fromString(playerRaw));
-                        SurvivalTeam aTeam = ((SurvivalTeamGame) game).getTeams().getTeam(ChatColor.getByChar(teamRaw));
+                    String teamRaw = strings[1];
+                    String playerRaw = strings[2];
+                    SurvivalPlayer player = (SurvivalPlayer) game.getPlayer(UUID.fromString(playerRaw));
+                    SurvivalTeam aTeam = ((SurvivalTeamGame) game).getTeams().getTeam(ChatColor.getByChar(teamRaw));
 
-                        if (aTeam == null)
-                            return true;
+                    if (aTeam == null)
+                        return true;
 
-                        if(!player.hasTeam())
-                            if(aTeam.isInvited(player.getUUID()))
-                                aTeam.join(player.getUUID());
-                    }
+                    if(!player.hasTeam() && aTeam.isInvited(player.getUUID()))
+                        aTeam.join(player.getUUID());
                 }
             }
         }

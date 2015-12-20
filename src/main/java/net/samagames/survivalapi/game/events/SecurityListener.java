@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerPortalEvent;
 
 public class SecurityListener implements Listener
 {
-    private SurvivalGame game;
+    private final SurvivalGame game;
 
     public SecurityListener(SurvivalGame game)
     {

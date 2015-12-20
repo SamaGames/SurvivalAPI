@@ -9,15 +9,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Created by Silva on 28/11/2015.
- */
 public class RemoveItemOnUseModule extends AbstractSurvivalModule
 {
-
-    public RemoveItemOnUseModule(SurvivalPlugin plugin, SurvivalAPI api, HashMap<String, Object> moduleConfiguration)
+    public RemoveItemOnUseModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
     }
@@ -25,7 +21,7 @@ public class RemoveItemOnUseModule extends AbstractSurvivalModule
     /**
      * Delete the ItemStack
      *
-     * @param event
+     * @param event Event
      */
     @EventHandler
     public void onPlayerItemConsume(PlayerItemConsumeEvent event)
@@ -34,9 +30,8 @@ public class RemoveItemOnUseModule extends AbstractSurvivalModule
             return;
 
         ItemStack stack = event.getItem();
+
         if(stack.getType().equals(Material.MUSHROOM_SOUP))
-        {
             Bukkit.getScheduler().runTask(plugin, () -> event.getPlayer().getInventory().remove(Material.BOWL));
-        }
     }
 }

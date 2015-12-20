@@ -112,15 +112,12 @@ public class SurvivalGameLoop implements Runnable
             this.minutes++;
             this.seconds = 0;
 
-            if (this.episodeEnabled)
+            if (this.episodeEnabled && this.minutes >= 20)
             {
-                if (this.minutes >= 20)
-                {
-                    this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Fin de l'épisode " + this.episode, true);
-                    this.episode++;
+                this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Fin de l'épisode " + this.episode, true);
+                this.episode++;
 
-                    this.minutes = 0;
-                }
+                this.minutes = 0;
             }
         }
 
@@ -158,44 +155,41 @@ public class SurvivalGameLoop implements Runnable
                 SurvivalPlayer gamePlayer = (SurvivalPlayer) this.game.getPlayer(playerUUID);
                 int kills = gamePlayer == null ? 0 : gamePlayer.getKills().size();
 
-                objective.setLine((lastLine + 1), ChatColor.GRAY + "Joueurs tués : " + ChatColor.WHITE + kills);
-                objective.setLine((lastLine + 2), ChatColor.AQUA + "");
+                objective.setLine(lastLine + 1, ChatColor.GRAY + "Joueurs tués : " + ChatColor.WHITE + kills);
+                objective.setLine(lastLine + 2, ChatColor.AQUA + "");
 
                 lastLine += 2;
 
-                if (this.game instanceof SurvivalTeamGame)
+                if (this.game instanceof SurvivalTeamGame && gamePlayer != null && gamePlayer.getTeam() != null)
                 {
-                    if (gamePlayer != null && gamePlayer.getTeam() != null)
+                    int teammates = 0;
+
+                    for (UUID teammateUUID : gamePlayer.getTeam().getPlayersUUID().keySet())
                     {
-                        int teammates = 0;
+                        if (playerUUID.equals(teammateUUID))
+                            continue;
 
-                        for (UUID teammateUUID : gamePlayer.getTeam().getPlayersUUID().keySet())
-                        {
-                            if (playerUUID.equals(teammateUUID))
-                                continue;
+                        teammates++;
 
-                            teammates++;
+                        Player teammate = Bukkit.getPlayer(teammateUUID);
 
-                            Player teammate = Bukkit.getPlayer(teammateUUID);
-
-                            if (teammate == null)
-                                objective.setLine((lastLine + teammates), ChatColor.RED + "× " + Bukkit.getOfflinePlayer(teammateUUID).getName() + " : Déconnecté");
-                            else if (this.game.getPlayer(teammateUUID).isSpectator())
-                                objective.setLine((lastLine + teammates), ChatColor.RED + "× " + teammate.getName() + " : ✞");
-                            else
-                                objective.setLine((lastLine + teammates), this.getPrefixColorByHealth(teammate.getHealth(), teammate.getMaxHealth()) + this.getDirection(player, teammate) + " " + teammate.getName() + ChatColor.WHITE + " : " + (int) teammate.getHealth() + ChatColor.RED + " ❤");
-                        }
-
-                        objective.setLine((lastLine + (teammates + 1)), ChatColor.DARK_PURPLE + "");
-
-                        lastLine += (teammates + 1);
+                        if (teammate == null)
+                            objective.setLine(lastLine + teammates, ChatColor.RED + "× " + Bukkit.getOfflinePlayer(teammateUUID).getName() + " : Déconnecté");
+                        else if (this.game.getPlayer(teammateUUID).isSpectator())
+                            objective.setLine(lastLine + teammates, ChatColor.RED + "× " + teammate.getName() + " : ✞");
+                        else
+                            objective.setLine(lastLine + teammates, getPrefixColorByHealth(teammate.getHealth(), teammate.getMaxHealth()) + getDirection(player, teammate) + " " + teammate.getName() + ChatColor.WHITE + " : " + (int) teammate.getHealth() + ChatColor.RED + " ❤");
                     }
+
+                    objective.setLine(lastLine + teammates + 1, ChatColor.DARK_PURPLE + "");
+
+                    lastLine += teammates + 1;
                 }
 
-                objective.setLine((lastLine + 1), ChatColor.GRAY + "Bordure :");
-                objective.setLine((lastLine + 2), ChatColor.WHITE + "-" + (int) this.world.getWorldBorder().getSize() / 2 + " +" + (int) this.world.getWorldBorder().getSize() / 2);
-                objective.setLine((lastLine + 3), ChatColor.LIGHT_PURPLE + "");
-                objective.setLine((lastLine + 4), ChatColor.GRAY + "Temps de jeu : " + ChatColor.WHITE + this.toString(this.minutes, this.seconds));
+                objective.setLine(lastLine + 1, ChatColor.GRAY + "Bordure :");
+                objective.setLine(lastLine + 2, ChatColor.WHITE + "-" + (int) this.world.getWorldBorder().getSize() / 2 + " +" + (int) this.world.getWorldBorder().getSize() / 2);
+                objective.setLine(lastLine + 3, ChatColor.LIGHT_PURPLE + "");
+                objective.setLine(lastLine + 4, ChatColor.GRAY + "Temps de jeu : " + ChatColor.WHITE + this.toString(this.minutes, this.seconds));
 
                 objective.updateLines();
 
@@ -218,7 +212,7 @@ public class SurvivalGameLoop implements Runnable
         this.nextEvent.decrement();
     }
 
-    private ChatColor getPrefixColorByHealth(double health, double max)
+    private static ChatColor getPrefixColorByHealth(double health, double max)
     {
         double q = max / 4;
 
@@ -232,33 +226,25 @@ public class SurvivalGameLoop implements Runnable
             return ChatColor.DARK_GREEN;
     }
 
-    private String getDirection(Player p, Player mate)
+    private static String getDirection(Player p, Player mate)
     {
         Location ploc = p.getLocation().clone();
         Location point = mate.getLocation().clone();
 
-        // on ignore l'axe y
         ploc.setY(0);
         point.setY(0);
 
-        // on récupère la  direction de la tête du player
         Vector d = ploc.getDirection();
-
-        // on récupère la direction du point par rapport au player
         Vector v = point.subtract(ploc).toVector().normalize();
 
-        // on convertit le tout en un angle en degrés
         double a = Math.toDegrees(Math.atan2(d.getX(), d.getZ()));
         a -= Math.toDegrees(Math.atan2(v.getX(), v.getZ()));
+        a = (int) (a + 22.5) % 360;
 
-        // on se décale de 22.5 degrés pour se caler sur les demi points cardinaux
-        a = (int)(a + 22.5) % 360;
-
-        // on  s'assure d'avoir un angle strictement positif
         if (a < 0)
             a += 360;
 
-        return "" + "⬆⬈➡⬊⬇⬋⬅⬉".charAt((int)a / 45);
+        return Character.toString("⬆⬈➡⬊⬇⬋⬅⬉".charAt((int) a / 45));
     }
 
     private String toString(int minutes, int seconds)
