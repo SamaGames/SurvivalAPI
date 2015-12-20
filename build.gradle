@@ -3,7 +3,7 @@ apply plugin: 'maven'
 apply plugin: 'idea'
 
 group 'net.samagames'
-version '1.0.0-SNAPSHOT'
+version '1.0.0'
 archivesBaseName = 'SurvivalAPI'
 
 sourceCompatibility = 1.8

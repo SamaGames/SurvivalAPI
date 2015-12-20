@@ -145,7 +145,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
 
             if (left == 0)
             {
-                this.server.broadcastMessage(ChatColor.GOLD + "L'équipe " + team.getChatColor() + team.getTeamName() + ChatColor.GOLD + " a été éliminée !");
+                this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "L'équipe " + team.getChatColor() + team.getTeamName() + ChatColor.YELLOW + " a été éliminée !", true);
 
                 int teamLeft = this.countAliveTeam();
 
@@ -161,7 +161,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 }
                 else
                 {
-                    this.server.broadcastMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + teamLeft + ChatColor.YELLOW + " équipes en jeu.");
+                    this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + teamLeft + ChatColor.YELLOW + " équipes en jeu.", true);
                 }
             }
         }, 2L);
