@@ -56,7 +56,7 @@ public class SurvivalAPI
         {
             try
             {
-                AbstractSurvivalModule module = moduleClass.getConstructor(SurvivalPlugin.class, SurvivalAPI.class, HashMap.class).newInstance(this.plugin, this, moduleConfiguration);
+                AbstractSurvivalModule module = moduleClass.getConstructor(SurvivalPlugin.class, SurvivalAPI.class, Map.class).newInstance(this.plugin, this, moduleConfiguration);
 
                 for (Class<? extends AbstractSurvivalModule> requiredModule : module.getRequiredModules())
                     this.loadModule(requiredModule, null);
