@@ -1,8 +1,9 @@
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: 'sonar-runner'
 
-group 'net.samagames'
-version '1.0.0'
+group = 'net.samagames'
+version = '1.0.0'
 archivesBaseName = 'SurvivalGenerator'
 
 sourceCompatibility = 1.8
@@ -15,6 +16,16 @@ repositories {
 
     maven { url "http://maven.samagames.net/public/" }
     maven { url "http://maven.sk89q.com/repo/" }
+}
+
+sonarRunner {
+    sonarProperties {
+        property "sonar.projectKey", group + "." + archivesBaseName.toString().toLowerCase()
+        property "sonar.projectName", archivesBaseName
+
+        property "sonar.login", sonaruser
+        property "sonar.password", sonarpass
+    }
 }
 
 dependencies {
