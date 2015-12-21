@@ -1,9 +1,10 @@
 apply plugin: 'java'
-apply plugin: 'maven'
 apply plugin: 'idea'
+apply plugin: 'maven'
+apply plugin: 'sonar-runner'
 
-group 'net.samagames'
-version '1.0.0'
+group = 'net.samagames'
+version = '1.0.0'
 archivesBaseName = 'SurvivalAPI'
 
 sourceCompatibility = 1.8
@@ -34,6 +35,16 @@ repositories {
     }
 }
 
+sonarRunner {
+    sonarProperties {
+        property "sonar.projectKey", group + "." + archivesBaseName
+        property "sonar.projectName", archivesBaseName
+
+        property "sonar.login", sonaruser
+        property "sonar.password", sonarpass
+    }
+}
+
 configurations { providedCompile }
 
 sourceSets.main.compileClasspath += configurations.providedCompile
@@ -41,8 +52,8 @@ sourceSets.test.compileClasspath += configurations.providedCompile
 sourceSets.test.runtimeClasspath += configurations.providedCompile
 
 dependencies {
-    compile group: 'net.samagames', name: 'SamaGamesAPI', version: '1.0.0-SNAPSHOT', changing: true
-    compile group: 'net.samagames.api', name: 'Shadows', version: '1.1-SNAPSHOT', changing: true
+    compile group: 'net.samagames', name: 'SamaGamesAPI', version: '1.0.0', changing: true
+    compile group: 'net.samagames.api', name: 'Shadows', version: '1.1.0', changing: true
 
     compile(group: 'org.spigotmc', name: 'spigot', version: '1.8.8-R0.1-SNAPSHOT', changing: true) {
         transitive = false
