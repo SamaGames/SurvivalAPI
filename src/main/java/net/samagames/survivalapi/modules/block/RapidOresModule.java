@@ -88,12 +88,13 @@ public class RapidOresModule extends AbstractSurvivalModule
     {
         World world = ((CraftEntity) entity).getHandle().getWorld();
 
+        int i = randomized;
         int orbSize;
 
-        while (randomized > 0)
+        while (i > 0)
         {
-            orbSize = EntityExperienceOrb.getOrbValue(randomized);
-            randomized -= orbSize;
+            orbSize = EntityExperienceOrb.getOrbValue(i);
+            i -= orbSize;
             world.addEntity(new EntityExperienceOrb(world, entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), orbSize));
         }
     }

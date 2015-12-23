@@ -4,6 +4,7 @@ import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import net.samagames.survivalapi.modules.utility.DropTaggingModule;
+import net.samagames.survivalapi.utils.Meta;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -15,14 +16,11 @@ import java.util.*;
 public class DiamondFlowerModule extends AbstractSurvivalModule
 {
     private final Random random;
-    private final RapidOresModule rapidOresModule;
 
     public DiamondFlowerModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
-
         this.random = new Random();
-        this.rapidOresModule = SurvivalAPI.get().getModule(RapidOresModule.class);
     }
 
     /**
@@ -48,10 +46,7 @@ public class DiamondFlowerModule extends AbstractSurvivalModule
 
     private ItemStack verifyStack(ItemStack stack)
     {
-        if(this.rapidOresModule != null)
-            return this.rapidOresModule.addMeta(stack);
-
-        return stack;
+        return Meta.addMeta(stack);
     }
 
     @Override
@@ -60,7 +55,6 @@ public class DiamondFlowerModule extends AbstractSurvivalModule
         ArrayList<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
 
         requiredModules.add(DropTaggingModule.class);
-        requiredModules.add(RapidOresModule.class);
 
         return requiredModules;
     }
