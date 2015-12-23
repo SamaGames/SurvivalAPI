@@ -24,13 +24,12 @@ public interface RunBasedGame
         SurvivalAPI.get().loadModule(DisableLevelTwoPotionModule.class, null);
         SurvivalAPI.get().loadModule(DisableNotchAppleModule.class, null);
         SurvivalAPI.get().loadModule(DisableSpeckedMelonModule.class, null);
-        //SurvivalAPI.get().loadModule(StackableItemModule.class, null); //WIP
 
-        SurvivalAPI.get().loadModule(RapidOresModule.class, new RapidOresModule.ConfigurationBuilder().build());
+        SurvivalAPI.get().loadModule(RapidOresModule.class, new RapidOresModule.ConfigurationBuilder().addDefaults().build());
+        SurvivalAPI.get().loadModule(RapidFoodModule.class, new RapidFoodModule.ConfigurationBuilder().addDefaults().build());
+        SurvivalAPI.get().loadModule(RapidUsefullModule.class, new RapidUsefullModule.ConfigurationBuilder().addDefaults().build());
         SurvivalAPI.get().loadModule(RapidToolsModule.class, new RapidToolsModule.ConfigurationBuilder().build());
-        SurvivalAPI.get().loadModule(RapidFoodModule.class, null);
         SurvivalAPI.get().loadModule(RapidStackingModule.class, null);
-        SurvivalAPI.get().loadModule(RapidUsefullModule.class, null);
 
         SurvivalAPI.get().loadModule(AutomaticTNTModule.class, null);
         SurvivalAPI.get().loadModule(FastTreeModule.class, null);

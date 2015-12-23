@@ -20,7 +20,7 @@ import java.util.*;
 
 public class FastTreeModule extends AbstractSurvivalModule
 {
-    private List<BlockFace> faces;
+    private final List<BlockFace> faces;
 
     public FastTreeModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {

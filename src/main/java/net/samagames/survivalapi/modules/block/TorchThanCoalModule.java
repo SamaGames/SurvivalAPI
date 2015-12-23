@@ -22,7 +22,6 @@ public class TorchThanCoalModule extends AbstractSurvivalModule
     {
         super(plugin, api, moduleConfiguration);
         Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
-
     }
 
     /**

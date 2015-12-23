@@ -7,7 +7,7 @@ import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import net.samagames.survivalapi.modules.utility.DropTaggingModule;
-import net.samagames.survivalapi.utils.AttributeStorage;
+import net.samagames.survivalapi.utils.Meta;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
@@ -16,15 +16,13 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
 public class RapidOresModule extends AbstractSurvivalModule
 {
-    public final UUID ID = UUID.fromString("3745e6a8-821a-4c53-bd7c-3a1246a458f0");
+    private final Map<ItemStack, ConfigurationBuilder.IRapidOresHook> drops;
     private final Random random;
 
     public RapidOresModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
@@ -32,6 +30,7 @@ public class RapidOresModule extends AbstractSurvivalModule
         super(plugin, api, moduleConfiguration);
         Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
 
+        this.drops = (Map<ItemStack, ConfigurationBuilder.IRapidOresHook>) moduleConfiguration.get("drops");
         this.random = new Random();
     }
 
@@ -46,62 +45,16 @@ public class RapidOresModule extends AbstractSurvivalModule
         if (event.getEntityType() != EntityType.DROPPED_ITEM)
             return;
 
-        if(hasMeta(event.getEntity().getItemStack()))
+        if(Meta.hasMeta(event.getEntity().getItemStack()))
             return;
 
-        Material material = event.getEntity().getItemStack().getType();
-        boolean flag = false;
+        ItemStack stack = event.getEntity().getItemStack();
 
-        switch(material)
+        if (this.drops.containsKey(stack))
         {
-            case COAL:
-                if (!this.api.isModuleEnabled(TorchThanCoalModule.class))
-                {
-                    event.getEntity().setItemStack(new ItemStack(Material.COAL, (int) this.moduleConfiguration.get("coal")));
-                    flag = true;
-                }
-                break;
-
-            case IRON_ORE:
-                event.getEntity().setItemStack(new ItemStack(Material.IRON_INGOT, (int) this.moduleConfiguration.get("iron")));
-                flag = true;
-                break;
-
-            case GOLD_ORE:
-                event.getEntity().setItemStack(new ItemStack(Material.GOLD_INGOT, (int) this.moduleConfiguration.get("gold")));
-                flag = true;
-                break;
-
-            case DIAMOND:
-                event.getEntity().setItemStack(new ItemStack(Material.DIAMOND, (int) this.moduleConfiguration.get("diamond")));
-                flag = true;
-                break;
-
-            case EMERALD:
-                event.getEntity().setItemStack(new ItemStack(Material.EMERALD, (int) this.moduleConfiguration.get("emerald")));
-                flag = true;
-                break;
-
-            case INK_SACK:
-                if (event.getEntity().getItemStack().getDurability() == 4)
-                {
-                    event.getEntity().setItemStack(new ItemStack(Material.INK_SACK, event.getEntity().getItemStack().getAmount() + this.random.nextInt(5) + 1, (short) 4));
-                    flag = true;
-                }
-                break;
-
-            case QUARTZ:
-                flag = true;
-                break;
-
-            default:
-                break;
+            event.getEntity().setItemStack(Meta.addMeta(this.drops.get(stack).getDrop(stack, this.random)));
+            this.spawnXP(event.getEntity(), this.drops.get(stack).getExperienceModifier(this.random));
         }
-
-        if (flag)
-            event.getEntity().setItemStack(this.addMeta(event.getEntity().getItemStack()));
-
-        this.spawnXPFromItemStack(event.getEntity(), event.getEntity().getItemStack());
     }
 
     /**
@@ -131,89 +84,16 @@ public class RapidOresModule extends AbstractSurvivalModule
         }
     }
 
-    public ItemStack addMeta(ItemStack stack)
-    {
-        stack = new ItemStack(stack.getType(), stack.getAmount(), stack.getDurability());
-
-        AttributeStorage storage = AttributeStorage.newTarget(stack, ID);
-        storage.setData("dropped");
-
-        ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-
-        stack.setItemMeta(itemMeta);
-
-        return storage.getTarget();
-    }
-
-    public boolean hasMeta(ItemStack stack)
-    {
-        if (stack == null)
-            return false;
-
-        ItemStack itemStack = new ItemStack(stack.clone());
-        AttributeStorage storage = AttributeStorage.newTarget(itemStack, ID);
-
-        return storage.getData("").equals("dropped");
-    }
-
-    public boolean isDoubledType(Material name)
-    {
-        switch(name)
-        {
-            case COAL:
-            case IRON_INGOT:
-            case GOLD_INGOT:
-            case DIAMOND:
-            case EMERALD:
-                return true;
-
-            default:
-        }
-        return false;
-    }
-
-    private void spawnXPFromItemStack(Entity entity, ItemStack ore)
+    private void spawnXP(Entity entity, int randomized)
     {
         World world = ((CraftEntity) entity).getHandle().getWorld();
 
-        int i = 0;
-
-        switch (ore.getType())
-        {
-            case QUARTZ:
-                i = MathHelper.nextInt(world.random, 2, 5);
-                break;
-
-            case INK_SACK:
-                if (ore.getDurability() == 4)
-                    i = MathHelper.nextInt(world.random, 2, 5);
-                break;
-
-            case EMERALD:
-            case DIAMOND:
-                i = MathHelper.nextInt(world.random, 3, 7);
-                break;
-
-            case COAL:
-            case GOLD_INGOT:
-            case IRON_INGOT:
-                i = MathHelper.nextInt(world.random, 0, 2);
-                break;
-
-            default:
-                break;
-        }
-
-        if (i == 0)
-            return;
-
         int orbSize;
 
-        while (i > 0)
+        while (randomized > 0)
         {
-            orbSize = EntityExperienceOrb.getOrbValue(i);
-            i -= orbSize;
+            orbSize = EntityExperienceOrb.getOrbValue(randomized);
+            randomized -= orbSize;
             world.addEntity(new EntityExperienceOrb(world, entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), orbSize));
         }
     }
@@ -230,58 +110,154 @@ public class RapidOresModule extends AbstractSurvivalModule
 
     public static class ConfigurationBuilder
     {
-        private int coal, iron, gold, diamond, emerald;
+        private final Map<ItemStack, IRapidOresHook> drops;
 
         public ConfigurationBuilder()
         {
-            this.coal = 2;
-            this.iron = 2;
-            this.gold = 2;
-            this.diamond = 2;
-            this.emerald = 2;
+            this.drops = new HashMap<>();
         }
 
         public Map<String, Object> build()
         {
             Map<String, Object> moduleConfiguration = new HashMap<>();
 
-            moduleConfiguration.put("coal", this.coal);
-            moduleConfiguration.put("iron", this.iron);
-            moduleConfiguration.put("gold", this.gold);
-            moduleConfiguration.put("diamond", this.diamond);
-            moduleConfiguration.put("emerald", this.emerald);
+            moduleConfiguration.put("drops", this.drops);
 
             return moduleConfiguration;
         }
 
-        public ConfigurationBuilder setCoalAmount(int coal)
+        public ConfigurationBuilder addDefaults()
         {
-            this.coal = coal;
+            this.addDrop(new ItemStack(Material.COAL, 1), new IRapidOresHook()
+            {
+                @Override
+                public ItemStack getDrop(ItemStack base, Random random)
+                {
+                    if (SurvivalAPI.get().isModuleEnabled(TorchThanCoalModule.class))
+                        return null;
+
+                    return new ItemStack(Material.COAL, 3);
+                }
+
+                @Override
+                public int getExperienceModifier(Random random)
+                {
+                    return MathHelper.nextInt(random, 0, 2);
+                }
+            }, false);
+
+            this.addDrop(new ItemStack(Material.IRON_ORE, 1), new IRapidOresHook()
+            {
+                @Override
+                public ItemStack getDrop(ItemStack base, Random random)
+                {
+                    return new ItemStack(Material.IRON_INGOT, 2);
+                }
+
+                @Override
+                public int getExperienceModifier(Random random)
+                {
+                    return MathHelper.nextInt(random, 0, 2);
+                }
+            }, false);
+
+            this.addDrop(new ItemStack(Material.GOLD_ORE, 1), new IRapidOresHook()
+            {
+                @Override
+                public ItemStack getDrop(ItemStack base, Random random)
+                {
+                    return new ItemStack(Material.GOLD_INGOT, 2);
+                }
+
+                @Override
+                public int getExperienceModifier(Random random)
+                {
+                    return MathHelper.nextInt(random, 0, 2);
+                }
+            }, false);
+
+            this.addDrop(new ItemStack(Material.DIAMOND, 1), new IRapidOresHook()
+            {
+                @Override
+                public ItemStack getDrop(ItemStack base, Random random)
+                {
+                    return new ItemStack(Material.DIAMOND, 2);
+                }
+
+                @Override
+                public int getExperienceModifier(Random random)
+                {
+                    return MathHelper.nextInt(random, 3, 7);
+                }
+            }, false);
+
+            this.addDrop(new ItemStack(Material.EMERALD, 1), new IRapidOresHook()
+            {
+                @Override
+                public ItemStack getDrop(ItemStack base, Random random)
+                {
+                    return new ItemStack(Material.EMERALD, 2);
+                }
+
+                @Override
+                public int getExperienceModifier(Random random)
+                {
+                    return MathHelper.nextInt(random, 3, 7);
+                }
+            }, false);
+
+            this.addDrop(new ItemStack(Material.QUARTZ, 1), new IRapidOresHook()
+            {
+                @Override
+                public ItemStack getDrop(ItemStack base, Random random)
+                {
+                    return base;
+                }
+
+                @Override
+                public int getExperienceModifier(Random random)
+                {
+                    return MathHelper.nextInt(random, 2, 5);
+                }
+            }, false);
+
+            this.addDrop(new ItemStack(Material.INK_SACK, 1, (short) 4), new IRapidOresHook()
+            {
+                @Override
+                public ItemStack getDrop(ItemStack base, Random random)
+                {
+                    return new ItemStack(Material.INK_SACK, base.getAmount() + random.nextInt(5) + 1, (short) 4);
+                }
+
+                @Override
+                public int getExperienceModifier(Random random)
+                {
+                    return MathHelper.nextInt(random, 2, 5);
+                }
+            }, false);
+
             return this;
         }
 
-        public ConfigurationBuilder setIronAmount(int iron)
+        public ConfigurationBuilder addDrop(ItemStack base, IRapidOresHook rapidOresHook, boolean override)
         {
-            this.iron = iron;
+            if (!this.drops.containsKey(base))
+            {
+                this.drops.put(base, rapidOresHook);
+            }
+            else if (override)
+            {
+                this.drops.remove(base);
+                this.drops.put(base, rapidOresHook);
+            }
+
             return this;
         }
 
-        public ConfigurationBuilder setGoldAmount(int gold)
+        public interface IRapidOresHook
         {
-            this.gold = gold;
-            return this;
-        }
-
-        public ConfigurationBuilder setDiamondAmount(int diamond)
-        {
-            this.diamond = diamond;
-            return this;
-        }
-
-        public ConfigurationBuilder setEmeraldAmount(int emerald)
-        {
-            this.emerald = emerald;
-            return this;
+            ItemStack getDrop(ItemStack base, Random random);
+            int getExperienceModifier(Random random);
         }
     }
 }

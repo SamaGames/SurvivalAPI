@@ -3,32 +3,30 @@ package net.samagames.survivalapi.modules.gameplay;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
-import net.samagames.survivalapi.modules.block.RapidOresModule;
 import net.samagames.survivalapi.modules.utility.DropTaggingModule;
+import net.samagames.survivalapi.utils.Meta;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
-import org.bukkit.TreeSpecies;
-import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Tree;
 
 import java.util.*;
 
 public class RapidUsefullModule extends AbstractSurvivalModule
 {
+    private final Map<ItemStack, ConfigurationBuilder.IRapidUsefulHook> drops;
     private final Random random;
-    private final RapidOresModule rapidOresModule;
 
     public RapidUsefullModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
+        Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
 
+        this.drops = (Map<ItemStack, ConfigurationBuilder.IRapidUsefulHook>) moduleConfiguration.get("drops");
         this.random = new Random();
-        this.rapidOresModule = SurvivalAPI.get().getModule(RapidOresModule.class);
     }
 
     /**
@@ -42,87 +40,24 @@ public class RapidUsefullModule extends AbstractSurvivalModule
         if (event.getEntityType() != EntityType.DROPPED_ITEM)
             return;
 
-        if (hasMeta(event.getEntity().getItemStack()))
+        if (Meta.hasMeta(event.getEntity().getItemStack()))
             return;
 
-        Material material = event.getEntity().getItemStack().getType();
+        ItemStack stack = event.getEntity().getItemStack();
 
-        switch(material)
-        {
-            case SAND:
-                event.getEntity().setItemStack(new ItemStack(Material.GLASS_BOTTLE, 1));
-                break;
-
-            case SAPLING:
-                double percent = ((Tree) event.getEntity().getItemStack().getData()).getSpecies().equals(TreeSpecies.GENERIC) ? 0.1 : 0.3;
-                if (this.random.nextDouble() <= percent)
-                    event.getEntity().setItemStack(new ItemStack(Material.APPLE));
-                else
-                    event.setCancelled(true);
-                break;
-
-            case GRAVEL:
-            case FLINT:
-                if (this.random.nextDouble() < 0.75)
-                {
-                    ItemStack loot = new ItemStack(Material.ARROW, 3);
-                    event.getEntity().setItemStack(loot);
-                }
-                break;
-
-            case CACTUS:
-                event.getEntity().setItemStack(new ItemStack(Material.LOG, 2));
-                break;
-
-            case SUGAR_CANE:
-                event.getEntity().setItemStack(verifyStack(new ItemStack(Material.SUGAR_CANE, 2)));
-                break;
-
-            default:
-                break;
-        }
+        if (this.drops.containsKey(stack))
+            event.getEntity().setItemStack(this.drops.get(stack).getDrop(stack, this.random));
     }
 
     /**
-     * Drop some utilities
+     * Increase the xp dropped
      *
      * @param event Event
      */
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event)
     {
-        LivingEntity entity = event.getEntity();
-        List<ItemStack> newDrops = null;
-
-        if (entity instanceof Creeper)
-        {
-            newDrops = new ArrayList<>();
-
-            for (ItemStack stack : event.getDrops())
-                if (stack.getType() == Material.SULPHUR)
-                    newDrops.add(new ItemStack(Material.TNT, stack.getAmount()));
-        }
-
-        if (newDrops != null)
-        {
-            event.getDrops().clear();
-            event.getDrops().addAll(newDrops);
-        }
-
         event.setDroppedExp(event.getDroppedExp() * 2);
-    }
-
-    private ItemStack verifyStack(ItemStack stack)
-    {
-        if(this.rapidOresModule != null)
-            return this.rapidOresModule.addMeta(stack);
-
-        return stack;
-    }
-
-    private boolean hasMeta(ItemStack stack)
-    {
-        return this.rapidOresModule != null && this.rapidOresModule.hasMeta(stack);
     }
 
     @Override
@@ -131,8 +66,69 @@ public class RapidUsefullModule extends AbstractSurvivalModule
         List<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
 
         requiredModules.add(DropTaggingModule.class);
-        requiredModules.add(RapidOresModule.class);
 
         return requiredModules;
+    }
+
+    public static class ConfigurationBuilder
+    {
+        private final Map<ItemStack, IRapidUsefulHook> drops;
+
+        public ConfigurationBuilder()
+        {
+            this.drops = new HashMap<>();
+        }
+
+        public Map<String, Object> build()
+        {
+            Map<String, Object> moduleConfiguration = new HashMap<>();
+
+            moduleConfiguration.put("drops", this.drops);
+
+            return moduleConfiguration;
+        }
+
+        public ConfigurationBuilder addDefaults()
+        {
+            this.addDrop(new ItemStack(Material.GRAVEL, 1), (base, random) ->
+            {
+                if (random.nextDouble() < 0.75)
+                {
+                    return new ItemStack(Material.ARROW, 3);
+                }
+                else
+                {
+                    return base;
+                }
+            }, false);
+
+            this.addDrop(new ItemStack(Material.SAPLING, 1), (base, random) -> new ItemStack(Material.APPLE), false);
+            this.addDrop(new ItemStack(Material.SAND, 1), (base, random) -> new ItemStack(Material.GLASS_BOTTLE, 1), false);
+            this.addDrop(new ItemStack(Material.CACTUS, 1), (base, random) -> new ItemStack(Material.LOG, 2), false);
+            this.addDrop(new ItemStack(Material.SUGAR_CANE, 1), (base, random) -> Meta.addMeta(new ItemStack(Material.SUGAR_CANE, 2)), false);
+            this.addDrop(new ItemStack(Material.SULPHUR, 1), (base, random) -> Meta.addMeta(new ItemStack(Material.TNT, 1)), false);
+
+            return this;
+        }
+
+        public ConfigurationBuilder addDrop(ItemStack base, IRapidUsefulHook rapidFoodHook, boolean override)
+        {
+            if (!this.drops.containsKey(base))
+            {
+                this.drops.put(base, rapidFoodHook);
+            }
+            else if (override)
+            {
+                this.drops.remove(base);
+                this.drops.put(base, rapidFoodHook);
+            }
+
+            return this;
+        }
+
+        public interface IRapidUsefulHook
+        {
+            ItemStack getDrop(ItemStack base, Random random);
+        }
     }
 }
