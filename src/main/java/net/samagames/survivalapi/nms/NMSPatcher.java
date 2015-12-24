@@ -156,7 +156,7 @@ public class NMSPatcher
     public void patchStackable()
     {
         this.logger.info("Patching Potion and Soup to change their stack size...");
-        
+
         try
         {
             Method register = Item.class.getDeclaredMethod("a", int.class, String.class, Item.class);
