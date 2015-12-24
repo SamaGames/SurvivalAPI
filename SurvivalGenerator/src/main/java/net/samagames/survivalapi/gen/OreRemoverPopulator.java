@@ -22,7 +22,7 @@ public class OreRemoverPopulator extends BlockPopulator
     @Override
     public void populate(World world, Random random, Chunk chunk)
     {
-        for (int x = chunk.getX() * 16; x < x + 16; x++)
+        /**for (int x = chunk.getX() * 16; x < x + 16; x++)
         {
             for (int z = chunk.getZ() * 16; z < z + 16; z++)
             {
@@ -34,7 +34,7 @@ public class OreRemoverPopulator extends BlockPopulator
                         block.setType(Material.STONE);
                 }
             }
-        }
+        }**/
     }
 
     public void removeOre(Material material)
