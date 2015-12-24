@@ -1,12 +1,14 @@
 package net.samagames.survivalapi.games;
 
+import net.samagames.survivalapi.games.doublerunner.DoubleRunnerGame;
 import net.samagames.survivalapi.games.uhc.UHCGame;
 import net.samagames.survivalapi.games.uhcrun.UHCRunGame;
 
 public enum Game
 {
     UHC(UHCGame.class),
-    UHCRUN(UHCRunGame.class);
+    UHCRUN(UHCRunGame.class),
+    DOUBLERUNNER(DoubleRunnerGame.class);
 
     private Class<? extends AbstractGame> gameClass;
 
