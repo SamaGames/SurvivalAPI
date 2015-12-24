@@ -22,10 +22,10 @@ public class DoubleRunnerGame extends AbstractGame
     {
         OrePopulator orePopulator = new OrePopulator();
 
-        orePopulator.addRule(new OrePopulator.Rule(Material.DIAMOND_ORE, 4, 0, 64, 4));
+        orePopulator.addRule(new OrePopulator.Rule(Material.DIAMOND_ORE, 4, 0, 64, 8));
         orePopulator.addRule(new OrePopulator.Rule(Material.IRON_ORE, 2, 0, 64, 25));
         orePopulator.addRule(new OrePopulator.Rule(Material.OBSIDIAN, 4, 0, 32, 12));
-        orePopulator.addRule(new OrePopulator.Rule(Material.QUARTZ_BLOCK, 4, 0, 64, 1));
+        orePopulator.addRule(new OrePopulator.Rule(Material.QUARTZ_BLOCK, 4, 0, 64, 3));
 
         world.getPopulators().add(orePopulator);
 

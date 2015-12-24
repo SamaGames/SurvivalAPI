@@ -25,6 +25,6 @@ public class OneShootPassiveModule extends AbstractSurvivalModule
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
     {
         if (event.getDamager() instanceof Player && (event.getEntity() instanceof Animals || event.getEntity() instanceof Ambient))
-            ((LivingEntity) event.getEntity()).damage(Double.MAX_VALUE);
+            ((LivingEntity) event.getEntity()).damage(150.0D);
     }
 }
