@@ -143,7 +143,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     }
 
     @Override
-    public void checkStump(UUID playerUUID)
+    public void checkStump(UUID playerUUID, boolean silent)
     {
         this.server.getScheduler().runTaskLater(this.plugin, () ->
         {
@@ -170,7 +170,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                     this.handleGameEnd();
                     return;
                 }
-                else
+                else if (!silent)
                 {
                     this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + teamLeft + ChatColor.YELLOW + " équipes en jeu.", true);
                 }

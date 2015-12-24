@@ -21,7 +21,7 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     }
 
     @Override
-    public void checkStump(UUID playerUUID)
+    public void checkStump(UUID playerUUID, boolean silent)
     {
         SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(playerUUID);
 
@@ -49,7 +49,7 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         {
             this.handleGameEnd();
         }
-        else
+        else if (!silent)
         {
             this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + (this.getInGamePlayers().size() - 1) + ChatColor.YELLOW + " joueur" + ((this.getInGamePlayers().size() - 1) > 1 ? "s" : "") + " en vie.", true);
         }

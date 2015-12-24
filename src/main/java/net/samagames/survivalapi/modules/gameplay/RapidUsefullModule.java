@@ -48,7 +48,12 @@ public class RapidUsefullModule extends AbstractSurvivalModule
         ItemStack stack = event.getEntity().getItemStack();
 
         if (this.drops.containsKey(stack))
-            event.getEntity().setItemStack(this.drops.get(stack).getDrop(stack, this.random));
+        {
+            if (this.drops.get(stack) == null)
+                event.setCancelled(true);
+            else
+                event.getEntity().setItemStack(this.drops.get(stack).getDrop(stack, this.random));
+        }
     }
 
     /**
@@ -123,7 +128,7 @@ public class RapidUsefullModule extends AbstractSurvivalModule
                 if (random.nextDouble() <= percent)
                     return new ItemStack(Material.APPLE, 1);
                 else
-                    return new ItemStack(Material.AIR, 1);
+                    return null;
             }, false);
 
             this.addDrop(new ItemStack(Material.SAPLING, 1), (base, random) -> new ItemStack(Material.APPLE), false);
