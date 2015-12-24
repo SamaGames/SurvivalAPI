@@ -169,6 +169,8 @@ public class SpectatorListener implements Listener
         if (!this.game.isSpectator(event.getPlayer()))
             return;
 
+        event.setCancelled(true);
+        
         String finalMessage = ChatColor.GRAY + "[Spectateur] " + event.getPlayer().getName() + ": " + event.getMessage();
 
         ((Collection<SurvivalPlayer>) this.game.getSpectatorPlayers().values()).stream().filter(spectator -> spectator.getPlayerIfOnline() != null).forEach(spectator -> spectator.getPlayerIfOnline().sendMessage(finalMessage));
