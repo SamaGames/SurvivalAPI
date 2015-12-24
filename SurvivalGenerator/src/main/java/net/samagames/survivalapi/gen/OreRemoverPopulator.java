@@ -29,7 +29,7 @@ public class OreRemoverPopulator extends BlockPopulator
                 for (int y = 0; y < 250; y++)
                 {
                     Block block = chunk.getBlock(x, y, z);
-                    
+
                     if (this.toRemove.contains(block.getType()))
                         block.setType(Material.STONE);
                 }

@@ -2,11 +2,11 @@ package net.samagames.survivalapi.nms.stack;
 
 import net.minecraft.server.v1_8_R3.*;
 
-public class ItemSoup extends ItemFood
+public class CustomSoup extends ItemSoup
 {
-    public ItemSoup(int var1)
+    public CustomSoup()
     {
-        super(var1, true);
+        super(6);
         this.c(64);
     }
 
