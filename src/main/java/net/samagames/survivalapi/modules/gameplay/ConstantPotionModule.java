@@ -32,10 +32,17 @@ public class ConstantPotionModule extends AbstractSurvivalModule
     {
         ArrayList<PotionEffect> potionEffects = (ArrayList<PotionEffect>) this.moduleConfiguration.get("potion-effects");
 
-        for (SurvivalPlayer player : (Collection<SurvivalPlayer>) game.getInGamePlayers().values())
-            if (player.getPlayerIfOnline() != null)
-                for (PotionEffect effect : potionEffects)
-                    this.plugin.getServer().getScheduler().runTask(this.plugin, () -> player.getPlayerIfOnline().addPotionEffect(effect, true));
+        ((Collection<SurvivalPlayer>) game.getInGamePlayers().values()).stream().filter(player -> player.getPlayerIfOnline() != null).forEach(player ->
+        {
+            for (PotionEffect effect : potionEffects)
+            {
+                this.plugin.getServer().getScheduler().runTask(this.plugin, () ->
+                {
+                    if (player.getPlayerIfOnline() != null)
+                        player.getPlayerIfOnline().addPotionEffect(effect, true);
+                });
+            }
+        });
     }
 
     public static class ConfigurationBuilder
