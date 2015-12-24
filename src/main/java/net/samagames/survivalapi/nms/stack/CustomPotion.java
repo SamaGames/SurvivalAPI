@@ -16,9 +16,7 @@ public class CustomPotion extends ItemPotion
     public ItemStack b(ItemStack var1, World var2, EntityHuman var3)
     {
         if(!var3.abilities.canInstantlyBuild)
-        {
             --var1.count;
-        }
 
         if(!var2.isClientSide)
         {
@@ -26,11 +24,9 @@ public class CustomPotion extends ItemPotion
 
             if(var4 != null)
             {
-                Iterator var5 = var4.iterator();
-
-                while(var5.hasNext())
+                for (Object aVar4 : var4)
                 {
-                    MobEffect var6 = (MobEffect) var5.next();
+                    MobEffect var6 = (MobEffect) aVar4;
                     var3.addEffect(new MobEffect(var6));
                 }
             }

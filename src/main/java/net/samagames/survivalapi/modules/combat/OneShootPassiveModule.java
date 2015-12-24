@@ -24,7 +24,7 @@ public class OneShootPassiveModule extends AbstractSurvivalModule
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
     {
-        if (event.getDamager() instanceof Player && (event.getEntity() instanceof Animals || event.getEntity() instanceof Ambient))
+        if (event.getDamager() instanceof Player && (event.getEntity() instanceof Animals || event.getEntity() instanceof Ambient || event.getEntity() instanceof Squid))
             ((LivingEntity) event.getEntity()).damage(150.0D);
     }
 }

@@ -4,6 +4,7 @@ import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import net.samagames.survivalapi.modules.utility.DropTaggingModule;
+import net.samagames.survivalapi.utils.Meta;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -18,10 +19,14 @@ import java.util.Map;
 
 public class WorldDropModule extends AbstractSurvivalModule
 {
+    private final Map<Material, ItemStack> drops;
+
     public WorldDropModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
         Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
+
+        this.drops = (Map<Material, ItemStack>) this.moduleConfiguration.get("drops");
     }
 
     /**
@@ -35,25 +40,13 @@ public class WorldDropModule extends AbstractSurvivalModule
         if (event.getEntityType() != EntityType.DROPPED_ITEM)
             return;
 
-        if (event.getEntity().hasMetadata("playerDrop"))
+        if (Meta.hasMeta(event.getEntity().getItemStack()))
             return;
 
-        HashMap<Material, ItemStack> drops = (HashMap<Material, ItemStack>) this.moduleConfiguration.get("drops");
-
-        if (!drops.containsKey(event.getEntity().getItemStack().getType()))
+        if (!this.drops.containsKey(event.getEntity().getItemStack().getType()))
             return;
 
-        event.getEntity().setItemStack(drops.get(event.getEntity().getItemStack().getType()));
-    }
-
-    @Override
-    public List<Class<? extends AbstractSurvivalModule>> getRequiredModules()
-    {
-        List<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
-
-        requiredModules.add(DropTaggingModule.class);
-
-        return requiredModules;
+        event.getEntity().setItemStack(Meta.addMeta(this.drops.get(event.getEntity().getItemStack().getType())));
     }
 
     public static class ConfigurationBuilder

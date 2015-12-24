@@ -7,11 +7,13 @@ import net.samagames.survivalapi.modules.utility.DropTaggingModule;
 import net.samagames.survivalapi.utils.Meta;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Tree;
 
 import java.util.*;
 
@@ -100,6 +102,28 @@ public class RapidUsefullModule extends AbstractSurvivalModule
                 {
                     return base;
                 }
+            }, false);
+
+            this.addDrop(new ItemStack(Material.FLINT, 1), (base, random) ->
+            {
+                if (random.nextDouble() < 0.75)
+                {
+                    return new ItemStack(Material.ARROW, 3);
+                }
+                else
+                {
+                    return base;
+                }
+            }, false);
+
+            this.addDrop(new ItemStack(Material.SAPLING, 1), (base, random) ->
+            {
+                double percent = ((Tree) base.getData()).getSpecies().equals(TreeSpecies.GENERIC) ? 0.1 : 0.3;
+
+                if (random.nextDouble() <= percent)
+                    return new ItemStack(Material.APPLE, 1);
+                else
+                    return new ItemStack(Material.AIR, 1);
             }, false);
 
             this.addDrop(new ItemStack(Material.SAPLING, 1), (base, random) -> new ItemStack(Material.APPLE), false);
