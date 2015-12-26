@@ -32,11 +32,9 @@ public class DeadCorpses
 
     public void spawn(Location location)
     {
-        IMessageManager messageManager = SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager();
-
-        ParticleEffect.SMOKE_LARGE.display(0.5F, 0.5F, 0.5F, 0.025F, 1, location, 120.0D);
-        ParticleEffect.SMOKE_LARGE.display(0.5F, 0.5F, 0.5F, 0.025F, 1, location, 120.0D);
-        ParticleEffect.SMOKE_LARGE.display(0.5F, 0.5F, 0.5F, 0.025F, 1, location, 120.0D);
+        ParticleEffect.SMOKE_LARGE.display(0.5F, 0.5F, 0.5F, 0.025F, 3, location, 120.0D);
+        ParticleEffect.SMOKE_LARGE.display(0.5F, 0.5F, 0.5F, 0.025F, 3, location, 120.0D);
+        ParticleEffect.SMOKE_LARGE.display(0.5F, 0.5F, 0.5F, 0.25F, 3, location, 120.0D);
 
         ArmorStand armorStand = location.getWorld().spawn(location, ArmorStand.class);
         armorStand.setCustomName("base_" + this.player.getName());
