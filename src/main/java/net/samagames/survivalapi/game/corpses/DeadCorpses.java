@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -45,14 +46,20 @@ public class DeadCorpses
 
         for (Entity entity : location.getWorld().getNearbyEntities(location, 5.0D, 5.0D, 5.0D))
         {
-            if (entity.getCustomName().equals("part_1_" + this.player.getName()))
-                corpsesPart1 = (ArmorStand) entity;
-            else if (entity.getCustomName().equals("part_2_" + this.player.getName()))
-                corpsesPart2 = (ArmorStand) entity;
+            if (entity.getType() == EntityType.ARMOR_STAND && entity.getCustomName() != null)
+            {
+                if (entity.getCustomName().equals("part_1_" + this.player.getName()))
+                    corpsesPart1 = (ArmorStand) entity;
+                else if (entity.getCustomName().equals("part_2_" + this.player.getName()))
+                    corpsesPart2 = (ArmorStand) entity;
+            }
         }
 
         if (corpsesPart1 == null || corpsesPart2 == null)
+        {
+            SurvivalAPI.get().getPlugin().getLogger().severe("Can't spawn dead corpses of " + this.player.getName() + " because one of two armor stand isn't exist!");
             return;
+        }
 
         ItemStack playerHead = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
         SkullMeta playerHeadMeta = (SkullMeta) playerHead.getItemMeta();

@@ -1,5 +1,6 @@
 package net.samagames.survivalapi.modules.gameplay;
 
+import net.samagames.api.SamaGamesAPI;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.SurvivalGame;
@@ -18,6 +19,7 @@ import java.util.*;
 public class ConstantPotionModule extends AbstractSurvivalModule
 {
     private final List<PotionEffect> potionEffects;
+    private SurvivalGame game;
 
     public ConstantPotionModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
@@ -35,6 +37,8 @@ public class ConstantPotionModule extends AbstractSurvivalModule
     @Override
     public void onGameStart(SurvivalGame game)
     {
+        this.game = game;
+
         ((Collection<SurvivalPlayer>) game.getInGamePlayers().values()).stream().filter(player -> player.getPlayerIfOnline() != null).forEach(player -> this.setEffectOnPlayer(player.getPlayerIfOnline()));
     }
 
@@ -53,13 +57,16 @@ public class ConstantPotionModule extends AbstractSurvivalModule
 
     private void setEffectOnPlayer(Player player)
     {
-        for (PotionEffect effect : this.potionEffects)
+        if (SamaGamesAPI.get().getGameManager().isReconnectAllowed(player))
         {
-            this.plugin.getServer().getScheduler().runTask(this.plugin, () ->
+            for (PotionEffect effect : this.potionEffects)
             {
-                if (player != null)
-                    player.addPotionEffect(effect, true);
-            });
+                this.plugin.getServer().getScheduler().runTask(this.plugin, () ->
+                {
+                    if (player != null)
+                        player.addPotionEffect(effect, true);
+                });
+            }
         }
     }
 
