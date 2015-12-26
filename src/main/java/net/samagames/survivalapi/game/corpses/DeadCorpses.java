@@ -38,22 +38,16 @@ public class DeadCorpses
         ParticleEffect.SMOKE_LARGE.display(0.5F, 0.5F, 0.5F, 0.025F, 1, location, 120.0D);
         ParticleEffect.SMOKE_LARGE.display(0.5F, 0.5F, 0.5F, 0.025F, 1, location, 120.0D);
 
-        messageManager.writeCustomMessage("Spawning dead corpses...", true);
-
         ArmorStand armorStand = location.getWorld().spawn(location, ArmorStand.class);
         armorStand.setCustomName("base_" + this.player.getName());
         armorStand.setCustomNameVisible(false);
         armorStand.setGravity(false);
         armorStand.setVisible(false);
 
-        messageManager.writeCustomMessage("Spawned base at " + LocationUtils.loc2str(armorStand.getLocation()), true);
-
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), corpsesPart1.replaceAll("%player%", this.player.getName()));
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), corpsesPart2.replaceAll("%player%", this.player.getName()));
 
         armorStand.remove();
-
-        messageManager.writeCustomMessage("Searching for spawned parts...", true);
 
         ArmorStand corpsesPart1 = null;
         ArmorStand corpsesPart2 = null;
@@ -70,13 +64,7 @@ public class DeadCorpses
         }
 
         if (corpsesPart1 == null || corpsesPart2 == null)
-        {
-            messageManager.writeCustomMessage("One of two parts not found!", true);
             return;
-        }
-
-        SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager().writeCustomMessage("Two parts found!", true);
-        SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager().writeCustomMessage("Setting inventory", true);
 
         ItemStack playerHead = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
         SkullMeta playerHeadMeta = (SkullMeta) playerHead.getItemMeta();
@@ -84,9 +72,9 @@ public class DeadCorpses
         playerHead.setItemMeta(playerHeadMeta);
 
         corpsesPart1.setHelmet(playerHead);
-        corpsesPart1.setChestplate((this.player.getInventory().getChestplate() != null ? this.player.getInventory().getChestplate() : this.getArmor(new ItemStack(Material.LEATHER_CHESTPLATE, 1))));
-        corpsesPart2.setLeggings((this.player.getInventory().getLeggings() != null ? this.player.getInventory().getLeggings() : this.getArmor(new ItemStack(Material.LEATHER_LEGGINGS, 1))));
-        corpsesPart2.setBoots((this.player.getInventory().getBoots() != null ? this.player.getInventory().getBoots() : this.getArmor(new ItemStack(Material.LEATHER_BOOTS, 1))));
+        corpsesPart1.setChestplate(this.player.getInventory().getChestplate() != null ? this.player.getInventory().getChestplate() : this.getArmor(new ItemStack(Material.LEATHER_CHESTPLATE, 1)));
+        corpsesPart2.setLeggings(this.player.getInventory().getLeggings() != null ? this.player.getInventory().getLeggings() : this.getArmor(new ItemStack(Material.LEATHER_LEGGINGS, 1)));
+        corpsesPart2.setBoots(this.player.getInventory().getBoots() != null ? this.player.getInventory().getBoots() : this.getArmor(new ItemStack(Material.LEATHER_BOOTS, 1)));
 
         corpsesPart1.setItemInHand(this.player.getItemInHand());
 
@@ -96,10 +84,8 @@ public class DeadCorpses
         EulerAngle corpsesPart2LeftLegPose = corpsesPart2.getLeftLegPose();
         EulerAngle corpsesPart2RightLegPose = corpsesPart2.getRightLegPose();
 
-        messageManager.writeCustomMessage("Randomizing Euler angles...", true);
-
         corpsesPart1.setHeadPose(new EulerAngle(corpsesPart1HeadPose.getX(), -50 + this.random.nextInt(100), -25 + this.random.nextInt(50)));
-        corpsesPart1.setLeftArmPose(new EulerAngle(corpsesPart1LeftArmPose.getX(), 160.0D - this.random.nextInt(140), corpsesPart1LeftArmPose.getZ()));
+        corpsesPart1.setLeftArmPose(new EulerAngle(corpsesPart1LeftArmPose.getX(), 150.0D - this.random.nextInt(130), corpsesPart1LeftArmPose.getZ()));
         corpsesPart1.setRightArmPose(new EulerAngle(corpsesPart1RightArmPose.getX(), 140.0D + this.random.nextInt(80), -90.0D));
         corpsesPart2.setLeftLegPose(new EulerAngle(corpsesPart2LeftLegPose.getX(), -80.0D + this.random.nextInt(80), corpsesPart2LeftLegPose.getZ()));
         corpsesPart2.setRightLegPose(new EulerAngle(corpsesPart2RightLegPose.getX(), 80.0D - this.random.nextInt(80), corpsesPart2RightLegPose.getZ()));
