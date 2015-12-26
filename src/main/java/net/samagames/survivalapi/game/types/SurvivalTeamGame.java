@@ -179,9 +179,9 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     }
 
     @Override
-    public void stumpPlayer(UUID playerUUID, boolean logout)
+    public void stumpPlayer(UUID playerUUID, boolean logout, boolean silent)
     {
-        super.stumpPlayer(playerUUID, logout);
+        super.stumpPlayer(playerUUID, logout, silent);
 
         if (logout && !this.getStatus().equals(Status.IN_GAME))
         {
