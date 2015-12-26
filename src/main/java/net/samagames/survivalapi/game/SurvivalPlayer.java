@@ -81,7 +81,7 @@ public class SurvivalPlayer extends GamePlayer
 
             if (game.isPvPActivated())
             {
-                game.stumpPlayer(this.uuid, true);
+                game.stumpPlayer(this.uuid, true, false);
 
                 Location location = player.getLocation();
                 World world = location.getWorld();
