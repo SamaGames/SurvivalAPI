@@ -41,6 +41,8 @@ public class DeadCorpses
 
         System.out.print("Spawned base at " + LocationUtils.loc2str(armorStand.getLocation()));
 
+        armorStand.setOp(true);
+
         Bukkit.dispatchCommand(armorStand, corpsesPart1.replaceAll("%player%", this.player.getName()));
         Bukkit.dispatchCommand(armorStand, corpsesPart2.replaceAll("%player%", this.player.getName()));
 
