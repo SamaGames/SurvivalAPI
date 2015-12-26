@@ -19,8 +19,8 @@ import java.util.Random;
 
 public class DeadCorpses
 {
-    private static final String corpsesPart1 = "execute @e[name=base_%player%,r=15] ~ ~-1.2 ~-0.5 summon ArmorStand ~ ~ ~ {CustomName:\"part_1_%player%\",NoGravity:1,Invulnerable:1,DisabledSlots:2039583,Pose:{Body:[-88f,0f,0f],Head:[-90f,0f,0f],RightArm:[90f,0f,0f],LeftArm:[90f,0f,0f]},ShowArms:1}";
-    private static final String corpsesPart2 = "execute @e[name=base_%player%,r=15] ~ ~ ~ summon ArmorStand ~ ~-0.596 ~ {CustomName:\"part_2_%player%\",NoGravity:1,Invulnerable:1,DisabledSlots:2039583,Pose:{Body:[0f,0f,0f],RightLeg:[-90f,0f,0f],LeftLeg:[-90f,0f,0f]},Invisible:1}";
+    private static final String corpsesPart1 = "execute @e[name=base_%player%] ~ ~-1.2 ~-0.5 summon ArmorStand ~ ~ ~ {CustomName:\"part_1_%player%\",NoGravity:1,Invulnerable:1,DisabledSlots:2039583,Pose:{Body:[-88f,0f,0f],Head:[-90f,0f,0f],RightArm:[90f,0f,0f],LeftArm:[90f,0f,0f]},ShowArms:1}";
+    private static final String corpsesPart2 = "execute @e[name=base_%player%] ~ ~ ~ summon ArmorStand ~ ~-0.596 ~ {CustomName:\"part_2_%player%\",NoGravity:1,Invulnerable:1,DisabledSlots:2039583,Pose:{Body:[0f,0f,0f],RightLeg:[-90f,0f,0f],LeftLeg:[-90f,0f,0f]},Invisible:1}";
 
     private final Player player;
     private final Random random;
@@ -41,10 +41,8 @@ public class DeadCorpses
 
         System.out.print("Spawned base at " + LocationUtils.loc2str(armorStand.getLocation()));
 
-        armorStand.setOp(true);
-
-        Bukkit.dispatchCommand(armorStand, corpsesPart1.replaceAll("%player%", this.player.getName()));
-        Bukkit.dispatchCommand(armorStand, corpsesPart2.replaceAll("%player%", this.player.getName()));
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), corpsesPart1.replaceAll("%player%", this.player.getName()));
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), corpsesPart2.replaceAll("%player%", this.player.getName()));
 
         armorStand.remove();
 
