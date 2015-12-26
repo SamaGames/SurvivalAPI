@@ -1,7 +1,10 @@
 package net.samagames.survivalapi.game.corpses;
 
+import net.samagames.api.SamaGamesAPI;
+import net.samagames.api.games.themachine.messages.IMessageManager;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.tools.LocationUtils;
+import net.samagames.tools.ParticleEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,8 +22,8 @@ import java.util.Random;
 
 public class DeadCorpses
 {
-    private static final String corpsesPart1 = "execute @e[name=base_%player%] ~ ~-1.2 ~-0.5 summon ArmorStand ~ ~ ~ {CustomName:\"part_1_%player%\",NoGravity:1,Invulnerable:1,DisabledSlots:2039583,Pose:{Body:[-88f,0f,0f],Head:[-90f,0f,0f],RightArm:[90f,0f,0f],LeftArm:[90f,0f,0f]},ShowArms:1}";
-    private static final String corpsesPart2 = "execute @e[name=base_%player%] ~ ~ ~ summon ArmorStand ~ ~-0.596 ~ {CustomName:\"part_2_%player%\",NoGravity:1,Invulnerable:1,DisabledSlots:2039583,Pose:{Body:[0f,0f,0f],RightLeg:[-90f,0f,0f],LeftLeg:[-90f,0f,0f]},Invisible:1}";
+    private static final String corpsesPart1 = "execute @e[name=base_%player%] ~ ~-1.2 ~-0.5 summon ArmorStand ~ ~ ~ {CustomName:\"part_1_%player%\",NoBasePlate:1,NoGravity:1,Invulnerable:1,DisabledSlots:2039583,Pose:{Body:[-88f,0f,0f],Head:[-90f,0f,0f],RightArm:[90f,0f,0f],LeftArm:[90f,0f,0f]},ShowArms:1}";
+    private static final String corpsesPart2 = "execute @e[name=base_%player%] ~ ~ ~ summon ArmorStand ~ ~-0.596 ~ {CustomName:\"part_2_%player%\",NoBasePlate:1,NoGravity:1,Invulnerable:1,DisabledSlots:2039583,Pose:{Body:[0f,0f,0f],RightLeg:[-90f,0f,0f],LeftLeg:[-90f,0f,0f]},Invisible:1}";
 
     private final Player player;
     private final Random random;
@@ -33,20 +36,28 @@ public class DeadCorpses
 
     public void spawn(Location location)
     {
-        System.out.print("Spawning dead corpses...");
+        IMessageManager messageManager = SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager();
+
+        ParticleEffect.SMOKE_LARGE.display(0.5F, 0.5F, 0.5F, 0.025F, 1, location, 120.0D);
+        ParticleEffect.SMOKE_LARGE.display(0.5F, 0.5F, 0.5F, 0.025F, 1, location, 120.0D);
+        ParticleEffect.SMOKE_LARGE.display(0.5F, 0.5F, 0.5F, 0.025F, 1, location, 120.0D);
+
+        messageManager.writeCustomMessage("Spawning dead corpses...", true);
 
         ArmorStand armorStand = location.getWorld().spawn(location, ArmorStand.class);
         armorStand.setCustomName("base_" + this.player.getName());
         armorStand.setCustomNameVisible(false);
+        armorStand.setGravity(false);
+        armorStand.setVisible(false);
 
-        System.out.print("Spawned base at " + LocationUtils.loc2str(armorStand.getLocation()));
+        messageManager.writeCustomMessage("Spawned base at " + LocationUtils.loc2str(armorStand.getLocation()), true);
 
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), corpsesPart1.replaceAll("%player%", this.player.getName()));
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), corpsesPart2.replaceAll("%player%", this.player.getName()));
 
         armorStand.remove();
 
-        System.out.print("Searching for spawned parts...");
+        messageManager.writeCustomMessage("Searching for spawned parts...", true);
 
         ArmorStand corpsesPart1 = null;
         ArmorStand corpsesPart2 = null;
@@ -64,14 +75,12 @@ public class DeadCorpses
 
         if (corpsesPart1 == null || corpsesPart2 == null)
         {
-            System.out.print("One of two parts not found!");
-
-            SurvivalAPI.get().getPlugin().getLogger().severe("Can't spawn dead corpses of " + this.player.getName() + " because one of two armor stand isn't exist!");
+            messageManager.writeCustomMessage("One of two parts not found!", true);
             return;
         }
 
-        System.out.print("Two parts found!");
-        System.out.print("Setting inventory...");
+        SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager().writeCustomMessage("Two parts found!", true);
+        SamaGamesAPI.get().getGameManager().getCoherenceMachine().getMessageManager().writeCustomMessage("Setting inventory", true);
 
         ItemStack playerHead = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
         SkullMeta playerHeadMeta = (SkullMeta) playerHead.getItemMeta();
@@ -91,7 +100,7 @@ public class DeadCorpses
         EulerAngle corpsesPart2LeftLegPose = corpsesPart2.getLeftLegPose();
         EulerAngle corpsesPart2RightLegPose = corpsesPart2.getRightLegPose();
 
-        System.out.print("Randomizing Euler angles...");
+        messageManager.writeCustomMessage("Randomizing Euler angles...", true);
 
         corpsesPart1.setHeadPose(new EulerAngle(corpsesPart1HeadPose.getX(), -50 + this.random.nextInt(100), -25 + this.random.nextInt(50)));
         corpsesPart1.setLeftArmPose(new EulerAngle(corpsesPart1LeftArmPose.getX(), 160.0D - this.random.nextInt(140), corpsesPart1LeftArmPose.getZ()));
@@ -116,8 +125,6 @@ public class DeadCorpses
 
                 this.temporaryArmPoseZ -= 3.0D;
             }
-        }.runTaskTimer(SurvivalAPI.get().getPlugin(), 1L, 1L);
-
-        System.out.print("Done.");
+        }.runTaskTimer(SurvivalAPI.get().getPlugin(), 20L * 5, 1L);
     }
 }
