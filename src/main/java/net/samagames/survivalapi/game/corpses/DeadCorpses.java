@@ -2,7 +2,6 @@ package net.samagames.survivalapi.game.corpses;
 
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.themachine.messages.IMessageManager;
-import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.tools.LocationUtils;
 import net.samagames.tools.ParticleEffect;
 import org.bukkit.Bukkit;
@@ -15,14 +14,13 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 
 import java.util.Random;
 
 public class DeadCorpses
 {
-    private static final String corpsesPart1 = "execute @e[name=base_%player%] ~ ~-1.2 ~-0.5 summon ArmorStand ~ ~ ~ {CustomName:\"part_1_%player%\",NoBasePlate:1,NoGravity:1,Invulnerable:1,DisabledSlots:2039583,Pose:{Body:[-88f,0f,0f],Head:[-90f,0f,0f],RightArm:[90f,0f,0f],LeftArm:[90f,0f,0f]},ShowArms:1}";
+    private static final String corpsesPart1 = "execute @e[name=base_%player%] ~ ~-1.2 ~-0.5 summon ArmorStand ~ ~ ~ {CustomName:\"part_1_%player%\",NoBasePlate:1,NoGravity:1,Invulnerable:1,DisabledSlots:2039583,Pose:{Body:[-88f,0f,0f],Head:[-90f,0f,0f],RightArm:[90f,0f,0f],LeftArm:[90f,0f,0f]},Invisible:1,ShowArms:1}";
     private static final String corpsesPart2 = "execute @e[name=base_%player%] ~ ~ ~ summon ArmorStand ~ ~-0.596 ~ {CustomName:\"part_2_%player%\",NoBasePlate:1,NoGravity:1,Invulnerable:1,DisabledSlots:2039583,Pose:{Body:[0f,0f,0f],RightLeg:[-90f,0f,0f],LeftLeg:[-90f,0f,0f]},Invisible:1}";
 
     private final Player player;
@@ -104,27 +102,8 @@ public class DeadCorpses
 
         corpsesPart1.setHeadPose(new EulerAngle(corpsesPart1HeadPose.getX(), -50 + this.random.nextInt(100), -25 + this.random.nextInt(50)));
         corpsesPart1.setLeftArmPose(new EulerAngle(corpsesPart1LeftArmPose.getX(), 160.0D - this.random.nextInt(140), corpsesPart1LeftArmPose.getZ()));
-        corpsesPart2.setLeftLegPose(new EulerAngle(corpsesPart2LeftLegPose.getX(), -85.0D + this.random.nextInt(85), corpsesPart2LeftLegPose.getZ()));
-        corpsesPart2.setRightLegPose(new EulerAngle(corpsesPart2RightLegPose.getX(), 85.0D - this.random.nextInt(85), corpsesPart2RightLegPose.getZ()));
-
-        EulerAngle temporaryArmPose = new EulerAngle(corpsesPart1RightArmPose.getX(), 140.0D + this.random.nextInt(80), -30.0D);
-
-        final ArmorStand finalCorpsesPart = corpsesPart1;
-
-        new BukkitRunnable()
-        {
-            private double temporaryArmPoseZ = -30.0D;
-
-            @Override
-            public void run()
-            {
-                if (this.temporaryArmPoseZ <= -90.0D)
-                    this.cancel();
-
-                finalCorpsesPart.setRightArmPose(temporaryArmPose.setZ(this.temporaryArmPoseZ));
-
-                this.temporaryArmPoseZ -= 3.0D;
-            }
-        }.runTaskTimer(SurvivalAPI.get().getPlugin(), 20L * 5, 1L);
+        corpsesPart1.setRightArmPose(new EulerAngle(corpsesPart1RightArmPose.getX(), 140.0D + this.random.nextInt(80), -90.0D));
+        corpsesPart2.setLeftLegPose(new EulerAngle(corpsesPart2LeftLegPose.getX(), -80.0D + this.random.nextInt(80), corpsesPart2LeftLegPose.getZ()));
+        corpsesPart2.setRightLegPose(new EulerAngle(corpsesPart2RightLegPose.getX(), 80.0D - this.random.nextInt(80), corpsesPart2RightLegPose.getZ()));
     }
 }
