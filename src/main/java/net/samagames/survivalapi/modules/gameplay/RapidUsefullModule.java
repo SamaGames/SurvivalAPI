@@ -49,10 +49,12 @@ public class RapidUsefullModule extends AbstractSurvivalModule
 
         if (this.drops.containsKey(stack))
         {
-            if (this.drops.get(stack) == null)
+            stack = this.drops.get(stack).getDrop(stack, this.random);
+
+            if (stack == null)
                 event.setCancelled(true);
             else
-                event.getEntity().setItemStack(this.drops.get(stack).getDrop(stack, this.random));
+                event.getEntity().setItemStack(stack);
         }
     }
 
@@ -99,7 +101,7 @@ public class RapidUsefullModule extends AbstractSurvivalModule
         {
             this.addDrop(new ItemStack(Material.GRAVEL, 1), (base, random) ->
             {
-                if (random.nextDouble() < 0.75)
+                if (random.nextDouble() < 0.75D)
                 {
                     return new ItemStack(Material.ARROW, 3);
                 }
@@ -111,7 +113,7 @@ public class RapidUsefullModule extends AbstractSurvivalModule
 
             this.addDrop(new ItemStack(Material.FLINT, 1), (base, random) ->
             {
-                if (random.nextDouble() < 0.75)
+                if (random.nextDouble() < 0.75D)
                 {
                     return new ItemStack(Material.ARROW, 3);
                 }
@@ -123,7 +125,7 @@ public class RapidUsefullModule extends AbstractSurvivalModule
 
             this.addDrop(new ItemStack(Material.SAPLING, 1), (base, random) ->
             {
-                double percent = ((Tree) base.getData()).getSpecies().equals(TreeSpecies.GENERIC) ? 0.1 : 0.3;
+                double percent = ((Tree) base.getData()).getSpecies().equals(TreeSpecies.GENERIC) ? 0.1D : 0.3D;
 
                 if (random.nextDouble() <= percent)
                     return new ItemStack(Material.APPLE, 1);
@@ -131,7 +133,6 @@ public class RapidUsefullModule extends AbstractSurvivalModule
                     return null;
             }, false);
 
-            this.addDrop(new ItemStack(Material.SAPLING, 1), (base, random) -> new ItemStack(Material.APPLE), false);
             this.addDrop(new ItemStack(Material.SAND, 1), (base, random) -> new ItemStack(Material.GLASS_BOTTLE, 1), false);
             this.addDrop(new ItemStack(Material.CACTUS, 1), (base, random) -> new ItemStack(Material.LOG, 2), false);
             this.addDrop(new ItemStack(Material.SUGAR_CANE, 1), (base, random) -> Meta.addMeta(new ItemStack(Material.SUGAR_CANE, 2)), false);

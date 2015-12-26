@@ -60,7 +60,7 @@ public class FastTreeModule extends AbstractSurvivalModule
         Material material = event.getBlock().getType();
 
         if (material == Material.LOG || material == Material.LOG_2)
-            Bukkit.getScheduler().runTask(plugin, () -> removeTree(event.getBlock(), true, 3));
+            Bukkit.getScheduler().runTask(this.plugin, () -> removeTree(event.getBlock(), true, 3));
 
         event.getPlayer().giveExp(event.getExpToDrop() * 2);
     }

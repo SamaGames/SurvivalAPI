@@ -6,20 +6,25 @@ import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.game.SurvivalPlayer;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ConstantPotionModule extends AbstractSurvivalModule
 {
+    private final List<PotionEffect> potionEffects;
+
     public ConstantPotionModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
         Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
+
+        this.potionEffects = (ArrayList<PotionEffect>) this.moduleConfiguration.get("potion-effects");
     }
 
     /**
@@ -30,19 +35,32 @@ public class ConstantPotionModule extends AbstractSurvivalModule
     @Override
     public void onGameStart(SurvivalGame game)
     {
-        ArrayList<PotionEffect> potionEffects = (ArrayList<PotionEffect>) this.moduleConfiguration.get("potion-effects");
+        ((Collection<SurvivalPlayer>) game.getInGamePlayers().values()).stream().filter(player -> player.getPlayerIfOnline() != null).forEach(player -> this.setEffectOnPlayer(player.getPlayerIfOnline()));
+    }
 
-        ((Collection<SurvivalPlayer>) game.getInGamePlayers().values()).stream().filter(player -> player.getPlayerIfOnline() != null).forEach(player ->
+    /**
+     * Set the effect on the player when he consumes
+     * a milk bucket
+     *
+     * @param event Event
+     */
+    @EventHandler
+    public void onPlayerItemConsume(PlayerItemConsumeEvent event)
+    {
+        if (event.getItem().getType() == Material.MILK_BUCKET)
+            this.setEffectOnPlayer(event.getPlayer());
+    }
+
+    private void setEffectOnPlayer(Player player)
+    {
+        for (PotionEffect effect : this.potionEffects)
         {
-            for (PotionEffect effect : potionEffects)
+            this.plugin.getServer().getScheduler().runTask(this.plugin, () ->
             {
-                this.plugin.getServer().getScheduler().runTask(this.plugin, () ->
-                {
-                    if (player.getPlayerIfOnline() != null)
-                        player.getPlayerIfOnline().addPotionEffect(effect, true);
-                });
-            }
-        });
+                if (player != null)
+                    player.addPotionEffect(effect, true);
+            });
+        }
     }
 
     public static class ConfigurationBuilder
