@@ -11,10 +11,13 @@ import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class SurvivalGenerator extends JavaPlugin
 {
+    private List<BiomeBase> biomesToRemove;
     private AbstractGame game;
     private BukkitTask startTimer;
     private boolean worldLoaded;
@@ -24,14 +27,16 @@ public class SurvivalGenerator extends JavaPlugin
     {
         this.saveDefaultConfig();
 
+        this.biomesToRemove = new ArrayList<>();
+
         String gameRaw = this.getConfig().getString("game", "UHC");
 
         try
         {
-            this.patchBiomes();
-
             this.game = Game.valueOf(gameRaw).getGameClass().getConstructor(SurvivalGenerator.class).newInstance(this);
             this.game.preInit();
+
+            this.patchBiomes();
 
             this.getServer().getPluginManager().registerEvents(this.game, this);
 
@@ -58,6 +63,11 @@ public class SurvivalGenerator extends JavaPlugin
         Bukkit.shutdown();
     }
 
+    public void addBiomeToRemove(BiomeBase biomeBase)
+    {
+        this.biomesToRemove.add(biomeBase);
+    }
+
     public boolean isWorldLoaded()
     {
         return this.worldLoaded;
@@ -74,6 +84,9 @@ public class SurvivalGenerator extends JavaPlugin
         biomesMap.remove(BiomeBase.OCEAN.ah);
         biomesMap.remove(BiomeBase.DEEP_OCEAN.ah);
         biomesMap.remove(BiomeBase.FROZEN_OCEAN.ah);
+
+        for (BiomeBase biomeBase : this.biomesToRemove)
+            biomesMap.remove(biomeBase.ah);
 
         this.setReedsPerChunk(BiomeBase.BEACH, 8);
         this.setReedsPerChunk(BiomeBase.STONE_BEACH, 8);

@@ -1,5 +1,6 @@
 package net.samagames.survivalapi.games.doublerunner;
 
+import net.minecraft.server.v1_8_R3.BiomeBase;
 import net.samagames.survivalapi.SurvivalGenerator;
 import net.samagames.survivalapi.games.AbstractGame;
 import net.samagames.survivalapi.gen.OrePopulator;
@@ -15,7 +16,14 @@ public class DoubleRunnerGame extends AbstractGame
     }
 
     @Override
-    public void preInit() {}
+    public void preInit()
+    {
+        this.plugin.addBiomeToRemove(BiomeBase.ICE_PLAINS);
+        this.plugin.addBiomeToRemove(BiomeBase.ICE_MOUNTAINS);
+        this.plugin.addBiomeToRemove(BiomeBase.JUNGLE);
+        this.plugin.addBiomeToRemove(BiomeBase.JUNGLE_HILLS);
+        this.plugin.addBiomeToRemove(BiomeBase.JUNGLE_EDGE);
+    }
 
     @Override
     public void init(World world)
