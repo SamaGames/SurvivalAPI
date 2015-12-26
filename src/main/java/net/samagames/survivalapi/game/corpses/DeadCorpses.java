@@ -33,20 +33,20 @@ public class DeadCorpses
 
     public void spawn(Location location)
     {
-        Bukkit.broadcastMessage("Spawning dead corpses...");
+        System.out.print("Spawning dead corpses...");
 
         ArmorStand armorStand = location.getWorld().spawn(location, ArmorStand.class);
-        armorStand.setCustomName("corpses_base");
+        armorStand.setCustomName("base_" + this.player.getName());
         armorStand.setCustomNameVisible(false);
 
-        Bukkit.broadcastMessage("Spawned base at " + LocationUtils.loc2str(armorStand.getLocation()));
+        System.out.print("Spawned base at " + LocationUtils.loc2str(armorStand.getLocation()));
 
         Bukkit.dispatchCommand(armorStand, corpsesPart1.replaceAll("%player%", this.player.getName()));
         Bukkit.dispatchCommand(armorStand, corpsesPart2.replaceAll("%player%", this.player.getName()));
 
         armorStand.remove();
 
-        Bukkit.broadcastMessage("Searching for spawned parts...");
+        System.out.print("Searching for spawned parts...");
 
         ArmorStand corpsesPart1 = null;
         ArmorStand corpsesPart2 = null;
@@ -64,14 +64,14 @@ public class DeadCorpses
 
         if (corpsesPart1 == null || corpsesPart2 == null)
         {
-            Bukkit.broadcastMessage("One of two parts not found!");
+            System.out.print("One of two parts not found!");
 
             SurvivalAPI.get().getPlugin().getLogger().severe("Can't spawn dead corpses of " + this.player.getName() + " because one of two armor stand isn't exist!");
             return;
         }
 
-        Bukkit.broadcastMessage("Two parts found!");
-        Bukkit.broadcastMessage("Setting inventory...");
+        System.out.print("Two parts found!");
+        System.out.print("Setting inventory...");
 
         ItemStack playerHead = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
         SkullMeta playerHeadMeta = (SkullMeta) playerHead.getItemMeta();
@@ -91,7 +91,7 @@ public class DeadCorpses
         EulerAngle corpsesPart2LeftLegPose = corpsesPart2.getLeftLegPose();
         EulerAngle corpsesPart2RightLegPose = corpsesPart2.getRightLegPose();
 
-        Bukkit.broadcastMessage("Randomizing Euler angles...");
+        System.out.print("Randomizing Euler angles...");
 
         corpsesPart1.setHeadPose(new EulerAngle(corpsesPart1HeadPose.getX(), -50 + this.random.nextInt(100), -25 + this.random.nextInt(50)));
         corpsesPart1.setLeftArmPose(new EulerAngle(corpsesPart1LeftArmPose.getX(), 160.0D - this.random.nextInt(140), corpsesPart1LeftArmPose.getZ()));
@@ -118,6 +118,6 @@ public class DeadCorpses
             }
         }.runTaskTimer(SurvivalAPI.get().getPlugin(), 1L, 1L);
 
-        Bukkit.broadcastMessage("Done.");
+        System.out.print("Done.");
     }
 }
