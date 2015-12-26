@@ -4,15 +4,13 @@ import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.themachine.messages.IMessageManager;
 import net.samagames.tools.LocationUtils;
 import net.samagames.tools.ParticleEffect;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.SkullType;
+import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.EulerAngle;
 
@@ -86,9 +84,9 @@ public class DeadCorpses
         playerHead.setItemMeta(playerHeadMeta);
 
         corpsesPart1.setHelmet(playerHead);
-        corpsesPart1.setChestplate(this.player.getInventory().getChestplate());
-        corpsesPart2.setLeggings(this.player.getInventory().getLeggings());
-        corpsesPart2.setBoots(this.player.getInventory().getBoots());
+        corpsesPart1.setChestplate((this.player.getInventory().getChestplate() != null ? this.player.getInventory().getChestplate() : this.getArmor(new ItemStack(Material.LEATHER_CHESTPLATE, 1))));
+        corpsesPart2.setLeggings((this.player.getInventory().getLeggings() != null ? this.player.getInventory().getLeggings() : this.getArmor(new ItemStack(Material.LEATHER_LEGGINGS, 1))));
+        corpsesPart2.setBoots((this.player.getInventory().getBoots() != null ? this.player.getInventory().getBoots() : this.getArmor(new ItemStack(Material.LEATHER_BOOTS, 1))));
 
         corpsesPart1.setItemInHand(this.player.getItemInHand());
 
@@ -105,5 +103,14 @@ public class DeadCorpses
         corpsesPart1.setRightArmPose(new EulerAngle(corpsesPart1RightArmPose.getX(), 140.0D + this.random.nextInt(80), -90.0D));
         corpsesPart2.setLeftLegPose(new EulerAngle(corpsesPart2LeftLegPose.getX(), -80.0D + this.random.nextInt(80), corpsesPart2LeftLegPose.getZ()));
         corpsesPart2.setRightLegPose(new EulerAngle(corpsesPart2RightLegPose.getX(), 80.0D - this.random.nextInt(80), corpsesPart2RightLegPose.getZ()));
+    }
+
+    public ItemStack getArmor(ItemStack stack)
+    {
+        LeatherArmorMeta meta = (LeatherArmorMeta) stack.getItemMeta();
+        meta.setColor(Color.BLACK);
+        stack.setItemMeta(meta);
+
+        return stack;
     }
 }
