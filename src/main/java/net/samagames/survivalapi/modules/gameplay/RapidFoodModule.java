@@ -4,6 +4,7 @@ import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import net.samagames.survivalapi.modules.utility.DropTaggingModule;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -17,11 +18,15 @@ import java.util.stream.Collectors;
 
 public class RapidFoodModule extends AbstractSurvivalModule
 {
+    private final Map<EntityType, List<ConfigurationBuilder.IRapidFoodHook>> drops;
     private final Random random;
 
     public RapidFoodModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
+        Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
+
+        this.drops = (Map<EntityType, List<ConfigurationBuilder.IRapidFoodHook>>) moduleConfiguration.get("drops");
         this.random = new Random();
     }
 
@@ -78,83 +83,15 @@ public class RapidFoodModule extends AbstractSurvivalModule
         LivingEntity entity = event.getEntity();
         List<ItemStack> newDrops = null;
 
-        if (entity instanceof Cow || entity instanceof Horse)
+        if (this.drops.containsKey(entity.getType()))
         {
             newDrops = new ArrayList<>();
 
-            for (ItemStack stack : event.getDrops())
-            {
-                if (stack.getType() == Material.RAW_BEEF)
-                    newDrops.add(new ItemStack(Material.COOKED_BEEF, stack.getAmount() * 2));
-                else if (stack.getType() == Material.LEATHER)
-                    newDrops.add(new ItemStack(Material.LEATHER, stack.getAmount() * 2));
-            }
-        }
-        else if (entity instanceof Sheep)
-        {
-            newDrops = event.getDrops().stream().filter(stack -> stack.getType() == Material.MUTTON).map(stack -> new ItemStack(Material.COOKED_MUTTON, stack.getAmount() * 2)).collect(Collectors.toList());
-
-            if (this.random.nextInt(32) >= 16)
-                newDrops.add(new ItemStack(Material.LEATHER, this.random.nextInt(5) + 1));
-            if (this.random.nextInt(32) >= 16)
-                newDrops.add(new ItemStack(Material.STRING, this.random.nextInt(2) + 1));
-        }
-        else if (entity instanceof Pig)
-        {
-            newDrops = event.getDrops().stream().filter(stack -> stack.getType() == Material.PORK).map(stack -> new ItemStack(Material.GRILLED_PORK, stack.getAmount() * 2)).collect(Collectors.toList());
-            
-            if (this.random.nextInt(32) >= 16)
-                newDrops.add(new ItemStack(Material.LEATHER, this.random.nextInt(5) + 1));
-        }
-        else if (entity instanceof Rabbit)
-        {
-            newDrops = event.getDrops().stream().filter(stack -> stack.getType() == Material.RABBIT).map(stack -> new ItemStack(Material.COOKED_RABBIT, stack.getAmount() * 2)).collect(Collectors.toList());
-        }
-        else if (entity instanceof Chicken)
-        {
-            newDrops = new ArrayList<>();
-            
-            for (ItemStack stack : event.getDrops())
-            {
-                if (stack.getType() == Material.RAW_CHICKEN)
-                    newDrops.add(new ItemStack(Material.COOKED_CHICKEN, stack.getAmount() * 2));
-                else if (stack.getType() == Material.FEATHER)
-                    newDrops.add(new ItemStack(Material.ARROW, stack.getAmount()));
-            }
-        }
-        else if (entity instanceof Squid)
-        {
-            newDrops = new ArrayList<>();
-            newDrops.add(new ItemStack(Material.COOKED_FISH, this.random.nextInt(5) + 1));
-        }
-        else if (entity instanceof Skeleton)
-        {
-            newDrops = new ArrayList<>();
-            
-            for (ItemStack stack : event.getDrops())
-            {
-                if (stack.getType() == Material.ARROW)
-                {
-                    newDrops.add(new ItemStack(Material.ARROW, stack.getAmount() * 2));
-                }
-                if (stack.getType() == Material.BOW)
-                {
-                    stack.setDurability((short) 0);
-                    newDrops.add(stack);
-                }
-            }
-        }
-        else if (entity instanceof Zombie)
-        {
-            newDrops = event.getDrops().stream().filter(stack -> stack.getType() == Material.ROTTEN_FLESH).map(stack -> new ItemStack(Material.COOKED_BEEF, stack.getAmount() * 2)).collect(Collectors.toList());
-        }
-        else if (entity instanceof Bat)
-        {
-            newDrops = new ArrayList<>();
-            newDrops.add(new ItemStack(Material.COOKED_MUTTON, this.random.nextInt(5) + 1));
+            for (ConfigurationBuilder.IRapidFoodHook rapidFoodHook : this.drops.get(entity.getType()))
+                newDrops.addAll(rapidFoodHook.getDrops(event.getDrops(), this.random));
         }
 
-        if (newDrops != null)
+        if (newDrops != null && !newDrops.isEmpty())
         {
             event.getDrops().clear();
             event.getDrops().addAll(newDrops);
@@ -171,5 +108,149 @@ public class RapidFoodModule extends AbstractSurvivalModule
         requiredModules.add(DropTaggingModule.class);
 
         return requiredModules;
+    }
+
+    public static class ConfigurationBuilder
+    {
+        private final Map<EntityType, List<IRapidFoodHook>> drops;
+
+        public ConfigurationBuilder()
+        {
+            this.drops = new HashMap<>();
+        }
+
+        public Map<String, Object> build()
+        {
+            Map<String, Object> moduleConfiguration = new HashMap<>();
+
+            moduleConfiguration.put("drops", this.drops);
+
+            return moduleConfiguration;
+        }
+
+        public ConfigurationBuilder addDefaults()
+        {
+            this.addDrop(EntityType.COW, (drops, random) ->
+            {
+                List<ItemStack> newDrops = new ArrayList<>();
+
+                for (ItemStack stack : drops)
+                {
+                    if (stack.getType() == Material.RAW_BEEF)
+                        newDrops.add(new ItemStack(Material.COOKED_BEEF, stack.getAmount() * 2));
+                    else if (stack.getType() == Material.LEATHER)
+                        newDrops.add(new ItemStack(Material.LEATHER, stack.getAmount() * 2));
+                }
+
+                return newDrops;
+            }, false);
+
+            this.addDrop(EntityType.HORSE, (drops, random) ->
+            {
+                List<ItemStack> newDrops = new ArrayList<>();
+
+                for (ItemStack stack : drops)
+                {
+                    if (stack.getType() == Material.RAW_BEEF)
+                        newDrops.add(new ItemStack(Material.COOKED_BEEF, stack.getAmount() * 2));
+                    else if (stack.getType() == Material.LEATHER)
+                        newDrops.add(new ItemStack(Material.LEATHER, stack.getAmount() * 2));
+                }
+
+                return newDrops;
+            }, false);
+
+            this.addDrop(EntityType.SHEEP, (drops, random) ->
+            {
+                List<ItemStack> newDrops = drops.stream().filter(stack -> stack.getType() == Material.MUTTON).map(stack -> new ItemStack(Material.COOKED_MUTTON, stack.getAmount() * 2)).collect(Collectors.toList());
+
+                if (random.nextInt(1) >= 0)
+                    newDrops.add(new ItemStack(Material.LEATHER, random.nextInt(5) + 1));
+
+                if (random.nextInt(1) >= 0)
+                    newDrops.add(new ItemStack(Material.STRING, random.nextInt(2) + 1));
+
+                return newDrops;
+            }, false);
+
+            this.addDrop(EntityType.PIG, (drops, random) ->
+            {
+                List<ItemStack> newDrops = drops.stream().filter(stack -> stack.getType() == Material.PORK).map(stack -> new ItemStack(Material.GRILLED_PORK, stack.getAmount() * 2)).collect(Collectors.toList());
+
+                if (random.nextInt(1) == 0)
+                    newDrops.add(new ItemStack(Material.LEATHER, random.nextInt(5) + 1));
+
+                return newDrops;
+            }, false);
+
+            this.addDrop(EntityType.CHICKEN, (drops, random) ->
+            {
+                List<ItemStack> newDrops = new ArrayList<>();
+
+                for (ItemStack stack : drops)
+                {
+                    if (stack.getType() == Material.RAW_CHICKEN)
+                        newDrops.add(new ItemStack(Material.COOKED_CHICKEN, stack.getAmount() * 2));
+                    else if (stack.getType() == Material.FEATHER)
+                        newDrops.add(new ItemStack(Material.ARROW, stack.getAmount()));
+                }
+
+                return newDrops;
+            }, false);
+
+            this.addDrop(EntityType.SKELETON, (drops, random) ->
+            {
+                List<ItemStack> newDrops = new ArrayList<>();
+
+                for (ItemStack stack : drops)
+                {
+                    if (stack.getType() == Material.ARROW)
+                    {
+                        newDrops.add(new ItemStack(Material.ARROW, stack.getAmount() * 2));
+                    }
+                    if (stack.getType() == Material.BOW)
+                    {
+                        stack.setDurability((short) 0);
+                        newDrops.add(stack);
+                    }
+                }
+
+                return newDrops;
+            }, false);
+
+            this.addDrop(EntityType.SQUID, (drops, random) -> Collections.singletonList(new ItemStack(Material.COOKED_FISH, random.nextInt(2) + 1)), false);
+            this.addDrop(EntityType.RABBIT, (drops, random) -> drops.stream().filter(stack -> stack.getType() == Material.RABBIT).map(stack -> new ItemStack(Material.COOKED_RABBIT, stack.getAmount() * 2)).collect(Collectors.toList()), false);
+            this.addDrop(EntityType.ZOMBIE, (drops, random) -> drops.stream().filter(stack -> stack.getType() == Material.ROTTEN_FLESH).map(stack -> new ItemStack(Material.COOKED_BEEF, stack.getAmount() * 2)).collect(Collectors.toList()), false);
+            this.addDrop(EntityType.BAT, (drops, random) -> Collections.singletonList(new ItemStack(Material.COOKED_MUTTON, random.nextInt(2) + 1)), false);
+
+            return this;
+        }
+
+        public ConfigurationBuilder addDrop(EntityType type, IRapidFoodHook rapidFoodHook, boolean override)
+        {
+            if (!this.drops.containsKey(type))
+            {
+                this.drops.put(type, Collections.singletonList(rapidFoodHook));
+            }
+            else
+            {
+                if (override)
+                {
+                    this.drops.remove(type);
+                    this.drops.put(type, Collections.singletonList(rapidFoodHook));
+                }
+                else
+                {
+                    this.drops.get(type).add(rapidFoodHook);
+                }
+            }
+
+            return this;
+        }
+
+        public interface IRapidFoodHook
+        {
+            List<ItemStack> getDrops(List<ItemStack> drops, Random random);
+        }
     }
 }

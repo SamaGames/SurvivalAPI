@@ -3,10 +3,9 @@ package net.samagames.survivalapi.nms;
 import net.minecraft.server.v1_8_R3.*;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.nms.potions.PotionAttackDamageNerf;
-import net.samagames.survivalapi.nms.stack.ItemSoup;
-import net.samagames.survivalapi.nms.stack.Potion;
+import net.samagames.survivalapi.nms.stack.CustomPotion;
+import net.samagames.survivalapi.nms.stack.CustomSoup;
 import net.samagames.tools.Reflection;
-import org.bukkit.Material;
 import org.bukkit.potion.PotionEffectType;
 
 import java.lang.reflect.Field;
@@ -156,16 +155,16 @@ public class NMSPatcher
 
     public void patchStackable()
     {
+        this.logger.info("Patching Potion and Soup to change their stack size...");
+
         try
         {
-            Field maxStack = Material.POTION.getClass().getDeclaredField("maxStack");
-            maxStack.setAccessible(true);
-            maxStack.set(Material.POTION, 64);
-
             Method register = Item.class.getDeclaredMethod("a", int.class, String.class, Item.class);
             register.setAccessible(true);
-            Item potion = new Potion().c(64).c("potion");
-            Item soup = new ItemSoup(6).c(64).c("mushroomStew");
+
+            Item potion = new CustomPotion();
+            Item soup = new CustomSoup();
+
             register.invoke(null, 373, "potion", potion);
             register.invoke(null, 282, "mushroom_stew", soup);
 

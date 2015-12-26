@@ -56,6 +56,9 @@ public class SurvivalPlugin extends JavaPlugin
             NMSPatcher nmsPatcher = new NMSPatcher(this);
             nmsPatcher.patchBiomes();
             nmsPatcher.patchPotions();
+
+            if (SamaGamesAPI.get().getGameManager().getGameProperties().getOption("patch-stackable", new JsonPrimitive(false)).getAsBoolean())
+                nmsPatcher.patchStackable();
         }
         catch (Exception e)
         {

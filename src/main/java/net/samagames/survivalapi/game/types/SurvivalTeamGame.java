@@ -1,5 +1,6 @@
 package net.samagames.survivalapi.game.types;
 
+import com.google.gson.JsonPrimitive;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Status;
 import net.samagames.survivalapi.game.SurvivalGame;
@@ -47,18 +48,28 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
 
         plugin.getServer().getPluginManager().registerEvents(this.teamSelector, plugin);
 
-        this.registerTeam("Blanc", ChatColor.WHITE, DyeColor.WHITE);
-        this.registerTeam("Orange", ChatColor.GOLD, DyeColor.ORANGE);
-        this.registerTeam("Bleu Clair", ChatColor.BLUE, DyeColor.LIGHT_BLUE);
-        this.registerTeam("Bleu Foncé", ChatColor.DARK_BLUE, DyeColor.BLUE);
-        this.registerTeam("Cyan", ChatColor.AQUA, DyeColor.CYAN);
-        this.registerTeam("Jaune", ChatColor.YELLOW, DyeColor.YELLOW);
-        this.registerTeam("Rose", ChatColor.LIGHT_PURPLE, DyeColor.PINK);
-        this.registerTeam("Vert Foncé", ChatColor.DARK_GREEN, DyeColor.GREEN);
-        this.registerTeam("Rouge", ChatColor.RED, DyeColor.RED);
-        this.registerTeam("Violet", ChatColor.DARK_PURPLE, DyeColor.PURPLE);
-        this.registerTeam("Gris", ChatColor.GRAY, DyeColor.GRAY);
-        this.registerTeam("Noir", ChatColor.BLACK, DyeColor.BLACK);
+        List<SurvivalTeam> temporaryTeams = new ArrayList<>();
+
+        temporaryTeams.add(new SurvivalTeam(this, "Blanc", DyeColor.WHITE, ChatColor.WHITE));
+        temporaryTeams.add(new SurvivalTeam(this, "Orange", DyeColor.ORANGE, ChatColor.GOLD));
+        temporaryTeams.add(new SurvivalTeam(this, "Bleu Clair", DyeColor.LIGHT_BLUE, ChatColor.BLUE));
+        temporaryTeams.add(new SurvivalTeam(this, "Bleu Foncé", DyeColor.BLUE, ChatColor.DARK_BLUE));
+        temporaryTeams.add(new SurvivalTeam(this, "Cyan", DyeColor.CYAN, ChatColor.AQUA));
+        temporaryTeams.add(new SurvivalTeam(this, "Jaune", DyeColor.YELLOW, ChatColor.YELLOW));
+        temporaryTeams.add(new SurvivalTeam(this, "Rose", DyeColor.PINK, ChatColor.LIGHT_PURPLE));
+        temporaryTeams.add(new SurvivalTeam(this, "Vert Foncé", DyeColor.GREEN, ChatColor.DARK_GREEN));
+        temporaryTeams.add(new SurvivalTeam(this, "Rouge", DyeColor.RED, ChatColor.RED));
+        temporaryTeams.add(new SurvivalTeam(this, "Violet", DyeColor.PURPLE, ChatColor.DARK_PURPLE));
+        temporaryTeams.add(new SurvivalTeam(this, "Gris", DyeColor.GRAY, ChatColor.GRAY));
+        temporaryTeams.add(new SurvivalTeam(this, "Noir", DyeColor.BLACK, ChatColor.BLACK));
+
+        for (int i = 0; i < SamaGamesAPI.get().getGameManager().getGameProperties().getOption("teams", new JsonPrimitive(12)).getAsInt(); i++)
+        {
+            if (i > temporaryTeams.size())
+                break;
+            else
+                this.registerTeam(temporaryTeams.get(i));
+        }
 
         GuiSelectTeam.setGame(this);
     }
@@ -132,7 +143,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     }
 
     @Override
-    public void checkStump(UUID playerUUID)
+    public void checkStump(UUID playerUUID, boolean silent)
     {
         this.server.getScheduler().runTaskLater(this.plugin, () ->
         {
@@ -159,7 +170,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                     this.handleGameEnd();
                     return;
                 }
-                else
+                else if (!silent)
                 {
                     this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + teamLeft + ChatColor.YELLOW + " équipes en jeu.", true);
                 }
@@ -168,9 +179,9 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     }
 
     @Override
-    public void stumpPlayer(UUID playerUUID, boolean logout)
+    public void stumpPlayer(UUID playerUUID, boolean logout, boolean silent)
     {
-        super.stumpPlayer(playerUUID, logout);
+        super.stumpPlayer(playerUUID, logout, silent);
 
         if (logout && !this.getStatus().equals(Status.IN_GAME))
         {
@@ -212,7 +223,12 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
 
     public void registerTeam(String name, ChatColor chatColor, DyeColor color)
     {
-        this.teams.add(new SurvivalTeam(this, name, color, chatColor));
+        this.registerTeam(new SurvivalTeam(this, name, color, chatColor));
+    }
+
+    public void registerTeam(SurvivalTeam team)
+    {
+        this.teams.add(team);
     }
 
     public SurvivalTeam getPlayerTeam(UUID uniqueId)

@@ -203,7 +203,7 @@ public class SurvivalGameLoop implements Runnable
 
             if (this.nextEvent.isTitle() && this.nextEvent.getSeconds() <= 5 && this.nextEvent.getSeconds() > 0)
                 for (Player player : Bukkit.getOnlinePlayers())
-                    Titles.sendTitle(player, 0, 21, 10, ChatColor.RED + "" + this.nextEvent.getSeconds(), this.nextEvent.getName());
+                    Titles.sendTitle(player, 0, 21, 10, ChatColor.RED + "" + (this.nextEvent.getSeconds() - 1), this.nextEvent.getName());
         }
 
         if (this.nextEvent.getSeconds() == 0 && this.nextEvent.getMinutes() == 0)
