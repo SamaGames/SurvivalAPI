@@ -45,7 +45,7 @@ public class RapidUsefullModule extends AbstractSurvivalModule
         if (Meta.hasMeta(event.getEntity().getItemStack()))
             return;
 
-        ItemStack stack = event.getEntity().getItemStack();
+        ItemStack stack = new ItemStack(event.getEntity().getItemStack().getType(), 1, event.getEntity().getItemStack().getDurability());
 
         if (this.drops.containsKey(stack))
         {
@@ -102,25 +102,17 @@ public class RapidUsefullModule extends AbstractSurvivalModule
             this.addDrop(new ItemStack(Material.GRAVEL, 1), (base, random) ->
             {
                 if (random.nextDouble() < 0.75D)
-                {
                     return new ItemStack(Material.ARROW, 3);
-                }
                 else
-                {
                     return base;
-                }
             }, false);
 
             this.addDrop(new ItemStack(Material.FLINT, 1), (base, random) ->
             {
                 if (random.nextDouble() < 0.75D)
-                {
                     return new ItemStack(Material.ARROW, 3);
-                }
                 else
-                {
                     return base;
-                }
             }, false);
 
             this.addDrop(new ItemStack(Material.SAPLING, 1), (base, random) ->
