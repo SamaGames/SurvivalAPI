@@ -1,4 +1,4 @@
-package net.samagames.survivalapi.game.corpses;
+package net.samagames.survivalapi.game;
 
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.themachine.messages.IMessageManager;
@@ -92,7 +92,7 @@ public class DeadCorpses
     public ItemStack getArmor(ItemStack stack)
     {
         LeatherArmorMeta meta = (LeatherArmorMeta) stack.getItemMeta();
-        meta.setColor(Color.BLACK);
+        meta.setColor(Color.GRAY);
         stack.setItemMeta(meta);
 
         return stack;
