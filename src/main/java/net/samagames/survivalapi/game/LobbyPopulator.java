@@ -35,7 +35,7 @@ public class LobbyPopulator
         {
             try
             {
-                Vector vector = new Vector(0, 200, 0);
+                Vector vector = new Vector(0, 190, 0);
 
                 World world = Bukkit.getWorld("world");
                 world.loadChunk(0, 0);
