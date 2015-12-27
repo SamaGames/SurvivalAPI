@@ -13,6 +13,9 @@ public class CustomSoup extends ItemSoup
     @Override
     public ItemStack b(ItemStack var1, World var2, EntityHuman var3)
     {
-        return super.b(var1, var2, var3);
+        if(!var3.abilities.canInstantlyBuild)
+            --var1.count;
+
+        return var1;
     }
 }

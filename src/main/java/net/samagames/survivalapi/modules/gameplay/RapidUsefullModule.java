@@ -45,16 +45,24 @@ public class RapidUsefullModule extends AbstractSurvivalModule
         if (Meta.hasMeta(event.getEntity().getItemStack()))
             return;
 
-        ItemStack stack = new ItemStack(event.getEntity().getItemStack().getType(), 1, event.getEntity().getItemStack().getDurability());
+        ItemStack stack = event.getEntity().getItemStack();
 
-        if (this.drops.containsKey(stack))
+        for (ItemStack drop : this.drops.keySet())
         {
-            stack = this.drops.get(stack).getDrop(stack, this.random);
+            if (drop.getType() == stack.getType())
+            {
+                if (drop.getDurability() == -1 || (drop.getDurability() == stack.getDurability()))
+                {
+                    ItemStack finalDrop = this.drops.get(drop).getDrop(stack, this.random);
 
-            if (stack == null)
-                event.setCancelled(true);
-            else
-                event.getEntity().setItemStack(stack);
+                    if (finalDrop == null)
+                        event.setCancelled(true);
+                    else
+                        event.getEntity().setItemStack(finalDrop);
+
+                    break;
+                }
+            }
         }
     }
 
@@ -115,7 +123,7 @@ public class RapidUsefullModule extends AbstractSurvivalModule
                     return base;
             }, false);
 
-            this.addDrop(new ItemStack(Material.SAPLING, 1), (base, random) ->
+            this.addDrop(new ItemStack(Material.SAPLING, 1, (short) -1), (base, random) ->
             {
                 double percent = ((Tree) base.getData()).getSpecies().equals(TreeSpecies.GENERIC) ? 0.1D : 0.3D;
 
