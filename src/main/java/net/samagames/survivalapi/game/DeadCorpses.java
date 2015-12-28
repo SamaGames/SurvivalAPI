@@ -82,7 +82,7 @@ public class DeadCorpses
         EulerAngle corpsesPart2LeftLegPose = corpsesPart2.getLeftLegPose();
         EulerAngle corpsesPart2RightLegPose = corpsesPart2.getRightLegPose();
 
-        corpsesPart1.setHeadPose(new EulerAngle(corpsesPart1HeadPose.getX(), -40 + this.random.nextInt(80), -25 + this.random.nextInt(50)));
+        corpsesPart1.setHeadPose(new EulerAngle(corpsesPart1HeadPose.getX(), -30 + this.random.nextInt(60), -25 + this.random.nextInt(50)));
         corpsesPart1.setLeftArmPose(new EulerAngle(corpsesPart1LeftArmPose.getX(), 140.0D - this.random.nextInt(120), corpsesPart1LeftArmPose.getZ()));
         corpsesPart1.setRightArmPose(new EulerAngle(corpsesPart1RightArmPose.getX(), 140.0D + this.random.nextInt(80), -90.0D));
         corpsesPart2.setLeftLegPose(new EulerAngle(corpsesPart2LeftLegPose.getX(), -70.0D + this.random.nextInt(70), corpsesPart2LeftLegPose.getZ()));
