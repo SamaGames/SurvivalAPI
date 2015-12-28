@@ -1,5 +1,6 @@
 package net.samagames.survivalapi.game.types;
 
+import net.samagames.survivalapi.game.GameException;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.game.SurvivalGameLoop;
 import net.samagames.survivalapi.game.SurvivalPlayer;
@@ -21,37 +22,44 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     }
 
     @Override
-    public void checkStump(UUID playerUUID, boolean silent)
+    public void checkStump(UUID playerUUID, boolean silent) throws GameException
     {
-        SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(playerUUID);
-
-        if (getInGamePlayers().size() == 3)
+        try
         {
-            playerData.addCoins(20, "Troisième au classement !");
-        }
-        else if (getInGamePlayers().size() == 2)
-        {
-            playerData.addCoins(50, "Second au classement !");
-            playerData.addStars(1, "Second au classement !");
+            SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(playerUUID);
 
-            this.gamePlayers.remove(playerData.getUUID());
-            UUID winnerId = (UUID) this.getInGamePlayers().keySet().iterator().next();
-            this.gamePlayers.put(playerData.getUUID(), playerData);
+            if (getInGamePlayers().size() == 3)
+            {
+                playerData.addCoins(20, "Troisième au classement !");
+            }
+            else if (getInGamePlayers().size() == 2)
+            {
+                playerData.addCoins(50, "Second au classement !");
+                playerData.addStars(1, "Second au classement !");
 
-            Player winner = this.server.getPlayer(winnerId);
+                this.gamePlayers.remove(playerData.getUUID());
+                UUID winnerId = (UUID) this.getInGamePlayers().keySet().iterator().next();
+                this.gamePlayers.put(playerData.getUUID(), playerData);
 
-            if (winner == null)
+                Player winner = this.server.getPlayer(winnerId);
+
+                if (winner == null)
+                    this.handleGameEnd();
+                else
+                    this.win(winner);
+            }
+            else if (getInGamePlayers().size() == 1)
+            {
                 this.handleGameEnd();
-            else
-                this.win(winner);
+            }
+            else if (!silent)
+            {
+                this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + (this.getInGamePlayers().size() - 1) + ChatColor.YELLOW + " joueur" + ((this.getInGamePlayers().size() - 1) > 1 ? "s" : "") + " en vie.", true);
+            }
         }
-        else if (getInGamePlayers().size() == 1)
+        catch (NullPointerException | IllegalStateException e)
         {
-            this.handleGameEnd();
-        }
-        else if (!silent)
-        {
-            this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + (this.getInGamePlayers().size() - 1) + ChatColor.YELLOW + " joueur" + ((this.getInGamePlayers().size() - 1) > 1 ? "s" : "") + " en vie.", true);
+            throw new GameException(e.getMessage());
         }
     }
 
