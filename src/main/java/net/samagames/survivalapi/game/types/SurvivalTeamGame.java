@@ -229,11 +229,6 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         this.handleGameEnd();
     }
 
-    public void registerTeam(String name, ChatColor chatColor, DyeColor color)
-    {
-        this.registerTeam(new SurvivalTeam(this, name, color, chatColor));
-    }
-
     public void registerTeam(SurvivalTeam team)
     {
         this.teams.add(team);

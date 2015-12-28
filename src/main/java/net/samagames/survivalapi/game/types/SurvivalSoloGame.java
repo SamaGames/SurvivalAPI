@@ -28,11 +28,11 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         {
             SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(playerUUID);
 
-            if (getInGamePlayers().size() == 3)
+            if (this.getInGamePlayers().size() == 3)
             {
                 playerData.addCoins(20, "Troisième au classement !");
             }
-            else if (getInGamePlayers().size() == 2)
+            else if (this.getInGamePlayers().size() == 2)
             {
                 playerData.addCoins(50, "Second au classement !");
                 playerData.addStars(1, "Second au classement !");
@@ -48,7 +48,7 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 else
                     this.win(winner);
             }
-            else if (getInGamePlayers().size() == 1)
+            else if (this.getInGamePlayers().size() == 1)
             {
                 this.handleGameEnd();
             }
