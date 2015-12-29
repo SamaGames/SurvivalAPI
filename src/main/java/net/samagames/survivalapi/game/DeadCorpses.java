@@ -1,8 +1,5 @@
 package net.samagames.survivalapi.game;
 
-import net.samagames.api.SamaGamesAPI;
-import net.samagames.api.games.themachine.messages.IMessageManager;
-import net.samagames.tools.LocationUtils;
 import net.samagames.tools.ParticleEffect;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
@@ -39,8 +36,8 @@ public class DeadCorpses
         ArmorStand armorStand = location.getWorld().spawn(location, ArmorStand.class);
         armorStand.setCustomName("base_" + this.player.getName());
         armorStand.setCustomNameVisible(false);
-        armorStand.setGravity(false);
         armorStand.setVisible(false);
+        armorStand.teleport(new Location(armorStand.getWorld(), armorStand.getLocation().getX(), armorStand.getLocation().getY(), armorStand.getLocation().getZ(), -180.0F, 0.0F));
 
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), corpsesPart1.replaceAll("%player%", this.player.getName()));
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), corpsesPart2.replaceAll("%player%", this.player.getName()));
@@ -83,10 +80,10 @@ public class DeadCorpses
         EulerAngle corpsesPart2RightLegPose = corpsesPart2.getRightLegPose();
 
         corpsesPart1.setHeadPose(new EulerAngle(corpsesPart1HeadPose.getX(), -30 + this.random.nextInt(60), -25 + this.random.nextInt(50)));
-        corpsesPart1.setLeftArmPose(new EulerAngle(corpsesPart1LeftArmPose.getX(), 140.0D - this.random.nextInt(120), corpsesPart1LeftArmPose.getZ()));
+        //corpsesPart1.setLeftArmPose(new EulerAngle(corpsesPart1LeftArmPose.getX(), 140.0D - this.random.nextInt(120), corpsesPart1LeftArmPose.getZ()));
         corpsesPart1.setRightArmPose(new EulerAngle(corpsesPart1RightArmPose.getX(), 140.0D + this.random.nextInt(80), -90.0D));
-        corpsesPart2.setLeftLegPose(new EulerAngle(corpsesPart2LeftLegPose.getX(), -70.0D + this.random.nextInt(70), corpsesPart2LeftLegPose.getZ()));
-        corpsesPart2.setRightLegPose(new EulerAngle(corpsesPart2RightLegPose.getX(), 70.0D - this.random.nextInt(70), corpsesPart2RightLegPose.getZ()));
+        //corpsesPart2.setLeftLegPose(new EulerAngle(corpsesPart2LeftLegPose.getX(), -70.0D + this.random.nextInt(70), corpsesPart2LeftLegPose.getZ()));
+        //corpsesPart2.setRightLegPose(new EulerAngle(corpsesPart2RightLegPose.getX(), 70.0D - this.random.nextInt(70), corpsesPart2RightLegPose.getZ()));
     }
 
     public ItemStack getArmor(ItemStack stack)
