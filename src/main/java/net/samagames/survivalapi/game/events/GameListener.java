@@ -151,7 +151,7 @@ public class GameListener implements Listener
                 event.getEntity().getKiller().addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 20 * 20, 1));
             }
 
-            new DeadCorpses(event.getEntity()).spawn(event.getEntity().getLocation());
+            //new DeadCorpses(event.getEntity()).spawn(event.getEntity().getLocation());
 
             GameUtils.broadcastSound(Sound.WITHER_SPAWN);
         }
