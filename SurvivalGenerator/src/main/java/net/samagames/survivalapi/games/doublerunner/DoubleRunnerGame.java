@@ -18,11 +18,25 @@ public class DoubleRunnerGame extends AbstractGame
     @Override
     public void preInit()
     {
+        this.plugin.addBiomeToRemove(BiomeBase.FROZEN_OCEAN);
+        this.plugin.addBiomeToRemove(BiomeBase.FROZEN_RIVER);
         this.plugin.addBiomeToRemove(BiomeBase.ICE_PLAINS);
         this.plugin.addBiomeToRemove(BiomeBase.ICE_MOUNTAINS);
+        this.plugin.addBiomeToRemove(BiomeBase.MUSHROOM_ISLAND);
+        this.plugin.addBiomeToRemove(BiomeBase.MUSHROOM_SHORE);
         this.plugin.addBiomeToRemove(BiomeBase.JUNGLE);
         this.plugin.addBiomeToRemove(BiomeBase.JUNGLE_HILLS);
         this.plugin.addBiomeToRemove(BiomeBase.JUNGLE_EDGE);
+        this.plugin.addBiomeToRemove(BiomeBase.COLD_BEACH);
+        this.plugin.addBiomeToRemove(BiomeBase.COLD_TAIGA);
+        this.plugin.addBiomeToRemove(BiomeBase.COLD_TAIGA_HILLS);
+        this.plugin.addBiomeToRemove(BiomeBase.MEGA_TAIGA);
+        this.plugin.addBiomeToRemove(BiomeBase.MEGA_TAIGA_HILLS);
+        this.plugin.addBiomeToRemove(BiomeBase.SAVANNA);
+        this.plugin.addBiomeToRemove(BiomeBase.SAVANNA_PLATEAU);
+        this.plugin.addBiomeToRemove(BiomeBase.MESA);
+        this.plugin.addBiomeToRemove(BiomeBase.MESA_PLATEAU_F);
+        this.plugin.addBiomeToRemove(BiomeBase.MESA_PLATEAU);
     }
 
     @Override
