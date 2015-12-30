@@ -60,7 +60,7 @@ public class RunBasedGameLoop extends SurvivalGameLoop
             }
 
             this.game.getWorldBorder().setSize(400.0D);
-            this.game.getWorldBorder().setSize(10.0D, 10L * 60L);
+            this.game.getWorldBorder().setSize(30.0D, 10L * 60L);
 
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("La map est désormais réduite. Les bordures sont en coordonnées " + ChatColor.RED + "-200 +200" + ChatColor.RESET + ".", true);
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les dégats et le PvP seront activés dans 30 secondes !", true);

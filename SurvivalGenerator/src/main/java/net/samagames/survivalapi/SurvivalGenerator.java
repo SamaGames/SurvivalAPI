@@ -88,8 +88,8 @@ public class SurvivalGenerator extends JavaPlugin
         for (BiomeBase biomeBase : this.biomesToRemove)
             biomesMap.remove(biomeBase.ah);
 
-        this.setReedsPerChunk(BiomeBase.BEACH, 8);
-        this.setReedsPerChunk(BiomeBase.STONE_BEACH, 8);
+        this.setReedsPerChunk(BiomeBase.BEACH, 16);
+        this.setReedsPerChunk(BiomeBase.STONE_BEACH, 16);
 
         for (int i = 0; i < biomes.length; i++)
         {

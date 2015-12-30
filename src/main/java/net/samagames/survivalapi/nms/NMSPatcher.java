@@ -33,13 +33,6 @@ public class NMSPatcher
 
         Reflection.setFinalStatic(BiomeBase.class.getDeclaredField("ad"), defaultBiome);
 
-        biomesMap.remove(BiomeBase.OCEAN.ah);
-        biomesMap.remove(BiomeBase.DEEP_OCEAN.ah);
-        biomesMap.remove(BiomeBase.FROZEN_OCEAN.ah);
-
-        this.setReedsPerChunk(BiomeBase.BEACH, 8);
-        this.setReedsPerChunk(BiomeBase.STONE_BEACH, 8);
-
         for (int i = 0; i < biomes.length; i++)
         {
             if (biomes[i] != null)
