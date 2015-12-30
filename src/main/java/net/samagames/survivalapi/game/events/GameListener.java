@@ -1,9 +1,6 @@
 package net.samagames.survivalapi.game.events;
 
-import net.samagames.survivalapi.game.SurvivalGame;
-import net.samagames.survivalapi.game.SurvivalGameLoop;
-import net.samagames.survivalapi.game.WorldLoader;
-import net.samagames.survivalapi.game.DeadCorpses;
+import net.samagames.survivalapi.game.*;
 import net.samagames.survivalapi.game.types.SurvivalTeamGame;
 import net.samagames.tools.GameUtils;
 import org.bukkit.ChatColor;
@@ -137,7 +134,14 @@ public class GameListener implements Listener
     {
         if (this.game.hasPlayer(event.getEntity()) && !this.game.isSpectator(event.getEntity()))
         {
-            this.game.stumpPlayer(event.getEntity().getUniqueId(), false, false);
+            try
+            {
+                this.game.stumpPlayer(event.getEntity().getUniqueId(), false, false);
+            }
+            catch (GameException e)
+            {
+                e.printStackTrace();
+            }
 
             event.getDrops().add(new ItemStack(Material.GOLDEN_APPLE));
             event.setDeathMessage("");
@@ -147,7 +151,7 @@ public class GameListener implements Listener
                 event.getEntity().getKiller().addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 20 * 20, 1));
             }
 
-            //TODO new DeadCorpses(event.getEntity()).spawn(event.getEntity().getLocation());
+            //new DeadCorpses(event.getEntity()).spawn(event.getEntity().getLocation());
 
             GameUtils.broadcastSound(Sound.WITHER_SPAWN);
         }

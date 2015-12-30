@@ -74,6 +74,7 @@ public class RapidOresModule extends AbstractSurvivalModule
             case IRON_ORE:
             case REDSTONE_ORE:
             case QUARTZ_ORE:
+            case QUARTZ_BLOCK:
                 event.setExpToDrop(0);
                 event.getBlock().breakNaturally(new ItemStack(Material.DIAMOND_PICKAXE));
                 event.setCancelled(true);

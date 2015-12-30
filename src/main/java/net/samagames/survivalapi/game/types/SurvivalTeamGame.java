@@ -3,10 +3,7 @@ package net.samagames.survivalapi.game.types;
 import com.google.gson.JsonPrimitive;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Status;
-import net.samagames.survivalapi.game.SurvivalGame;
-import net.samagames.survivalapi.game.SurvivalGameLoop;
-import net.samagames.survivalapi.game.SurvivalPlayer;
-import net.samagames.survivalapi.game.SurvivalTeam;
+import net.samagames.survivalapi.game.*;
 import net.samagames.survivalapi.game.types.team.GuiSelectTeam;
 import net.samagames.survivalapi.game.types.team.SurvivalTeamList;
 import net.samagames.survivalapi.game.types.team.SurvivalTeamSelector;
@@ -143,43 +140,54 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     }
 
     @Override
-    public void checkStump(UUID playerUUID, boolean silent)
+    public void checkStump(UUID playerUUID, boolean silent) throws GameException
     {
         this.server.getScheduler().runTaskLater(this.plugin, () ->
         {
-            SurvivalTeam team = this.teams.getTeam(playerUUID);
-
-            if (team == null)
-                return;
-
-            int left = team.playerDied(playerUUID);
-
-            if (left == 0)
+            try
             {
-                this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "L'équipe " + team.getChatColor() + team.getTeamName() + ChatColor.YELLOW + " a été éliminée !", true);
+                SurvivalTeam team = this.teams.getTeam(playerUUID);
 
-                int teamLeft = this.countAliveTeam();
+                if (team == null)
+                    return;
 
-                if (teamLeft == 1)
+                int left = team.playerDied(playerUUID);
+
+                if (left == 0)
                 {
-                    this.win(this.getLastAliveTeam());
-                    return;
+                    this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "L'équipe " + team.getChatColor() + team.getTeamName() + ChatColor.YELLOW + " a été éliminée !", true);
+
+                    int teamLeft = this.countAliveTeam();
+
+                    if (teamLeft == 1)
+                    {
+                        this.win(this.getLastAliveTeam());
+                        return;
+                    }
+                    else if (teamLeft < 1)
+                    {
+                        this.handleGameEnd();
+                        return;
+                    }
+                    else if (!silent)
+                    {
+                        this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + teamLeft + ChatColor.YELLOW + " équipes en jeu.", true);
+                    }
                 }
-                else if (teamLeft < 1)
+            }
+            catch (NullPointerException | IllegalStateException e)
+            {
+                try
                 {
-                    this.handleGameEnd();
-                    return;
+                    throw new GameException(e.getMessage());
                 }
-                else if (!silent)
-                {
-                    this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + teamLeft + ChatColor.YELLOW + " équipes en jeu.", true);
-                }
+                catch (GameException ignored) {}
             }
         }, 2L);
     }
 
     @Override
-    public void stumpPlayer(UUID playerUUID, boolean logout, boolean silent)
+    public void stumpPlayer(UUID playerUUID, boolean logout, boolean silent) throws GameException
     {
         super.stumpPlayer(playerUUID, logout, silent);
 
@@ -219,11 +227,6 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         new TeamWinTemplate().execute(team);
 
         this.handleGameEnd();
-    }
-
-    public void registerTeam(String name, ChatColor chatColor, DyeColor color)
-    {
-        this.registerTeam(new SurvivalTeam(this, name, color, chatColor));
     }
 
     public void registerTeam(SurvivalTeam team)

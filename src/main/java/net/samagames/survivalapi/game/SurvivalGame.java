@@ -6,6 +6,7 @@ import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.SpawnerCreature;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Game;
+import net.samagames.api.games.GamePlayer;
 import net.samagames.api.games.Status;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.game.commands.CommandNextEvent;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extends Game<SurvivalPlayer>
 {
@@ -137,7 +139,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     }
 
     public abstract void teleport();
-    public abstract void checkStump(UUID playerUUID, boolean silent);
+    public abstract void checkStump(UUID playerUUID, boolean silent) throws GameException;
 
     @Override
     public void handlePostRegistration()
@@ -150,6 +152,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     public void handleGameEnd()
     {
         this.mainTask.cancel();
+        this.dump();
+
         super.handleGameEnd();
     }
 
@@ -157,7 +161,15 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     public void handleReconnectTimeOut(OfflinePlayer player, boolean silent)
     {
         super.handleReconnectTimeOut(player, silent);
-        this.stumpPlayer(player.getUniqueId(), true, true);
+
+        try
+        {
+            this.stumpPlayer(player.getUniqueId(), true, true);
+        }
+        catch (GameException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -215,6 +227,44 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         }
     }
 
+    public void dump()
+    {
+        Logger logger = this.plugin.getLogger();
+
+        logger.severe("==================[ GAME DUMP ]==================");
+        logger.severe("|> Server name: " + SamaGamesAPI.get().getServerName());
+        logger.severe("|> Connected players (" + this.getConnectedPlayers() + "):");
+
+        for (GamePlayer gamePlayer : this.getInGamePlayers().values())
+            logger.severe("   > " + gamePlayer.getOfflinePlayer().getName());
+
+        if (this instanceof SurvivalTeamGame)
+        {
+            logger.severe("|> Teams (" + ((SurvivalTeamGame) this).countAliveTeam() + "):");
+
+            for (SurvivalTeam team : ((SurvivalTeamGame) this).getTeams())
+            {
+                logger.severe("   > Team " + team.getChatColor().name() + " (" + team.getAlivePlayers() + "):");
+
+                for (UUID uuid : team.getPlayersUUID().keySet())
+                {
+                    logger.severe("      > " + Bukkit.getOfflinePlayer(uuid).getName() + " - " + (team.getPlayersUUID().get(uuid) ? "Dead" : "Alive"));
+                }
+            }
+        }
+
+        logger.severe("|> Spectators (" + this.getSpectatorPlayers().size() + "):");
+
+        for (GamePlayer gamePlayer : this.getSpectatorPlayers().values())
+            logger.severe("   > " + gamePlayer.getOfflinePlayer().getName());
+
+        logger.severe("|> Damages: " + this.damagesActivated);
+        logger.severe("|> PVP: " + this.pvpActivated);
+        logger.severe("|> World borders: " + this.getWorldBorder().getSize());
+
+        logger.severe("==================[ GAME DUMP ]==================");
+    }
+
     public void enableDamages()
     {
         this.damagesActivated = true;
@@ -251,126 +301,133 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         }
     }
 
-    public void stumpPlayer(UUID playerUUID, boolean logout, boolean silent)
+    public void stumpPlayer(UUID playerUUID, boolean logout, boolean silent) throws GameException
     {
-        if (this.status == Status.IN_GAME)
+        try
         {
-            if (!logout)
+            if (this.status == Status.IN_GAME)
             {
-                Player player = Bukkit.getPlayer(playerUUID);
-                MetadataValue lastDamager = (!player.getMetadata("lastDamager").isEmpty()) ? player.getMetadata("lastDamager").get(0) : null;
-                Player killer = null;
-
-                if (lastDamager != null && lastDamager.value() instanceof Player)
+                if (!logout)
                 {
-                    killer = (Player) lastDamager.value();
+                    Player player = Bukkit.getPlayer(playerUUID);
+                    MetadataValue lastDamager = (!player.getMetadata("lastDamager").isEmpty()) ? player.getMetadata("lastDamager").get(0) : null;
+                    Player killer = null;
 
-                    if(killer == null)
-                        killer = player.getKiller();
-
-                    if (killer.isOnline() && this.gamePlayers.containsKey(player.getUniqueId()) && !this.gamePlayers.get(player.getUniqueId()).isSpectator())
+                    if (lastDamager != null && lastDamager.value() instanceof Player)
                     {
-                        final Player finalKiller = killer;
+                        killer = (Player) lastDamager.value();
 
-                        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () ->
+                        if(killer == null)
+                            killer = player.getKiller();
+
+                        if (killer.isOnline() && this.gamePlayers.containsKey(player.getUniqueId()) && !this.gamePlayers.get(player.getUniqueId()).isSpectator())
                         {
-                            SurvivalPlayer gamePlayer = this.getPlayer(finalKiller.getUniqueId());
-                            gamePlayer.addKill(player.getUniqueId());
-                            gamePlayer.addCoins(20, "Meurtre de " + player.getName());
+                            final Player finalKiller = killer;
 
-                            this.increaseStat(finalKiller.getUniqueId(), "kills", 1);
-                        });
+                            Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () ->
+                            {
+                                SurvivalPlayer gamePlayer = this.getPlayer(finalKiller.getUniqueId());
+                                gamePlayer.addKill(player.getUniqueId());
+                                gamePlayer.addCoins(20, "Meurtre de " + player.getName());
 
-                        killer.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 400, 1));
+                                this.increaseStat(finalKiller.getUniqueId(), "kills", 1);
+                            });
+
+                            killer.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 400, 1));
+                        }
+                        else
+                        {
+                            killer = null;
+                        }
+                    }
+
+                    if (killer != null)
+                    {
+                        String message;
+
+                        if (this instanceof SurvivalTeamGame)
+                            message = this.getPlayer(player.getUniqueId()).getTeam().getChatColor() + player.getName() + ChatColor.YELLOW + " a été tué par " + this.getPlayer(killer.getUniqueId()).getTeam().getChatColor() + killer.getName();
+                        else
+                            message = player.getDisplayName() + ChatColor.YELLOW + " a été tué par " + killer.getDisplayName();
+
+                        this.coherenceMachine.getMessageManager().writeCustomMessage(message, true);
                     }
                     else
                     {
-                        killer = null;
+                        String message;
+
+                        if (this instanceof SurvivalTeamGame)
+                            message = this.getPlayer(player.getUniqueId()).getTeam().getChatColor() + player.getName();
+                        else
+                            message = player.getDisplayName();
+
+                        message += " " + ChatColor.YELLOW;
+
+                        switch (player.getLastDamageCause().getCause())
+                        {
+                            case FALL:
+                            case FALLING_BLOCK:
+                                message += "est mort de chute.";
+                                break;
+
+                            case FIRE:
+                            case FIRE_TICK:
+                                message += "a fini carbonisé.";
+                                break;
+
+                            case DROWNING:
+                                message += "s'est noyé.";
+                                break;
+
+                            case LAVA:
+                                message += "a essayé de nager dans la lave. Résultat peu concluant.";
+                                break;
+
+                            case SUFFOCATION:
+                                message += "a essayé de se cacher dans un mur.";
+                                break;
+
+                            case BLOCK_EXPLOSION:
+                            case ENTITY_EXPLOSION:
+                                message += "a mangé un pétard. Allez savoir pourquoi.";
+                                break;
+
+                            case POISON:
+                            case MAGIC:
+                                message += "a s'est confronté à meilleur sorcier que lui.";
+                                break;
+
+                            case LIGHTNING:
+                                message += "s'est transformé en Pikachu !";
+                                break;
+
+                            default:
+                                message += "est mort.";
+                                break;
+                        }
+
+
+                        this.coherenceMachine.getMessageManager().writeCustomMessage(message, true);
+
+                        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> increaseStat(player.getUniqueId(), "deaths", 1));
+
+                        Titles.sendTitle(player, 0, 100, 5, ChatColor.RED + "✞", ChatColor.RED + "Vous êtes mort !");
+                        player.setGameMode(GameMode.SPECTATOR);
+                        player.setHealth(20.0D);
                     }
-                }
-
-                if (killer != null)
-                {
-                    String message;
-
-                    if (this instanceof SurvivalTeamGame)
-                        message = this.getPlayer(player.getUniqueId()).getTeam().getChatColor() + player.getName() + ChatColor.YELLOW + " a été tué par " + this.getPlayer(killer.getUniqueId()).getTeam().getChatColor() + killer.getName();
-                    else
-                        message = player.getDisplayName() + ChatColor.YELLOW + " a été tué par " + killer.getDisplayName();
-
-                    this.coherenceMachine.getMessageManager().writeCustomMessage(message, true);
                 }
                 else
                 {
-                    String message;
-
-                    if (this instanceof SurvivalTeamGame)
-                        message = this.getPlayer(player.getUniqueId()).getTeam().getChatColor() + player.getName();
-                    else
-                        message = player.getDisplayName();
-
-                    message += " " + ChatColor.YELLOW;
-
-                    switch (player.getLastDamageCause().getCause())
-                    {
-                        case FALL:
-                        case FALLING_BLOCK:
-                            message += "est mort de chute.";
-                            break;
-
-                        case FIRE:
-                        case FIRE_TICK:
-                            message += "a fini carbonisé.";
-                            break;
-
-                        case DROWNING:
-                            message += "s'est noyé.";
-                            break;
-
-                        case LAVA:
-                            message += "a essayé de nager dans la lave. Résultat peu concluant.";
-                            break;
-
-                        case SUFFOCATION:
-                            message += "a essayé de se cacher dans un mur.";
-                            break;
-
-                        case BLOCK_EXPLOSION:
-                        case ENTITY_EXPLOSION:
-                            message += "a mangé un pétard. Allez savoir pourquoi.";
-                            break;
-
-                        case POISON:
-                        case MAGIC:
-                            message += "a s'est confronté à meilleur sorcier que lui.";
-                            break;
-
-                        case LIGHTNING:
-                            message += "s'est transformé en Pikachu !";
-                            break;
-
-                        default:
-                            message += "est mort.";
-                            break;
-                    }
-
-
-                    this.coherenceMachine.getMessageManager().writeCustomMessage(message, true);
-
-                    Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> increaseStat(player.getUniqueId(), "deaths", 1));
-
-                    Titles.sendTitle(player, 0, 100, 5, ChatColor.RED + "✞", ChatColor.RED + "Vous êtes mort !");
-                    player.setGameMode(GameMode.SPECTATOR);
-                    player.setHealth(20.0D);
+                    this.coherenceMachine.getMessageManager().writePlayerReconnectTimeOut(Bukkit.getOfflinePlayer(playerUUID));
                 }
-            }
-            else
-            {
-                this.coherenceMachine.getMessageManager().writePlayerReconnectTimeOut(Bukkit.getOfflinePlayer(playerUUID));
-            }
 
-            this.checkStump(playerUUID, silent);
-            this.removeFromGame(playerUUID);
+                this.checkStump(playerUUID, silent);
+                this.removeFromGame(playerUUID);
+            }
+        }
+        catch (NullPointerException | IllegalStateException e)
+        {
+            throw new GameException(e.getMessage());
         }
     }
 

@@ -32,8 +32,6 @@ public class CustomPotion extends ItemPotion
             }
         }
 
-        var3.b(StatisticList.USE_ITEM_COUNT[Item.getId(this)]);
-
         return var1;
     }
 }

@@ -48,7 +48,7 @@ public class ConstantPotionModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerItemConsume(PlayerItemConsumeEvent event)
     {
         if (event.getItem().getType() == Material.MILK_BUCKET)

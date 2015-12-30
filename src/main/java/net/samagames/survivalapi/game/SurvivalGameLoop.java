@@ -130,7 +130,6 @@ public class SurvivalGameLoop implements Runnable
 
             if (player == null)
             {
-                this.server.getLogger().info("Player null : " + playerUUID);
                 this.objectives.remove(playerUUID);
             }
             else

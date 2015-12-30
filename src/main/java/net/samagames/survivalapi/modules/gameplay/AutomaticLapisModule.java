@@ -53,9 +53,8 @@ public class AutomaticLapisModule extends AbstractSurvivalModule
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event)
     {
-        if (event.getClickedInventory().getType() == InventoryType.ENCHANTING)
-            if (event.getSlot() == 1)
-                event.setCancelled(true);
+        if (event.getClickedInventory() != null && event.getClickedInventory().getType() == InventoryType.ENCHANTING && event.getSlot() == 1)
+            event.setCancelled(true);
     }
 
     /**
