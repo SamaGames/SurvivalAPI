@@ -52,8 +52,13 @@ public class RapidOresModule extends AbstractSurvivalModule
 
         if (this.drops.containsKey(stack))
         {
-            event.getEntity().setItemStack(Meta.addMeta(this.drops.get(stack).getDrop(stack, this.random)));
-            this.spawnXP(event.getEntity(), this.drops.get(stack).getExperienceModifier(this.random));
+            ItemStack newStack = this.drops.get(stack).getDrop(stack, this.random);
+
+            if (newStack != null)
+            {
+                event.getEntity().setItemStack(Meta.addMeta(newStack));
+                this.spawnXP(event.getEntity(), this.drops.get(stack).getExperienceModifier(this.random));
+            }
         }
     }
 
