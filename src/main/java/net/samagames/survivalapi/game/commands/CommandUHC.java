@@ -29,7 +29,7 @@ public class CommandUHC implements CommandExecutor
 
         if (strings.length > 0)
         {
-            if (strings[0].equals("invite"))
+            if (strings[0].equals("invite") && strings.length == 3)
             {
                 if(game instanceof SurvivalTeamGame && !game.isGameStarted())
                 {
@@ -45,7 +45,7 @@ public class CommandUHC implements CommandExecutor
                         aTeam.invite(commandSender.getName(), player.getUUID());
                 }
             }
-            else if (strings[0].equals("join"))
+            else if (strings[0].equals("join") && strings.length == 3)
             {
                 if(game instanceof SurvivalTeamGame && !game.isGameStarted())
                 {

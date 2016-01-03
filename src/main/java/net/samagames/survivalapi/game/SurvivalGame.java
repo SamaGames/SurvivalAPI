@@ -423,6 +423,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
                 this.checkStump(playerUUID, silent);
                 this.removeFromGame(playerUUID);
+
+                this.dump();
             }
         }
         catch (NullPointerException | IllegalStateException e)
