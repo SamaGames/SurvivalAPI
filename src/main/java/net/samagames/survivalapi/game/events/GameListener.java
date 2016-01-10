@@ -119,8 +119,16 @@ public class GameListener implements Listener
     {
         if (event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == (Material.MINECART))
         {
-            event.getPlayer().sendMessage(ChatColor.RED + "L'utilisation de Minecart est bloqué.");
-            event.setCancelled(true);
+            if (event.getPlayer().getItemInHand().getType() == Material.MINECART)
+            {
+                event.getPlayer().sendMessage(ChatColor.RED + "L'utilisation de Minecart est bloqué.");
+                event.setCancelled(true);
+            }
+            else if (event.getPlayer().getItemInHand().getType() == Material.FLINT_AND_STEEL && !this.game.isPvPActivated())
+            {
+                event.getPlayer().sendMessage(ChatColor.RED + "L'utilisation du briquet est interdit en phase de préparation.");
+                event.setCancelled(true);
+            }
         }
     }
 
