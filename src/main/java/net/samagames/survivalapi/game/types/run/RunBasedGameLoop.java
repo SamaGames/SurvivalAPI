@@ -90,9 +90,10 @@ public class RunBasedGameLoop extends SurvivalGameLoop
     {
         this.nextEvent = new TimedEvent(9, 30, "Fin de la réduction", ChatColor.RED, false, () ->
         {
-            this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("La map est désormais réduite. La map va se détruire progressivement. Fin de la partie forcée dans 2 minutes !", true);
+            this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("La map est désormais réduite. Fin de la partie forcée dans 2 minutes !", true);
 
-            //new WorldDestructionRunnable(this.plugin, 50).runTaskTimer(this.plugin, 20L, 20L);
+            for (GamePlayer player : (Collection<GamePlayer>) this.game.getInGamePlayers().values())
+                player.getPlayerIfOnline().addPotionEffect(new PotionEffect(PotionEffectType.POISON, Integer.MAX_VALUE, 0));
 
             this.createEndEvent();
         });

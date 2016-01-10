@@ -26,6 +26,9 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     {
         try
         {
+            if (this.getPlayer(playerUUID) == null)
+                return;
+            
             SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(playerUUID);
 
             if (this.getInGamePlayers().size() == 3)
