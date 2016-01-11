@@ -4,7 +4,9 @@ import net.samagames.survivalapi.game.GameException;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.game.SurvivalGameLoop;
 import net.samagames.survivalapi.game.SurvivalPlayer;
+import net.samagames.survivalapi.utils.ChunkUtils;
 import net.samagames.tools.Titles;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -119,8 +121,9 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 continue;
             }
 
-            Location location = locationIterator.next();
-            player.teleport(location);
+            Location destination = locationIterator.next();
+            ChunkUtils.loadDestination(player, destination, 3);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> player.teleport(destination), 2);
         }
     }
 }

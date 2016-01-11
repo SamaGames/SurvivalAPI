@@ -8,6 +8,7 @@ import net.samagames.survivalapi.game.types.team.GuiSelectTeam;
 import net.samagames.survivalapi.game.types.team.SurvivalTeamList;
 import net.samagames.survivalapi.game.types.team.SurvivalTeamSelector;
 import net.samagames.survivalapi.game.types.team.TeamWinTemplate;
+import net.samagames.survivalapi.utils.ChunkUtils;
 import net.samagames.tools.Titles;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -125,7 +126,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 continue;
             }
 
-            Location location = locationIterator.next();
+            Location destination = locationIterator.next();
 
             for (UUID player : team.getPlayersUUID().keySet())
             {
@@ -133,7 +134,8 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
 
                 if (p != null)
                 {
-                    p.teleport(location);
+                    ChunkUtils.loadDestination(p, destination, 3);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> p.teleport(destination), 2);
                 }
             }
         }

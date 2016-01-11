@@ -3,6 +3,8 @@ package net.samagames.survivalapi.game.types.run;
 import net.samagames.survivalapi.game.SurvivalGameLoop;
 import net.samagames.survivalapi.game.SurvivalTeam;
 import net.samagames.survivalapi.game.types.SurvivalTeamGame;
+import net.samagames.survivalapi.utils.ChunkUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -51,7 +53,9 @@ public class RunBasedTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 if (player != null)
                 {
                     this.removeEffects(player);
-                    player.teleport(new Location(location.getWorld(), location.getX() * 4 / 10, 150.0, location.getZ() * 4 / 10));
+                    Location destination = new Location(location.getWorld(), location.getX() * 4 / 10, 150.0, location.getZ() * 4 / 10);
+                    ChunkUtils.loadDestination(player, destination, 3);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> player.teleport(destination), 2);
                 }
             }
         }
