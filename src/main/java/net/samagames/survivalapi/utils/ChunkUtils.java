@@ -1,9 +1,6 @@
 package net.samagames.survivalapi.utils;
 
-import net.minecraft.server.v1_8_R3.BlockPosition;
-import net.minecraft.server.v1_8_R3.Chunk;
-import net.minecraft.server.v1_8_R3.PacketPlayOutMapChunkBulk;
-import net.minecraft.server.v1_8_R3.WorldServer;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -22,16 +19,15 @@ public class ChunkUtils {
     public static void loadDestination(Player p, Location dest, int radius)
     {
         WorldServer handle = ((CraftWorld) dest.getWorld()).getHandle();
-        List<Chunk> chunks = new ArrayList<>();
-
         for (int x = -radius; x < radius; x++)
         {
             for (int z = -radius; z < radius; z++)
             {
-                chunks.add(handle.getChunkAtWorldCoords(new BlockPosition(dest.getBlockX() + x, 0, dest.getBlockZ() + z)));
+                Chunk chunk = handle.getChunkAtWorldCoords(new BlockPosition(dest.getBlockX() + x, 0, dest.getBlockZ() + z));
+                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutMapChunk(chunk, true, 0x11111111));
             }
         }
 
-        ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutMapChunkBulk(chunks));
+
     }
 }
