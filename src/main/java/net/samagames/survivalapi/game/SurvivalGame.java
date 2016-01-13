@@ -421,7 +421,10 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                     this.coherenceMachine.getMessageManager().writePlayerReconnectTimeOut(Bukkit.getOfflinePlayer(playerUUID));
                 }
 
+                this.plugin.getLogger().info("Stumping player " + playerUUID.toString() + "...");
                 this.checkStump(playerUUID, silent);
+
+                this.plugin.getLogger().info("Removing player " + playerUUID.toString() + "...");
                 this.removeFromGame(playerUUID);
 
                 this.dump();
@@ -438,7 +441,13 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         SurvivalPlayer player = this.gamePlayers.get(uuid);
 
         if (player != null)
+        {
             player.setSpectator();
+        }
+        else
+        {
+            this.plugin.getLogger().severe("Can't set spectator mode to " + uuid.toString() + "!");
+        }
     }
 
     public void computeLocations()

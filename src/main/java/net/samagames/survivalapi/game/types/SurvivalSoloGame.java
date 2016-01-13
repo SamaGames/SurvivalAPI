@@ -29,8 +29,11 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         try
         {
             if (this.getPlayer(playerUUID) == null)
+            {
+                this.plugin.getLogger().severe("Tried to stump an unknown player: " + playerUUID.toString() + "!");
                 return;
-            
+            }
+
             SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(playerUUID);
 
             if (this.getInGamePlayers().size() == 3)
@@ -55,6 +58,7 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             }
             else if (this.getInGamePlayers().size() == 1)
             {
+                this.plugin.getLogger().info("Game finished.");
                 this.handleGameEnd();
             }
             else if (!silent)
