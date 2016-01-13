@@ -19,7 +19,6 @@ import java.util.*;
 public class ConstantPotionModule extends AbstractSurvivalModule
 {
     private final List<PotionEffect> potionEffects;
-    private SurvivalGame game;
 
     public ConstantPotionModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
@@ -37,9 +36,7 @@ public class ConstantPotionModule extends AbstractSurvivalModule
     @Override
     public void onGameStart(SurvivalGame game)
     {
-        this.game = game;
-
-        ((Collection<SurvivalPlayer>) game.getInGamePlayers().values()).stream().filter(player -> player.getPlayerIfOnline() != null).forEach(player -> this.setEffectOnPlayer(player.getPlayerIfOnline()));
+        ((Collection<SurvivalPlayer>) game.getInGamePlayers().values()).stream().filter(player -> player.getPlayerIfOnline() != null).forEach(player -> this.setEffectsOnPlayer(player.getPlayerIfOnline()));
     }
 
     /**
@@ -52,10 +49,10 @@ public class ConstantPotionModule extends AbstractSurvivalModule
     public void onPlayerItemConsume(PlayerItemConsumeEvent event)
     {
         if (event.getItem().getType() == Material.MILK_BUCKET)
-            this.setEffectOnPlayer(event.getPlayer());
+            this.setEffectsOnPlayer(event.getPlayer());
     }
 
-    private void setEffectOnPlayer(Player player)
+    private void setEffectsOnPlayer(Player player)
     {
         if (SamaGamesAPI.get().getGameManager().isReconnectAllowed(player))
         {
@@ -72,7 +69,7 @@ public class ConstantPotionModule extends AbstractSurvivalModule
 
     public static class ConfigurationBuilder
     {
-        private ArrayList<PotionEffect> potionEffects;
+        private final ArrayList<PotionEffect> potionEffects;
 
         public ConfigurationBuilder()
         {
