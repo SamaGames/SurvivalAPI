@@ -57,17 +57,16 @@ public class ConstantPotionModule extends AbstractSurvivalModule
 
     private void setEffectOnPlayer(Player player)
     {
-        if (SamaGamesAPI.get().getGameManager().isReconnectAllowed(player))
+        this.plugin.getServer().getScheduler().runTask(this.plugin, () ->
         {
+            if (player == null || !player.isOnline())
+                return;
+
             for (PotionEffect effect : this.potionEffects)
             {
-                this.plugin.getServer().getScheduler().runTask(this.plugin, () ->
-                {
-                    if (player != null)
-                        player.addPotionEffect(effect, true);
-                });
+                player.addPotionEffect(effect, true);
             }
-        }
+        });
     }
 
     public static class ConfigurationBuilder
