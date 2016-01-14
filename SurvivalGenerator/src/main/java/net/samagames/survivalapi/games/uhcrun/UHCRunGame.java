@@ -32,7 +32,7 @@ public class UHCRunGame extends AbstractGame
         {
             e.printStackTrace();
         }
-        
+
         OrePopulator orePopulator = new OrePopulator();
 
         orePopulator.addRule(new OrePopulator.Rule(Material.DIAMOND_ORE, 4, 0, 64, 5));
