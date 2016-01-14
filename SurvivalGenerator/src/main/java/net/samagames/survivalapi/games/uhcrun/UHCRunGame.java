@@ -3,6 +3,7 @@ package net.samagames.survivalapi.games.uhcrun;
 import net.samagames.survivalapi.SurvivalGenerator;
 import net.samagames.survivalapi.games.AbstractGame;
 import net.samagames.survivalapi.gen.OrePopulator;
+import net.samagames.survivalapi.gen.WorldGenCaves;
 import org.bukkit.Material;
 import org.bukkit.World;
 
@@ -23,6 +24,15 @@ public class UHCRunGame extends AbstractGame
     @Override
     public void init(World world)
     {
+        try
+        {
+            WorldGenCaves.loadForWorld(world, 2);
+        }
+        catch (NoSuchFieldException | IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
+        
         OrePopulator orePopulator = new OrePopulator();
 
         orePopulator.addRule(new OrePopulator.Rule(Material.DIAMOND_ORE, 4, 0, 64, 5));

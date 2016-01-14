@@ -5,6 +5,7 @@ import net.samagames.survivalapi.SurvivalGenerator;
 import net.samagames.survivalapi.games.AbstractGame;
 import net.samagames.survivalapi.gen.OrePopulator;
 import net.samagames.survivalapi.gen.OreRemoverPopulator;
+import net.samagames.survivalapi.gen.WorldGenCaves;
 import org.bukkit.Material;
 import org.bukkit.World;
 
@@ -42,6 +43,15 @@ public class DoubleRunnerGame extends AbstractGame
     @Override
     public void init(World world)
     {
+        try
+        {
+            WorldGenCaves.loadForWorld(world, 2);
+        }
+        catch (NoSuchFieldException | IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
+
         OrePopulator orePopulator = new OrePopulator();
         OreRemoverPopulator oreRemoverPopulator = new OreRemoverPopulator();
 
