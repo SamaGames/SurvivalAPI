@@ -93,7 +93,12 @@ public class RunBasedGameLoop extends SurvivalGameLoop
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("La map est désormais réduite. Fin de la partie forcée dans 2 minutes !", true);
 
             for (GamePlayer player : (Collection<GamePlayer>) this.game.getInGamePlayers().values())
-                player.getPlayerIfOnline().addPotionEffect(new PotionEffect(PotionEffectType.POISON, Integer.MAX_VALUE, 0));
+            {
+                if(player.isOnline())
+                {
+                    player.getPlayerIfOnline().addPotionEffect(new PotionEffect(PotionEffectType.POISON, Integer.MAX_VALUE, 0));
+                }
+            }
 
             this.createEndEvent();
         });
