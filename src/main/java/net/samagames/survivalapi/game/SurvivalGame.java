@@ -294,7 +294,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             {
                 player.setScoreboard(this.scoreboard);
 
-                ObjectiveSign sign = new ObjectiveSign("sggameloop", ChatColor.DARK_AQUA + "" + ChatColor.BOLD + (this.magicSymbol != null ? this.magicSymbol + " " : "") + this.getGameName() + (this.magicSymbol != null ? " " + this.magicSymbol : ""));
+                AdvertisingObjectiveSign sign = new AdvertisingObjectiveSign(this.plugin, "sggameloop", ChatColor.DARK_AQUA + "" + ChatColor.BOLD + (this.magicSymbol != null ? this.magicSymbol + " " : "") + this.getGameName() + (this.magicSymbol != null ? " " + this.magicSymbol : ""));
                 sign.addReceiver(player);
 
                 this.gameLoop.addPlayer(player.getUniqueId(), sign);
