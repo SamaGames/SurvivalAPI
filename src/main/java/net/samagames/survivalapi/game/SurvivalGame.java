@@ -330,7 +330,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                         {
                             killer = (Player) player.getMetadata("lastDamagerKeepingValue").get(0).value();
 
-                            ((BukkitTask) player.getMetadata("lastDamagerKeeping").get(0)).cancel();
+                            ((BukkitTask) player.getMetadata("lastDamagerKeeping").get(0).value()).cancel();
                             player.removeMetadata("lastDamagerKeeping", this.plugin);
                         }
                     }
