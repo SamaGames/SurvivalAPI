@@ -14,6 +14,7 @@ import net.samagames.survivalapi.game.commands.CommandUHC;
 import net.samagames.survivalapi.game.events.*;
 import net.samagames.survivalapi.game.types.SurvivalTeamGame;
 import net.samagames.tools.Titles;
+import net.samagames.tools.scoreboards.AdvertisingObjectiveSign;
 import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -220,7 +221,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             displayNameLife.getScore(player.getName()).setScore((int) player.getHealth());
             playerListLife.getScore(player.getName()).setScore((int) player.getHealth());
 
-            ObjectiveSign sign = new ObjectiveSign("sggameloop", ChatColor.DARK_AQUA + "" + (this.magicSymbol != null ? this.magicSymbol + " " : "") + ChatColor.BOLD + this.getGameName() + ChatColor.RESET + ChatColor.DARK_AQUA + (this.magicSymbol != null ? " " + this.magicSymbol : ""));
+            AdvertisingObjectiveSign sign = new AdvertisingObjectiveSign(this.plugin, "sggameloop", ChatColor.DARK_AQUA + "" + (this.magicSymbol != null ? this.magicSymbol + " " : "") + ChatColor.BOLD + this.getGameName() + ChatColor.RESET + ChatColor.DARK_AQUA + (this.magicSymbol != null ? " " + this.magicSymbol : ""));
             sign.addReceiver(player);
 
             this.gameLoop.addPlayer(player.getUniqueId(), sign);
