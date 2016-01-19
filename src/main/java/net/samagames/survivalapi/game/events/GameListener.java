@@ -3,6 +3,7 @@ package net.samagames.survivalapi.game.events;
 import net.samagames.survivalapi.game.*;
 import net.samagames.survivalapi.game.types.SurvivalTeamGame;
 import net.samagames.tools.GameUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -25,6 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitTask;
 
 public class GameListener implements Listener
 {
@@ -61,6 +63,18 @@ public class GameListener implements Listener
 
                 damaged.setMetadata("lastDamager", new FixedMetadataValue(this.game.getPlugin(), damager));
 
+                if (damaged.hasMetadata("lastDamagerKeeping"))
+                {
+                    ((BukkitTask) damaged.getMetadata("lastDamagerKeeping").get(0)).cancel();
+                    damaged.removeMetadata("lastDamagerKeeping", this.game.getPlugin());
+                }
+
+                if (damaged.hasMetadata("lastDamagerKeepingValue"))
+                    damaged.removeMetadata("lastDamagerKeepingValue", this.game.getPlugin());
+
+                damaged.setMetadata("lastDamagerKeeping", new FixedMetadataValue(this.game.getPlugin(), Bukkit.getScheduler().runTaskLater(this.game.getPlugin(), () -> damaged.removeMetadata("lastDamagerKeepingValue", this.game.getPlugin()), 20L * 10)));
+                damaged.setMetadata("lastDamagerKeepingValue", new FixedMetadataValue(this.game.getPlugin(), damager));
+
                 if (((Player) damager).hasPotionEffect(PotionEffectType.INCREASE_DAMAGE))
                     event.setDamage(EntityDamageEvent.DamageModifier.MAGIC, event.getDamage(EntityDamageEvent.DamageModifier.MAGIC) / 2);
             }
@@ -82,6 +96,18 @@ public class GameListener implements Listener
                         damaged.removeMetadata("lastDamager", this.game.getPlugin());
 
                     damaged.setMetadata("lastDamager", new FixedMetadataValue(this.game.getPlugin(), shooter));
+
+                    if (damaged.hasMetadata("lastDamagerKeeping"))
+                    {
+                        ((BukkitTask) damaged.getMetadata("lastDamagerKeeping").get(0)).cancel();
+                        damaged.removeMetadata("lastDamagerKeeping", this.game.getPlugin());
+                    }
+
+                    if (damaged.hasMetadata("lastDamagerKeepingValue"))
+                        damaged.removeMetadata("lastDamagerKeepingValue", this.game.getPlugin());
+
+                    damaged.setMetadata("lastDamagerKeeping", new FixedMetadataValue(this.game.getPlugin(), Bukkit.getScheduler().runTaskLater(this.game.getPlugin(), () -> damaged.removeMetadata("lastDamagerKeepingValue", this.game.getPlugin()), 20L * 10)));
+                    damaged.setMetadata("lastDamagerKeepingValue", new FixedMetadataValue(this.game.getPlugin(), shooter));
 
                     if (shooter.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE))
                         event.setDamage(EntityDamageEvent.DamageModifier.MAGIC, event.getDamage(EntityDamageEvent.DamageModifier.MAGIC) / 2);

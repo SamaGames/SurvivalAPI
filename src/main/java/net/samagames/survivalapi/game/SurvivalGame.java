@@ -310,16 +310,32 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                 if (!logout)
                 {
                     Player player = Bukkit.getPlayer(playerUUID);
-                    MetadataValue lastDamager = (!player.getMetadata("lastDamager").isEmpty()) ? player.getMetadata("lastDamager").get(0) : null;
+                    MetadataValue lastDamager = player.hasMetadata("lastDamager") ? player.getMetadata("lastDamager").get(0) : null;
                     Player killer = null;
 
                     if (lastDamager != null && lastDamager.value() instanceof Player)
                     {
-                        killer = (Player) lastDamager.value();
+                        if (lastDamager.value() instanceof Player)
+                        {
+                            killer = (Player) lastDamager.value();
 
-                        if(killer == null)
-                            killer = player.getKiller();
+                            if(killer == null)
+                                killer = player.getKiller();
 
+                            if (!killer.isOnline() || !this.gamePlayers.containsKey(player.getUniqueId()) || this.gamePlayers.get(player.getUniqueId()).isSpectator())
+                                killer = null;
+                        }
+                        else if (player.hasMetadata("lastDamagerKeepingValue"))
+                        {
+                            killer = (Player) player.getMetadata("lastDamagerKeepingValue").get(0).value();
+
+                            ((BukkitTask) player.getMetadata("lastDamagerKeeping").get(0)).cancel();
+                            player.removeMetadata("lastDamagerKeeping", this.plugin);
+                        }
+                    }
+
+                    if (killer != null)
+                    {
                         if (killer.isOnline() && this.gamePlayers.containsKey(player.getUniqueId()) && !this.gamePlayers.get(player.getUniqueId()).isSpectator())
                         {
                             final Player finalKiller = killer;
@@ -335,14 +351,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
                             killer.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 400, 1));
                         }
-                        else
-                        {
-                            killer = null;
-                        }
-                    }
 
-                    if (killer != null)
-                    {
                         String message;
 
                         if (this instanceof SurvivalTeamGame)
