@@ -1,7 +1,6 @@
 package net.samagames.survivalapi.game.types.run;
 
 import net.samagames.api.SamaGamesAPI;
-import net.samagames.api.games.GamePlayer;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.game.SurvivalGameLoop;
 import net.samagames.survivalapi.game.SurvivalPlayer;
@@ -9,7 +8,6 @@ import net.samagames.survivalapi.utils.TimedEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Collection;
@@ -91,15 +89,6 @@ public class RunBasedGameLoop extends SurvivalGameLoop
         this.nextEvent = new TimedEvent(9, 30, "Fin de la réduction", ChatColor.RED, false, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("La map est désormais réduite. Fin de la partie forcée dans 2 minutes !", true);
-
-            for (GamePlayer player : (Collection<GamePlayer>) this.game.getInGamePlayers().values())
-            {
-                if(player.isOnline())
-                {
-                    player.getPlayerIfOnline().addPotionEffect(new PotionEffect(PotionEffectType.POISON, Integer.MAX_VALUE, 0));
-                }
-            }
-
             this.createEndEvent();
         });
     }
