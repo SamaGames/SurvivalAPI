@@ -314,7 +314,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                     MetadataValue lastDamager = player.hasMetadata("lastDamager") ? player.getMetadata("lastDamager").get(0) : null;
                     Player killer = null;
 
-                    if (lastDamager != null && lastDamager.value() instanceof Player)
+                    if (lastDamager != null)
                     {
                         if (lastDamager.value() instanceof Player)
                         {
