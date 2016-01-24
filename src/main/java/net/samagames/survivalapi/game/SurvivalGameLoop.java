@@ -4,7 +4,7 @@ import net.samagames.survivalapi.game.types.SurvivalTeamGame;
 import net.samagames.survivalapi.utils.TimedEvent;
 import net.samagames.tools.Titles;
 import net.samagames.tools.chat.ActionBarAPI;
-import net.samagames.tools.scoreboards.AdvertisingObjectiveSign;
+import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,7 +19,7 @@ public class SurvivalGameLoop implements Runnable
     protected final Server server;
     protected final SurvivalGame game;
     protected final World world;
-    protected final ConcurrentHashMap<UUID, AdvertisingObjectiveSign> objectives;
+    protected final ConcurrentHashMap<UUID, ObjectiveSign> objectives;
 
     protected TimedEvent nextEvent;
     protected int minutes;
@@ -92,7 +92,7 @@ public class SurvivalGameLoop implements Runnable
             this.nextEvent.run();
     }
 
-    public void addPlayer(UUID uuid, AdvertisingObjectiveSign sign)
+    public void addPlayer(UUID uuid, ObjectiveSign sign)
     {
         this.objectives.put(uuid, sign);
     }
@@ -123,7 +123,7 @@ public class SurvivalGameLoop implements Runnable
 
         for (UUID playerUUID : this.objectives.keySet())
         {
-            AdvertisingObjectiveSign objective = this.objectives.get(playerUUID);
+            ObjectiveSign objective = this.objectives.get(playerUUID);
             Player player = this.server.getPlayer(playerUUID);
 
             objective.clearScores();

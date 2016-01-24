@@ -27,7 +27,7 @@ public class RunBasedGameLoop extends SurvivalGameLoop
         this.nextEvent = new TimedEvent(1, 0, "Dégats actifs", ChatColor.GREEN, false, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les dégats sont désormais actifs.", true);
-            this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Le map sera réduite dans 19 minutes. Le PvP sera activé à ce moment là.", true);
+            this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("La map sera réduite dans 19 minutes. Le PvP sera activé à ce moment là.", true);
             this.game.enableDamages();
 
             this.createTeleportationEvent();
@@ -88,6 +88,8 @@ public class RunBasedGameLoop extends SurvivalGameLoop
     {
         this.nextEvent = new TimedEvent(9, 30, "Fin de la réduction", ChatColor.RED, false, () ->
         {
+            this.game.getWorldBorder().setSize(50.0D);
+
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("La map est désormais réduite. Fin de la partie forcée dans 2 minutes !", true);
             this.createEndEvent();
         });
