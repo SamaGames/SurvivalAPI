@@ -14,8 +14,21 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * BombersModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class BombersModule extends AbstractSurvivalModule
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public BombersModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

@@ -14,8 +14,21 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
+/**
+ * AutomaticLapisModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class AutomaticLapisModule extends AbstractSurvivalModule
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public AutomaticLapisModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

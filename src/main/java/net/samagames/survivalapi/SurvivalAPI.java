@@ -10,6 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * SurvivalAPI class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class SurvivalAPI
 {
     public enum EventType { POSTINIT, AFTERGENERATION }
@@ -20,6 +26,11 @@ public class SurvivalAPI
     private final Map<String, AbstractSurvivalModule> modulesLoaded;
     private final Map<EventType, List<Runnable>> events;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     */
     public SurvivalAPI(SurvivalPlugin plugin)
     {
         instance = this;
@@ -29,11 +40,22 @@ public class SurvivalAPI
         this.events = new HashMap<>();
     }
 
+    /**
+     * Fire the function `onGameStart()` in each modules loaded
+     *
+     * @param game Instance of the game
+     */
     public void fireGameStart(SurvivalGame game)
     {
         this.modulesLoaded.values().stream().forEach(module -> module.onGameStart(game));
     }
 
+    /**
+     * Register a hook into the SurvivalAPI to fire an event
+     *
+     * @param eventType When the event has to be fired
+     * @param callback Event
+     */
     public void registerEvent(EventType eventType, Runnable callback)
     {
         if (!this.events.containsKey(eventType))
@@ -42,6 +64,11 @@ public class SurvivalAPI
         this.events.get(eventType).add(callback);
     }
 
+    /**
+     * Fire the events registered of a given type
+     *
+     * @param eventType Event type
+     */
     public void fireEvents(EventType eventType)
     {
         if (!this.events.containsKey(eventType))
@@ -50,6 +77,12 @@ public class SurvivalAPI
         this.events.get(eventType).forEach(Runnable::run);
     }
 
+    /**
+     * Load a SurvivalAPI's module
+     *
+     * @param moduleClass Module class
+     * @param moduleConfiguration Module's configuration. Can be a default configuration {@link net.samagames.survivalapi.modules.block.RapidOresModule}
+     */
     public void loadModule(Class<? extends AbstractSurvivalModule> moduleClass, Map<String, Object> moduleConfiguration)
     {
         if(!this.modulesLoaded.containsKey(moduleClass.getSimpleName()))
@@ -73,6 +106,11 @@ public class SurvivalAPI
         }
     }
 
+    /**
+     * Unload a given module
+     *
+     * @param moduleClass Module class
+     */
     public void unloadModule(Class<? extends AbstractSurvivalModule> moduleClass)
     {
         if(this.modulesLoaded.containsKey(moduleClass.getSimpleName()))
@@ -86,11 +124,26 @@ public class SurvivalAPI
         }
     }
 
+    /**
+     * Is a module enabled
+     *
+     * @param moduleClass Module class
+     *
+     * @return {@code true} if enabled or {@code false}
+     */
     public boolean isModuleEnabled(Class<? extends AbstractSurvivalModule> moduleClass)
     {
         return this.modulesLoaded.containsKey(moduleClass.getSimpleName());
     }
 
+    /**
+     * Get the instance of a given module
+     *
+     * @param type Module class
+     * @param <T> -
+     *
+     * @return Module's instance
+     */
     public <T extends AbstractSurvivalModule> T getModule(Class<T> type)
     {
         if(isModuleEnabled(type))
@@ -100,12 +153,23 @@ public class SurvivalAPI
         return null;
     }
 
+    /**
+     * Get the parent plugin of the API
+     *
+     * @return Parent plugin instance
+     */
+    public SurvivalPlugin getPlugin()
+    {
+        return this.plugin;
+    }
+
+    /**
+     * Get the instance of the API
+     *
+     * @return Instance
+     */
     public static SurvivalAPI get()
     {
         return instance;
-    }
-
-    public SurvivalPlugin getPlugin() {
-        return plugin;
     }
 }

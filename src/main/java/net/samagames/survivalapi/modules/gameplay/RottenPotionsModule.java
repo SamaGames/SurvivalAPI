@@ -12,11 +12,24 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Map;
 import java.util.Random;
 
-public class RottenPotions extends AbstractSurvivalModule
+/**
+ * RottenPotionsModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
+public class RottenPotionsModule extends AbstractSurvivalModule
 {
     private final Random random;
 
-    public RottenPotions(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
+    public RottenPotionsModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
 

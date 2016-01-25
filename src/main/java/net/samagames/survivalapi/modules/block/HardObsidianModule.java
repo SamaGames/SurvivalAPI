@@ -10,8 +10,21 @@ import org.bukkit.event.block.BlockDamageEvent;
 
 import java.util.Map;
 
+/**
+ * HardObsidianModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class HardObsidianModule extends AbstractSurvivalModule
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public HardObsidianModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

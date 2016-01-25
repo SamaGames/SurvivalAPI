@@ -11,10 +11,23 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 import java.util.Map;
 
+/**
+ * AutomaticTNTModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class AutomaticTNTModule extends AbstractSurvivalModule
 {
     private SurvivalGame game;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public AutomaticTNTModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

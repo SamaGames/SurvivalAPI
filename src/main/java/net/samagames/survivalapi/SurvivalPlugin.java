@@ -23,12 +23,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * SurvivalAPI Plugin
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class SurvivalPlugin extends JavaPlugin
 {
     private SurvivalAPI api;
     private BukkitTask startTimer;
     private WorldLoader worldLoader;
 
+    /**
+     * Called on when plugin enables
+     */
     @Override
     public void onEnable()
     {
@@ -72,6 +81,9 @@ public class SurvivalPlugin extends JavaPlugin
         this.startTimer = this.getServer().getScheduler().runTaskTimer(this, this::postInit, 20L, 20L);
     }
 
+    /**
+     * Called the plugin disables
+     */
     @Override
     public void onDisable()
     {
@@ -79,6 +91,12 @@ public class SurvivalPlugin extends JavaPlugin
             ((SurvivalGame) SamaGamesAPI.get().getGameManager().getGame()).dump();
     }
 
+    /**
+     * Called when the world's loading process is finished
+     *
+     * @param world World
+     * @param time Loading time
+     */
     public void finishGeneration(World world, long time)
     {
         this.getLogger().info("Ready in " + time + "ms");
@@ -95,6 +113,9 @@ public class SurvivalPlugin extends JavaPlugin
         this.api.fireEvents(SurvivalAPI.EventType.AFTERGENERATION);
     }
 
+    /**
+     * Called before the world generation, with that, we can use WorldEdit
+     */
     private void postInit()
     {
         this.startTimer.cancel();
@@ -114,6 +135,12 @@ public class SurvivalPlugin extends JavaPlugin
         this.api.fireEvents(SurvivalAPI.EventType.POSTINIT);
     }
 
+    /**
+     * Called to remove WorldEdit's command
+     *
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
     private void removeWorldEditCommand() throws NoSuchFieldException, IllegalAccessException
     {
         SimpleCommandMap scm = ((CraftServer) Bukkit.getServer()).getCommandMap();

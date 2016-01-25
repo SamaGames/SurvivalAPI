@@ -19,12 +19,25 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import java.util.HashMap;
 import java.util.UUID;
 
+/**
+ * SurvivalTeamSelector class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class SurvivalTeamSelector implements Listener
 {
     private static SurvivalTeamSelector instance;
     private final SurvivalTeamGame game;
     private HashMap<UUID, AbstractGui> playersGui;
 
+    /**
+     * Constructor
+     *
+     * @param game Team based game instance
+     *
+     * @throws IllegalAccessException
+     */
     public SurvivalTeamSelector(SurvivalTeamGame game) throws IllegalAccessException
     {
         if (instance != null)
@@ -36,11 +49,21 @@ public class SurvivalTeamSelector implements Listener
         this.playersGui = new HashMap<>();
     }
 
+    /**
+     * Get the instance
+     *
+     * @return Instance
+     */
     public static SurvivalTeamSelector getInstance()
     {
         return instance;
     }
 
+    /**
+     * Event fired when a player uses his nether star
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event)
     {
@@ -50,7 +73,11 @@ public class SurvivalTeamSelector implements Listener
             this.openGui(event.getPlayer(), new GuiSelectTeam());
     }
 
-
+    /**
+     * Event fired when a player clicks in the team selection GUI
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event)
     {
@@ -74,6 +101,11 @@ public class SurvivalTeamSelector implements Listener
         }
     }
 
+    /**
+     * Event fired when a player rename his team
+     *
+     * @param event Event
+     */
     @EventHandler
     public void onSignChange(SignChangeEvent event)
     {
@@ -103,6 +135,12 @@ public class SurvivalTeamSelector implements Listener
         }
     }
 
+    /**
+     * Open a given GUI to a given player
+     *
+     * @param player Player
+     * @param gui GUI
+     */
     public void openGui(Player player, AbstractGui gui)
     {
         if (this.playersGui.containsKey(player.getUniqueId()))
@@ -115,6 +153,11 @@ public class SurvivalTeamSelector implements Listener
         gui.display(player);
     }
 
+    /**
+     * Handle private chat
+     *
+     * @param event Event
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event)
     {

@@ -16,8 +16,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * TorchThanCoalModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class TorchThanCoalModule extends AbstractSurvivalModule
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public TorchThanCoalModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

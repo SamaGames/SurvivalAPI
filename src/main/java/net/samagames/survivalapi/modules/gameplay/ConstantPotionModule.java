@@ -1,6 +1,5 @@
 package net.samagames.survivalapi.modules.gameplay;
 
-import net.samagames.api.SamaGamesAPI;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.SurvivalGame;
@@ -16,10 +15,23 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 
+/**
+ * ConstantPotionModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class ConstantPotionModule extends AbstractSurvivalModule
 {
     private final List<PotionEffect> potionEffects;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public ConstantPotionModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

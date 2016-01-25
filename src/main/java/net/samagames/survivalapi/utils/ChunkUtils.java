@@ -12,13 +12,24 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by Silvanosky on 11/01/2016.
+ * ChunkUtils class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
  */
-public class ChunkUtils {
-
+public class ChunkUtils
+{
+    /**
+     * Send to a given players the chunks around a given radius
+     *
+     * @param p The player
+     * @param dest The block of the chunk
+     * @param radius The radius
+     */
     public static void loadDestination(Player p, Location dest, int radius)
     {
         WorldServer handle = ((CraftWorld) dest.getWorld()).getHandle();
+
         for (int x = -radius; x < radius; x++)
         {
             for (int z = -radius; z < radius; z++)
@@ -27,7 +38,5 @@ public class ChunkUtils {
                 ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutMapChunk(chunk, true, 0x11111111));
             }
         }
-
-
     }
 }

@@ -9,8 +9,21 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import java.util.Map;
 
+/**
+ * OneShootPassiveModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class OneShootPassiveModule extends AbstractSurvivalModule
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public OneShootPassiveModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

@@ -14,11 +14,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
+/**
+ * RunBasedGame interface
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 @FunctionalInterface
 public interface RunBasedGame
 {
+    /**
+     * Teleport the players to the deathmatch zone
+     */
     void teleportDeathMatch();
 
+    /**
+     * Load the modules needed by the game
+     */
     default void applyModules()
     {
         SurvivalAPI.get().loadModule(DisableLevelTwoPotionModule.class, null);
@@ -60,6 +72,11 @@ public interface RunBasedGame
         SamaGamesAPI.get().getGameManager().setMaxReconnectTime(20);
     }
 
+    /**
+     * Remove the constants effects to a given player
+     *
+     * @param player Player
+     */
     default void removeEffects(Player player)
     {
         player.removePotionEffect(PotionEffectType.SPEED);

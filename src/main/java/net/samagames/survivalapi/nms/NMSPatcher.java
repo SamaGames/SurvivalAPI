@@ -14,15 +14,31 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * NMSPatcher class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class NMSPatcher
 {
     private final Logger logger;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     */
     public NMSPatcher(SurvivalPlugin plugin)
     {
         this.logger = plugin.getLogger();
     }
 
+    /**
+     * Remove undesirable biomes
+     *
+     * @throws Exception
+     */
     public void patchBiomes() throws Exception
     {
         BiomeBase[] biomes = BiomeBase.getBiomes();
@@ -40,7 +56,6 @@ public class NMSPatcher
                 if (!biomesMap.containsKey(biomes[i].ah))
                     biomes[i] = defaultBiome;
 
-                biomes[i] = this.addAnimals(biomes[i]);
                 this.setReedsPerChunk(biomes[i], (int) Reflection.getValue(biomes[i].as, BiomeDecorator.class, true, "F") * 2);
             }
         }
@@ -48,6 +63,11 @@ public class NMSPatcher
         Reflection.setFinalStatic(BiomeBase.class.getDeclaredField("biomes"), biomes);
     }
 
+    /**
+     * Modify the Strength potion to do less damages
+     *
+     * @throws ReflectiveOperationException
+     */
     public void patchPotions() throws ReflectiveOperationException
     {
         Reflection.setFinalStatic(PotionEffectType.class.getDeclaredField("acceptingNew"), true);
@@ -62,6 +82,9 @@ public class NMSPatcher
         this.logger.info("Potions patched");
     }
 
+    /**
+     * Replace certain ItemStack to our customs
+     */
     public void patchStackable()
     {
         this.logger.info("Patching Potion and Soup to change their stack size...");
@@ -86,20 +109,11 @@ public class NMSPatcher
         }
     }
 
-    public void patchObsidian()
-    {
-        try
-        {
-            Field field = net.minecraft.server.v1_8_R3.Block.class.getDeclaredField("strength");
-            field.setAccessible(true);
-            field.setFloat(Blocks.OBSIDIAN, 1.5F);
-        }
-        catch (ReflectiveOperationException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * Add more animals in these biomes
+     *
+     * @throws ReflectiveOperationException
+     */
     private void fixAnimals() throws ReflectiveOperationException
     {
         this.addAnimalsSpawn("PLAINS", BiomeBase.PLAINS);
@@ -137,10 +151,16 @@ public class NMSPatcher
         this.addAnimalsSpawn("MESA_PLATEAU_F", BiomeBase.MESA_PLATEAU_F);
         this.addAnimalsSpawn("MESA_PLATEAU", BiomeBase.MESA_PLATEAU);
         this.addAnimalsSpawn("FOREST", BiomeBase.FOREST);
-        this.addAnimalsSpawn("FOREST", BiomeBase.FOREST);
-        this.addAnimalsSpawn("FOREST", BiomeBase.FOREST);
     }
 
+    /**
+     * Modify the spawn rate of the animals in a given biome
+     *
+     * @param name Biome's name
+     * @param biomeBase Biome's type
+     *
+     * @throws ReflectiveOperationException
+     */
     private void addAnimalsSpawn(String name, BiomeBase biomeBase) throws ReflectiveOperationException
     {
         Field biome = BiomeBase.class.getDeclaredField(name);
@@ -160,25 +180,15 @@ public class NMSPatcher
         Reflection.setFinalStatic(biome, biomeBase);
     }
 
-    private BiomeBase addAnimals(BiomeBase biomeBase) throws Exception
-    {
-        Field defaultMobField = BiomeBase.class.getDeclaredField("au");
-        defaultMobField.setAccessible(true);
-
-        ArrayList<BiomeBase.BiomeMeta> mobs = new ArrayList<>();
-
-        mobs.add(new BiomeBase.BiomeMeta(EntitySheep.class, 15, 10, 10));
-        mobs.add(new BiomeBase.BiomeMeta(EntityRabbit.class, 4, 3, 5));
-        mobs.add(new BiomeBase.BiomeMeta(EntityPig.class, 15, 10, 20));
-        mobs.add(new BiomeBase.BiomeMeta(EntityChicken.class, 20, 10, 20));
-        mobs.add(new BiomeBase.BiomeMeta(EntityCow.class, 20, 10, 20));
-        mobs.add(new BiomeBase.BiomeMeta(EntityWolf.class, 5, 5, 10));
-
-        defaultMobField.set(biomeBase, mobs);
-
-        return biomeBase;
-    }
-
+    /**
+     * Add more reeds in a chunk of a given biome
+     *
+     * @param biome Biome to modify
+     * @param value Rate
+     *
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
     private void setReedsPerChunk(BiomeBase biome, int value) throws NoSuchFieldException, IllegalAccessException
     {
         Reflection.setValue(biome.as, BiomeDecorator.class, true, "F", value);

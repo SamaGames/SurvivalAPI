@@ -19,12 +19,29 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
 
+/**
+ * SurvivalTeamGame class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends SurvivalGame
 {
     private final int personsPerTeam;
     private SurvivalTeamSelector teamSelector;
     protected SurvivalTeamList teams;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param gameCodeName Game code name
+     * @param gameName Game name
+     * @param gameDescription Game description
+     * @param magicSymbol Symbol into the scoreboard
+     * @param survivalGameLoopClass Class of the game loop
+     * @param personsPerTeam Number of players per team
+     */
     public SurvivalTeamGame(JavaPlugin plugin, String gameCodeName, String gameName, String gameDescription, String magicSymbol, Class<? extends SURVIVALLOOP> survivalGameLoopClass, int personsPerTeam)
     {
         super(plugin, gameCodeName, gameName, gameDescription, magicSymbol, survivalGameLoopClass);
@@ -72,6 +89,9 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         GuiSelectTeam.setGame(this);
     }
 
+    /**
+     * See SamaGamesAPI
+     */
     @Override
     public void startGame()
     {
@@ -103,6 +123,9 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         super.startGame();
     }
 
+    /**
+     * See {@link SurvivalGame}
+     */
     @Override
     public void teleport()
     {
@@ -141,6 +164,14 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         }
     }
 
+    /**
+     * See {@link SurvivalGame}
+     *
+     * @param playerUUID Player
+     * @param silent Display messages
+     *
+     * @throws GameException
+     */
     @Override
     public void checkStump(UUID playerUUID, boolean silent) throws GameException
     {
@@ -188,6 +219,15 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         }, 2L);
     }
 
+    /**
+     * See {@link SurvivalGame}
+     *
+     * @param playerUUID Player
+     * @param logout Is disconnection death
+     * @param silent Display messages
+     *
+     * @throws GameException
+     */
     @Override
     public void stumpPlayer(UUID playerUUID, boolean logout, boolean silent) throws GameException
     {
@@ -202,6 +242,11 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         }
     }
 
+    /**
+     * Execute win procedure
+     *
+     * @param team Team
+     */
     public void win(final SurvivalTeam team)
     {
         for (final UUID playerID : team.getPlayersUUID().keySet())
@@ -231,16 +276,33 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         this.handleGameEnd();
     }
 
+    /**
+     * Register a team in the game
+     *
+     * @param team Team instance
+     */
     public void registerTeam(SurvivalTeam team)
     {
         this.teams.add(team);
     }
 
+    /**
+     * Get player's team
+     *
+     * @param uniqueId Player's UUID
+     *
+     * @return Team instance
+     */
     public SurvivalTeam getPlayerTeam(UUID uniqueId)
     {
         return this.teams.getTeam(uniqueId);
     }
 
+    /**
+     * Get the last alive team
+     *
+     * @return Team instance
+     */
     public SurvivalTeam getLastAliveTeam()
     {
         for(SurvivalTeam team : this.teams)
@@ -250,11 +312,21 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         return null;
     }
 
+    /**
+     * Get teams list
+     *
+     * @return A list of teams
+     */
     public SurvivalTeamList getTeams()
     {
         return this.teams;
     }
 
+    /**
+     * Get the number of alive teams
+     *
+     * @return Number of teams
+     */
     public int countAliveTeam()
     {
         int nb = 0;
@@ -266,6 +338,11 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         return nb;
     }
 
+    /**
+     * Get the number of players per team
+     *
+     * @return Number of players
+     */
     public int getPersonsPerTeam()
     {
         return this.personsPerTeam;

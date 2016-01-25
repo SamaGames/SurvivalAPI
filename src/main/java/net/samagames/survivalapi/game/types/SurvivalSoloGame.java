@@ -16,13 +16,37 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * SurvivalSoloGame class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends SurvivalGame
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param gameCodeName Game code name
+     * @param gameName Game name
+     * @param gameDescription Game description
+     * @param magicSymbol Symbol into the scoreboard
+     * @param survivalGameLoopClass Class of the game loop
+     */
     public SurvivalSoloGame(JavaPlugin plugin, String gameCodeName, String gameName, String gameDescription, String magicSymbol, Class<? extends SURVIVALLOOP> survivalGameLoopClass)
     {
         super(plugin, gameCodeName, gameName, gameDescription, magicSymbol, survivalGameLoopClass);
     }
 
+    /**
+     * See {@link SurvivalGame}
+     *
+     * @param playerUUID Player
+     * @param silent Display messages
+     *
+     * @throws GameException
+     */
     @Override
     public void checkStump(UUID playerUUID, boolean silent) throws GameException
     {
@@ -72,6 +96,11 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         }
     }
 
+    /**
+     * Execute win procedure
+     *
+     * @param player Player
+     */
     public void win(final Player player)
     {
         SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(player.getUniqueId());
@@ -103,6 +132,9 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         this.handleGameEnd();
     }
 
+    /**
+     * See {@link SurvivalGame}
+     */
     @Override
     public void teleport()
     {

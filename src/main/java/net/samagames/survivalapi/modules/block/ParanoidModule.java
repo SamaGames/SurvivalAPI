@@ -12,8 +12,21 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 import java.util.Map;
 
+/**
+ * ParanoidModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class ParanoidModule extends AbstractSurvivalModule
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public ParanoidModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

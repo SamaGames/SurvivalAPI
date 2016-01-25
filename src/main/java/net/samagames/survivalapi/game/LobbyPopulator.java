@@ -15,18 +15,32 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+/**
+ * LobbyPopulator class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class LobbyPopulator
 {
     private final Logger logger;
     private final File file;
     private EditSession editSession;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     */
     public LobbyPopulator(JavaPlugin plugin)
     {
         this.logger = plugin.getLogger();
         this.file = new File(plugin.getDataFolder(), "lobby.schematic");
     }
 
+    /**
+     * Place the waiting lobby in the world
+     */
     public void place()
     {
         this.logger.info("Generating lobby...");
@@ -62,6 +76,9 @@ public class LobbyPopulator
         this.logger.info("Done.");
     }
 
+    /**
+     * Remove the waiting lobby from the world
+     */
     public void remove()
     {
         this.editSession.undo(this.editSession);

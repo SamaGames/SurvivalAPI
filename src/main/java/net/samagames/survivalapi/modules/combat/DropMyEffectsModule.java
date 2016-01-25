@@ -14,10 +14,23 @@ import org.bukkit.potion.PotionType;
 
 import java.util.*;
 
+/**
+ * DropMyEffectsModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class DropMyEffectsModule extends AbstractSurvivalModule
 {
     private final List<PotionEffectType> blacklist;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public DropMyEffectsModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

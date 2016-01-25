@@ -14,8 +14,21 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * NineSlotsModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class NineSlotsModule extends AbstractSurvivalModule
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public NineSlotsModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

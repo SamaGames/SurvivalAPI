@@ -7,6 +7,12 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 
+/**
+ * WorldLoader class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class WorldLoader
 {
     private final SurvivalPlugin plugin;
@@ -15,6 +21,12 @@ public class WorldLoader
     private int lastShow;
     private int numberChunk;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param size Size of the world
+     */
     public WorldLoader(SurvivalPlugin plugin, int size)
     {
         this.plugin = plugin;
@@ -23,11 +35,24 @@ public class WorldLoader
         this.lastShow = -1;
     }
 
+    /**
+     * Get the highest coordinate of a given location without any modification
+     *
+     * @param x Location X
+     * @param z Location Z
+     *
+     * @return Y Coordinate
+     */
     public static int getHighestNaturalBlockAt(int x, int z)
     {
         return Pos.getY(x, z);
     }
 
+    /**
+     * Start the world loading
+     *
+     * @param world World instance
+     */
     public void begin(final World world)
     {
         long startTime = System.currentTimeMillis();
@@ -77,6 +102,11 @@ public class WorldLoader
         }, 1L, 1L);
     }
 
+    /**
+     * Read the highest blocks of the world
+     *
+     * @param world World instance
+     */
     public void computeTop(World world)
     {
         int x = -this.size;
@@ -95,35 +125,66 @@ public class WorldLoader
         }
     }
 
-
-    private static final class Pos
+    /**
+     * Pos internal class
+     */
+    private static class Pos
     {
-        private static ArrayList<Pos> highestBlocks = new ArrayList<>();
-        private int x, y, z;
+        private static final ArrayList<Pos> highestBlocks = new ArrayList<>();
+        private final int x, y, z;
 
-        Pos(int x, int y, int z)
+        /**
+         * Constructor
+         *
+         * @param x Location X
+         * @param y Location Y
+         * @param z Location Z
+         */
+        public Pos(int x, int y, int z)
         {
             this.x = x;
             this.y = y;
             this.z = z;
         }
 
-
+        /**
+         * Get X position
+         *
+         * @return Position
+         */
         public int getX()
         {
             return this.x;
         }
 
+        /**
+         * Get Y position
+         *
+         * @return Position
+         */
         public int getY()
         {
             return this.y;
         }
 
+        /**
+         * Get Z position
+         *
+         * @return Position
+         */
         public int getZ()
         {
             return this.z;
         }
 
+        /**
+         * Get the highest Y position of a given location
+         *
+         * @param x X position
+         * @param z Z position
+         *
+         * @return Y position
+         */
         public static int getY(int x, int z)
         {
             for (Pos pos : highestBlocks)
@@ -133,6 +194,13 @@ public class WorldLoader
             return 255;
         }
 
+        /**
+         * Register a location
+         *
+         * @param x X position
+         * @param y Y position
+         * @param z Z position
+         */
         public static void registerY(int x, int y, int z)
         {
             highestBlocks.add(new Pos(x, y, z));

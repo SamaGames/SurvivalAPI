@@ -6,6 +6,12 @@ import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+/**
+ * WorldDestructionRunnable class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class WorldDestructionRunnable extends BukkitRunnable
 {
     private final JavaPlugin plugin;
@@ -13,6 +19,12 @@ public class WorldDestructionRunnable extends BukkitRunnable
     private final int size;
     private int y;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param size Zone size
+     */
     public WorldDestructionRunnable(JavaPlugin plugin, int size)
     {
         this.plugin = plugin;
@@ -21,6 +33,9 @@ public class WorldDestructionRunnable extends BukkitRunnable
         this.y = 0;
     }
 
+    /**
+     * Destruct a piece of the map
+     */
     @Override
     public void run()
     {
@@ -37,5 +52,7 @@ public class WorldDestructionRunnable extends BukkitRunnable
                 this.world.getBlockAt(x, this.y, z).setType(Material.OBSIDIAN);
             }
         }
+
+        this.y++;
     }
 }

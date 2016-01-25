@@ -12,8 +12,21 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Collection;
 
+/**
+ * RunBasedGameLoop class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class RunBasedGameLoop extends SurvivalGameLoop
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param server Server instance
+     * @param game Game instance
+     */
     public RunBasedGameLoop(JavaPlugin plugin, Server server, SurvivalGame game)
     {
         super(plugin, server, game);

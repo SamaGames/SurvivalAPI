@@ -14,8 +14,21 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * CatsEyesModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class CatsEyesModule extends AbstractSurvivalModule
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public CatsEyesModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

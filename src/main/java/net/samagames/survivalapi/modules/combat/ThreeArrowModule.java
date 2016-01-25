@@ -12,8 +12,21 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 
 import java.util.Map;
 
+/**
+ * ThreeArrowModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class ThreeArrowModule extends AbstractSurvivalModule
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public ThreeArrowModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
