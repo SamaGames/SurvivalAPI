@@ -56,7 +56,7 @@ public class DiamondFlowerModule extends AbstractSurvivalModule
         if (this.random.nextInt(100) <= 30)
             event.getEntity().getWorld().dropItemNaturally(event.getLocation(), Meta.addMeta(new ItemStack(Material.DIAMOND, 1)));
     }
-    q
+    
     @Override
     public List<Class<? extends AbstractSurvivalModule>> getRequiredModules()
     {
