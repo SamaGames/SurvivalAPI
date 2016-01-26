@@ -13,6 +13,12 @@ import org.bukkit.util.EulerAngle;
 
 import java.util.Random;
 
+/**
+ * DeadCorpses object
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class DeadCorpses
 {
     private static final String corpsesPart1 = "execute @e[name=base_%player%] ~ ~-1.2 ~-0.5 summon ArmorStand ~ ~ ~ {CustomName:\"part_1_%player%\",NoBasePlate:1,NoGravity:1,Invulnerable:1,DisabledSlots:2039583,Pose:{Body:[-88f,0f,0f],Head:[-90f,0f,0f],RightArm:[90f,0f,0f],LeftArm:[90f,0f,0f]},Invisible:1,ShowArms:1}";
@@ -21,12 +27,22 @@ public class DeadCorpses
     private final Player player;
     private final Random random;
 
+    /**
+     * Constructor
+     *
+     * @param player Dead player
+     */
     public DeadCorpses(Player player)
     {
         this.player = player;
         this.random = new Random();
     }
 
+    /**
+     * Spawn the corpses in the world at the owner location
+     *
+     * @param location Dead player location
+     */
     public void spawn(Location location)
     {
         ParticleEffect.SMOKE_LARGE.display(0.5F, 0.5F, 0.5F, 0.025F, 3, location, 120.0D);
@@ -79,13 +95,20 @@ public class DeadCorpses
         EulerAngle corpsesPart2LeftLegPose = corpsesPart2.getLeftLegPose();
         EulerAngle corpsesPart2RightLegPose = corpsesPart2.getRightLegPose();
 
-        //corpsesPart1.setHeadPose(new EulerAngle(corpsesPart1HeadPose.getX(), -30 + this.random.nextInt(60), -25 + this.random.nextInt(50)));
-        //corpsesPart1.setLeftArmPose(new EulerAngle(corpsesPart1LeftArmPose.getX(), 140.0D - this.random.nextInt(120), corpsesPart1LeftArmPose.getZ()));
-        //corpsesPart1.setRightArmPose(new EulerAngle(corpsesPart1RightArmPose.getX(), 140.0D + this.random.nextInt(80), -90.0D));
-        //corpsesPart2.setLeftLegPose(new EulerAngle(corpsesPart2LeftLegPose.getX(), -70.0D + this.random.nextInt(70), corpsesPart2LeftLegPose.getZ()));
-        //corpsesPart2.setRightLegPose(new EulerAngle(corpsesPart2RightLegPose.getX(), 70.0D - this.random.nextInt(70), corpsesPart2RightLegPose.getZ()));
+        corpsesPart1.setHeadPose(new EulerAngle(corpsesPart1HeadPose.getX(), -30 + this.random.nextInt(60), -25 + this.random.nextInt(50)));
+        corpsesPart1.setLeftArmPose(new EulerAngle(corpsesPart1LeftArmPose.getX(), 140.0D - this.random.nextInt(120), corpsesPart1LeftArmPose.getZ()));
+        corpsesPart1.setRightArmPose(new EulerAngle(corpsesPart1RightArmPose.getX(), 140.0D + this.random.nextInt(80), -90.0D));
+        corpsesPart2.setLeftLegPose(new EulerAngle(corpsesPart2LeftLegPose.getX(), -70.0D + this.random.nextInt(70), corpsesPart2LeftLegPose.getZ()));
+        corpsesPart2.setRightLegPose(new EulerAngle(corpsesPart2RightLegPose.getX(), 70.0D - this.random.nextInt(70), corpsesPart2RightLegPose.getZ()));
     }
 
+    /**
+     * Paint a given ItemStack into gray
+     *
+     * @param stack Leather armor part
+     *
+     * @return Colored leather armor part
+     */
     public ItemStack getArmor(ItemStack stack)
     {
         LeatherArmorMeta meta = (LeatherArmorMeta) stack.getItemMeta();

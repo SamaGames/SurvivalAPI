@@ -9,6 +9,12 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.Map;
 
+/**
+ * DropTaggingModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class DropTaggingModule extends AbstractSurvivalModule
 {
     public DropTaggingModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)

@@ -13,6 +13,12 @@ import org.bukkit.util.Vector;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * SurvivalGameLoop class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class SurvivalGameLoop implements Runnable
 {
     protected final JavaPlugin plugin;
@@ -27,6 +33,13 @@ public class SurvivalGameLoop implements Runnable
     protected int episode;
     protected boolean episodeEnabled;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param server Server instance
+     * @param game Game instance
+     */
     public SurvivalGameLoop(JavaPlugin plugin, Server server, SurvivalGame game)
     {
         this.game = game;
@@ -75,6 +88,9 @@ public class SurvivalGameLoop implements Runnable
         });
     }
 
+    /**
+     * Function to display with a title that the border are reducing
+     */
     public void displayReducingMessage()
     {
         for (Player player : Bukkit.getOnlinePlayers())
@@ -86,22 +102,39 @@ public class SurvivalGameLoop implements Runnable
         this.game.getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.RED + "Les bordures se réduisent !", true);
     }
 
+    /**
+     * Force the next event to execute right now
+     */
     public void forceNextEvent()
     {
         if (this.nextEvent != null)
             this.nextEvent.run();
     }
 
+    /**
+     * Add a game player to receive his scoreboard
+     *
+     * @param uuid Player's UUID
+     * @param sign {@link ObjectiveSign} instance
+     */
     public void addPlayer(UUID uuid, ObjectiveSign sign)
     {
         this.objectives.put(uuid, sign);
     }
 
+    /**
+     * Remvoe a game player to receive his scoreboard
+     *
+     * @param uuid Player's UUID
+     */
     public void removePlayer(UUID uuid)
     {
         this.objectives.remove(uuid);
     }
 
+    /**
+     * Calculate the scoreboard and events decreasing
+     */
     @Override
     public void run()
     {
@@ -211,6 +244,14 @@ public class SurvivalGameLoop implements Runnable
         this.nextEvent.decrement();
     }
 
+    /**
+     * Get a color according the health
+     *
+     * @param health Health
+     * @param max Health max
+     *
+     * @return A color
+     */
     private static ChatColor getPrefixColorByHealth(double health, double max)
     {
         double q = max / 4;
@@ -225,6 +266,14 @@ public class SurvivalGameLoop implements Runnable
             return ChatColor.DARK_GREEN;
     }
 
+    /**
+     * Get the arrow corresponding to the location between two given players
+     *
+     * @param p First player
+     * @param mate Second player
+     *
+     * @return A arrow
+     */
     private static String getDirection(Player p, Player mate)
     {
         Location ploc = p.getLocation().clone();
@@ -246,6 +295,14 @@ public class SurvivalGameLoop implements Runnable
         return Character.toString("⬆⬈➡⬊⬇⬋⬅⬉".charAt((int) a / 45));
     }
 
+    /**
+     * Format a time into a formatted string
+     *
+     * @param minutes Minutes
+     * @param seconds Seconds
+     *
+     * @return Formatted string
+     */
     private String toString(int minutes, int seconds)
     {
         return (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;

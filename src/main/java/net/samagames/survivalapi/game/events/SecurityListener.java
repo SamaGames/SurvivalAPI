@@ -15,6 +15,11 @@ public class SecurityListener implements Listener
 {
     private final SurvivalGame game;
 
+    /**
+     * Constructor
+     *
+     * @param game Game instance
+     */
     public SecurityListener(SurvivalGame game)
     {
         this.game = game;

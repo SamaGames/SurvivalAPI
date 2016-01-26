@@ -6,6 +6,14 @@ import org.bukkit.ChatColor;
 import javax.annotation.Nonnull;
 import java.util.*;
 
+/**
+ * SurvivalTeamList class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ *
+ * @see List
+ */
 public class SurvivalTeamList implements List<SurvivalTeam>
 {
     private final ArrayList<SurvivalTeam> internalList;
@@ -159,6 +167,13 @@ public class SurvivalTeamList implements List<SurvivalTeam>
         return internalList.subList(fromIndex, toIndex);
     }
 
+    /**
+     * Get the team of a given player UUID
+     *
+     * @param player Player's UUID
+     *
+     * @return Team instance or {@code null}
+     */
     public SurvivalTeam getTeam(UUID player)
     {
         for (SurvivalTeam team : internalList)
@@ -168,6 +183,13 @@ public class SurvivalTeamList implements List<SurvivalTeam>
         return null;
     }
 
+    /**
+     * Get the team corresponding to the given color
+     *
+     * @param color Color
+     *
+     * @return Team instance or {@code null}
+     */
     public SurvivalTeam getTeam(ChatColor color)
     {
         for (SurvivalTeam team : internalList)

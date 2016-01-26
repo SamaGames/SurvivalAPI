@@ -16,12 +16,25 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 import java.util.*;
 
+/**
+ * PersonalBlocksModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class PersonalBlocksModule extends AbstractSurvivalModule
 {
     private final Map<Location, UUID> blocksOwner;
     private final List<Material> privateBlocks;
     private SurvivalGame game;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public PersonalBlocksModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

@@ -20,11 +20,24 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
+/**
+ * RapidOresModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class RapidOresModule extends AbstractSurvivalModule
 {
     private final Map<ItemStack, ConfigurationBuilder.IRapidOresHook> drops;
     private final Random random;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public RapidOresModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

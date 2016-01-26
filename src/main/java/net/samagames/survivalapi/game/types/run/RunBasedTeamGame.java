@@ -13,8 +13,25 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Iterator;
 import java.util.UUID;
 
+/**
+ * RunBasedTeamGame class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class RunBasedTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends SurvivalTeamGame<SURVIVALLOOP> implements RunBasedGame
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param gameCodeName Game code name
+     * @param gameName Game name
+     * @param gameDescription Game description
+     * @param magicSymbol Symbol into the scoreboard
+     * @param survivalGameLoopClass Class of the game loop
+     * @param personsPerTeam Number of players per team
+     */
     public RunBasedTeamGame(JavaPlugin plugin, String gameCodeName, String gameName, String gameDescription, String magicSymbol, Class<? extends SURVIVALLOOP> survivalGameLoopClass, int personsPerTeam)
     {
         super(plugin, gameCodeName, gameName, gameDescription, ChatColor.ITALIC + magicSymbol, survivalGameLoopClass, personsPerTeam);
@@ -22,6 +39,9 @@ public class RunBasedTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         this.applyModules();
     }
 
+    /**
+     * See {@link RunBasedGame}
+     */
     @Override
     public void teleportDeathMatch()
     {

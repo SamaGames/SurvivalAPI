@@ -21,6 +21,11 @@ public class SpectatorListener implements Listener
 {
     private final SurvivalGame game;
 
+    /**
+     * Constructor
+     *
+     * @param game Game instance
+     */
     public SpectatorListener(SurvivalGame game)
     {
         this.game = game;

@@ -9,6 +9,12 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 import java.util.Map;
 
+/**
+ * KillToToggleTimeModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class KillToToggleTimeModule extends AbstractSurvivalModule
 {
     private static final int DAY = 6000;
@@ -16,6 +22,13 @@ public class KillToToggleTimeModule extends AbstractSurvivalModule
 
     private boolean isDay;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public KillToToggleTimeModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

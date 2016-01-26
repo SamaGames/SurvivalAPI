@@ -11,8 +11,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * TeamWinTemplate class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class TeamWinTemplate
 {
+    /**
+     * Prepare the message with the team's members
+     *
+     * @param team Winning team
+     *
+     * @return A list of lines
+     */
     public List<String> prepare(SurvivalTeam team)
     {
         List<String> custom = new ArrayList<>();
@@ -27,6 +40,11 @@ public class TeamWinTemplate
         return custom;
     }
 
+    /**
+     * Send the message with the team's members
+     *
+     * @param team Winning team
+     */
     public void execute(SurvivalTeam team)
     {
         new WinMessageTemplate().execute(this.prepare(team));

@@ -15,8 +15,21 @@ import org.bukkit.inventory.Recipe;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * RapidToolsModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class RapidToolsModule extends AbstractSurvivalModule
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public RapidToolsModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

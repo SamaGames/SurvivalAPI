@@ -9,8 +9,21 @@ import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * DoubleHealthModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class DoubleHealthModule extends AbstractSurvivalModule
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public DoubleHealthModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

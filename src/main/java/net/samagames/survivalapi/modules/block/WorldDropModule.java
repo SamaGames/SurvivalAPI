@@ -17,10 +17,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * WorldDropModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class WorldDropModule extends AbstractSurvivalModule
 {
     private final Map<Material, ItemStack> drops;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public WorldDropModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

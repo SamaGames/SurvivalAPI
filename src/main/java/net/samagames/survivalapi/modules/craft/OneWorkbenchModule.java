@@ -17,10 +17,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * OneWorkbenchModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class OneWorkbenchModule extends AbstractSurvivalModule
 {
     private final List<UUID> crafters;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public OneWorkbenchModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

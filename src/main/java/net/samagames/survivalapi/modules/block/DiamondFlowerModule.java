@@ -13,10 +13,23 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
+/**
+ * DiamondFlowerModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class DiamondFlowerModule extends AbstractSurvivalModule
 {
     private final Random random;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public DiamondFlowerModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
@@ -41,12 +54,7 @@ public class DiamondFlowerModule extends AbstractSurvivalModule
             return;
 
         if (this.random.nextInt(100) <= 30)
-            event.getEntity().getWorld().dropItemNaturally(event.getLocation(), verifyStack(new ItemStack(Material.DIAMOND, 1)));
-    }
-
-    private ItemStack verifyStack(ItemStack stack)
-    {
-        return Meta.addMeta(stack);
+            event.getEntity().getWorld().dropItemNaturally(event.getLocation(), Meta.addMeta(new ItemStack(Material.DIAMOND, 1)));
     }
 
     @Override

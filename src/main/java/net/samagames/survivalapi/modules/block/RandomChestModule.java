@@ -21,10 +21,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * RandomChestModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class RandomChestModule extends AbstractSurvivalModule
 {
     private final Map<ItemStack, Integer> items;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public RandomChestModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

@@ -13,6 +13,9 @@ public class OptimizationListener implements Listener
 {
     private final int radius;
 
+    /**
+     * Constructor
+     */
     public OptimizationListener()
     {
         this.radius = 2;

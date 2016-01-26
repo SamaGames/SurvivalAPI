@@ -12,8 +12,21 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
+/**
+ * RapidStackingModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class RapidStackingModule extends AbstractSurvivalModule
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public RapidStackingModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

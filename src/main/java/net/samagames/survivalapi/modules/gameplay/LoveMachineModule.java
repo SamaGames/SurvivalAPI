@@ -9,11 +9,24 @@ import org.bukkit.entity.Player;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * LoveMachineModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class LoveMachineModule extends AbstractSurvivalModule implements Runnable
 {
     private final UUID a;
     private final UUID b;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public LoveMachineModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

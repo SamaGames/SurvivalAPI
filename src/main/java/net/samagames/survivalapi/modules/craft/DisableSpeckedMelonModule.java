@@ -13,8 +13,21 @@ import org.bukkit.inventory.Recipe;
 
 import java.util.Map;
 
+/**
+ * DisableSpeckedMelonModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class DisableSpeckedMelonModule extends AbstractSurvivalModule
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public DisableSpeckedMelonModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

@@ -18,10 +18,23 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.*;
 
+/**
+ * FastTreeModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class FastTreeModule extends AbstractSurvivalModule
 {
     private final List<BlockFace> faces;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public FastTreeModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

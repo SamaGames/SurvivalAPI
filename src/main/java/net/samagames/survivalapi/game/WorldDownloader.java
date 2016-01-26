@@ -12,15 +12,33 @@ import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
+/**
+ * WorldDownloader class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class WorldDownloader
 {
     private SurvivalPlugin plugin;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     */
     public WorldDownloader(SurvivalPlugin plugin)
     {
         this.plugin = plugin;
     }
 
+    /**
+     * Download the world in a given destination folder
+     *
+     * @param worldDir Destination
+     *
+     * @return {@code true} if success or {@code false}
+     */
     public boolean checkAndDownloadWorld(File worldDir)
     {
         SamaGamesAPI.get().getGameManager().getGameProperties().reload();
@@ -119,6 +137,14 @@ public class WorldDownloader
         return extractWorld(worldTar, worldDir);
     }
 
+    /**
+     * Extract the downloaded world in a given destination folder
+     *
+     * @param worldTar World archive
+     * @param worldDir Destination
+     *
+     * @return {@code true} if success or {@code false}
+     */
     private static boolean extractWorld(File worldTar, File worldDir)
     {
         Archiver archiver = ArchiverFactory.createArchiver("tar", "gz");

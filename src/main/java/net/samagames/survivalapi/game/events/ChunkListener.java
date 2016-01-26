@@ -14,15 +14,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * ChunkListener class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class ChunkListener implements Runnable, Listener
 {
     private final ConcurrentHashMap<Chunk, Long> lastChunkCleanUp;
 
+    /**
+     * Constructor
+     */
     public ChunkListener()
     {
         this.lastChunkCleanUp = new ConcurrentHashMap<>();
     }
 
+    /**
+     * Clean the cache
+     */
     @Override
     public void run()
     {

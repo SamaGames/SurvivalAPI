@@ -25,6 +25,12 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * GuiSelectTeam class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class GuiSelectTeam extends AbstractGui
 {
     private static SurvivalTeamGame game;
@@ -36,6 +42,11 @@ public class GuiSelectTeam extends AbstractGui
     private Method setEditor;
     private Method getHandle;
 
+    /**
+     * Display the GUI
+     *
+     * @param player Player
+     */
     @Override
     public void display(Player player)
     {
@@ -96,6 +107,13 @@ public class GuiSelectTeam extends AbstractGui
         player.openInventory(this.inventory);
     }
 
+    /**
+     * Event fired when a player click into the GUI
+     *
+     * @param player Player
+     * @param stack Stack
+     * @param action Stack's defined action name
+     */
     @Override
     public void onClick(final Player player, ItemStack stack, String action)
     {
@@ -250,11 +268,21 @@ public class GuiSelectTeam extends AbstractGui
         }
     }
 
+    /**
+     * Set game instance for future uses
+     *
+     * @param instance Game instance
+     */
     public static void setGame(SurvivalTeamGame instance)
     {
         game = instance;
     }
 
+    /**
+     * Get the GUI inventory
+     *
+     * @return Instance
+     */
     @Override
     public Inventory getInventory()
     {

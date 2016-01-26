@@ -17,14 +17,32 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
+/**
+ * StackableItemModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class StackableItemModule extends AbstractSurvivalModule
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public StackableItemModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
 
     }
 
+    /**
+     * Event to patch stackable items
+     *
+     * @param event Event
+     */
     @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventory(InventoryClickEvent event)
     {

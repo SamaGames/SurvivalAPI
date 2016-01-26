@@ -16,11 +16,24 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * RapidFoodModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class RapidFoodModule extends AbstractSurvivalModule
 {
     private final Map<EntityType, List<ConfigurationBuilder.IRapidFoodHook>> drops;
     private final Random random;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public RapidFoodModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

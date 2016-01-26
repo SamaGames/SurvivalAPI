@@ -10,10 +10,23 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * InfestationModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class InfestationModule extends AbstractSurvivalModule
 {
     private final Random random;
 
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public InfestationModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);

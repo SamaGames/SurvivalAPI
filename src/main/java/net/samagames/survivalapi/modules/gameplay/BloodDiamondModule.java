@@ -11,8 +11,21 @@ import org.bukkit.event.block.BlockBreakEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * BloodDiamondModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class BloodDiamondModule extends AbstractSurvivalModule
 {
+    /**
+     * Constructor
+     *
+     * @param plugin Parent plugin
+     * @param api API instance
+     * @param moduleConfiguration Module configuration
+     */
     public BloodDiamondModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
