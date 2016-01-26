@@ -65,6 +65,10 @@ Les modules sont disposés dans des catégories différentes par question d'orga
 * **RottenPotionsModule** : Donne un effet de potion aléatoire quand un joueur mange de la nourriture de Zombie.
 * **StackableItemModule** : Permet de fusionner les objets identiques dans le même stack.
 
+### JavaDoc
+
+[Link](http://aperture.samagames.net/javadoc-super-secrete-456FG45UJ/)
+
 ### Auteur
 
 Jérémy L. (@BlueSlime)
