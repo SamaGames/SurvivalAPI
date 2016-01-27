@@ -94,7 +94,12 @@ public class SurvivalPlayer extends GamePlayer
 
         Player player = getPlayerIfOnline();
 
-        if (game.getStatus() == Status.IN_GAME)
+        if (game.getStatus() == Status.WAITING_FOR_PLAYERS || game.getStatus() == Status.READY_TO_START)
+        {
+            if (this.team != null)
+                this.team.removePlayer(this.uuid);
+        }
+        else if (game.getStatus() == Status.IN_GAME)
         {
             game.getSurvivalGameLoop().removePlayer(this.uuid);
 

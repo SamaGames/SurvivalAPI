@@ -154,7 +154,7 @@ public class SurvivalTeam
      */
     public void lockCheck()
     {
-        if (this.players.size() == 0 && this.isLocked())
+        if (this.players.isEmpty() && this.isLocked())
             this.setLocked(false);
     }
 
