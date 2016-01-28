@@ -40,11 +40,20 @@ public class SpectatorListener implements Listener
     public void onPlayerMove(PlayerMoveEvent event)
     {
         boolean doStuff = false;
-
+        
         if ((this.game.getStatus() == Status.READY_TO_START || this.game.getStatus() == Status.WAITING_FOR_PLAYERS) && event.getTo().getY() < 125)
+        {
             doStuff = true;
+        }
         else if (this.game.getStatus() == Status.IN_GAME && this.hasToCancel(event.getPlayer()))
-            doStuff = true;
+        {
+            double radius = event.getFrom().getWorld().getWorldBorder().getSize() / 2;
+
+            if (event.getTo().getX() > (radius + 10) || event.getTo().getX() < -(radius + 10) || event.getTo().getZ() > (radius + 10) || event.getTo().getZ() < -(radius + 10))
+            {
+                doStuff = true;
+            }
+        }
 
         if (doStuff)
         {
