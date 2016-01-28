@@ -99,7 +99,7 @@ public class GameListener implements Listener
 
                     if (damaged.hasMetadata("lastDamagerKeeping"))
                     {
-                        ((BukkitTask) damaged.getMetadata("lastDamagerKeeping").get(0)).cancel();
+                        ((BukkitTask) damaged.getMetadata("lastDamagerKeeping").get(0).value()).cancel();
                         damaged.removeMetadata("lastDamagerKeeping", this.game.getPlugin());
                     }
 
