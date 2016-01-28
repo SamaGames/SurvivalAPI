@@ -39,7 +39,14 @@ public class SpectatorListener implements Listener
     @EventHandler(ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event)
     {
+        boolean doStuff = false;
+
         if ((this.game.getStatus() == Status.READY_TO_START || this.game.getStatus() == Status.WAITING_FOR_PLAYERS) && event.getTo().getY() < 125)
+            doStuff = true;
+        else if (this.game.getStatus() == Status.IN_GAME && this.hasToCancel(event.getPlayer()))
+            doStuff = true;
+
+        if (doStuff)
         {
             event.setCancelled(true);
             event.getPlayer().teleport(this.game.getLobbySpawn());
@@ -184,6 +191,6 @@ public class SpectatorListener implements Listener
 
     private boolean hasToCancel(Player player)
     {
-        return this.game.getStatus() != Status.IN_GAME  || !this.game.hasPlayer(player) || this.game.isSpectator(player);
+        return this.game.getStatus() != Status.IN_GAME || !this.game.hasPlayer(player) || this.game.isSpectator(player);
     }
 }
