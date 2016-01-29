@@ -40,7 +40,7 @@ public class SpectatorListener implements Listener
     public void onPlayerMove(PlayerMoveEvent event)
     {
         boolean doStuff = false;
-        
+
         if ((this.game.getStatus() == Status.READY_TO_START || this.game.getStatus() == Status.WAITING_FOR_PLAYERS) && event.getTo().getY() < 125)
         {
             doStuff = true;
