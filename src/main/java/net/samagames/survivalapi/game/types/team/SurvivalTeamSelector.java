@@ -200,6 +200,8 @@ public class SurvivalTeamSelector implements Listener
                     if (player != null)
                         player.sendMessage(message);
                 }
+
+                this.game.getPlugin().getServer().getOnlinePlayers().stream().filter(player -> !this.game.hasPlayer(player)).forEach(player -> player.sendMessage(message));
             }
         }
     }
