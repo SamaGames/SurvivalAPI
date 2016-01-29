@@ -39,7 +39,23 @@ public class SpectatorListener implements Listener
     @EventHandler(ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event)
     {
+        boolean doStuff = false;
+
         if ((this.game.getStatus() == Status.READY_TO_START || this.game.getStatus() == Status.WAITING_FOR_PLAYERS) && event.getTo().getY() < 125)
+        {
+            doStuff = true;
+        }
+        else if (this.game.getStatus() == Status.IN_GAME && this.hasToCancel(event.getPlayer()))
+        {
+            double radius = event.getFrom().getWorld().getWorldBorder().getSize() / 2;
+
+            if (event.getTo().getX() > (radius + 10) || event.getTo().getX() < -(radius + 10) || event.getTo().getZ() > (radius + 10) || event.getTo().getZ() < -(radius + 10))
+            {
+                doStuff = true;
+            }
+        }
+
+        if (doStuff)
         {
             event.setCancelled(true);
             event.getPlayer().teleport(this.game.getLobbySpawn());
@@ -179,10 +195,11 @@ public class SpectatorListener implements Listener
         String finalMessage = ChatColor.GRAY + "[Spectateur] " + event.getPlayer().getName() + ": " + event.getMessage();
 
         ((Collection<SurvivalPlayer>) this.game.getSpectatorPlayers().values()).stream().filter(spectator -> spectator.getPlayerIfOnline() != null).forEach(spectator -> spectator.getPlayerIfOnline().sendMessage(finalMessage));
+        this.game.getPlugin().getServer().getOnlinePlayers().stream().filter(player -> !this.game.hasPlayer(player)).forEach(player -> player.sendMessage(finalMessage));
     }
 
     private boolean hasToCancel(Player player)
     {
-        return this.game.getStatus() != Status.IN_GAME  || !this.game.hasPlayer(player) || this.game.isSpectator(player);
+        return this.game.getStatus() != Status.IN_GAME || !this.game.hasPlayer(player) || this.game.isSpectator(player);
     }
 }
