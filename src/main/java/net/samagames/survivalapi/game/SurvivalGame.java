@@ -260,6 +260,9 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             player.setScoreboard(this.scoreboard);
             player.setLevel(0);
             player.getInventory().clear();
+            player.setAllowFlight(true);
+
+            this.server.getScheduler().runTaskLater(this.plugin, () -> player.setAllowFlight(false), 20L * 5);
 
             displayNameLife.getScore(player.getName()).setScore((int) player.getHealth());
             playerListLife.getScore(player.getName()).setScore((int) player.getHealth());
