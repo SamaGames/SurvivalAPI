@@ -103,7 +103,7 @@ public class SurvivalPlayer extends GamePlayer
         {
             game.getSurvivalGameLoop().removePlayer(this.uuid);
 
-            if (game.isPvPActivated())
+            if (!SamaGamesAPI.get().getGameManager().isReconnectAllowed(this.uuid))
             {
                 try
                 {
