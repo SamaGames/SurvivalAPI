@@ -578,6 +578,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.spawns.add(new Location(this.world, -200, 150, 400));
         this.spawns.add(new Location(this.world, 400, 150, -400));
         this.spawns.add(new Location(this.world, 200, 150, -200));
+        this.spawns.add(new Location(this.world, -200, 150, 200));
+        this.spawns.add(new Location(this.world, -400, 150, 400));
 
         Collections.shuffle(this.spawns);
 
