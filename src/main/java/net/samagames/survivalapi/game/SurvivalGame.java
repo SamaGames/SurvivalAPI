@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * SurvivalGame class
@@ -46,6 +47,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     protected final String magicSymbol;
     protected final Class<? extends SURVIVALLOOP> survivalGameLoopClass;
     protected final List<Location> spawns;
+    protected final List<WaitingBlock> waitingBlocks;
     protected final World world;
 
     protected LobbyPopulator lobbyPopulator;
@@ -79,6 +81,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.survivalGameLoopClass = survivalGameLoopClass;
 
         this.spawns = new ArrayList<>();
+        this.waitingBlocks = new ArrayList<>();
         this.world = this.server.getWorlds().get(0);
 
         this.gameLoop = null;
@@ -541,6 +544,14 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     }
 
     /**
+     * Remove the waiting blocks
+     */
+    public void removeWaitingBlocks()
+    {
+        this.waitingBlocks.forEach(WaitingBlock::remove);
+    }
+
+    /**
      * Register spawn locations
      */
     public void computeLocations()
@@ -569,6 +580,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.spawns.add(new Location(this.world, 200, 150, -200));
 
         Collections.shuffle(this.spawns);
+
+        this.waitingBlocks.addAll(this.spawns.stream().map(WaitingBlock::new).collect(Collectors.toList()));
     }
 
     /**
