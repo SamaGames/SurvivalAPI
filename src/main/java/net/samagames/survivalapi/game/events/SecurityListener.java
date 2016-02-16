@@ -1,6 +1,6 @@
 package net.samagames.survivalapi.game.events;
 
-import SafePortals.SafePortalsUtils;
+import eu.carrade.amaury.SafePortals.SafePortalsUtils;
 import net.samagames.survivalapi.game.SurvivalGame;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -36,23 +36,31 @@ public class SecurityListener implements Listener
         TravelAgent travelAgent = event.getPortalTravelAgent();
         Location destination = travelAgent.findPortal(event.getTo());
 
-        if(!SafePortalsUtils.isInsideBorder(destination))
+        if (destination != null)
         {
-            event.useTravelAgent(false);
-            boolean success = travelAgent.createPortal(event.getTo());
-
-            if(success)
+            if (!SafePortalsUtils.isInsideBorder(destination))
             {
-                event.setTo(travelAgent.findPortal(event.getTo()));
+                event.useTravelAgent(false);
+                boolean success = travelAgent.createPortal(event.getTo());
 
-                if (!SafePortalsUtils.isSafeSpot(event.getTo()))
+                if (success)
                 {
-                    Location safeTo = SafePortalsUtils.searchSafeSpot(event.getTo());
+                    event.setTo(travelAgent.findPortal(event.getTo()));
 
-                    if (safeTo != null)
-                        event.setTo(safeTo);
+                    if (!SafePortalsUtils.isSafeSpot(event.getTo()))
+                    {
+                        Location safeTo = SafePortalsUtils.searchSafeSpot(event.getTo());
+                        if (safeTo != null)
+                        {
+                            event.setTo(safeTo);
+                        }
+                    }
                 }
             }
+        }
+        else
+        {
+            event.useTravelAgent(true);
         }
     }
 

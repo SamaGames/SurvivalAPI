@@ -90,11 +90,26 @@ public class SurvivalGameLoop implements Runnable
 
     public void createReducingEvent()
     {
-        this.nextEvent = new TimedEvent(40, 0, "Réduction des bordures", ChatColor.RED, false, () ->
+        this.nextEvent = new TimedEvent(20, 0, "Réduction des bordures", ChatColor.RED, false, () ->
         {
-            this.game.getWorldBorder().setSize(100, 60L * 40L);
+            this.game.getWorldBorder().setSize(64, 60L * 20L);
             this.displayReducingMessage();
+            this.createEndOfReducingEvent();
         });
+    }
+
+    public void createEndOfReducingEvent()
+    {
+        this.nextEvent = new TimedEvent(20, 0, "Fin de la réduction", ChatColor.YELLOW, false, () ->
+        {
+            this.game.getWorldBorder().setSize(100);
+            this.createEndingEvent();
+        });
+    }
+
+    public void createEndingEvent()
+    {
+        this.nextEvent = new TimedEvent(10, 0, "Fermeture du serveur", ChatColor.RED, false, Bukkit::shutdown);
     }
 
     /**
