@@ -306,6 +306,9 @@ public class SurvivalGameLoop implements Runnable
         Location ploc = p.getLocation().clone();
         Location point = mate.getLocation().clone();
 
+        if (ploc.getWorld().getEnvironment() != point.getWorld().getEnvironment())
+            return "•";
+
         ploc.setY(0);
         point.setY(0);
 

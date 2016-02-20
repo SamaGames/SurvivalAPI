@@ -43,7 +43,7 @@ public class WaitingBlock
      */
     private void generate(Location spawnLocation)
     {
-        Location baseLocation = spawnLocation.subtract(0.0, 1.0, 0.0);
+        Location baseLocation = spawnLocation.clone().subtract(0.0, 1.0, 0.0);
 
         int xMin = baseLocation.clone().getBlockX() - 2;
         int xMax = baseLocation.clone().getBlockX() + 2;
