@@ -54,7 +54,16 @@ public class SurvivalGameLoop implements Runnable
 
         this.episodeEnabled = false;
 
-        this.createDamageEvent();
+        this.createWaitingBlockRemovingEvent();
+    }
+
+    public void createWaitingBlockRemovingEvent()
+    {
+        this.nextEvent = new TimedEvent(0, 10, "Suppression des cages", ChatColor.GREEN, true, () ->
+        {
+            this.game.removeWaitingBlocks();
+            this.createDamageEvent();
+        });
     }
 
     public void createDamageEvent()
@@ -81,11 +90,26 @@ public class SurvivalGameLoop implements Runnable
 
     public void createReducingEvent()
     {
-        this.nextEvent = new TimedEvent(40, 0, "Réduction des bordures", ChatColor.RED, false, () ->
+        this.nextEvent = new TimedEvent(20, 0, "Réduction des bordures", ChatColor.RED, false, () ->
         {
-            this.game.getWorldBorder().setSize(100, 60L * 40L);
+            this.game.getWorldBorder().setSize(64, 60L * 20L);
             this.displayReducingMessage();
+            this.createEndOfReducingEvent();
         });
+    }
+
+    public void createEndOfReducingEvent()
+    {
+        this.nextEvent = new TimedEvent(20, 0, "Fin de la réduction", ChatColor.YELLOW, false, () ->
+        {
+            this.game.getWorldBorder().setSize(100);
+            this.createEndingEvent();
+        });
+    }
+
+    public void createEndingEvent()
+    {
+        this.nextEvent = new TimedEvent(10, 0, "Fermeture du serveur", ChatColor.RED, false, Bukkit::shutdown);
     }
 
     /**
@@ -229,19 +253,22 @@ public class SurvivalGameLoop implements Runnable
             }
         }
 
-        if (this.nextEvent.getSeconds() == 0 && this.nextEvent.getMinutes() <= 3 && this.nextEvent.getMinutes() > 0 || this.nextEvent.getMinutes() == 0 && (this.nextEvent.getSeconds() <= 5 || this.nextEvent.getSeconds() == 10 || this.nextEvent.getSeconds() == 30))
+        if (this.nextEvent != null)
         {
-            this.game.getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.YELLOW + this.nextEvent.getName() + ChatColor.YELLOW + " dans " + (this.nextEvent.getMinutes() != 0 ? this.nextEvent.getMinutes() + " minute" + (this.nextEvent.getMinutes() > 1 ? "s" : "") : this.nextEvent.getSeconds() + " seconde" + (this.nextEvent.getSeconds() > 1 ? "s" : "")) + ".", true);
+            if (this.nextEvent.getSeconds() == 0 && this.nextEvent.getMinutes() <= 3 && this.nextEvent.getMinutes() > 0 || this.nextEvent.getMinutes() == 0 && (this.nextEvent.getSeconds() <= 5 || this.nextEvent.getSeconds() == 10 || this.nextEvent.getSeconds() == 30))
+            {
+                this.game.getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.YELLOW + this.nextEvent.getName() + ChatColor.YELLOW + " dans " + (this.nextEvent.getMinutes() != 0 ? this.nextEvent.getMinutes() + " minute" + (this.nextEvent.getMinutes() > 1 ? "s" : "") : this.nextEvent.getSeconds() + " seconde" + (this.nextEvent.getSeconds() > 1 ? "s" : "")) + ".", true);
 
-            if (this.nextEvent.isTitle() && this.nextEvent.getSeconds() <= 5 && this.nextEvent.getSeconds() > 0)
-                for (Player player : Bukkit.getOnlinePlayers())
-                    Titles.sendTitle(player, 0, 21, 10, ChatColor.RED + "" + (this.nextEvent.getSeconds() - 1), this.nextEvent.getName());
+                if (this.nextEvent.isTitle() && this.nextEvent.getSeconds() <= 5 && this.nextEvent.getSeconds() > 0)
+                    for (Player player : Bukkit.getOnlinePlayers())
+                        Titles.sendTitle(player, 0, 21, 10, ChatColor.RED + "" + (this.nextEvent.getSeconds() - 1), this.nextEvent.getName());
+            }
+
+            if (this.nextEvent.getSeconds() == 0 && this.nextEvent.getMinutes() == 0)
+                this.game.getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.YELLOW + this.nextEvent.getName() + ChatColor.YELLOW + " maintenant !", true);
+
+            this.nextEvent.decrement();
         }
-
-        if (this.nextEvent.getSeconds() == 0 && this.nextEvent.getMinutes() == 0)
-            this.game.getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.YELLOW + this.nextEvent.getName() + ChatColor.YELLOW + " maintenant !", true);
-
-        this.nextEvent.decrement();
     }
 
     /**
