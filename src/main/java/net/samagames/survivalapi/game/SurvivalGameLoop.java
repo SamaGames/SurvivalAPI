@@ -54,17 +54,17 @@ public class SurvivalGameLoop implements Runnable
 
         this.episodeEnabled = false;
 
-        this.createWaitingBlockRemovingEvent();
+        this.createDamageEvent();
     }
 
-    public void createWaitingBlockRemovingEvent()
+    /**public void createWaitingBlockRemovingEvent()
     {
         this.nextEvent = new TimedEvent(0, 10, "Suppression des cages", ChatColor.GREEN, true, () ->
         {
             this.game.removeWaitingBlocks();
             this.createDamageEvent();
         });
-    }
+    }**/
 
     public void createDamageEvent()
     {
