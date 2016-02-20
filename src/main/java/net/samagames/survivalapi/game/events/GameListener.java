@@ -2,6 +2,7 @@ package net.samagames.survivalapi.game.events;
 
 import net.samagames.survivalapi.game.*;
 import net.samagames.survivalapi.game.types.SurvivalTeamGame;
+import net.samagames.survivalapi.game.types.run.RunBasedGame;
 import net.samagames.tools.GameUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -131,8 +132,9 @@ public class GameListener implements Listener
     @EventHandler
     public void onItemConsume(PlayerItemConsumeEvent event)
     {
-        if (event.getItem().getType() == Material.GOLDEN_APPLE)
-            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 10 * 20, 1));
+        if (this.game instanceof RunBasedGame)
+            if (event.getItem().getType() == Material.GOLDEN_APPLE)
+                event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 10 * 20, 1));
     }
 
     /**
