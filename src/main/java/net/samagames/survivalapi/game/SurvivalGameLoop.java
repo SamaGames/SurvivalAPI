@@ -6,6 +6,7 @@ import net.samagames.tools.Titles;
 import net.samagames.tools.chat.ActionBarAPI;
 import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
@@ -234,7 +235,7 @@ public class SurvivalGameLoop implements Runnable
                         else if (this.game.getPlayer(teammateUUID).isSpectator())
                             objective.setLine(lastLine + teammates, ChatColor.RED + "× " + teammate.getName() + " : ✞");
                         else
-                            objective.setLine(lastLine + teammates, getPrefixColorByHealth(teammate.getHealth(), teammate.getMaxHealth()) + getDirection(player, teammate) + " " + teammate.getName() + ChatColor.WHITE + " : " + (int) teammate.getHealth() + ChatColor.RED + " ❤");
+                            objective.setLine(lastLine + teammates, getPrefixColorByHealth(teammate.getHealth(), teammate.getMaxHealth()) + getDirection(player, teammate) + " " + teammate.getName() + ChatColor.WHITE + " : " + (int) (teammate.getHealth() + ((CraftPlayer) teammate).getHandle().getAbsorptionHearts()) + ChatColor.RED + " ❤");
                     }
 
                     objective.setLine(lastLine + teammates + 1, ChatColor.DARK_PURPLE + "");
