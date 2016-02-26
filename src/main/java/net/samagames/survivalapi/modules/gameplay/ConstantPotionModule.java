@@ -1,5 +1,6 @@
 package net.samagames.survivalapi.modules.gameplay;
 
+import net.samagames.api.SamaGamesAPI;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.SurvivalGame;
@@ -60,7 +61,7 @@ public class ConstantPotionModule extends AbstractSurvivalModule
     @EventHandler(ignoreCancelled = true)
     public void onPlayerItemConsume(PlayerItemConsumeEvent event)
     {
-        if (event.getItem().getType() == Material.MILK_BUCKET)
+        if (event.getItem().getType() == Material.MILK_BUCKET && SamaGamesAPI.get().getGameManager().getMaxReconnectTime() != -1)
             this.setEffectsOnPlayer(event.getPlayer());
     }
 
