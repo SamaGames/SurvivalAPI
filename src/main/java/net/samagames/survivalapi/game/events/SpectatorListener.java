@@ -82,7 +82,7 @@ public class SpectatorListener implements Listener
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event)
     {
-        event.setCancelled(this.hasToCancel(event.getPlayer()));
+        event.setCancelled(this.hasToCancel(event.getPlayer()) || this.game.getSurvivalGameLoop().areBlocksProtected());
     }
 
     /**

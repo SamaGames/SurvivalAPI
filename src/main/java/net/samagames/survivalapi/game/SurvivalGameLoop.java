@@ -33,6 +33,7 @@ public class SurvivalGameLoop implements Runnable
     protected int seconds;
     protected int episode;
     protected boolean episodeEnabled;
+    protected boolean blocksProtected;
 
     /**
      * Constructor
@@ -54,6 +55,7 @@ public class SurvivalGameLoop implements Runnable
         this.episode = 1;
 
         this.episodeEnabled = false;
+        this.blocksProtected = true;
 
         this.createWaitingBlockRemovingEvent();
     }
@@ -69,6 +71,7 @@ public class SurvivalGameLoop implements Runnable
 
     public void createDamageEvent()
     {
+        this.blocksProtected = false;
         this.nextEvent = new TimedEvent(1, 0, "Dégats actifs", ChatColor.GREEN, false, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les dégats sont désormais actifs.", true);
@@ -337,5 +340,14 @@ public class SurvivalGameLoop implements Runnable
     private String toString(int minutes, int seconds)
     {
         return (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+    }
+
+    /**
+     * Return if blocks are protected from breaking
+     * Usefull for cages
+     */
+    public boolean areBlocksProtected()
+    {
+        return this.blocksProtected;
     }
 }
