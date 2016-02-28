@@ -42,7 +42,7 @@ public class NineSlotsModule extends AbstractSurvivalModule
     @Override
     public void onGameStart(SurvivalGame game)
     {
-        for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers())
+        for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
             for (int i = 9; i < player.getPlayerIfOnline().getInventory().getSize(); i++)
                 player.getPlayerIfOnline().getInventory().setItem(i, new ItemStack(Material.BARRIER, 1));
     }
