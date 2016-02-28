@@ -231,6 +231,20 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     {
         super.startGame();
 
+        Set<UUID> uuidset = this.getInGamePlayers().keySet();
+        for (UUID uuid : uuidset)
+        {
+            Player player = this.server.getPlayer(uuid);
+            
+            if (player == null)
+            {
+                this.gamePlayers.remove(uuid);
+                continue;
+            }
+            
+            player.getInventory().clear();
+        }
+
         SurvivalAPI.get().fireGameStart(this);
 
         this.lobbyPopulator.remove();
@@ -246,7 +260,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.mainTask = this.server.getScheduler().runTaskTimer(this.plugin, this.gameLoop, 20, 20);
         this.teleport();
 
-        for (UUID uuid : this.getInGamePlayers().keySet())
+        for (UUID uuid : uuidset)
         {
             Player player = this.server.getPlayer(uuid);
 
@@ -262,7 +276,6 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             player.setExhaustion(0.0F);
             player.setScoreboard(this.scoreboard);
             player.setLevel(0);
-            player.getInventory().clear();
             player.setAllowFlight(true);
 
             this.server.getScheduler().runTaskLater(this.plugin, () -> player.setAllowFlight(false), 20L * 5);
