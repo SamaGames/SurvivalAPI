@@ -2,8 +2,8 @@ package net.samagames.survivalapi.game;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonPrimitive;
-import net.minecraft.server.v1_8_R3.MinecraftServer;
-import net.minecraft.server.v1_8_R3.SpawnerCreature;
+import net.minecraft.server.v1_9_R1.MinecraftServer;
+import net.minecraft.server.v1_9_R1.SpawnerCreature;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Game;
 import net.samagames.api.games.GamePlayer;

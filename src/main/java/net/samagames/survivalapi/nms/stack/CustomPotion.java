@@ -1,6 +1,6 @@
 package net.samagames.survivalapi.nms.stack;
 
-import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_9_R1.*;
 
 import java.util.Iterator;
 import java.util.List;
@@ -18,7 +18,7 @@ public class CustomPotion extends ItemPotion
      */
     public CustomPotion()
     {
-        this.c(64);
+        this.d(64);
     }
 
     /**
@@ -31,24 +31,26 @@ public class CustomPotion extends ItemPotion
      * @return The new ItemStack
      */
     @Override
-    public ItemStack b(ItemStack var1, World var2, EntityHuman var3)
+    public ItemStack a(ItemStack var1, World var2, EntityLiving var3)
     {
-        if(!var3.abilities.canInstantlyBuild)
+        EntityHuman var4 = var3 instanceof EntityHuman ? (EntityHuman) var3: null;
+
+        if(var4 == null || !var4.abilities.canInstantlyBuild)
             --var1.count;
 
         if(!var2.isClientSide)
         {
-            List var4 = this.h(var1);
+            List var5 = PotionUtil.getEffects(var1);
 
-            if(var4 != null)
+            for (Object aVar5 : var5)
             {
-                for (Object aVar4 : var4)
-                {
-                    MobEffect var6 = (MobEffect) aVar4;
-                    var3.addEffect(new MobEffect(var6));
-                }
+                MobEffect var7 = (MobEffect) aVar5;
+                var3.addEffect(new MobEffect(var7));
             }
         }
+
+        if(var4 != null)
+            var4.b(StatisticList.b(this));
 
         return var1;
     }

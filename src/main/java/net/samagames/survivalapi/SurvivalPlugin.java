@@ -14,7 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
-import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_9_R1.CraftServer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -64,8 +64,9 @@ public class SurvivalPlugin extends JavaPlugin
         try
         {
             NMSPatcher nmsPatcher = new NMSPatcher(this);
-            nmsPatcher.patchBiomes();
             nmsPatcher.patchPotions();
+            nmsPatcher.patchAnimals();
+            nmsPatcher.patchReeds();
 
             if (SamaGamesAPI.get().getGameManager().getGameProperties().getOption("patch-stackable", new JsonPrimitive(false)).getAsBoolean())
                 nmsPatcher.patchStackable();

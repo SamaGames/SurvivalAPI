@@ -189,7 +189,7 @@ public class GameListener implements Listener
 
             //new DeadCorpses(event.getEntity()).spawn(event.getEntity().getLocation());
 
-            GameUtils.broadcastSound(Sound.WITHER_SPAWN);
+            GameUtils.broadcastSound(Sound.ENTITY_WITHER_SPAWN);
         }
     }
 
