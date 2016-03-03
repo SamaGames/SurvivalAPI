@@ -239,12 +239,10 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         playerListLife.setDisplayName(ChatColor.RED + "❤");
         playerListLife.setDisplaySlot(DisplaySlot.PLAYER_LIST);
 
-        for (UUID uuid : this.getInGamePlayers().keySet())
-        {
+        for (UUID uuid : this.getInGamePlayers().keySet()) {
             Player player = this.server.getPlayer(uuid);
 
-            if (player == null)
-            {
+            if (player == null) {
                 this.gamePlayers.remove(uuid);
                 continue;
             }
@@ -268,8 +266,6 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
             this.gameLoop.addPlayer(player.getUniqueId(), sign);
         }
-
-        SurvivalAPI.get().fireGameStart(this);
 
         this.lobbyPopulator.remove();
 

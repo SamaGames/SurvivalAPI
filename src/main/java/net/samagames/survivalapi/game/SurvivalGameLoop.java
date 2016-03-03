@@ -1,5 +1,6 @@
 package net.samagames.survivalapi.game;
 
+import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.game.types.SurvivalTeamGame;
 import net.samagames.survivalapi.utils.TimedEvent;
 import net.samagames.tools.Titles;
@@ -66,6 +67,8 @@ public class SurvivalGameLoop implements Runnable
         {
             this.game.removeWaitingBlocks();
             this.createDamageEvent();
+
+            SurvivalAPI.get().fireGameStart(this.game);
         });
     }
 
