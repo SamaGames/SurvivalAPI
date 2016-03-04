@@ -113,6 +113,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         }
 
         SamaGamesAPI.get().getGameManager().setMaxReconnectTime(this.gameManager.getGameProperties().getOption("reconnectTime", new JsonPrimitive(5)).getAsInt());
+        SamaGamesAPI.get().getGameManager().setLegacyPvP(true);
 
         CommandUHC.setGame(this);
         CommandNextEvent.setGame(this);
