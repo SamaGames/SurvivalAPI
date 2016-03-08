@@ -37,7 +37,7 @@ public class DoubleHealthModule extends AbstractSurvivalModule
     @Override
     public void onGameStart(SurvivalGame game)
     {
-        for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers())
+        for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
         {
             player.getPlayerIfOnline().setMaxHealth(40.0D);
             player.getPlayerIfOnline().setHealth(40.0D);

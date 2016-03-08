@@ -140,7 +140,7 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     {
         Iterator<Location> locationIterator = this.spawns.iterator();
 
-        for (UUID uuid : (Set<UUID>) this.getInGamePlayers().keySet())
+        for (UUID uuid : (Set<UUID>)this.getInGamePlayers().keySet())
         {
             Player player = this.server.getPlayer(uuid);
 

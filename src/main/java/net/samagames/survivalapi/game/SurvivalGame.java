@@ -230,11 +230,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     public void startGame()
     {
         super.startGame();
-
-        SurvivalAPI.get().fireGameStart(this);
-
-        this.lobbyPopulator.remove();
-
+        
         Objective displayNameLife = this.scoreboard.registerNewObjective("vie", "health");
         Objective playerListLife = this.scoreboard.registerNewObjective("vieb", "health");
 
@@ -242,9 +238,6 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         displayNameLife.setDisplaySlot(DisplaySlot.BELOW_NAME);
         playerListLife.setDisplayName(ChatColor.RED + "❤");
         playerListLife.setDisplaySlot(DisplaySlot.PLAYER_LIST);
-
-        this.mainTask = this.server.getScheduler().runTaskTimer(this.plugin, this.gameLoop, 20, 20);
-        this.teleport();
 
         for (UUID uuid : this.getInGamePlayers().keySet())
         {
@@ -262,8 +255,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             player.setExhaustion(0.0F);
             player.setScoreboard(this.scoreboard);
             player.setLevel(0);
-            player.getInventory().clear();
             player.setAllowFlight(true);
+            player.getInventory().clear();
 
             this.server.getScheduler().runTaskLater(this.plugin, () -> player.setAllowFlight(false), 20L * 5);
 
@@ -275,6 +268,13 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
             this.gameLoop.addPlayer(player.getUniqueId(), sign);
         }
+
+        SurvivalAPI.get().fireGameStart(this);
+
+        this.lobbyPopulator.remove();
+
+        this.mainTask = this.server.getScheduler().runTaskTimer(this.plugin, this.gameLoop, 20, 20);
+        this.teleport();
     }
 
     /**
@@ -583,7 +583,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
         Collections.shuffle(this.spawns);
 
-        //this.waitingBlocks.addAll(this.spawns.stream().map(WaitingBlock::new).collect(Collectors.toList()));
+        this.waitingBlocks.addAll(this.spawns.stream().map(WaitingBlock::new).collect(Collectors.toList()));
     }
 
     /**
