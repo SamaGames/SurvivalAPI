@@ -30,6 +30,10 @@ public class CrippleModule extends AbstractSurvivalModule
         super(plugin, api, moduleConfiguration);
     }
 
+    /**
+     * Set Potion Effect SLOWNESS I when player takes fall damage
+     * @param event Entity Damage Event
+     */
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event)
     {
