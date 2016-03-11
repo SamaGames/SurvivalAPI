@@ -70,6 +70,6 @@ public class ChunkListener implements Runnable, Listener
             if (!(entity instanceof Item || entity instanceof HumanEntity || entity instanceof Minecart))
                 entity.remove();
 
-        event.setCancelled(true);
+        //event.setCancelled(true);
     }
 }
