@@ -59,8 +59,8 @@ public class WaitingBlock
          */
 
         // Base plate
-        for (int x = xMin; x < xMax; x++)
-            for (int z = zMin; z < zMax; z++)
+        for (int x = xMin+1; x < xMax-1; x++)
+            for (int z = zMin+1; z < zMax-1; z++)
                 this.blocks.add(this.setBlock(Material.STAINED_GLASS, new Location(baseLocation.getWorld(), x, baseLocation.getY(), z)));
 
         // Walls
