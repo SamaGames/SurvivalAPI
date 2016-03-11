@@ -65,13 +65,13 @@ public class SurvivalGameLoop implements Runnable
         this.nextEvent = new TimedEvent(0, 10, "Suppression des cages", ChatColor.GREEN, true, () ->
         {
             this.game.removeWaitingBlocks();
+            this.blocksProtected = false;
             this.createDamageEvent();
         });
     }
 
     public void createDamageEvent()
     {
-        this.blocksProtected = false;
         this.nextEvent = new TimedEvent(1, 0, "Dégats actifs", ChatColor.GREEN, false, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les dégats sont désormais actifs.", true);
