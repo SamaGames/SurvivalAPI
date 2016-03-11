@@ -24,6 +24,8 @@ public class WorldLoader
     private int lastShow;
     private int numberChunk;
 
+    private int done = 0;
+
     /**
      * Constructor
      *
@@ -61,6 +63,7 @@ public class WorldLoader
         final long startTime = System.currentTimeMillis();
         final int size = 160;
         final int todo = (((size * 2) * (size * 2)) / 256) * spawns.size();
+
         for(final Location loc : spawns)
         {
             this.task = Bukkit.getScheduler().runTaskTimer(this.plugin, new Runnable()
@@ -95,6 +98,7 @@ public class WorldLoader
 
                         if (this.x >= size)
                         {
+                            done ++;
                             task.cancel();
                             return;
                         }
@@ -109,7 +113,7 @@ public class WorldLoader
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(numberChunk * 100 / todo >= 100)
+                if(done >= spawns.size())
                 {
                     this.cancel();
                     plugin.finishGeneration(world, System.currentTimeMillis() - startTime);
