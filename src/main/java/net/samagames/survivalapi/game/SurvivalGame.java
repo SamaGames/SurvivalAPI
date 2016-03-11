@@ -9,6 +9,7 @@ import net.samagames.api.games.Game;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.api.games.Status;
 import net.samagames.survivalapi.SurvivalAPI;
+import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.commands.CommandNextEvent;
 import net.samagames.survivalapi.game.commands.CommandUHC;
 import net.samagames.survivalapi.game.events.*;
@@ -120,6 +121,11 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
         this.scoreboard = this.server.getScoreboardManager().getMainScoreboard();
 
+        this.computeLocations();
+
+        //Generate spawns
+        SurvivalAPI.get().getPlugin().getWorldLoader().begin(Bukkit.getWorlds().get(0), spawns);
+
         SurvivalAPI.get().registerEvent(SurvivalAPI.EventType.AFTERGENERATION, () ->
         {
             try
@@ -140,8 +146,6 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                 this.world.setSpawnLocation(this.lobbySpawnLocation.getBlockX(), this.lobbySpawnLocation.getBlockY(), this.lobbySpawnLocation.getBlockZ());
 
                 this.gameLoop = this.survivalGameLoopClass.getConstructor(JavaPlugin.class, Server.class, SurvivalGame.class).newInstance(this.plugin, this.server, this);
-
-                this.computeLocations();
 
                 SpawnerCreature spawner = new SpawnerCreature();
 

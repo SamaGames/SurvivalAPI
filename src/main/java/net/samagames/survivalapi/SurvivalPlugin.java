@@ -104,7 +104,7 @@ public class SurvivalPlugin extends JavaPlugin
         long lastTime = System.currentTimeMillis();
 
         this.getLogger().info("Computing world top for tower detection...");
-        this.worldLoader.computeTop(world);
+        //this.worldLoader.computeTop(world);
         this.getLogger().info("Compute done in " + (System.currentTimeMillis() - lastTime) + " ms");
         this.getLogger().info("Done!");
 
@@ -121,7 +121,6 @@ public class SurvivalPlugin extends JavaPlugin
         this.startTimer.cancel();
 
         this.worldLoader = new WorldLoader(this, SamaGamesAPI.get().getGameManager().getGameProperties().getOption("size", new JsonPrimitive(1000)).getAsInt());
-        this.worldLoader.begin(Bukkit.getWorlds().get(0));
 
         try
         {
@@ -148,5 +147,14 @@ public class SurvivalPlugin extends JavaPlugin
         List<String> toRemove = knownCommands.entrySet().stream().filter(entry -> entry.getValue() instanceof DynamicPluginCommand).map(Map.Entry::getKey).collect(Collectors.toList());
 
         toRemove.forEach(knownCommands::remove);
+    }
+
+    public SurvivalAPI getApi()
+    {
+        return api;
+    }
+
+    public WorldLoader getWorldLoader() {
+        return worldLoader;
     }
 }
