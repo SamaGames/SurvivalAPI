@@ -58,7 +58,7 @@ public class SurvivalPlugin extends JavaPlugin
             this.getLogger().severe("Error during map downloading. Aborting!");
             Bukkit.shutdown();
         }
-
+        this.worldLoader = new WorldLoader(this, SamaGamesAPI.get().getGameManager().getGameProperties().getOption("size", new JsonPrimitive(1000)).getAsInt());
         this.api = new SurvivalAPI(this);
 
         try
@@ -119,8 +119,6 @@ public class SurvivalPlugin extends JavaPlugin
     private void postInit()
     {
         this.startTimer.cancel();
-
-        this.worldLoader = new WorldLoader(this, SamaGamesAPI.get().getGameManager().getGameProperties().getOption("size", new JsonPrimitive(1000)).getAsInt());
 
         try
         {
