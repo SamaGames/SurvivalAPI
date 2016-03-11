@@ -149,7 +149,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 continue;
             }
 
-            Location destination = locationIterator.next();
+            Location destination = locationIterator.next().add(0,8,0);
 
             for (UUID player : team.getPlayersUUID().keySet())
             {
