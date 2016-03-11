@@ -45,17 +45,17 @@ public class WaitingBlock
     {
         Location baseLocation = spawnLocation.clone().subtract(0.0, 1.0, 0.0);
 
-        int xMin = baseLocation.clone().getBlockX() - 2;
-        int xMax = baseLocation.clone().getBlockX() + 2;
-        int zMin = baseLocation.clone().getBlockZ() - 2;
-        int zMax = baseLocation.clone().getBlockZ() + 2;
+        int xMin = baseLocation.clone().getBlockX() - 3;
+        int xMax = baseLocation.clone().getBlockX() + 3;
+        int zMin = baseLocation.clone().getBlockZ() - 3;
+        int zMax = baseLocation.clone().getBlockZ() + 3;
 
         /**
-         * #####
-         * #   #  > # | Wall
-         * # X #  > X | Spawn location
-         * #   #
-         * #####
+         * #######
+         * #     #  > # | Wall
+         * #  X  #  > X | Spawn location
+         * #     #
+         * #######
          */
 
         // Base plate
