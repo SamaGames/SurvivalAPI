@@ -240,7 +240,7 @@ public class GameListener implements Listener
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event)
     {
-        if (this.game.isPvPActivated() && event.getBlockPlaced().getY() > WorldLoader.getHighestNaturalBlockAt(event.getBlockPlaced().getX(), event.getBlockPlaced().getZ()) + 15)
+        if (this.game.isPvPActivated() && event.getBlockPlaced().getY() > event.getBlock().getWorld().getHighestBlockYAt(event.getBlockPlaced().getX(), event.getBlockPlaced().getZ()) + 15)
         {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatColor.DARK_RED + "[" + ChatColor.RED + "Tours" + ChatColor.DARK_RED + "] " + ChatColor.RED + "Les Tours sont interdites !");
