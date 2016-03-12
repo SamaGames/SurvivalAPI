@@ -61,7 +61,7 @@ public class WorldLoader
     public void begin(final World world, List<Location> spawns)
     {
         final long startTime = System.currentTimeMillis();
-        final int size = 160;
+        final int size = 240;
         final int todo = (((size * 2) * (size * 2)) / 256) * spawns.size();
 
         for(final Location loc : spawns)
