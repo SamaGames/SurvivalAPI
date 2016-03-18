@@ -30,13 +30,14 @@ public class ChunkUtils
     {
         WorldServer handle = ((CraftWorld) dest.getWorld()).getHandle();
 
-        for (int x = -radius; x < radius; x++)
+        //TODO fix chunk sending
+        /*for (int x = -radius; x < radius; x++)
         {
             for (int z = -radius; z < radius; z++)
             {
                 Chunk chunk = handle.getChunkAtWorldCoords(new BlockPosition(dest.getBlockX() + x, 0, dest.getBlockZ() + z));
                 ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutMapChunk(chunk, true, 0xFFFFFFFF));
             }
-        }
+        }*/
     }
 }
