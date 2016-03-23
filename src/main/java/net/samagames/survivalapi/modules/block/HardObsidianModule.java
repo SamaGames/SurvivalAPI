@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
@@ -51,6 +52,13 @@ public class HardObsidianModule extends AbstractSurvivalModule
     public void onBlockBreak(BlockBreakEvent event)
     {
         if (event.getBlock().getType() == Material.OBSIDIAN)
-            event.getPlayer().getItemInHand().setDurability((short) (event.getPlayer().getItemInHand().getDurability() - 500));
+        {
+            ItemStack item = event.getPlayer().getItemInHand();
+            item.setDurability((short) (item.getDurability() + 500));
+            if (item.getDurability() > item.getType().getMaxDurability())
+                event.getPlayer().getInventory().setItemInHand(new ItemStack(Material.AIR));
+            else
+                event.getPlayer().getInventory().setItemInHand(item);
+        }
     }
 }
