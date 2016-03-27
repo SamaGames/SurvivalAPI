@@ -27,6 +27,7 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -170,9 +171,24 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
     public void downloadWorld()
     {
-        //TODO implement cc RIGNER
+        SurvivalPlugin apiplugin = SurvivalAPI.get().getPlugin();
+        File worldDir = new File(apiplugin.getDataFolder().getAbsoluteFile().getParentFile().getParentFile(), "world");
+        apiplugin.getLogger().info("Checking wether world exists at : " + worldDir.getAbsolutePath());
 
-        //When the world is loaded the event chain will proceed
+        if (!worldDir.exists())
+        {
+            apiplugin.getLogger().severe("World's folder not found. Aborting!");
+            Bukkit.shutdown();
+        }
+
+        apiplugin.getLogger().info("World's folder found... Checking for arena file...");
+        WorldDownloader worldDownloader = new WorldDownloader(apiplugin);
+
+        if (!worldDownloader.checkAndDownloadWorld(worldDir))
+        {
+            apiplugin.getLogger().severe("Error during map downloading. Aborting!");
+            Bukkit.shutdown();
+        }
     }
 
     /**
