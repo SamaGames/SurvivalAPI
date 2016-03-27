@@ -1,6 +1,7 @@
 package net.samagames.survivalapi.game;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.SpawnerCreature;
@@ -169,6 +170,9 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         downloadWorld();
     }
 
+    /**
+     * Download the map
+     */
     public void downloadWorld()
     {
         SurvivalPlugin apiplugin = SurvivalAPI.get().getPlugin();
@@ -184,11 +188,23 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         apiplugin.getLogger().info("World's folder found... Checking for arena file...");
         WorldDownloader worldDownloader = new WorldDownloader(apiplugin);
 
-        if (!worldDownloader.checkAndDownloadWorld(worldDir))
+        if (!worldDownloader.checkAndDownloadWorld(worldDir, getDownloadWorldLink()))
         {
             apiplugin.getLogger().severe("Error during map downloading. Aborting!");
             Bukkit.shutdown();
         }
+    }
+
+    /**
+     * Override this to modify download link
+     * @return Url to the map
+     */
+    public String getDownloadWorldLink()
+    {
+        JsonElement worldStorage = SamaGamesAPI.get().getGameManager().getGameProperties().getConfig("worldStorage", null);
+        if (worldStorage == null)
+            return null;
+        return worldStorage.getAsString();
     }
 
     /**
