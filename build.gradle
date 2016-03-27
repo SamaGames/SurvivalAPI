@@ -39,17 +39,6 @@ tasks.withType(Javadoc) {
     options.addStringOption('Xdoclint:none', '-quiet')
 }
 
-sonarRunner {
-    sonarProperties {
-        property "sonar.host.url", "http://blackmesa.samagames.net:9494/"
-        property "sonar.projectKey", group + "." + archivesBaseName
-        property "sonar.projectName", archivesBaseName
-
-        property "sonar.login", sonaruser
-        property "sonar.password", sonarpass
-    }
-}
-
 configurations { providedCompile }
 
 sourceSets.main.compileClasspath += configurations.providedCompile

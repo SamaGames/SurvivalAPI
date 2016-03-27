@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class SurvivalAPI
 {
-    public enum EventType { POSTINIT, AFTERGENERATION }
+    public enum EventType { POSTINIT, WORLDLOADED, AFTERGENERATION }
 
     private static SurvivalAPI instance;
 

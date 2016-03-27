@@ -49,7 +49,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     protected final Class<? extends SURVIVALLOOP> survivalGameLoopClass;
     protected final List<Location> spawns;
     protected final List<WaitingBlock> waitingBlocks;
-    protected final World world;
+    protected World world;
 
     protected LobbyPopulator lobbyPopulator;
     protected Location lobbySpawnLocation;
@@ -83,7 +83,6 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
         this.spawns = new ArrayList<>();
         this.waitingBlocks = new ArrayList<>();
-        this.world = this.server.getWorlds().get(0);
 
         this.gameLoop = null;
         this.scoreboard = null;
@@ -91,27 +90,12 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.damagesActivated = false;
         this.pvpActivated = false;
 
-        this.worldBorder = this.world.getWorldBorder();
-        this.worldBorder.setCenter(0D, 0D);
-        this.worldBorder.setSize(1000);
-        this.worldBorder.setWarningDistance(20);
-        this.worldBorder.setWarningTime(0);
-        this.worldBorder.setDamageBuffer(3D);
-        this.worldBorder.setDamageAmount(2D);
-
         this.server.getPluginManager().registerEvents(new ChunkListener(), plugin);
         this.server.getPluginManager().registerEvents(new NaturalListener(), plugin);
         this.server.getPluginManager().registerEvents(new OptimizationListener(), plugin);
         this.server.getPluginManager().registerEvents(new SpectatorListener(this), plugin);
         this.server.getPluginManager().registerEvents(new SecurityListener(this), plugin);
         this.server.getPluginManager().registerEvents(new GameListener(this), plugin);
-
-        for (World serverWorld : plugin.getServer().getWorlds())
-        {
-            serverWorld.setDifficulty(Difficulty.NORMAL);
-            serverWorld.setGameRuleValue("doDaylightCycle", "false");
-            serverWorld.setTime(2000L);
-        }
 
         SamaGamesAPI.get().getGameManager().setMaxReconnectTime(this.gameManager.getGameProperties().getOption("reconnectTime", new JsonPrimitive(5)).getAsInt());
 
@@ -121,10 +105,30 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
         this.scoreboard = this.server.getScoreboardManager().getMainScoreboard();
 
-        this.computeLocations();
+        SurvivalAPI.get().registerEvent(SurvivalAPI.EventType.WORLDLOADED, () ->
+        {
+            this.world = this.server.getWorlds().get(0);
 
-        //Generate spawns
-        SurvivalAPI.get().getPlugin().getWorldLoader().begin(Bukkit.getWorlds().get(0), spawns);
+            this.worldBorder = this.world.getWorldBorder();
+            this.worldBorder.setCenter(0D, 0D);
+            this.worldBorder.setSize(1000);
+            this.worldBorder.setWarningDistance(20);
+            this.worldBorder.setWarningTime(0);
+            this.worldBorder.setDamageBuffer(3D);
+            this.worldBorder.setDamageAmount(2D);
+
+            this.computeLocations();
+
+            //Generate spawns
+            SurvivalAPI.get().getPlugin().getWorldLoader().begin(Bukkit.getWorlds().get(0), spawns);
+
+            for (World serverWorld : plugin.getServer().getWorlds())
+            {
+                serverWorld.setDifficulty(Difficulty.NORMAL);
+                serverWorld.setGameRuleValue("doDaylightCycle", "false");
+                serverWorld.setTime(2000L);
+            }
+        });
 
         SurvivalAPI.get().registerEvent(SurvivalAPI.EventType.AFTERGENERATION, () ->
         {
@@ -159,6 +163,16 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                 e.printStackTrace();
             }
         });
+
+        //call the download of the world
+        downloadWorld();
+    }
+
+    public void downloadWorld()
+    {
+        //TODO implement cc RIGNER
+
+        //When the world is loaded the event chain will proceed
     }
 
     /**
