@@ -25,6 +25,7 @@ public class SurvivalAPI
     private final SurvivalPlugin plugin;
     private final Map<String, AbstractSurvivalModule> modulesLoaded;
     private final Map<EventType, List<Runnable>> events;
+    private String customMap;
 
     /**
      * Constructor
@@ -38,6 +39,7 @@ public class SurvivalAPI
         this.plugin = plugin;
         this.modulesLoaded = new HashMap<>();
         this.events = new HashMap<>();
+        this.customMap = null;
     }
 
     /**
@@ -161,6 +163,23 @@ public class SurvivalAPI
     public SurvivalPlugin getPlugin()
     {
         return this.plugin;
+    }
+
+    /**
+     * Set a custom map for download
+     */
+    public void setCustomMapName(String map)
+    {
+        this.customMap = map;
+    }
+
+    /**
+     * Get the custom map name if changed
+     * @return Custom Map Name
+     */
+    public String getCustomMapName()
+    {
+        return this.customMap;
     }
 
     /**

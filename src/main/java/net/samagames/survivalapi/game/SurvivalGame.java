@@ -204,7 +204,10 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         JsonElement worldStorage = SamaGamesAPI.get().getGameManager().getGameProperties().getConfig("worldStorage", null);
         if (worldStorage == null)
             return null;
-        return worldStorage.getAsString();
+        String map = worldStorage.getAsString();
+        if (map != null && SurvivalAPI.get().getCustomMapName() != null)
+            map += SurvivalAPI.get().getCustomMapName();
+        return map;
     }
 
     /**
