@@ -45,6 +45,6 @@ public class GoneFishingModule extends AbstractSurvivalModule
         rod.addUnsafeEnchantment(Enchantment.DURABILITY, 250);
 
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
-            player.getPlayerIfOnline().getInventory().setChestplate(rod);
+            player.getPlayerIfOnline().getInventory().addItem(rod);
     }
 }

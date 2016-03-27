@@ -37,7 +37,9 @@ public class LightsOutModule extends AbstractSurvivalModule
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event)
     {
-        if (event.getBlockPlaced().getType() == Material.TORCH)
+        if (event.getBlockPlaced().getType() == Material.TORCH
+                || event.getBlockPlaced().getType() == Material.REDSTONE_TORCH_ON
+                || event.getBlockPlaced().getType() == Material.REDSTONE_TORCH_OFF)
         {
             event.getPlayer().sendMessage(ChatColor.RED + "Les torches sont désactivées dans cette partie.");
             event.setCancelled(true);

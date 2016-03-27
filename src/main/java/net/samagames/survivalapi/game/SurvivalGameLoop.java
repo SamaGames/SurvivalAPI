@@ -2,6 +2,7 @@ package net.samagames.survivalapi.game;
 
 import net.samagames.survivalapi.game.types.SurvivalTeamGame;
 import net.samagames.survivalapi.utils.TimedEvent;
+import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.tools.Titles;
 import net.samagames.tools.chat.ActionBarAPI;
 import net.samagames.tools.scoreboards.ObjectiveSign;
@@ -67,6 +68,7 @@ public class SurvivalGameLoop implements Runnable
             this.game.removeWaitingBlocks();
             this.blocksProtected = false;
             this.createDamageEvent();
+	    SurvivalAPI.get().fireGameStart(this.game);
         });
     }
 

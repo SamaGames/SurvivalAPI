@@ -73,7 +73,7 @@ public class CocoaEffectsModule extends AbstractSurvivalModule
             if (event.getItem().getAmount() > 1)
                 event.getItem().setAmount(event.getItem().getAmount() - 1);
             else
-                event.getItem().setType(Material.AIR);
+                event.getPlayer().setItemInHand(new ItemStack(Material.AIR));
             event.setCancelled(true);
         }
     }

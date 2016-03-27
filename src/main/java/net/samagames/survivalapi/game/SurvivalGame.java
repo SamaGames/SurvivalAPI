@@ -287,8 +287,6 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             this.gameLoop.addPlayer(player.getUniqueId(), sign);
         }
 
-        SurvivalAPI.get().fireGameStart(this);
-
         this.lobbyPopulator.remove();
 
         this.mainTask = this.server.getScheduler().runTaskTimer(this.plugin, this.gameLoop, 20, 20);
