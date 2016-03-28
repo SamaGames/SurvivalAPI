@@ -206,7 +206,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             return null;
         String map = worldStorage.getAsString();
         if (map != null && SurvivalAPI.get().getCustomMapName() != null)
-            map += SurvivalAPI.get().getCustomMapName();
+            map += '_' + SurvivalAPI.get().getCustomMapName();
         return map;
     }
 
