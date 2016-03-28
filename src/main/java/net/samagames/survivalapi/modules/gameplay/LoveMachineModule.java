@@ -31,8 +31,8 @@ public class LoveMachineModule extends AbstractSurvivalModule implements Runnabl
     {
         super(plugin, api, moduleConfiguration);
 
-        this.a = UUID.fromString("29b2b527-1b59-45df-b7b0-d5ab20d8731a");
-        this.b = UUID.fromString("dfd16cea-d6d8-4f51-aade-8c7ad157c93f");
+        this.a = UUID.fromString("012bee10-0032-42e2-9f3c-9c6b4e4f1fff");
+        this.b = UUID.fromString("b158fe72-dcac-49da-ac60-99feb4e29a8f");
 
         plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, this, 20L, 20L);
     }
