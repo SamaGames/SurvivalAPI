@@ -57,7 +57,7 @@ public class CocoaEffectsModule extends AbstractSurvivalModule
 
     /**
      * Give speed 1 & strenght 1 effect to all players, then give them slowness & weakness after 30sec.
-     * @param event
+     * @param event Event
      */
     @EventHandler
     public void onInteract(PlayerInteractEvent event)
