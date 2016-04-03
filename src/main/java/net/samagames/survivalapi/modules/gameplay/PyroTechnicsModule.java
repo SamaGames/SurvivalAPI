@@ -1,5 +1,6 @@
 package net.samagames.survivalapi.modules.gameplay;
 
+import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
@@ -54,7 +55,7 @@ public class PyroTechnicsModule extends AbstractSurvivalModule
     @EventHandler(priority = EventPriority.LOWEST)
     public void onDamage(EntityDamageEvent event)
     {
-        if (!event.isCancelled()
+        if (((SurvivalGame)SamaGamesAPI.get().getGameManager().getGame()).isDamagesActivated()
                 && event.getEntityType() == EntityType.PLAYER
                 && event.getCause() != EntityDamageEvent.DamageCause.FIRE
                 && event.getCause() != EntityDamageEvent.DamageCause.FIRE_TICK)
