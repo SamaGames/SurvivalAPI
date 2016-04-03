@@ -8,6 +8,7 @@ import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -50,10 +51,11 @@ public class PyroTechnicsModule extends AbstractSurvivalModule
      * Fire player on damage
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onDamage(EntityDamageEvent event)
     {
-        if (event.getEntityType() == EntityType.PLAYER
+        if (!event.isCancelled()
+                && event.getEntityType() == EntityType.PLAYER
                 && event.getCause() != EntityDamageEvent.DamageCause.FIRE
                 && event.getCause() != EntityDamageEvent.DamageCause.FIRE_TICK)
             event.getEntity().setFireTicks(100);
