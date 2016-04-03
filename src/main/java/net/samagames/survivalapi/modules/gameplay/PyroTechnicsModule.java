@@ -44,7 +44,7 @@ public class PyroTechnicsModule extends AbstractSurvivalModule
     public void onGameStart(SurvivalGame game)
     {
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
-            player.getPlayerIfOnline().getInventory().addItem(new ItemStack(Material.WATER));
+            player.getPlayerIfOnline().getInventory().addItem(new ItemStack(Material.WATER_BUCKET));
     }
 
     /**
