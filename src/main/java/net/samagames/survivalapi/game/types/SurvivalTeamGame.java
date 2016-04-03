@@ -159,7 +159,9 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 {
                     ChunkUtils.loadDestination(p, destination, 3);
                     Bukkit.getScheduler().runTaskLater(plugin, () -> p.teleport(destination), 2);
-                    Bukkit.getScheduler().runTaskLater(plugin, () -> p.teleport(destination), 4);
+                    SurvivalPlayer playerdata = (SurvivalPlayer)this.getPlayer(player);
+                    if (playerdata != null)
+                        playerdata.setWaitingSpawn(destination);
                 }
             }
         }

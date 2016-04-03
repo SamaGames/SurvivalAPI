@@ -160,7 +160,9 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             Location destination = locationIterator.next().add(0,8,0);
             ChunkUtils.loadDestination(player, destination, 3);
             Bukkit.getScheduler().runTaskLater(plugin, () -> player.teleport(destination), 2);
-            Bukkit.getScheduler().runTaskLater(plugin, () -> player.teleport(destination), 4);
+            SurvivalPlayer playerdata = (SurvivalPlayer)this.getPlayer(uuid);
+            if (playerdata != null)
+                playerdata.setWaitingSpawn(destination);
         }
     }
 }
