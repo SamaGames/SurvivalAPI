@@ -42,7 +42,7 @@ public class SuperheroesModule extends AbstractSurvivalModule
     @Override
     public void onGameStart(SurvivalGame game)
     {
-        for (SurvivalPlayer player : (Collection<SurvivalPlayer>)game.getInGamePlayers())
+        for (SurvivalPlayer player : (Collection<SurvivalPlayer>)game.getInGamePlayers().values())
         {
             Player p = player.getPlayerIfOnline();
             p.addPotionEffect(PotionEffectType.SPEED.createEffect(Integer.MAX_VALUE, 1));
