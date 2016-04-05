@@ -12,12 +12,12 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * VengefulSpiritsModule class
+ * ZombiesModule class
  *
  * Copyright (c) for SamaGames
  * All right reserved
  */
-public class VengefulSpiritsModule extends AbstractSurvivalModule
+public class ZombiesModule extends AbstractSurvivalModule
 {
     /**
      * Constructor
@@ -26,19 +26,19 @@ public class VengefulSpiritsModule extends AbstractSurvivalModule
      * @param api API instance
      * @param moduleConfiguration Module configuration
      */
-    public VengefulSpiritsModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
+    public ZombiesModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
     }
 
     /**
-     * When a player is dead, spawn a ghast or a blaze
+     * When a player is dead, spawn a zombie
      *
      * @param event Event
      */
     @EventHandler
     public void onEntityDeath(PlayerDeathEvent event)
     {
-        event.getEntity().getWorld().spawnEntity(event.getEntity().getLocation(), event.getEntity().getLocation().getY() > 60 ? EntityType.GHAST : EntityType.BLAZE);
+        event.getEntity().getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.ZOMBIE);
     }
 }
