@@ -96,7 +96,7 @@ public class SurvivalGameLoop implements Runnable
 
     public void createReducingEvent()
     {
-        this.nextEvent = new TimedEvent(20, 0, "Réduction des bordures", ChatColor.RED, false, () ->
+        this.nextEvent = new TimedEvent(70, 0, "Réduction des bordures", ChatColor.RED, false, () ->
         {
             this.game.getWorldBorder().setSize(64, 60L * 20L);
             this.displayReducingMessage();
@@ -106,7 +106,7 @@ public class SurvivalGameLoop implements Runnable
 
     public void createEndOfReducingEvent()
     {
-        this.nextEvent = new TimedEvent(20, 0, "Fin de la réduction", ChatColor.YELLOW, false, () ->
+        this.nextEvent = new TimedEvent(30, 0, "Fin de la réduction", ChatColor.YELLOW, false, () ->
         {
             this.game.getWorldBorder().setSize(100);
             this.createEndingEvent();
