@@ -85,7 +85,7 @@ public class SurvivalGameLoop implements Runnable
 
     public void createPvPEvent()
     {
-        this.nextEvent = new TimedEvent(19, 0, "Combats actifs", ChatColor.YELLOW, false, () ->
+        this.nextEvent = new TimedEvent(19, 0, "Combats actifs", ChatColor.GOLD, false, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les combats sont désormais actifs.", true);
             this.game.enablePVP();
