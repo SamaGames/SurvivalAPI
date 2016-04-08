@@ -13,6 +13,12 @@ import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.Map;
 
+/**
+ * SwitchherooModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class SwitcherooModule extends AbstractSurvivalModule
 {
     /**

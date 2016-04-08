@@ -10,6 +10,12 @@ import org.bukkit.entity.Player;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * PotentialHeartsModule class
+ *
+ * Copyright (c) for SamaGames
+ * All right reserved
+ */
 public class PotentialHeartsModule extends AbstractSurvivalModule
 {
     /**
