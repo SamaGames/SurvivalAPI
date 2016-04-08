@@ -42,12 +42,9 @@ public class KillSwitchModule extends AbstractSurvivalModule
         {
             ItemStack[] contents1 = event.getEntity().getInventory().getContents();
             ItemStack[] armorcontents1 = event.getEntity().getInventory().getArmorContents();
-            ItemStack[] contents2 = event.getEntity().getKiller().getInventory().getContents();
-            ItemStack[] armorcontents2 = event.getEntity().getKiller().getInventory().getArmorContents();
-            event.getEntity().getInventory().setContents(contents2);
-            event.getEntity().getInventory().setArmorContents(armorcontents2);
             event.getEntity().getKiller().getInventory().setContents(contents1);
             event.getEntity().getKiller().getInventory().setArmorContents(armorcontents1);
+            event.getDrops().clear();
             event.getEntity().getKiller().sendMessage(ChatColor.GOLD + "Vous avez échangé votre inventaire avec celui de " + event.getEntity().getName());
         }
     }
