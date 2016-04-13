@@ -59,6 +59,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     protected Scoreboard scoreboard;
     protected BukkitTask mainTask;
     protected WorldBorder worldBorder;
+    protected WorldBorder netherWorldBorder;
     protected boolean damagesActivated;
     protected boolean pvpActivated;
 
@@ -116,6 +117,17 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             this.worldBorder.setWarningTime(0);
             this.worldBorder.setDamageBuffer(3D);
             this.worldBorder.setDamageAmount(2D);
+
+            if (this.server.getAllowNether())
+            {
+                this.netherWorldBorder = this.server.getWorlds().get(1).getWorldBorder();
+                this.netherWorldBorder.setCenter(0D, 0D);
+                this.netherWorldBorder.setSize(1000 / 8);
+                this.netherWorldBorder.setWarningDistance(20);
+                this.netherWorldBorder.setWarningTime(0);
+                this.netherWorldBorder.setDamageBuffer(3D);
+                this.netherWorldBorder.setDamageAmount(2D);
+            }
 
             this.scoreboard = this.server.getScoreboardManager().getMainScoreboard();
 
@@ -364,7 +376,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
         logger.severe("|> Damages: " + this.damagesActivated);
         logger.severe("|> PVP: " + this.pvpActivated);
-        logger.severe("|> World borders: " + this.getWorldBorder().getSize());
+        logger.severe("|> World borders: " + this.worldBorder.getSize());
 
         logger.severe("==================[ GAME DUMP ]==================");
     }
@@ -678,13 +690,28 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     }
 
     /**
-     * Get the world border instance
+     * Set the world border size
      *
-     * @return World border instance
+     * @param size The new size
      */
-    public WorldBorder getWorldBorder()
+    public void setWorldBorderSize(double size)
     {
-        return this.worldBorder;
+        this.worldBorder.setSize(size);
+        if (this.netherWorldBorder != null)
+            this.netherWorldBorder.setSize(size / 8);
+    }
+
+    /**
+     * Set the world border size
+     *
+     * @param size The new size
+     * @param time Reduction time
+     */
+    public void setWorldBorderSize(double size, long time)
+    {
+        this.worldBorder.setSize(size, time);
+        if (this.netherWorldBorder != null)
+            this.netherWorldBorder.setSize(size / 8, time);
     }
 
     /**
