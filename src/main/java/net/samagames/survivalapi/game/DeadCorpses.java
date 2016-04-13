@@ -60,21 +60,21 @@ public class DeadCorpses
 
         armorStand.remove();
 
-        ArmorStand corpsesPart1 = null;
-        ArmorStand corpsesPart2 = null;
+        ArmorStand corpsesEntityPart1 = null;
+        ArmorStand corpsesEntityPart2 = null;
 
         for (Entity entity : location.getWorld().getNearbyEntities(location, 15.0D, 15.0D, 15.0D))
         {
             if (entity.getType() == EntityType.ARMOR_STAND && entity.getCustomName() != null)
             {
                 if (entity.getCustomName().equals("part_1_" + this.player.getName()))
-                    corpsesPart1 = (ArmorStand) entity;
+                    corpsesEntityPart1 = (ArmorStand) entity;
                 else if (entity.getCustomName().equals("part_2_" + this.player.getName()))
-                    corpsesPart2 = (ArmorStand) entity;
+                    corpsesEntityPart2 = (ArmorStand) entity;
             }
         }
 
-        if (corpsesPart1 == null || corpsesPart2 == null)
+        if (corpsesEntityPart1 == null || corpsesEntityPart2 == null)
             return;
 
         ItemStack playerHead = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
@@ -82,24 +82,24 @@ public class DeadCorpses
         playerHeadMeta.setOwner(this.player.getName());
         playerHead.setItemMeta(playerHeadMeta);
 
-        corpsesPart1.setHelmet(playerHead);
-        corpsesPart1.setChestplate(this.player.getInventory().getChestplate() != null ? this.player.getInventory().getChestplate() : this.getArmor(new ItemStack(Material.LEATHER_CHESTPLATE, 1)));
-        corpsesPart2.setLeggings(this.player.getInventory().getLeggings() != null ? this.player.getInventory().getLeggings() : this.getArmor(new ItemStack(Material.LEATHER_LEGGINGS, 1)));
-        corpsesPart2.setBoots(this.player.getInventory().getBoots() != null ? this.player.getInventory().getBoots() : this.getArmor(new ItemStack(Material.LEATHER_BOOTS, 1)));
+        corpsesEntityPart1.setHelmet(playerHead);
+        corpsesEntityPart1.setChestplate(this.player.getInventory().getChestplate() != null ? this.player.getInventory().getChestplate() : this.getArmor(new ItemStack(Material.LEATHER_CHESTPLATE, 1)));
+        corpsesEntityPart2.setLeggings(this.player.getInventory().getLeggings() != null ? this.player.getInventory().getLeggings() : this.getArmor(new ItemStack(Material.LEATHER_LEGGINGS, 1)));
+        corpsesEntityPart2.setBoots(this.player.getInventory().getBoots() != null ? this.player.getInventory().getBoots() : this.getArmor(new ItemStack(Material.LEATHER_BOOTS, 1)));
 
-        corpsesPart1.setItemInHand(this.player.getItemInHand());
+        corpsesEntityPart1.setItemInHand(this.player.getItemInHand());
 
-        EulerAngle corpsesPart1HeadPose = corpsesPart1.getHeadPose();
-        EulerAngle corpsesPart1LeftArmPose = corpsesPart1.getLeftArmPose();
-        EulerAngle corpsesPart1RightArmPose = corpsesPart1.getRightArmPose();
-        EulerAngle corpsesPart2LeftLegPose = corpsesPart2.getLeftLegPose();
-        EulerAngle corpsesPart2RightLegPose = corpsesPart2.getRightLegPose();
+        EulerAngle corpsesPart1HeadPose = corpsesEntityPart1.getHeadPose();
+        EulerAngle corpsesPart1LeftArmPose = corpsesEntityPart1.getLeftArmPose();
+        EulerAngle corpsesPart1RightArmPose = corpsesEntityPart1.getRightArmPose();
+        EulerAngle corpsesPart2LeftLegPose = corpsesEntityPart2.getLeftLegPose();
+        EulerAngle corpsesPart2RightLegPose = corpsesEntityPart2.getRightLegPose();
 
-        corpsesPart1.setHeadPose(new EulerAngle(corpsesPart1HeadPose.getX(), -30 + this.random.nextInt(60), -25 + this.random.nextInt(50)));
-        corpsesPart1.setLeftArmPose(new EulerAngle(corpsesPart1LeftArmPose.getX(), 140.0D - this.random.nextInt(120), corpsesPart1LeftArmPose.getZ()));
-        corpsesPart1.setRightArmPose(new EulerAngle(corpsesPart1RightArmPose.getX(), 140.0D + this.random.nextInt(80), -90.0D));
-        corpsesPart2.setLeftLegPose(new EulerAngle(corpsesPart2LeftLegPose.getX(), -70.0D + this.random.nextInt(70), corpsesPart2LeftLegPose.getZ()));
-        corpsesPart2.setRightLegPose(new EulerAngle(corpsesPart2RightLegPose.getX(), 70.0D - this.random.nextInt(70), corpsesPart2RightLegPose.getZ()));
+        corpsesEntityPart1.setHeadPose(new EulerAngle(corpsesPart1HeadPose.getX(), -30 + this.random.nextInt(60), -25 + this.random.nextInt(50)));
+        corpsesEntityPart1.setLeftArmPose(new EulerAngle(corpsesPart1LeftArmPose.getX(), 140.0D - this.random.nextInt(120), corpsesPart1LeftArmPose.getZ()));
+        corpsesEntityPart1.setRightArmPose(new EulerAngle(corpsesPart1RightArmPose.getX(), 140.0D + this.random.nextInt(80), -90.0D));
+        corpsesEntityPart2.setLeftLegPose(new EulerAngle(corpsesPart2LeftLegPose.getX(), -70.0D + this.random.nextInt(70), corpsesPart2LeftLegPose.getZ()));
+        corpsesEntityPart2.setRightLegPose(new EulerAngle(corpsesPart2RightLegPose.getX(), 70.0D - this.random.nextInt(70), corpsesPart2RightLegPose.getZ()));
     }
 
     /**

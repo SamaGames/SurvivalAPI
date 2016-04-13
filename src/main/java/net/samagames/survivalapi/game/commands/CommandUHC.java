@@ -50,7 +50,7 @@ public class CommandUHC implements CommandExecutor
 
         if (strings.length > 0)
         {
-            if (strings[0].equals("invite") && strings.length == 3)
+            if ("invite".equalsIgnoreCase(strings[0]) && strings.length == 3)
             {
                 if(game instanceof SurvivalTeamGame && !game.isGameStarted())
                 {
@@ -66,21 +66,18 @@ public class CommandUHC implements CommandExecutor
                         aTeam.invite(commandSender.getName(), player.getUUID());
                 }
             }
-            else if (strings[0].equals("join") && strings.length == 3)
+            else if ("join".equalsIgnoreCase(strings[0]) && strings.length == 3 && game instanceof SurvivalTeamGame && !game.isGameStarted())
             {
-                if(game instanceof SurvivalTeamGame && !game.isGameStarted())
-                {
-                    String teamRaw = strings[1];
-                    String playerRaw = strings[2];
-                    SurvivalPlayer player = (SurvivalPlayer) game.getPlayer(UUID.fromString(playerRaw));
-                    SurvivalTeam aTeam = ((SurvivalTeamGame) game).getTeams().getTeam(ChatColor.getByChar(teamRaw));
+                String teamRaw = strings[1];
+                String playerRaw = strings[2];
+                SurvivalPlayer player = (SurvivalPlayer) game.getPlayer(UUID.fromString(playerRaw));
+                SurvivalTeam aTeam = ((SurvivalTeamGame) game).getTeams().getTeam(ChatColor.getByChar(teamRaw));
 
-                    if (aTeam == null)
-                        return true;
+                if (aTeam == null)
+                    return true;
 
-                    if(!player.hasTeam() && aTeam.isInvited(player.getUUID()))
-                        aTeam.join(player.getUUID());
-                }
+                if(!player.hasTeam() && aTeam.isInvited(player.getUUID()))
+                    aTeam.join(player.getUUID());
             }
         }
 

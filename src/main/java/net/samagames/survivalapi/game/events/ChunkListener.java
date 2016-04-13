@@ -82,7 +82,7 @@ public class ChunkListener implements Runnable, Listener
     @EventHandler
     public void onWorldLoad(WorldLoadEvent event)
     {
-        //FIXME if nether exist think about it
+        //NOFIXME if nether exist think about it. EDIT : No need to do it =P
         //Continue process of start by call the chain
         SurvivalAPI.get().fireEvents(SurvivalAPI.EventType.WORLDLOADED);
     }

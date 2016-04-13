@@ -196,19 +196,11 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                     int teamLeft = this.countAliveTeam();
 
                     if (teamLeft == 1)
-                    {
                         this.win(this.getLastAliveTeam());
-                        return;
-                    }
                     else if (teamLeft < 1)
-                    {
                         this.handleGameEnd();
-                        return;
-                    }
                     else if (!silent)
-                    {
                         this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + teamLeft + ChatColor.YELLOW + " équipes en jeu.", true);
-                    }
                 }
             }
             catch (NullPointerException | IllegalStateException e)
@@ -217,7 +209,10 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 {
                     throw new GameException(e.getMessage());
                 }
-                catch (GameException ignored) {}
+                catch (GameException ex)
+                {
+                    ex.printStackTrace();
+                }
             }
         }, 2L);
     }

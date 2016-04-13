@@ -68,7 +68,7 @@ public class WorldDownloader
             return false;
         }
 
-        if (mapID.equals("No file found"))
+        if ("No file found".equals(mapID))
         {
             if (worldTar.exists())
             {

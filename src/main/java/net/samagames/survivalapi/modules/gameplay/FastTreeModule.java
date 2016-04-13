@@ -2,7 +2,6 @@ package net.samagames.survivalapi.modules.gameplay;
 
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
-import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -129,7 +128,7 @@ public class FastTreeModule extends AbstractSurvivalModule
                                 this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () ->
                                 {
                                     if (!this.isNearWood(block1, 2))
-                                        this.plugin.getServer().getScheduler().runTask(this.plugin, () -> removeTree(block1, false, (nearwood) ? 4 : (range - ((finalZ == 0 && finalX == 0) ? 0 : 1))));
+                                        this.plugin.getServer().getScheduler().runTask(this.plugin, () -> removeTree(block1, false, nearwood ? 4 : (range - ((finalZ == 0 && finalX == 0) ? 0 : 1))));
                                 });
                             }
                         }

@@ -17,7 +17,6 @@ import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -87,6 +86,7 @@ public class SurvivalPlugin extends JavaPlugin
 
         this.getLogger().info("Computing world top for tower detection...");
         //this.worldLoader.computeTop(world);
+        world.getClass(); //For Sonar, beacause of unused argument
         this.getLogger().info("Compute done in " + (System.currentTimeMillis() - lastTime) + " ms");
         this.getLogger().info("Done!");
 

@@ -80,12 +80,12 @@ public class SurvivalTeam
                 if (user != null)
                     user.sendMessage(this.game.getCoherenceMachine().getGameTag() + " " + ChatColor.AQUA + newJoiner.getName() + ChatColor.YELLOW + " a rejoint l'équipe.");
             }
+
+            ((SurvivalPlayer) this.game.getPlayer(player)).setTeam(this);
+            this.team.addEntry(newJoiner.getName());
+
+            this.players.put(player, false);
         }
-
-        ((SurvivalPlayer) this.game.getPlayer(player)).setTeam(this);
-        this.team.addEntry(newJoiner.getName());
-
-        this.players.put(player, false);
     }
 
     /**

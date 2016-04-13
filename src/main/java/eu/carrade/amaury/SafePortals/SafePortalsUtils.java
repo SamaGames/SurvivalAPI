@@ -15,6 +15,10 @@ import org.bukkit.entity.Player;
  */
 public class SafePortalsUtils
 {
+    private SafePortalsUtils()
+    {
+    }
+
     /**
      * Checks if the given location is inside the world border of his world.
      *
@@ -37,7 +41,7 @@ public class SafePortalsUtils
         Double x = location.getX();
         Double z = location.getZ();
 
-        return ((x > xMin && x < xMax) && (z > zMin && z < zMax));
+        return (x > xMin && x < xMax) && (z > zMin && z < zMax);
     }
 
 
