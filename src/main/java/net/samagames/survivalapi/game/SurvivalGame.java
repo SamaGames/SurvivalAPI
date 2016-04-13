@@ -123,7 +123,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             {
                 this.netherWorldBorder = this.server.getWorlds().get(1).getWorldBorder();
                 this.netherWorldBorder.setCenter(0D, 0D);
-                this.netherWorldBorder.setSize(1000 / 8);
+                this.netherWorldBorder.setSize(1000 / 2);
                 this.netherWorldBorder.setWarningDistance(20);
                 this.netherWorldBorder.setWarningTime(0);
                 this.netherWorldBorder.setDamageBuffer(3D);
@@ -699,7 +699,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     {
         this.worldBorder.setSize(size);
         if (this.netherWorldBorder != null)
-            this.netherWorldBorder.setSize(size / 8);
+            this.netherWorldBorder.setSize(size / 2);
     }
 
     /**
@@ -712,7 +712,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     {
         this.worldBorder.setSize(size, time);
         if (this.netherWorldBorder != null)
-            this.netherWorldBorder.setSize(size / 8, time);
+            this.netherWorldBorder.setSize(size / 2, time);
     }
 
     /**
