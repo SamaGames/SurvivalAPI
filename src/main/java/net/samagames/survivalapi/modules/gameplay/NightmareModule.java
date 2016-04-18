@@ -45,7 +45,7 @@ public class NightmareModule extends AbstractSurvivalModule
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
         {
             Player p = player.getPlayerIfOnline();
-            p.playSound(p.getLocation(), Sound.WITHER_SPAWN, 0.9F, 1F);
+            p.playSound(p.getLocation(), Sound.ENTITY_WITHER_SPAWN, 0.9F, 1F);
         }
     }
 }
