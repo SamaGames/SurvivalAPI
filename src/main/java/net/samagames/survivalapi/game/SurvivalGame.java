@@ -9,6 +9,7 @@ import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Game;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.api.games.Status;
+import net.samagames.api.stats.games.IUHCRunStatistics;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.commands.CommandNextEvent;
@@ -488,7 +489,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                                 gamePlayer.addKill(player.getUniqueId());
                                 gamePlayer.addCoins(20, "Meurtre de " + player.getName());
 
-                                this.increaseStat(finalKiller.getUniqueId(), "kills", 1);
+                                SamaGamesAPI.get().getStatsManager().getPlayerStats(finalKiller.getUniqueId()).getUHCRunStatistics().incrByKills(1);
                             });
 
                             killer.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 400, 1));
@@ -560,7 +561,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
                         this.coherenceMachine.getMessageManager().writeCustomMessage(message, true);
 
-                        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> increaseStat(player.getUniqueId(), "deaths", 1));
+                        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> SamaGamesAPI.get().getStatsManager().getPlayerStats(player.getUniqueId()).getUHCRunStatistics().incrByDeaths(1));
 
                         Titles.sendTitle(player, 0, 100, 5, ChatColor.RED + "✞", ChatColor.RED + "Vous êtes mort !");
                         player.setGameMode(GameMode.SPECTATOR);

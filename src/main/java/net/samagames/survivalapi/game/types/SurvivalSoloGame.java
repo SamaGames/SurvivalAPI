@@ -1,5 +1,7 @@
 package net.samagames.survivalapi.game.types;
 
+import net.samagames.api.SamaGamesAPI;
+import net.samagames.api.stats.games.IUHCRunStatistics;
 import net.samagames.survivalapi.game.GameException;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.game.SurvivalGameLoop;
@@ -114,7 +116,7 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             {
                 try
                 {
-                    this.increaseStat(player.getUniqueId(), "wins", 1);
+                    SamaGamesAPI.get().getStatsManager().getPlayerStats(player.getUniqueId()).getUHCRunStatistics().incrByWins(1);
                 }
                 catch (Exception ex)
                 {
