@@ -72,8 +72,8 @@ public class RunBasedGameLoop extends SurvivalGameLoop
                 }
             }
 
-            this.game.getWorldBorder().setSize(400.0D);
-            this.game.getWorldBorder().setSize(50.0D, 10L * 60L);
+            this.game.setWorldBorderSize(400.0D);
+            this.game.setWorldBorderSize(50.0D, 10L * 60L);
 
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("La map est désormais réduite. Les bordures sont en coordonnées " + ChatColor.RED + "-200 +200" + ChatColor.RESET + ".", true);
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les dégats et le PvP seront activés dans 30 secondes !", true);
@@ -101,7 +101,7 @@ public class RunBasedGameLoop extends SurvivalGameLoop
     {
         this.nextEvent = new TimedEvent(9, 30, "Fin de la réduction", ChatColor.RED, false, () ->
         {
-            this.game.getWorldBorder().setSize(50.0D);
+            this.game.setWorldBorderSize(50.0D);
 
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("La map est désormais réduite. Fin de la partie forcée dans 2 minutes !", true);
             this.createEndEvent();

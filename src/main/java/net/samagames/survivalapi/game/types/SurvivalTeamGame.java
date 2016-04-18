@@ -149,7 +149,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 continue;
             }
 
-            Location destination = locationIterator.next();
+            Location destination = locationIterator.next().add(0,8,0);
 
             for (UUID player : team.getPlayersUUID().keySet())
             {
@@ -159,6 +159,9 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 {
                     ChunkUtils.loadDestination(p, destination, 3);
                     Bukkit.getScheduler().runTaskLater(plugin, () -> p.teleport(destination), 2);
+                    SurvivalPlayer playerdata = (SurvivalPlayer)this.getPlayer(player);
+                    if (playerdata != null)
+                        playerdata.setWaitingSpawn(destination);
                 }
             }
         }
@@ -193,19 +196,11 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                     int teamLeft = this.countAliveTeam();
 
                     if (teamLeft == 1)
-                    {
                         this.win(this.getLastAliveTeam());
-                        return;
-                    }
                     else if (teamLeft < 1)
-                    {
                         this.handleGameEnd();
-                        return;
-                    }
                     else if (!silent)
-                    {
                         this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + teamLeft + ChatColor.YELLOW + " équipes en jeu.", true);
-                    }
                 }
             }
             catch (NullPointerException | IllegalStateException e)
@@ -214,7 +209,10 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 {
                     throw new GameException(e.getMessage());
                 }
-                catch (GameException ignored) {}
+                catch (GameException ex)
+                {
+                    ex.printStackTrace();
+                }
             }
         }, 2L);
     }

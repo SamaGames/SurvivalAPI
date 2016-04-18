@@ -3,6 +3,7 @@ package net.samagames.survivalapi.game;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.game.types.SurvivalTeamGame;
 import net.samagames.survivalapi.utils.TimedEvent;
+import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.tools.Titles;
 import net.samagames.tools.chat.ActionBarAPI;
 import net.samagames.tools.scoreboards.ObjectiveSign;
@@ -66,15 +67,14 @@ public class SurvivalGameLoop implements Runnable
         this.nextEvent = new TimedEvent(0, 10, "Suppression des cages", ChatColor.GREEN, true, () ->
         {
             this.game.removeWaitingBlocks();
+            this.blocksProtected = false;
             this.createDamageEvent();
-
             SurvivalAPI.get().fireGameStart(this.game);
         });
     }
 
     public void createDamageEvent()
     {
-        this.blocksProtected = false;
         this.nextEvent = new TimedEvent(1, 0, "Dégats actifs", ChatColor.GREEN, false, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les dégats sont désormais actifs.", true);
@@ -86,7 +86,7 @@ public class SurvivalGameLoop implements Runnable
 
     public void createPvPEvent()
     {
-        this.nextEvent = new TimedEvent(19, 0, "Combats actifs", ChatColor.YELLOW, false, () ->
+        this.nextEvent = new TimedEvent(19, 0, "Combats actifs", ChatColor.GOLD, false, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les combats sont désormais actifs.", true);
             this.game.enablePVP();
@@ -97,9 +97,9 @@ public class SurvivalGameLoop implements Runnable
 
     public void createReducingEvent()
     {
-        this.nextEvent = new TimedEvent(20, 0, "Réduction des bordures", ChatColor.RED, false, () ->
+        this.nextEvent = new TimedEvent(70, 0, "Réduction des bordures", ChatColor.RED, false, () ->
         {
-            this.game.getWorldBorder().setSize(64, 60L * 20L);
+            this.game.setWorldBorderSize(64, 60L * 20L);
             this.displayReducingMessage();
             this.createEndOfReducingEvent();
         });
@@ -107,9 +107,9 @@ public class SurvivalGameLoop implements Runnable
 
     public void createEndOfReducingEvent()
     {
-        this.nextEvent = new TimedEvent(20, 0, "Fin de la réduction", ChatColor.YELLOW, false, () ->
+        this.nextEvent = new TimedEvent(30, 0, "Fin de la réduction", ChatColor.YELLOW, false, () ->
         {
-            this.game.getWorldBorder().setSize(100);
+            this.game.setWorldBorderSize(100);
             this.createEndingEvent();
         });
     }

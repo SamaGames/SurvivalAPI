@@ -2,10 +2,13 @@ package net.samagames.survivalapi.game;
 
 import net.samagames.survivalapi.SurvivalPlugin;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * WorldLoader class
@@ -16,10 +19,12 @@ import java.util.ArrayList;
 public class WorldLoader
 {
     private final SurvivalPlugin plugin;
-    private final int size;
+   // private final int size;
     private BukkitTask task;
     private int lastShow;
     private int numberChunk;
+
+    private int done = 0;
 
     /**
      * Constructor
@@ -30,7 +35,7 @@ public class WorldLoader
     public WorldLoader(SurvivalPlugin plugin, int size)
     {
         this.plugin = plugin;
-        this.size = size + 100;
+        //this.size = size + 100;
 
         this.lastShow = -1;
     }
@@ -45,7 +50,7 @@ public class WorldLoader
      */
     public static int getHighestNaturalBlockAt(int x, int z)
     {
-        return Pos.getY(x, z);
+        return Bukkit.getWorlds().get(0).getHighestBlockYAt(x,z);
     }
 
     /**
@@ -53,53 +58,69 @@ public class WorldLoader
      *
      * @param world World instance
      */
-    public void begin(final World world)
+    public void begin(final World world, List<Location> spawns)
     {
-        long startTime = System.currentTimeMillis();
+        final long startTime = System.currentTimeMillis();
+        final int size = 240;
+        final int todo = (((size * 2) * (size * 2)) / 256) * spawns.size();
 
-        this.task = Bukkit.getScheduler().runTaskTimer(this.plugin, new Runnable()
+        for(final Location loc : spawns)
         {
-            private int todo = ((size * 2) * (size * 2)) / 256;
-            private int x = -size;
-            private int z = -size;
-
-            @Override
-            public void run()
+            this.task = Bukkit.getScheduler().runTaskTimer(this.plugin, new Runnable()
             {
-                int i = 0;
+                private int x = loc.getBlockX()-size;
+                private int z = loc.getBlockZ()-size;
 
-                while (i < 50)
+                @Override
+                public void run()
                 {
-                    world.getChunkAt(world.getBlockAt(this.x, 64, this.z)).load(true);
+                    int i = 0;
 
-                    int percentage = numberChunk * 100 / todo;
-
-                    if (percentage > lastShow && percentage % 10 == 0)
+                    while (i < 50)
                     {
-                        lastShow = percentage;
-                        plugin.getLogger().info("Loading chunks (" + percentage + "%)");
+                        world.getChunkAt(world.getBlockAt(this.x, 64, this.z)).load(true);
+
+                        int percentage = numberChunk * 100 / todo;
+
+                        if (percentage > lastShow && percentage % 10 == 0)
+                        {
+                            lastShow = percentage;
+                            plugin.getLogger().info("Loading chunks (" + percentage + "%)");
+                        }
+
+                        this.z += 16;
+
+                        if (this.z >= size)
+                        {
+                            this.z = -size;
+                            this.x += 16;
+                        }
+
+                        if (this.x >= size)
+                        {
+                            done ++;
+                            task.cancel();
+                            return;
+                        }
+
+                        numberChunk++;
+                        i++;
                     }
+                }
+            }, 1L, 1L);
+        }
 
-                    this.z += 16;
-
-                    if (this.z >= size)
-                    {
-                        this.z = -size;
-                        this.x += 16;
-                    }
-
-                    if (this.x >= size)
-                    {
-                        task.cancel();
-                        plugin.finishGeneration(world, System.currentTimeMillis() - startTime);
-                        return;
-                    }
-
-                    numberChunk++;
-                    i++;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if(done >= spawns.size())
+                {
+                    this.cancel();
+                    plugin.finishGeneration(world, System.currentTimeMillis() - startTime);
                 }
             }
-        }, 1L, 1L);
+        }.runTaskTimer(this.plugin, 1L, 1L);
+
     }
 
     /**
@@ -109,7 +130,7 @@ public class WorldLoader
      */
     public void computeTop(World world)
     {
-        int x = -this.size;
+        /*int x = -this.size;
 
         while (x < this.size)
         {
@@ -122,7 +143,7 @@ public class WorldLoader
             }
 
             x++;
-        }
+        }*/
     }
 
     /**

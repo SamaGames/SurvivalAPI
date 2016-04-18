@@ -14,6 +14,10 @@ import org.bukkit.entity.Player;
  */
 public class ChunkUtils
 {
+    private ChunkUtils()
+    {
+    }
+
     /**
      * Send to a given players the chunks around a given radius
      *
@@ -30,7 +34,7 @@ public class ChunkUtils
             for (int z = -radius; z < radius; z++)
             {
                 Chunk chunk = handle.getChunkAtWorldCoords(new BlockPosition(dest.getBlockX() + x, 0, dest.getBlockZ() + z));
-                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutMapChunk(chunk, true, 0x11111111));
+                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutMapChunk(chunk, true, 0xFFFFFFFF));
             }
         }
     }

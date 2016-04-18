@@ -25,6 +25,7 @@ public class SurvivalPlayer extends GamePlayer
 
     private final List<UUID> kills;
     private SurvivalTeam team;
+    private Location waitingspawn;
 
     /**
      * Constructor
@@ -37,6 +38,7 @@ public class SurvivalPlayer extends GamePlayer
 
         this.kills = new ArrayList<>();
         this.team = null;
+        this.waitingspawn = null;
     }
 
     /**
@@ -183,5 +185,25 @@ public class SurvivalPlayer extends GamePlayer
     public static void setGame(SurvivalGame instance)
     {
         game = instance;
+    }
+
+    /**
+     * Set the player waiting spawn
+     *
+     * @param spawn Spawn instance
+     */
+    public void setWaitingSpawn(Location spawn)
+    {
+        this.waitingspawn = spawn;
+    }
+
+    /**
+     * Get the player waiting spawn
+     *
+     * @return Spawn instance
+     */
+    public Location getWaitingSpawn()
+    {
+        return waitingspawn;
     }
 }

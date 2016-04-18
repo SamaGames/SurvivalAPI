@@ -6,7 +6,9 @@ import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
@@ -56,6 +58,21 @@ public class NineSlotsModule extends AbstractSurvivalModule
     public void onInventoryClick(InventoryClickEvent event)
     {
         if (event.getClickedInventory().getType() == InventoryType.PLAYER && event.getCurrentItem().getType() == Material.BARRIER)
+            event.setCancelled(true);
+    }
+
+    /**
+     * Remove barrier on drop
+     *
+     * @param event Event
+     */
+    @EventHandler
+    public void onItemSpawn(ItemSpawnEvent event)
+    {
+        if (event.getEntityType() != EntityType.DROPPED_ITEM)
+            return;
+
+        if (event.getEntity().getItemStack().getType() == Material.BARRIER)
             event.setCancelled(true);
     }
 }

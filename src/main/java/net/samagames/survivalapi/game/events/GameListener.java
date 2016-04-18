@@ -125,16 +125,15 @@ public class GameListener implements Listener
     }
 
     /**
-     * Increase the Renegartion boost when a golden apple is eaten
+     * Increase the Regeneration boost when a golden apple is eaten
      *
      * @param event Event
      */
     @EventHandler
     public void onItemConsume(PlayerItemConsumeEvent event)
     {
-        if (this.game instanceof RunBasedGame)
-            if (event.getItem().getType() == Material.GOLDEN_APPLE)
-                event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 10 * 20, 1));
+        if (this.game instanceof RunBasedGame && event.getItem().getType() == Material.GOLDEN_APPLE)
+            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 10 * 20, 1));
     }
 
     /**
@@ -240,7 +239,7 @@ public class GameListener implements Listener
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event)
     {
-        if (this.game.isPvPActivated() && event.getBlockPlaced().getY() > WorldLoader.getHighestNaturalBlockAt(event.getBlockPlaced().getX(), event.getBlockPlaced().getZ()) + 15)
+        if (this.game.isPvPActivated() && event.getBlockPlaced().getY() > event.getBlock().getWorld().getHighestBlockYAt(event.getBlockPlaced().getX(), event.getBlockPlaced().getZ()) + 15)
         {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatColor.DARK_RED + "[" + ChatColor.RED + "Tours" + ChatColor.DARK_RED + "] " + ChatColor.RED + "Les Tours sont interdites !");

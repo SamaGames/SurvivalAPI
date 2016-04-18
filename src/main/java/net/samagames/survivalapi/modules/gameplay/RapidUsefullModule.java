@@ -148,7 +148,6 @@ public class RapidUsefullModule extends AbstractSurvivalModule
 
             this.addDrop(new ItemStack(Material.SAND, 1), (base, random) -> new ItemStack(Material.GLASS_BOTTLE, 1), false);
             this.addDrop(new ItemStack(Material.CACTUS, 1), (base, random) -> new ItemStack(Material.LOG, 2), false);
-            this.addDrop(new ItemStack(Material.SUGAR_CANE, 1), (base, random) -> Meta.addMeta(new ItemStack(Material.SUGAR_CANE, 2)), false);
             this.addDrop(new ItemStack(Material.SULPHUR, 1), (base, random) -> Meta.addMeta(new ItemStack(Material.TNT, 1)), false);
 
             return this;

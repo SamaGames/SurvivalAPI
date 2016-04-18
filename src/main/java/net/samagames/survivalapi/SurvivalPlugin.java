@@ -4,7 +4,6 @@ import com.google.gson.JsonPrimitive;
 import com.sk89q.bukkit.util.DynamicPluginCommand;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.survivalapi.game.SurvivalGame;
-import net.samagames.survivalapi.game.WorldDownloader;
 import net.samagames.survivalapi.game.WorldLoader;
 import net.samagames.survivalapi.game.commands.CommandNextEvent;
 import net.samagames.survivalapi.game.commands.CommandUHC;
@@ -18,7 +17,6 @@ import org.bukkit.craftbukkit.v1_9_R1.CraftServer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -41,24 +39,7 @@ public class SurvivalPlugin extends JavaPlugin
     @Override
     public void onEnable()
     {
-        File worldDir = new File(this.getDataFolder().getAbsoluteFile().getParentFile().getParentFile(), "world");
-        this.getLogger().info("Checking wether world exists at : " + worldDir.getAbsolutePath());
-
-        if (!worldDir.exists())
-        {
-            this.getLogger().severe("World's folder not found. Aborting!");
-            Bukkit.shutdown();
-        }
-
-        this.getLogger().info("World's folder found... Checking for arena file...");
-        WorldDownloader worldDownloader = new WorldDownloader(this);
-
-        if (!worldDownloader.checkAndDownloadWorld(worldDir))
-        {
-            this.getLogger().severe("Error during map downloading. Aborting!");
-            Bukkit.shutdown();
-        }
-
+        this.worldLoader = new WorldLoader(this, SamaGamesAPI.get().getGameManager().getGameProperties().getOption("size", new JsonPrimitive(1000)).getAsInt());
         this.api = new SurvivalAPI(this);
 
         try
@@ -105,7 +86,8 @@ public class SurvivalPlugin extends JavaPlugin
         long lastTime = System.currentTimeMillis();
 
         this.getLogger().info("Computing world top for tower detection...");
-        this.worldLoader.computeTop(world);
+        //this.worldLoader.computeTop(world);
+        world.getClass(); //For Sonar, beacause of unused argument
         this.getLogger().info("Compute done in " + (System.currentTimeMillis() - lastTime) + " ms");
         this.getLogger().info("Done!");
 
@@ -120,9 +102,6 @@ public class SurvivalPlugin extends JavaPlugin
     private void postInit()
     {
         this.startTimer.cancel();
-
-        this.worldLoader = new WorldLoader(this, SamaGamesAPI.get().getGameManager().getGameProperties().getOption("size", new JsonPrimitive(1000)).getAsInt());
-        this.worldLoader.begin(Bukkit.getWorlds().get(0));
 
         try
         {
@@ -149,5 +128,14 @@ public class SurvivalPlugin extends JavaPlugin
         List<String> toRemove = knownCommands.entrySet().stream().filter(entry -> entry.getValue() instanceof DynamicPluginCommand).map(Map.Entry::getKey).collect(Collectors.toList());
 
         toRemove.forEach(knownCommands::remove);
+    }
+
+    public SurvivalAPI getApi()
+    {
+        return api;
+    }
+
+    public WorldLoader getWorldLoader() {
+        return worldLoader;
     }
 }

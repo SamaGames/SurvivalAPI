@@ -1,6 +1,5 @@
 package net.samagames.survivalapi.game;
 
-import com.google.gson.JsonElement;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import org.rauschig.jarchivelib.Archiver;
@@ -39,12 +38,11 @@ public class WorldDownloader
      *
      * @return {@code true} if success or {@code false}
      */
-    public boolean checkAndDownloadWorld(File worldDir)
+    public boolean checkAndDownloadWorld(File worldDir, String worldStorage)
     {
         SamaGamesAPI.get().getGameManager().getGameProperties().reload();
 
         File worldTar = new File(worldDir.getParentFile(), "world.tar.gz");
-        JsonElement worldStorage = SamaGamesAPI.get().getGameManager().getGameProperties().getConfig("worldStorage", null);
 
         if (worldStorage == null)
         {
@@ -57,7 +55,7 @@ public class WorldDownloader
 
         try
         {
-            worldStorageURL = new URL(worldStorage.getAsString() + "get.php");
+            worldStorageURL = new URL(worldStorage + "get.php");
             BufferedReader in = new BufferedReader(new InputStreamReader(worldStorageURL.openStream(), "UTF-8"));
             mapID = in.readLine();
             in.close();
@@ -70,7 +68,7 @@ public class WorldDownloader
             return false;
         }
 
-        if (mapID.equals("No file found"))
+        if ("No file found".equals(mapID))
         {
             if (worldTar.exists())
             {
@@ -80,7 +78,7 @@ public class WorldDownloader
 
                 try
                 {
-                    worldStorageURL = new URL(worldStorage.getAsString() + "clean.php?name=" + mapID);
+                    worldStorageURL = new URL(worldStorage + "clean.php?name=" + mapID);
                     URLConnection connection = worldStorageURL.openConnection();
                     connection.connect();
                 }
@@ -108,7 +106,7 @@ public class WorldDownloader
 
         try
         {
-            worldStorageURL = new URL(worldStorage.getAsString() + "download.php?name=" + mapID);
+            worldStorageURL = new URL(worldStorage + "download.php?name=" + mapID);
 
             ReadableByteChannel rbc = Channels.newChannel(worldStorageURL.openStream());
             FileOutputStream fos = new FileOutputStream(worldTar);
@@ -124,7 +122,7 @@ public class WorldDownloader
 
         try
         {
-            worldStorageURL = new URL(worldStorage.getAsString() + "clean.php?name=" + mapID);
+            worldStorageURL = new URL(worldStorage + "clean.php?name=" + mapID);
 
             URLConnection connection = worldStorageURL.openConnection();
             connection.connect();

@@ -1,4 +1,4 @@
-# Created by .ignore support plugin (hsz.mobi)
+# Created by .ignore support manager (hsz.mobi)
 ### Java template
 *.class
 
@@ -39,7 +39,7 @@ hs_err_pid*
 # .idea/gradle.xml
 # .idea/libraries
 
-# Mongo Explorer plugin:
+# Mongo Explorer manager:
 # .idea/mongoSettings.xml
 
 ## File-based project format:
@@ -51,13 +51,13 @@ hs_err_pid*
 # IntelliJ
 /out/
 
-# mpeltonen/sbt-idea plugin
+# mpeltonen/sbt-idea manager
 .idea_modules/
 
-# JIRA plugin
-atlassian-ide-plugin.xml
+# JIRA manager
+atlassian-ide-manager.xml
 
-# Crashlytics plugin (for Android Studio and IntelliJ)
+# Crashlytics manager (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties

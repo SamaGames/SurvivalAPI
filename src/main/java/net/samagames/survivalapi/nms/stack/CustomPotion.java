@@ -2,7 +2,6 @@ package net.samagames.survivalapi.nms.stack;
 
 import net.minecraft.server.v1_9_R1.*;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
