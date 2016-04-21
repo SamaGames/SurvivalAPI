@@ -2,7 +2,6 @@ package net.samagames.survivalapi.nms;
 
 import net.minecraft.server.v1_9_R1.*;
 import net.samagames.survivalapi.SurvivalPlugin;
-import net.samagames.survivalapi.nms.potions.PotionAttackDamageNerf;
 import net.samagames.survivalapi.nms.stack.CustomPotion;
 import net.samagames.survivalapi.nms.stack.CustomSoup;
 import net.samagames.tools.Reflection;
@@ -49,7 +48,8 @@ public class NMSPatcher
         ((PotionEffectType[]) byIdField.get(null))[5] = null;
 
         this.logger.info("Patching Strength Potion (130% => 43.3%, 260% => 86.6%)");
-        Reflection.setFinalStatic(MobEffectList.class.getDeclaredField("INCREASE_DAMAGE"), new PotionAttackDamageNerf());
+        //MobEffectList.REGISTRY.a(5, new MinecraftKey("strength"), new PotionAttackDamageNerf());
+        //No need to patch in 1.9 :D
         this.logger.info("Potions patched");
     }
 
