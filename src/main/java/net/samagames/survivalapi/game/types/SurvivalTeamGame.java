@@ -3,6 +3,7 @@ package net.samagames.survivalapi.game.types;
 import com.google.gson.JsonPrimitive;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Status;
+import net.samagames.api.stats.games.IUHCRunStatistics;
 import net.samagames.survivalapi.game.*;
 import net.samagames.survivalapi.game.types.team.GuiSelectTeam;
 import net.samagames.survivalapi.game.types.team.SurvivalTeamList;
@@ -257,7 +258,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 playerData.addStars(2, "Victoire !");
             }
 
-            this.increaseStat(playerID, "wins", 1);
+            SamaGamesAPI.get().getStatsManager().getPlayerStats(playerID).getUHCRunStatistics().incrByWins(1);
 
             Player player = Bukkit.getPlayer(playerID);
             if (player == null)
