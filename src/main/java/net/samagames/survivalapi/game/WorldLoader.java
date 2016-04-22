@@ -101,8 +101,8 @@ public class WorldLoader
                         i++;
                     }
                 }
-            }, 1L, 1L);
-        }.runTaskTimer(this.plugin, 1L, 1L);
+            }.runTaskTimer(this.plugin, 1L, 1L);
+        }
 
         new BukkitRunnable()
         {
