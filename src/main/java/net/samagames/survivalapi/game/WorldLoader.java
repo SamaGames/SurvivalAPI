@@ -62,11 +62,10 @@ public class WorldLoader
     {
         final long startTime = System.currentTimeMillis();
         final int size = 240;
-        final int todo = (((size * 2) * (size * 2)) / 256) * spawns.size();
 
         for(final Location loc : spawns)
         {
-            this.task = Bukkit.getScheduler().runTaskTimer(this.plugin, new Runnable()
+            new BukkitRunnable()
             {
                 private int x = loc.getBlockX()-size;
                 private int z = loc.getBlockZ()-size;
@@ -80,14 +79,6 @@ public class WorldLoader
                     {
                         world.getChunkAt(world.getBlockAt(this.x, 64, this.z)).load(true);
 
-                        int percentage = numberChunk * 100 / todo;
-
-                        if (percentage > lastShow && percentage % 10 == 0)
-                        {
-                            lastShow = percentage;
-                            plugin.getLogger().info("Loading chunks (" + percentage + "%)");
-                        }
-
                         this.z += 16;
 
                         if (this.z >= size)
@@ -98,8 +89,11 @@ public class WorldLoader
 
                         if (this.x >= size)
                         {
-                            done ++;
-                            task.cancel();
+                            done++;
+                            
+                            plugin.getLogger().info("Spawn areas loaded: " + done + "/" + spawns.size());
+                            
+                            this.cancel();
                             return;
                         }
 
@@ -107,12 +101,14 @@ public class WorldLoader
                         i++;
                     }
                 }
-            }, 1L, 1L);
+            }.runTaskTimer(this.plugin, 1L, 1L);
         }
 
-        new BukkitRunnable() {
+        new BukkitRunnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 if(done >= spawns.size())
                 {
                     this.cancel();
