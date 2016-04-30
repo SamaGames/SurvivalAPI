@@ -2,6 +2,7 @@ package net.samagames.survivalapi.nms;
 
 import net.minecraft.server.v1_9_R1.*;
 import net.samagames.survivalapi.SurvivalPlugin;
+import net.samagames.survivalapi.nms.stack.CustomAxe;
 import net.samagames.survivalapi.nms.stack.CustomPotion;
 import net.samagames.survivalapi.nms.stack.CustomSoup;
 import net.samagames.tools.Reflection;
@@ -70,6 +71,11 @@ public class NMSPatcher
 
             register.invoke(null, 373, "potion", potion);
             register.invoke(null, 282, "mushroom_stew", soup);
+            register.invoke(null, 271, "wooden_axe", new CustomAxe(Item.EnumToolMaterial.WOOD));
+            register.invoke(null, 275, "stone_axe", new CustomAxe(Item.EnumToolMaterial.STONE));
+            register.invoke(null, 258, "iron_axe", new CustomAxe(Item.EnumToolMaterial.IRON));
+            register.invoke(null, 286, "golden_axe", new CustomAxe(Item.EnumToolMaterial.GOLD));
+            register.invoke(null, 279, "diamond_axe", new CustomAxe(Item.EnumToolMaterial.DIAMOND));
 
             Reflection.setFinalStatic(Items.class.getDeclaredField("POTION"), potion);
             Reflection.setFinalStatic(Items.class.getDeclaredField("MUSHROOM_STEW"), soup);

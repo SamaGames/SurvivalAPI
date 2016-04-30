@@ -181,8 +181,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             }
         });
 
-        //call the download of the world
-        downloadWorld();
+        this.downloadWorld();
     }
 
     /**
