@@ -41,7 +41,7 @@ public class StockupModule extends AbstractSurvivalModule
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event)
     {
-        for (SurvivalPlayer survivalPlayer : (Collection<SurvivalPlayer>) SamaGamesAPI.get().getGameManager().getGame().getInGamePlayers().keySet())
+        for (SurvivalPlayer survivalPlayer : (Collection<SurvivalPlayer>) SamaGamesAPI.get().getGameManager().getGame().getInGamePlayers().values())
             if (!survivalPlayer.getUUID().equals(event.getEntity().getUniqueId()))
             {
                 EntityPlayer player = ((CraftPlayer)survivalPlayer.getPlayerIfOnline()).getHandle();

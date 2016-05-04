@@ -50,7 +50,7 @@ public class NinjanautModule extends AbstractSurvivalModule
         super.onGameStart(game);
         Map map = game.getInGamePlayers();
         int r = new Random().nextInt(map.size());
-        for (SurvivalPlayer player : (Collection<SurvivalPlayer>)map.keySet())
+        for (SurvivalPlayer player : (Collection<SurvivalPlayer>)map.values())
         {
             if (r == 0)
             {
