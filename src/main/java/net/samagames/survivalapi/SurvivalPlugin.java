@@ -86,7 +86,6 @@ public class SurvivalPlugin extends JavaPlugin
         long lastTime = System.currentTimeMillis();
 
         this.getLogger().info("Computing world top for tower detection...");
-        //this.worldLoader.computeTop(world);
         world.getClass(); //For Sonar, beacause of unused argument
         this.getLogger().info("Compute done in " + (System.currentTimeMillis() - lastTime) + " ms");
         this.getLogger().info("Done!");

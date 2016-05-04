@@ -20,6 +20,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -284,5 +286,29 @@ public class GameListener implements Listener
         for (int i = 0; i < 4; i++)
             if (event.getLine(i).matches("^[a-zA-Z0-9ÀÁÂÄÇÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜàáâäçèéêëîïôöûü &]*$") && event.getLine(i).length() > 20)
                 event.setCancelled(true);
+    }
+
+    /**
+     * Cancel the craft of the shield
+     *
+     * @param event Event
+     */
+    @EventHandler
+    public void onCraftItem(CraftItemEvent event)
+    {
+        if (event.getRecipe().getResult().getType() == Material.SHIELD)
+            event.getInventory().setResult(null);
+    }
+
+    /**
+     * Cancel the craft of the shield
+     *
+     * @param event Event
+     */
+    @EventHandler
+    public void onCraftItem(PrepareItemCraftEvent event)
+    {
+        if (event.getRecipe().getResult().getType() == Material.SHIELD)
+            event.getInventory().setResult(null);
     }
 }
