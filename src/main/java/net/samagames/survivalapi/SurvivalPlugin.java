@@ -3,6 +3,7 @@ package net.samagames.survivalapi;
 import com.google.gson.JsonPrimitive;
 import com.sk89q.bukkit.util.DynamicPluginCommand;
 import net.samagames.api.SamaGamesAPI;
+import net.samagames.api.stats.IStatsManager;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.game.WorldLoader;
 import net.samagames.survivalapi.game.commands.CommandNextEvent;
@@ -61,6 +62,8 @@ public class SurvivalPlugin extends JavaPlugin
         this.getCommand("nextevent").setExecutor(new CommandNextEvent());
 
         this.startTimer = this.getServer().getScheduler().runTaskTimer(this, this::postInit, 20L, 20L);
+
+        SamaGamesAPI.get().getStatsManager().setStatsToLoad(IStatsManager.StatsNames.UHCRUN, true);
     }
 
     /**
