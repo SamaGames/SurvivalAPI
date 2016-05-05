@@ -7,6 +7,7 @@ import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -45,8 +46,11 @@ public class NineSlotsModule extends AbstractSurvivalModule
     public void onGameStart(SurvivalGame game)
     {
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
-            for (int i = 9; i < player.getPlayerIfOnline().getInventory().getSize(); i++)
-                player.getPlayerIfOnline().getInventory().setItem(i, new ItemStack(Material.BARRIER, 1));
+        {
+            Player bukkitPlayer = player.getPlayerIfOnline();
+            for (int i = 9; i < 36; i++)
+                bukkitPlayer.getInventory().setItem(i, new ItemStack(Material.BARRIER, 1));
+        }
     }
 
     /**
