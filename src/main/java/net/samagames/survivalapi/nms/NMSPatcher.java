@@ -41,7 +41,7 @@ public class NMSPatcher
      */
     public void patchPotions() throws ReflectiveOperationException
     {
-        Reflection.setFinalStatic(PotionEffectType.class.getDeclaredField("acceptingNew"), true);
+        /*Reflection.setFinalStatic(PotionEffectType.class.getDeclaredField("acceptingNew"), true);
 
         Field byIdField = Reflection.getField(PotionEffectType.class, true, "byId");
         Field byNameField = Reflection.getField(PotionEffectType.class, true, "byName");
@@ -51,7 +51,7 @@ public class NMSPatcher
         this.logger.info("Patching Strength Potion (130% => 43.3%, 260% => 86.6%)");
         //MobEffectList.REGISTRY.a(5, new MinecraftKey("strength"), new PotionAttackDamageNerf());
         //No need to patch in 1.9 :D
-        this.logger.info("Potions patched");
+        this.logger.info("Potions patched");*/
     }
 
     /**
