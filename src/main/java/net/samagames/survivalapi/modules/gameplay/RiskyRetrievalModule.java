@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -30,7 +31,14 @@ import java.util.Map;
  */
 public class RiskyRetrievalModule extends AbstractSurvivalModule
 {
+    private static final Material MATERIALS[] = new Material[]{
+            Material.IRON_ORE, Material.IRON_INGOT,
+            Material.GOLD_ORE, Material.GOLD_INGOT,
+            Material.DIAMOND_ORE, Material.DIAMOND,
+            Material.QUARTZ
+    };
     private Inventory inventory;
+    private Location chestLocation;
 
     /**
      * Constructor
@@ -48,9 +56,9 @@ public class RiskyRetrievalModule extends AbstractSurvivalModule
     @Override
     public void onGameStart(SurvivalGame game)
     {
-        Location location = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
-        location.setY(location.getWorld().getHighestBlockYAt(location));
-        location.getBlock().setType(Material.ENDER_CHEST);
+        this.chestLocation = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
+        this.chestLocation.setY(this.chestLocation.getWorld().getHighestBlockYAt(this.chestLocation));
+        this.chestLocation.getBlock().setType(Material.ENDER_CHEST);
     }
 
     /**
@@ -100,18 +108,22 @@ public class RiskyRetrievalModule extends AbstractSurvivalModule
      *
      * @param event Item spawn event instance
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onItemSpawn(ItemSpawnEvent event)
     {
-        if (event.getEntityType() != EntityType.DROPPED_ITEM)
-            return;
+        if (event.getEntityType() != EntityType.DROPPED_ITEM
+            || Meta.hasMeta(event.getEntity().getItemStack()))
+            return ;
 
-        if(Meta.hasMeta(event.getEntity().getItemStack()))
-            return;
-
-        ItemStack stack = event.getEntity().getItemStack();
-        ItemStack newStack = stack.clone();
-        this.inventory.addItem(Meta.addMeta(newStack));
+        for (int i = 0; i < MATERIALS.length; i++)
+        {
+            ItemStack stack = event.getEntity().getItemStack();
+            if (MATERIALS[i] != stack.getType())
+                continue ;
+            ItemStack newStack = stack.clone();
+            this.inventory.addItem(Meta.addMeta(newStack));
+            event.getEntity().setItemStack(Meta.addMeta(event.getEntity().getItemStack()));
+        }
     }
 
     /**
@@ -122,7 +134,8 @@ public class RiskyRetrievalModule extends AbstractSurvivalModule
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event)
     {
-        if (event.getBlockPlaced().getLocation().distanceSquared(new Location(event.getBlockPlaced().getWorld(), 0, 0, 0)) < 25)
+        if (event.getBlock().getLocation().getWorld().equals(this.chestLocation.getWorld())
+                && event.getBlock().getLocation().distanceSquared(this.chestLocation) < 25)
         {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatColor.RED + "Il n'est pas possible de poser de blocs à proximité du coffre des minerais.");
@@ -137,7 +150,8 @@ public class RiskyRetrievalModule extends AbstractSurvivalModule
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockBreakEvent event)
     {
-        if (event.getBlock().getLocation().distanceSquared(new Location(event.getBlock().getWorld(), 0, 0, 0)) < 25)
+        if (event.getBlock().getLocation().getWorld().equals(this.chestLocation.getWorld())
+                && event.getBlock().getLocation().distanceSquared(this.chestLocation) < 25)
         {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatColor.RED + "Il n'est pas possible de casser de blocs à proximité du coffre des minerais.");
