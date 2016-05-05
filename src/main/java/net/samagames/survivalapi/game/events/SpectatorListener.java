@@ -58,11 +58,13 @@ public class SpectatorListener implements Listener
         if (doStuff)
         {
             event.setCancelled(true);
-            SurvivalPlayer playerdata = (SurvivalPlayer)this.game.getPlayer(event.getPlayer().getUniqueId());
-            if (playerdata != null && playerdata.getWaitingSpawn() != null)
-                event.getPlayer().teleport(playerdata.getWaitingSpawn());
-            else
-                event.getPlayer().teleport(this.game.getLobbySpawn());
+            this.game.getPlugin().getServer().getScheduler().runTask(this.game.getPlugin(), () -> {
+                SurvivalPlayer playerdata = (SurvivalPlayer) this.game.getPlayer(event.getPlayer().getUniqueId());
+                if (playerdata != null && playerdata.getWaitingSpawn() != null)
+                    event.getPlayer().teleport(playerdata.getWaitingSpawn());
+                else
+                    event.getPlayer().teleport(this.game.getLobbySpawn());
+            });
             event.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.ITALIC + "Mais où allez-vous comme ça ?!");
         }
     }
