@@ -69,7 +69,8 @@ public class NinjanautModule extends AbstractSurvivalModule
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event)
     {
-        if (this.ninjanaut == null || !event.getEntity().getUniqueId().equals(this.ninjanaut) || event.getEntity().getKiller() == null)
+        if (this.ninjanaut == null || !event.getEntity().getUniqueId().equals(this.ninjanaut) || event.getEntity().getKiller() == null
+                || event.getEntity().getKiller() == event.getEntity())
             return ;
         SurvivalGame game = (SurvivalGame)SamaGamesAPI.get().getGameManager().getGame();
         SurvivalPlayer player = (SurvivalPlayer)game.getPlayer(event.getEntity().getKiller().getUniqueId());
