@@ -82,7 +82,7 @@ public class NinjanautModule extends AbstractSurvivalModule
         if (!player.isOnline() || player.isSpectator())
             return ;
         this.ninjanaut = player.getUUID();
-        game.getCoherenceMachine().getMessageManager().writeCustomMessage(player.getPlayerData().getCustomName() + (first ? " a été choisi comme Ninjanaut" : " a tué le Ninjanaut, et prends donc sa place") + ". Il sera plus résistant, tuez le pour prendre sa place.", true);
+        game.getCoherenceMachine().getMessageManager().writeCustomMessage(player.getPlayerData().getDisplayeName() + (first ? " a été choisi comme Ninjanaut" : " a tué le Ninjanaut, et prends donc sa place") + ". Il sera plus résistant, tuez le pour prendre sa place.", true);
         Player bukkitPlayer = player.getPlayerIfOnline();
         bukkitPlayer.addPotionEffect(PotionEffectType.SPEED.createEffect(Integer.MAX_VALUE, 2));
         bukkitPlayer.addPotionEffect(PotionEffectType.INCREASE_DAMAGE.createEffect(Integer.MAX_VALUE, 2));

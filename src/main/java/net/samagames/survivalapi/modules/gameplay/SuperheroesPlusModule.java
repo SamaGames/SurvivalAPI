@@ -67,6 +67,9 @@ public class SuperheroesPlusModule extends AbstractSurvivalModule
     public void onDamage(EntityDamageEvent event)
     {
         if (event.getEntityType() == EntityType.PLAYER && event.getCause() == EntityDamageEvent.DamageCause.FALL)
+        {
             event.setCancelled(true);
+            event.setDamage(0);
+        }
     }
 }

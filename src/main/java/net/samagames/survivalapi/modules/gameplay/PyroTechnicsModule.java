@@ -58,7 +58,9 @@ public class PyroTechnicsModule extends AbstractSurvivalModule
         if (((SurvivalGame)SamaGamesAPI.get().getGameManager().getGame()).isDamagesActivated()
                 && event.getEntityType() == EntityType.PLAYER
                 && event.getCause() != EntityDamageEvent.DamageCause.FIRE
-                && event.getCause() != EntityDamageEvent.DamageCause.FIRE_TICK)
+                && event.getCause() != EntityDamageEvent.DamageCause.FIRE_TICK
+                && event.getDamage() > 0
+                && !event.isCancelled())
             event.getEntity().setFireTicks(100);
     }
 }

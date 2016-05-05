@@ -43,6 +43,7 @@ public class InfiniteEnchanterModule extends AbstractSurvivalModule
         ItemStack tables = new ItemStack(Material.ENCHANTMENT_TABLE, 64);
         ItemStack anvils = new ItemStack(Material.ANVIL, 64);
         ItemStack bookshelves = new ItemStack(Material.BOOKSHELF, 64);
+        ItemStack lapis = new ItemStack(Material.INK_SACK, 64, (short)4);
 
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
         {
@@ -50,7 +51,7 @@ public class InfiniteEnchanterModule extends AbstractSurvivalModule
             p.getInventory().addItem(tables);
             p.getInventory().addItem(anvils);
             p.getInventory().addItem(bookshelves);
-            p.getInventory().addItem(bookshelves);
+            p.getInventory().addItem(lapis);
             p.setLevel(111111);
         }
     }

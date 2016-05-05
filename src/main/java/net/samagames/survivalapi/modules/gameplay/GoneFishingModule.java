@@ -7,7 +7,9 @@ import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collection;
 import java.util.Map;
@@ -41,8 +43,11 @@ public class GoneFishingModule extends AbstractSurvivalModule
     public void onGameStart(SurvivalGame game)
     {
         ItemStack rod = new ItemStack(Material.FISHING_ROD);
-        rod.addUnsafeEnchantment(Enchantment.LUCK, 250);
-        rod.addUnsafeEnchantment(Enchantment.DURABILITY, 250);
+        rod.addUnsafeEnchantment(Enchantment.LUCK, Integer.MAX_VALUE);
+        rod.addUnsafeEnchantment(Enchantment.DURABILITY, Integer.MAX_VALUE);
+        ItemMeta meta = rod.getItemMeta();
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        rod.setItemMeta(meta);
 
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
             player.getPlayerIfOnline().getInventory().addItem(rod);
