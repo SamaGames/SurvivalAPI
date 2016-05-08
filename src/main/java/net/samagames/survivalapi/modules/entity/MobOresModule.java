@@ -40,7 +40,7 @@ public class MobOresModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDeath(BlockBreakEvent event)
     {
         EntityType type;

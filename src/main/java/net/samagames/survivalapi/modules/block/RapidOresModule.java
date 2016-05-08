@@ -80,7 +80,7 @@ public class RapidOresModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event)
     {
         switch (event.getBlock().getType())

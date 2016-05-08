@@ -40,6 +40,7 @@ public class InventorsModule extends AbstractSurvivalModule
         if (!first || event.isCancelled())
             return ;
 
+        first = false;
         StringBuilder builder = new StringBuilder();
         builder.append(ChatColor.GOLD).append("[").append(ChatColor.YELLOW);
         builder.append("Inventors");
