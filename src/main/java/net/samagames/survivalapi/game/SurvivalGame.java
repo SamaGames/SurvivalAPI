@@ -257,10 +257,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.dump();
 
         this.server.getScheduler().runTaskLater(this.plugin, () -> this.mainTask.cancel(), 20L);
-
-        new SurvivalStatisticsTemplate().execute(this);
-
-        this.server.getScheduler().runTaskLater(this.plugin, super::handleGameEnd, 20L * 3);
+        this.server.getScheduler().runTaskLater(this.plugin, () -> new SurvivalStatisticsTemplate().execute(this), 20L * 3);
+        this.server.getScheduler().runTaskLater(this.plugin, super::handleGameEnd, 20L * 6);
     }
 
     /**
