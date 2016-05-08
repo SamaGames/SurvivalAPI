@@ -5,10 +5,7 @@ import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import net.samagames.survivalapi.utils.Meta;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,6 +19,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
+import java.util.Random;
 
 /**
  * RiskyRetrievalModule class
@@ -39,6 +37,7 @@ public class RiskyRetrievalModule extends AbstractSurvivalModule
     };
     private Inventory inventory;
     private Location chestLocation;
+    private Random random;
 
     /**
      * Constructor
@@ -51,6 +50,7 @@ public class RiskyRetrievalModule extends AbstractSurvivalModule
     {
         super(plugin, api, moduleConfiguration);
         this.inventory = plugin.getServer().createInventory(null, 54, "Minage");
+        this.random = new Random();
     }
 
     @Override
@@ -59,6 +59,7 @@ public class RiskyRetrievalModule extends AbstractSurvivalModule
         this.chestLocation = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
         this.chestLocation.setY(this.chestLocation.getWorld().getHighestBlockYAt(this.chestLocation));
         this.chestLocation.getBlock().setType(Material.ENDER_CHEST);
+        this.plugin.getServer().getScheduler().runTaskTimer(this.plugin, () -> this.chestLocation.getWorld().spawnParticle(Particle.PORTAL, this.chestLocation.clone().add(random.nextDouble() % 3D - 1.5D, random.nextDouble() % 3D - 1.5D, random.nextDouble() % 3D - 1.5D), 1), 4, 4);
     }
 
     /**
