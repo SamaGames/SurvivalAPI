@@ -147,7 +147,7 @@ public class RiskyRetrievalModule extends AbstractSurvivalModule
      *
      * @param event Block break event instance
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onBlockPlace(BlockBreakEvent event)
     {
         if (event.getBlock().getLocation().getWorld().equals(this.chestLocation.getWorld())

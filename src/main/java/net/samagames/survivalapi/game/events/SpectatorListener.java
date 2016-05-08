@@ -85,7 +85,7 @@ public class SpectatorListener implements Listener
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent event)
     {
         event.setCancelled(this.hasToCancel(event.getPlayer()) || this.game.getSurvivalGameLoop().areBlocksProtected());
