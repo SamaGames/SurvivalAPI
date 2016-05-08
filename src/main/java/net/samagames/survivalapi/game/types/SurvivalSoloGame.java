@@ -125,7 +125,7 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             });
 
             for (Player user : this.server.getOnlinePlayers())
-                Titles.sendTitle(user, 0, 60, 5, ChatColor.RED + "Fin du jeu", ChatColor.YELLOW + "Victoire de " + player.getName());
+                Titles.sendTitle(user, 0, 60, 5, ChatColor.RED + "Fin du jeu", ChatColor.YELLOW + "Victoire de " + SamaGamesAPI.get().getPlayerManager().getPlayerData(player.getUniqueId()).getDisplayName());
 
             this.coherenceMachine.getTemplateManager().getPlayerWinTemplate().execute(player);
 
