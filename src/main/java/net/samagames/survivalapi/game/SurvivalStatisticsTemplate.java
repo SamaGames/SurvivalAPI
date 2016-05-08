@@ -30,10 +30,13 @@ public class SurvivalStatisticsTemplate
         Collections.sort(killers, (o1, o2) -> Integer.compare(o1.getKills().size(), o2.getKills().size()));
         Collections.sort(damagers, (o1, o2) -> Double.compare(o1.getDamageReporter().getTotalPlayerDamages(), o2.getDamageReporter().getTotalPlayerDamages()));
 
+        Collections.reverse(killers);
+        Collections.reverse(damagers);
+
         List<String> finalLines = new ArrayList<>();
         finalLines.add(ChatUtils.getCenteredText(ChatColor.WHITE + "•" + ChatColor.BOLD + " Statistiques du jeu " + ChatColor.RESET + ChatColor.WHITE + "•"));
         finalLines.add("");
-        finalLines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Classement des meurtres"));
+        finalLines.add(ChatUtils.getCenteredText(ChatColor.WHITE + "★ Classement des meurtres ★"));
         finalLines.add("");
 
         finalLines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "1er" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(killers.get(0).getUUID()) + ChatColor.GRAY + " (" + killers.get(0).getKills().size() + ")"));
@@ -43,7 +46,8 @@ public class SurvivalStatisticsTemplate
             finalLines.add(ChatUtils.getCenteredText(ChatColor.RED + "3e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(killers.get(2).getUUID()) + ChatColor.GRAY + " (" + killers.get(2).getKills().size() + ")"));
 
         finalLines.add("");
-        finalLines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "Classement des dégats"));
+        finalLines.add("");
+        finalLines.add(ChatUtils.getCenteredText(ChatColor.WHITE + "★ Classement des dégats ★"));
         finalLines.add("");
 
         finalLines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "1er" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(damagers.get(0).getUUID()) + ChatColor.GRAY + " (" + damagers.get(0).getDamageReporter().getTotalPlayerDamages() + ")"));
