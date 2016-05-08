@@ -24,6 +24,7 @@ public class SurvivalPlayer extends GamePlayer
     private static SurvivalGame game;
 
     private final List<UUID> kills;
+    private final DamageReporter damageReporter;
     private SurvivalTeam team;
     private Location waitingspawn;
 
@@ -37,6 +38,7 @@ public class SurvivalPlayer extends GamePlayer
         super(player);
 
         this.kills = new ArrayList<>();
+        this.damageReporter = new DamageReporter();
         this.team = null;
         this.waitingspawn = null;
     }
@@ -155,6 +157,17 @@ public class SurvivalPlayer extends GamePlayer
     public List<UUID> getKills()
     {
         return this.kills;
+    }
+
+
+    /**
+     * Get player's damage reporter
+     *
+     * @return The damage reporter
+     */
+    public DamageReporter getDamageReporter()
+    {
+        return this.damageReporter;
     }
 
     /**

@@ -80,6 +80,8 @@ public class GameListener implements Listener
 
                 if (((Player) damager).hasPotionEffect(PotionEffectType.INCREASE_DAMAGE))
                     event.setDamage(EntityDamageEvent.DamageModifier.MAGIC, event.getDamage(EntityDamageEvent.DamageModifier.MAGIC) / 2);
+
+                ((SurvivalPlayer) this.game.getPlayer(damager.getUniqueId())).getDamageReporter().addPlayerDamages(damaged.getUniqueId(), event.getDamage());
             }
             else if (damager instanceof Projectile)
             {
@@ -115,6 +117,8 @@ public class GameListener implements Listener
 
                     if (shooter.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE))
                         event.setDamage(EntityDamageEvent.DamageModifier.MAGIC, event.getDamage(EntityDamageEvent.DamageModifier.MAGIC) / 2);
+
+                    ((SurvivalPlayer) this.game.getPlayer(shooter.getUniqueId())).getDamageReporter().addPlayerDamages(damaged.getUniqueId(), event.getDamage());
                 }
             }
             else
@@ -124,6 +128,10 @@ public class GameListener implements Listener
 
                 damaged.setMetadata("lastDamager", new FixedMetadataValue(this.game.getPlugin(), damager));
             }
+        }
+        else if (event.getDamager().getType() == EntityType.PLAYER)
+        {
+            ((SurvivalPlayer) this.game.getPlayer(event.getDamager().getUniqueId())).getDamageReporter().addEntityDamages(event.getEntityType(), event.getDamage());
         }
     }
 

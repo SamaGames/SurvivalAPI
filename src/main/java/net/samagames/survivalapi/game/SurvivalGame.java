@@ -9,7 +9,6 @@ import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Game;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.api.games.Status;
-import net.samagames.api.stats.games.IUHCRunStatistics;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.commands.CommandNextEvent;
@@ -259,7 +258,9 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
         this.server.getScheduler().runTaskLater(this.plugin, () -> this.mainTask.cancel(), 20L);
 
-        super.handleGameEnd();
+        new SurvivalStatisticsTemplate().execute(this);
+
+        this.server.getScheduler().runTaskLater(this.plugin, super::handleGameEnd, 20L * 3);
     }
 
     /**
