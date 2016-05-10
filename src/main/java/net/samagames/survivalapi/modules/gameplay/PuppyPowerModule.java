@@ -5,7 +5,9 @@ import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.tools.MojangShitUtils;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,12 +42,14 @@ public class PuppyPowerModule extends AbstractSurvivalModule
     @Override
     public void onGameStart(SurvivalGame game)
     {
+        ItemStack eggs = MojangShitUtils.getMonsterEgg(EntityType.WOLF);
+        eggs.setAmount(64);
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
         {
             Player bplayer = player.getPlayerIfOnline();
             bplayer.getInventory().addItem(new ItemStack(Material.BONE, 64));
             bplayer.getInventory().addItem(new ItemStack(Material.ROTTEN_FLESH, 64));
-            bplayer.getInventory().addItem(new ItemStack(Material.MONSTER_EGG, 64, (short)95));
+            bplayer.getInventory().addItem(eggs);
         }
     }
 }
