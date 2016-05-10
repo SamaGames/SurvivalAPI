@@ -5,6 +5,7 @@ import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -38,8 +39,8 @@ public class CocoaEffectsModule extends AbstractSurvivalModule
         super(plugin, api, moduleConfiguration);
         this.cocoa = new ItemStack(Material.INK_SACK, 5, (short)3);
         ItemMeta meta = this.cocoa.getItemMeta();
-        meta.setLore(Arrays.asList("Chaque utilisation vous donne 30 secondes", " de force et vitesse améliorées", " mais les effets contraires par la suite", " pendant 30 secondes."));
-        meta.setDisplayName("Coco");
+        meta.setLore(Arrays.asList(ChatColor.GRAY + "Chaque utilisation vous donne 30 secondes", ChatColor.GRAY + " de force et vitesse améliorées", ChatColor.GRAY + " mais les effets contraires par la suite", ChatColor.GRAY + " pendant 30 secondes."));
+        meta.setDisplayName(ChatColor.AQUA + "Coco");
         this.cocoa.setItemMeta(meta);
     }
 
