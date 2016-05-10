@@ -12,6 +12,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -82,7 +83,7 @@ public class NMSPatcher
         }
         catch (ReflectiveOperationException e)
         {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Reflection error", e);
         }
     }
 

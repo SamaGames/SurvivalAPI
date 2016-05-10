@@ -349,7 +349,7 @@ public class NbtFactory {
         try {
             STREAM_TOOLS = loader.loadClass(nmsPackage + ".NBTCompressedStreamTools");
             READ_LIMITER_CLASS = loader.loadClass(nmsPackage + ".NBTReadLimiter");
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException ignored) {
             // Ignore - we will detect this later
         }
     }

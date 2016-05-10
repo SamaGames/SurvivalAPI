@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * GuiSelectTeam class
@@ -64,7 +65,7 @@ public class GuiSelectTeam extends AbstractGui
         }
         catch (NoSuchFieldException | SecurityException | NoSuchMethodException ex)
         {
-            ex.printStackTrace();
+            this.game.getPlugin().getLogger().log(Level.SEVERE, "Error patching NMS", ex);
         }
 
         int last = 10;
@@ -179,13 +180,13 @@ public class GuiSelectTeam extends AbstractGui
                                 }
                                 catch (IllegalArgumentException | InvocationTargetException | IllegalAccessException ex)
                                 {
-                                    ex.printStackTrace();
+                                    game.getPlugin().getLogger().log(Level.SEVERE, "Reflection error", ex);
                                 }
                             }, 5L);
                         }
                         catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException ex)
                         {
-                            ex.printStackTrace();
+                            game.getPlugin().getLogger().log(Level.SEVERE, "Reflection error", ex);
                         }
                     }, 1L);
                 }

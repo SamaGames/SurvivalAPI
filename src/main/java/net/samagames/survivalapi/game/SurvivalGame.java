@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -176,7 +177,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             }
             catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e)
             {
-                e.printStackTrace();
+                this.plugin.getLogger().log(Level.SEVERE, "Error loading lobby", e);
             }
         });
 
@@ -275,7 +276,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         }
         catch (GameException e)
         {
-            e.printStackTrace();
+            this.plugin.getLogger().log(Level.SEVERE, "Error stumping player", e);
         }
     }
 
@@ -580,9 +581,9 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                 this.dump();
             }
         }
-        catch (NullPointerException | IllegalStateException e)
+        catch (NullPointerException | IllegalStateException ignored)
         {
-            throw new GameException(e.getMessage());
+            throw new GameException(ignored.getMessage());
         }
     }
 

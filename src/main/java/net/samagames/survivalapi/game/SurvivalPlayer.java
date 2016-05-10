@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * SurvivalPlayer object
@@ -115,7 +116,7 @@ public class SurvivalPlayer extends GamePlayer
                 }
                 catch (GameException e)
                 {
-                    e.printStackTrace();
+                    game.plugin.getLogger().log(Level.SEVERE, "Error stumping player", e);
                 }
 
                 Location location = player.getLocation();

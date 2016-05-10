@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * SurvivalAPI class
@@ -103,7 +104,7 @@ public class SurvivalAPI
             }
             catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e)
             {
-                e.printStackTrace();
+                this.plugin.getLogger().log(Level.SEVERE, "Error loading module", e);
             }
         }
     }

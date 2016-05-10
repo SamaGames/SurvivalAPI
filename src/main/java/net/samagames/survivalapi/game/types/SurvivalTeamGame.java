@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
+import java.util.logging.Level;
 
 /**
  * SurvivalTeamGame class
@@ -59,7 +60,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         }
         catch (IllegalAccessException e)
         {
-            e.printStackTrace();
+            this.plugin.getLogger().log(Level.SEVERE, "Error initiating team selector", e);
         }
 
         plugin.getServer().getPluginManager().registerEvents(this.teamSelector, plugin);
@@ -204,15 +205,15 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                         this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + teamLeft + ChatColor.YELLOW + " équipes en jeu.", true);
                 }
             }
-            catch (NullPointerException | IllegalStateException e)
+            catch (NullPointerException | IllegalStateException ignored)
             {
                 try
                 {
-                    throw new GameException(e.getMessage());
+                    throw new GameException(ignored.getMessage());
                 }
                 catch (GameException ex)
                 {
-                    ex.printStackTrace();
+                    this.plugin.getLogger().log(Level.SEVERE, "Error checking stump players", ex);
                 }
             }
         }, 2L);

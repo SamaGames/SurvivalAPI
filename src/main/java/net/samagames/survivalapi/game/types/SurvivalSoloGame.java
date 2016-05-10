@@ -17,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * SurvivalSoloGame class
@@ -92,9 +93,9 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + (this.getInGamePlayers().size() - 1) + ChatColor.YELLOW + " joueur" + ((this.getInGamePlayers().size() - 1) > 1 ? "s" : "") + " en vie.", true);
             }
         }
-        catch (NullPointerException | IllegalStateException e)
+        catch (NullPointerException | IllegalStateException ignored)
         {
-            throw new GameException(e.getMessage());
+            throw new GameException(ignored.getMessage());
         }
     }
 
@@ -120,7 +121,7 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 }
                 catch (Exception ex)
                 {
-                    ex.printStackTrace();
+                    this.plugin.getLogger().log(Level.SEVERE, "Error settings stats", ex);
                 }
             });
 

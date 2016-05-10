@@ -10,6 +10,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.logging.Level;
 
 /**
  * WorldDownloader class
@@ -64,7 +65,7 @@ public class WorldDownloader
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            this.plugin.getLogger().log(Level.SEVERE, "Error getting map", e);
             return false;
         }
 
@@ -84,7 +85,7 @@ public class WorldDownloader
                 }
                 catch (IOException e)
                 {
-                    e.printStackTrace();
+                    this.plugin.getLogger().log(Level.SEVERE, "Error getting map", e);
                 }
 
                 return result;
@@ -116,7 +117,7 @@ public class WorldDownloader
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            this.plugin.getLogger().log(Level.SEVERE, "Error getting map", e);
             return false;
         }
 
@@ -129,7 +130,7 @@ public class WorldDownloader
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            this.plugin.getLogger().log(Level.SEVERE, "Error getting map", e);
         }
 
         return extractWorld(worldTar, worldDir);
@@ -152,7 +153,7 @@ public class WorldDownloader
             archiver.extract(worldTar, worldDir.getParentFile());
             return true;
         }
-        catch (IOException e)
+        catch (IOException ignored)
         {
             return false;
         }

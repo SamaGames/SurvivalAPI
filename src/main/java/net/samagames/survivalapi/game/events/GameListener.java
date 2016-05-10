@@ -31,6 +31,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.logging.Level;
+
 public class GameListener implements Listener
 {
     private final SurvivalGame game;
@@ -186,7 +188,7 @@ public class GameListener implements Listener
             }
             catch (GameException e)
             {
-                e.printStackTrace();
+                this.game.getPlugin().getLogger().log(Level.SEVERE, "Error stumping player", e);
             }
 
             event.getDrops().add(new ItemStack(Material.GOLDEN_APPLE));

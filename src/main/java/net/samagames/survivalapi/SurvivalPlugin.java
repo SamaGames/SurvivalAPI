@@ -20,6 +20,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 /**
@@ -55,7 +56,7 @@ public class SurvivalPlugin extends JavaPlugin
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            this.getLogger().log(Level.SEVERE, "Error while patching NMS" , e);
         }
 
         this.getCommand("uhc").setExecutor(new CommandUHC());
@@ -111,7 +112,7 @@ public class SurvivalPlugin extends JavaPlugin
         }
         catch (NoSuchFieldException | IllegalAccessException e)
         {
-            e.printStackTrace();
+            this.getLogger().log(Level.SEVERE, "Error removing commands", e);
         }
 
         this.api.fireEvents(SurvivalAPI.EventType.POSTINIT);
