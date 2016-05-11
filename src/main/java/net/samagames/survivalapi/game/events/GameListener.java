@@ -135,7 +135,6 @@ public class GameListener implements Listener
         {
             ((SurvivalPlayer) this.game.getPlayer(event.getDamager().getUniqueId())).getDamageReporter().addEntityDamages(event.getEntityType(), event.getDamage());
         }
-        this.game.getPlugin().getServer().broadcastMessage(event.getDamager().getClass().toString());
     }
 
     /**
