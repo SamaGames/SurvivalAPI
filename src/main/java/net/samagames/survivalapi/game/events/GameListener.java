@@ -87,13 +87,11 @@ public class GameListener implements Listener
             }
             else if (damager instanceof Projectile)
             {
-                Bukkit.broadcastMessage("slt je suis une flèche");
                 Projectile arrow = (Projectile) damager;
 
                 if (arrow.getShooter() instanceof Player)
                 {
                     Player shooter = (Player) arrow.getShooter();
-                    Bukkit.broadcastMessage("slt g été lancez par " + shooter.getName());
                     if (!this.game.isPvPActivated() || (this.game instanceof SurvivalTeamGame && ((SurvivalTeamGame<SurvivalGameLoop>) this.game).getPlayerTeam(shooter.getUniqueId()).hasPlayer(damaged.getUniqueId())))
                     {
                         event.setCancelled(true);
