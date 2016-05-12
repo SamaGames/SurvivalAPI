@@ -73,7 +73,7 @@ public class PersonalBlocksModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onBlockBreak(BlockBreakEvent event)
     {
         if (this.blocksOwner.containsKey(event.getBlock().getLocation()) && this.blocksOwner.get(event.getBlock().getLocation()) != event.getPlayer().getUniqueId())

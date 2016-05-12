@@ -20,6 +20,7 @@ repositories {
 
 sonarRunner {
     sonarProperties {
+        property "sonar.host.url", "http://blackmesa.samagames.net:9494/"
         property "sonar.projectKey", group + "." + archivesBaseName
         property "sonar.projectName", archivesBaseName
 
@@ -29,7 +30,7 @@ sonarRunner {
 }
 
 dependencies {
-    compile(group: 'org.spigotmc', name: 'spigot', version: '1.8.8-R0.1-SNAPSHOT', changing: true) {
+    compile(group: 'org.spigotmc', name: 'spigot', version: '1.9-R0.1-SNAPSHOT', changing: true) {
         transitive = false
     }
 

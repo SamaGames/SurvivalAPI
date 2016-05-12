@@ -42,37 +42,27 @@ public class OptimizationListener implements Listener
             {
                 Item curEntity = (Item) anEntityList;
 
-                if (!curEntity.isDead())
+                if (!curEntity.isDead()
+                        && curEntity.getItemStack().getType().equals(newEntity.getItemStack().getType())
+                        && curEntity.getItemStack().getData().getData() == newEntity.getItemStack().getData().getData()
+                        && curEntity.getItemStack().getDurability() == newEntity.getItemStack().getDurability()
+                        && Math.abs(curEntity.getLocation().getX() - newEntity.getLocation().getX()) <= this.radius
+                        && Math.abs(curEntity.getLocation().getY() - newEntity.getLocation().getY()) <= this.radius
+                        && Math.abs(curEntity.getLocation().getZ() - newEntity.getLocation().getZ()) <= this.radius)
                 {
-                    if (curEntity.getItemStack().getType().equals(newEntity.getItemStack().getType()))
-                    {
-                        if (curEntity.getItemStack().getData().getData() == newEntity.getItemStack().getData().getData())
-                        {
-                            if (curEntity.getItemStack().getDurability() == newEntity.getItemStack().getDurability())
-                            {
-                                if (Math.abs(curEntity.getLocation().getX() - newEntity.getLocation().getX()) <= this.radius
-                                        && Math.abs(curEntity.getLocation().getY() - newEntity.getLocation().getY()) <= this.radius
-                                        && Math.abs(curEntity.getLocation().getZ() - newEntity.getLocation().getZ()) <= this.radius
-                                )
-                                {
+                    int newAmount = newEntity.getItemStack().getAmount();
+                    int curAmount = curEntity.getItemStack().getAmount();
+                    int more = Math.min(newAmount, maxSize - curAmount);
 
-                                    int newAmount = newEntity.getItemStack().getAmount();
-                                    int curAmount = curEntity.getItemStack().getAmount();
-                                    int more = Math.min(newAmount, maxSize - curAmount);
+                    curAmount += more;
+                    newAmount -= more;
+                    curEntity.getItemStack().setAmount(curAmount);
+                    newEntity.getItemStack().setAmount(newAmount);
 
-                                    curAmount += more;
-                                    newAmount -= more;
-                                    curEntity.getItemStack().setAmount(curAmount);
-                                    newEntity.getItemStack().setAmount(newAmount);
+                    if (newAmount <= 0)
+                        event.setCancelled(true);
 
-                                    if (newAmount <= 0)
-                                        event.setCancelled(true);
-
-                                    return;
-                                }
-                            }
-                        }
-                    }
+                    return;
                 }
             }
         }

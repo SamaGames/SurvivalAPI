@@ -1,7 +1,7 @@
 package net.samagames.survivalapi.game.types.team;
 
-import net.minecraft.server.v1_8_R3.EntityHuman;
-import net.minecraft.server.v1_8_R3.TileEntitySign;
+import net.minecraft.server.v1_9_R1.EntityHuman;
+import net.minecraft.server.v1_9_R1.TileEntitySign;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.gui.AbstractGui;
 import net.samagames.survivalapi.game.SurvivalTeam;
@@ -12,8 +12,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
-import org.bukkit.craftbukkit.v1_8_R3.block.CraftSign;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_9_R1.block.CraftSign;
+import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * GuiSelectTeam class
@@ -64,7 +65,7 @@ public class GuiSelectTeam extends AbstractGui
         }
         catch (NoSuchFieldException | SecurityException | NoSuchMethodException ex)
         {
-            ex.printStackTrace();
+            this.game.getPlugin().getLogger().log(Level.SEVERE, "Error patching NMS", ex);
         }
 
         int last = 10;
@@ -179,13 +180,13 @@ public class GuiSelectTeam extends AbstractGui
                                 }
                                 catch (IllegalArgumentException | InvocationTargetException | IllegalAccessException ex)
                                 {
-                                    ex.printStackTrace();
+                                    game.getPlugin().getLogger().log(Level.SEVERE, "Reflection error", ex);
                                 }
                             }, 5L);
                         }
                         catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException ex)
                         {
-                            ex.printStackTrace();
+                            game.getPlugin().getLogger().log(Level.SEVERE, "Reflection error", ex);
                         }
                     }, 1L);
                 }

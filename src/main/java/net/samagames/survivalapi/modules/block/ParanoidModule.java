@@ -37,7 +37,7 @@ public class ParanoidModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event)
     {
         if (event.getBlock().getType() != Material.DIAMOND_ORE)

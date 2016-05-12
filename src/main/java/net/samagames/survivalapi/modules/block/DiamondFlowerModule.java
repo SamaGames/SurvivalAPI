@@ -50,11 +50,15 @@ public class DiamondFlowerModule extends AbstractSurvivalModule
         if (event.getEntity().hasMetadata("playerDrop"))
             return;
 
-        if (event.getEntity().getItemStack().getType() != Material.YELLOW_FLOWER && event.getEntity().getItemStack().getType() != Material.RED_ROSE)
+        if (event.getEntity().getItemStack().getType() != Material.YELLOW_FLOWER
+                && event.getEntity().getItemStack().getType() != Material.RED_ROSE
+                && (event.getEntity().getItemStack().getType() != Material.DOUBLE_PLANT
+                    || (event.getEntity().getItemStack().getDurability() > 1 && event.getEntity().getItemStack().getDurability() < 4)))
             return;
 
         if (this.random.nextInt(100) <= 30)
             event.getEntity().getWorld().dropItemNaturally(event.getLocation(), Meta.addMeta(new ItemStack(Material.DIAMOND, 1)));
+        event.setCancelled(true);
     }
 
     @Override

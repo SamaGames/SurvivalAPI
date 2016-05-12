@@ -1,5 +1,6 @@
 package net.samagames.survivalapi.game.events;
 
+import net.samagames.survivalapi.SurvivalAPI;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
@@ -8,6 +9,7 @@ import org.bukkit.entity.Minecart;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.event.world.WorldLoadEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +72,18 @@ public class ChunkListener implements Runnable, Listener
             if (!(entity instanceof Item || entity instanceof HumanEntity || entity instanceof Minecart))
                 entity.remove();
 
-        event.setCancelled(true);
+        //event.setCancelled(true);
+    }
+
+    /**
+     * Listen when world loaded
+     */
+
+    @EventHandler
+    public void onWorldLoad(WorldLoadEvent event)
+    {
+        //NOFIXME if nether exist think about it. EDIT : No need to do it =P
+        //Continue process of start by call the chain
+        SurvivalAPI.get().fireEvents(SurvivalAPI.EventType.WORLDLOADED);
     }
 }

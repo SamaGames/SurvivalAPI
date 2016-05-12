@@ -6,7 +6,10 @@ import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
@@ -42,9 +45,12 @@ public class NineSlotsModule extends AbstractSurvivalModule
     @Override
     public void onGameStart(SurvivalGame game)
     {
-        for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers())
-            for (int i = 9; i < player.getPlayerIfOnline().getInventory().getSize(); i++)
-                player.getPlayerIfOnline().getInventory().setItem(i, new ItemStack(Material.BARRIER, 1));
+        for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
+        {
+            Player bukkitPlayer = player.getPlayerIfOnline();
+            for (int i = 9; i < 36; i++)
+                bukkitPlayer.getInventory().setItem(i, new ItemStack(Material.BARRIER, 1));
+        }
     }
 
     /**
@@ -56,6 +62,21 @@ public class NineSlotsModule extends AbstractSurvivalModule
     public void onInventoryClick(InventoryClickEvent event)
     {
         if (event.getClickedInventory().getType() == InventoryType.PLAYER && event.getCurrentItem().getType() == Material.BARRIER)
+            event.setCancelled(true);
+    }
+
+    /**
+     * Remove barrier on drop
+     *
+     * @param event Event
+     */
+    @EventHandler
+    public void onItemSpawn(ItemSpawnEvent event)
+    {
+        if (event.getEntityType() != EntityType.DROPPED_ITEM)
+            return;
+
+        if (event.getEntity().getItemStack().getType() == Material.BARRIER)
             event.setCancelled(true);
     }
 }

@@ -3,6 +3,7 @@ package net.samagames.survivalapi.game.types;
 import com.google.gson.JsonPrimitive;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Status;
+import net.samagames.api.stats.games.IUHCRunStatistics;
 import net.samagames.survivalapi.game.*;
 import net.samagames.survivalapi.game.types.team.GuiSelectTeam;
 import net.samagames.survivalapi.game.types.team.SurvivalTeamList;
@@ -18,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
+import java.util.logging.Level;
 
 /**
  * SurvivalTeamGame class
@@ -58,7 +60,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         }
         catch (IllegalAccessException e)
         {
-            e.printStackTrace();
+            this.plugin.getLogger().log(Level.SEVERE, "Error initiating team selector", e);
         }
 
         plugin.getServer().getPluginManager().registerEvents(this.teamSelector, plugin);
@@ -149,7 +151,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 continue;
             }
 
-            Location destination = locationIterator.next();
+            Location destination = locationIterator.next().add(0,8,0);
 
             for (UUID player : team.getPlayersUUID().keySet())
             {
@@ -159,6 +161,9 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 {
                     ChunkUtils.loadDestination(p, destination, 3);
                     Bukkit.getScheduler().runTaskLater(plugin, () -> p.teleport(destination), 2);
+                    SurvivalPlayer playerdata = (SurvivalPlayer)this.getPlayer(player);
+                    if (playerdata != null)
+                        playerdata.setWaitingSpawn(destination);
                 }
             }
         }
@@ -193,28 +198,23 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                     int teamLeft = this.countAliveTeam();
 
                     if (teamLeft == 1)
-                    {
                         this.win(this.getLastAliveTeam());
-                        return;
-                    }
                     else if (teamLeft < 1)
-                    {
                         this.handleGameEnd();
-                        return;
-                    }
                     else if (!silent)
-                    {
                         this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + teamLeft + ChatColor.YELLOW + " équipes en jeu.", true);
-                    }
                 }
             }
-            catch (NullPointerException | IllegalStateException e)
+            catch (NullPointerException | IllegalStateException ignored)
             {
                 try
                 {
-                    throw new GameException(e.getMessage());
+                    throw new GameException(ignored.getMessage());
                 }
-                catch (GameException ignored) {}
+                catch (GameException ex)
+                {
+                    this.plugin.getLogger().log(Level.SEVERE, "Error checking stump players", ex);
+                }
             }
         }, 2L);
     }
@@ -259,7 +259,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 playerData.addStars(2, "Victoire !");
             }
 
-            this.increaseStat(playerID, "wins", 1);
+            SamaGamesAPI.get().getStatsManager().getPlayerStats(playerID).getUHCRunStatistics().incrByWins(1);
 
             Player player = Bukkit.getPlayer(playerID);
             if (player == null)

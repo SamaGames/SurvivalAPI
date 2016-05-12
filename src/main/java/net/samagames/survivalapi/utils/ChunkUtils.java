@@ -1,15 +1,10 @@
 package net.samagames.survivalapi.utils;
 
-import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_9_R1.*;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftWolf;
+import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * ChunkUtils class
@@ -19,6 +14,10 @@ import java.util.Locale;
  */
 public class ChunkUtils
 {
+    private ChunkUtils()
+    {
+    }
+
     /**
      * Send to a given players the chunks around a given radius
      *

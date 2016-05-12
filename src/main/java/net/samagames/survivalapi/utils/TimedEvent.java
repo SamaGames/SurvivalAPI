@@ -8,7 +8,7 @@ import org.bukkit.ChatColor;
  * Copyright (c) for SamaGames
  * All right reserved
  */
-public class TimedEvent implements Runnable
+public class TimedEvent
 {
     private final String name;
     private final ChatColor color;
@@ -44,7 +44,6 @@ public class TimedEvent implements Runnable
     /**
      * Run the callback
      */
-    @Override
     public void run()
     {
         this.callback.run();

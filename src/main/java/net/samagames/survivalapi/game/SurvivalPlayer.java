@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * SurvivalPlayer object
@@ -24,7 +25,9 @@ public class SurvivalPlayer extends GamePlayer
     private static SurvivalGame game;
 
     private final List<UUID> kills;
+    private final DamageReporter damageReporter;
     private SurvivalTeam team;
+    private Location waitingspawn;
 
     /**
      * Constructor
@@ -36,7 +39,9 @@ public class SurvivalPlayer extends GamePlayer
         super(player);
 
         this.kills = new ArrayList<>();
+        this.damageReporter = new DamageReporter();
         this.team = null;
+        this.waitingspawn = null;
     }
 
     /**
@@ -111,7 +116,7 @@ public class SurvivalPlayer extends GamePlayer
                 }
                 catch (GameException e)
                 {
-                    e.printStackTrace();
+                    game.plugin.getLogger().log(Level.SEVERE, "Error stumping player", e);
                 }
 
                 Location location = player.getLocation();
@@ -155,6 +160,17 @@ public class SurvivalPlayer extends GamePlayer
         return this.kills;
     }
 
+
+    /**
+     * Get player's damage reporter
+     *
+     * @return The damage reporter
+     */
+    public DamageReporter getDamageReporter()
+    {
+        return this.damageReporter;
+    }
+
     /**
      * Get player's team
      *
@@ -183,5 +199,25 @@ public class SurvivalPlayer extends GamePlayer
     public static void setGame(SurvivalGame instance)
     {
         game = instance;
+    }
+
+    /**
+     * Set the player waiting spawn
+     *
+     * @param spawn Spawn instance
+     */
+    public void setWaitingSpawn(Location spawn)
+    {
+        this.waitingspawn = spawn;
+    }
+
+    /**
+     * Get the player waiting spawn
+     *
+     * @return Spawn instance
+     */
+    public Location getWaitingSpawn()
+    {
+        return waitingspawn;
     }
 }

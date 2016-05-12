@@ -1,14 +1,16 @@
 package net.samagames.survivalapi.game;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
-import net.minecraft.server.v1_8_R3.MinecraftServer;
-import net.minecraft.server.v1_8_R3.SpawnerCreature;
+import net.minecraft.server.v1_9_R1.MinecraftServer;
+import net.minecraft.server.v1_9_R1.SpawnerCreature;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Game;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.api.games.Status;
 import net.samagames.survivalapi.SurvivalAPI;
+import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.commands.CommandNextEvent;
 import net.samagames.survivalapi.game.commands.CommandUHC;
 import net.samagames.survivalapi.game.events.*;
@@ -26,11 +28,13 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -48,7 +52,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     protected final Class<? extends SURVIVALLOOP> survivalGameLoopClass;
     protected final List<Location> spawns;
     protected final List<WaitingBlock> waitingBlocks;
-    protected final World world;
+    protected World world;
 
     protected LobbyPopulator lobbyPopulator;
     protected Location lobbySpawnLocation;
@@ -56,6 +60,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     protected Scoreboard scoreboard;
     protected BukkitTask mainTask;
     protected WorldBorder worldBorder;
+    protected WorldBorder netherWorldBorder;
     protected boolean damagesActivated;
     protected boolean pvpActivated;
 
@@ -82,21 +87,12 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
         this.spawns = new ArrayList<>();
         this.waitingBlocks = new ArrayList<>();
-        this.world = this.server.getWorlds().get(0);
 
         this.gameLoop = null;
         this.scoreboard = null;
         this.mainTask = null;
         this.damagesActivated = false;
         this.pvpActivated = false;
-
-        this.worldBorder = this.world.getWorldBorder();
-        this.worldBorder.setCenter(0D, 0D);
-        this.worldBorder.setSize(1000);
-        this.worldBorder.setWarningDistance(20);
-        this.worldBorder.setWarningTime(0);
-        this.worldBorder.setDamageBuffer(3D);
-        this.worldBorder.setDamageAmount(2D);
 
         this.server.getPluginManager().registerEvents(new ChunkListener(), plugin);
         this.server.getPluginManager().registerEvents(new NaturalListener(), plugin);
@@ -105,20 +101,51 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.server.getPluginManager().registerEvents(new SecurityListener(this), plugin);
         this.server.getPluginManager().registerEvents(new GameListener(this), plugin);
 
-        for (World serverWorld : plugin.getServer().getWorlds())
-        {
-            serverWorld.setDifficulty(Difficulty.NORMAL);
-            serverWorld.setGameRuleValue("doDaylightCycle", "false");
-            serverWorld.setTime(2000L);
-        }
-
         SamaGamesAPI.get().getGameManager().setMaxReconnectTime(this.gameManager.getGameProperties().getOption("reconnectTime", new JsonPrimitive(5)).getAsInt());
+        SamaGamesAPI.get().getGameManager().setLegacyPvP(true);
 
         CommandUHC.setGame(this);
         CommandNextEvent.setGame(this);
         SurvivalPlayer.setGame(this);
 
-        this.scoreboard = this.server.getScoreboardManager().getMainScoreboard();
+        SurvivalAPI.get().registerEvent(SurvivalAPI.EventType.WORLDLOADED, () ->
+        {
+            this.world = this.server.getWorlds().get(0);
+
+            this.worldBorder = this.world.getWorldBorder();
+            this.worldBorder.setCenter(0D, 0D);
+            this.worldBorder.setSize(1000);
+            this.worldBorder.setWarningDistance(20);
+            this.worldBorder.setWarningTime(0);
+            this.worldBorder.setDamageBuffer(3D);
+            this.worldBorder.setDamageAmount(2D);
+
+            this.netherWorldBorder = null;
+            if (this.server.getAllowNether())
+            {
+                this.netherWorldBorder = this.server.getWorlds().get(1).getWorldBorder();
+                this.netherWorldBorder.setCenter(0D, 0D);
+                this.netherWorldBorder.setSize(1000D / 2);
+                this.netherWorldBorder.setWarningDistance(20);
+                this.netherWorldBorder.setWarningTime(0);
+                this.netherWorldBorder.setDamageBuffer(3D);
+                this.netherWorldBorder.setDamageAmount(2D);
+            }
+
+            this.scoreboard = this.server.getScoreboardManager().getMainScoreboard();
+
+            this.computeLocations();
+
+            //Generate spawns
+            SurvivalAPI.get().getPlugin().getWorldLoader().begin(Bukkit.getWorlds().get(0), spawns);
+
+            for (World serverWorld : plugin.getServer().getWorlds())
+            {
+                serverWorld.setDifficulty(Difficulty.NORMAL);
+                serverWorld.setGameRuleValue("doDaylightCycle", "false");
+                serverWorld.setTime(2000L);
+            }
+        });
 
         SurvivalAPI.get().registerEvent(SurvivalAPI.EventType.AFTERGENERATION, () ->
         {
@@ -141,8 +168,6 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
                 this.gameLoop = this.survivalGameLoopClass.getConstructor(JavaPlugin.class, Server.class, SurvivalGame.class).newInstance(this.plugin, this.server, this);
 
-                this.computeLocations();
-
                 SpawnerCreature spawner = new SpawnerCreature();
 
                 for (int i = 0; i < 2; i++)
@@ -152,9 +177,51 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             }
             catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e)
             {
-                e.printStackTrace();
+                this.plugin.getLogger().log(Level.SEVERE, "Error loading lobby", e);
             }
         });
+
+        this.downloadWorld();
+    }
+
+    /**
+     * Download the map
+     */
+    public void downloadWorld()
+    {
+        SurvivalPlugin apiplugin = SurvivalAPI.get().getPlugin();
+        File worldDir = new File(apiplugin.getDataFolder().getAbsoluteFile().getParentFile().getParentFile(), "world");
+        apiplugin.getLogger().info("Checking wether world exists at : " + worldDir.getAbsolutePath());
+
+        if (!worldDir.exists())
+        {
+            apiplugin.getLogger().severe("World's folder not found. Aborting!");
+            Bukkit.shutdown();
+        }
+
+        apiplugin.getLogger().info("World's folder found... Checking for arena file...");
+        WorldDownloader worldDownloader = new WorldDownloader(apiplugin);
+
+        if (!worldDownloader.checkAndDownloadWorld(worldDir, getDownloadWorldLink()))
+        {
+            apiplugin.getLogger().severe("Error during map downloading. Aborting!");
+            Bukkit.shutdown();
+        }
+    }
+
+    /**
+     * Override this to modify download link
+     * @return Url to the map
+     */
+    public String getDownloadWorldLink()
+    {
+        JsonElement worldStorage = SamaGamesAPI.get().getGameManager().getGameProperties().getConfig("worldStorage", null);
+        if (worldStorage == null)
+            return null;
+        String map = worldStorage.getAsString();
+        if (map != null && SurvivalAPI.get().getCustomMapName() != null)
+            map += '_' + SurvivalAPI.get().getCustomMapName();
+        return map;
     }
 
     /**
@@ -191,8 +258,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.dump();
 
         this.server.getScheduler().runTaskLater(this.plugin, () -> this.mainTask.cancel(), 20L);
-
-        super.handleGameEnd();
+        this.server.getScheduler().runTaskLater(this.plugin, () -> new SurvivalStatisticsTemplate().execute(this), 20L * 3);
+        this.server.getScheduler().runTaskLater(this.plugin, super::handleGameEnd, 20L * 6);
     }
 
     /**
@@ -209,7 +276,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         }
         catch (GameException e)
         {
-            e.printStackTrace();
+            this.plugin.getLogger().log(Level.SEVERE, "Error stumping player", e);
         }
     }
 
@@ -230,11 +297,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     public void startGame()
     {
         super.startGame();
-
-        SurvivalAPI.get().fireGameStart(this);
-
-        this.lobbyPopulator.remove();
-
+        
         Objective displayNameLife = this.scoreboard.registerNewObjective("vie", "health");
         Objective playerListLife = this.scoreboard.registerNewObjective("vieb", "health");
 
@@ -243,15 +306,10 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         playerListLife.setDisplayName(ChatColor.RED + "❤");
         playerListLife.setDisplaySlot(DisplaySlot.PLAYER_LIST);
 
-        this.mainTask = this.server.getScheduler().runTaskTimer(this.plugin, this.gameLoop, 20, 20);
-        this.teleport();
-
-        for (UUID uuid : this.getInGamePlayers().keySet())
-        {
+        for (UUID uuid : this.getInGamePlayers().keySet()) {
             Player player = this.server.getPlayer(uuid);
 
-            if (player == null)
-            {
+            if (player == null) {
                 this.gamePlayers.remove(uuid);
                 continue;
             }
@@ -262,8 +320,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             player.setExhaustion(0.0F);
             player.setScoreboard(this.scoreboard);
             player.setLevel(0);
+            //player.setAllowFlight(true);
             player.getInventory().clear();
-            player.setAllowFlight(true);
 
             this.server.getScheduler().runTaskLater(this.plugin, () -> player.setAllowFlight(false), 20L * 5);
 
@@ -275,6 +333,11 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
             this.gameLoop.addPlayer(player.getUniqueId(), sign);
         }
+
+        this.lobbyPopulator.remove();
+
+        this.mainTask = this.server.getScheduler().runTaskTimer(this.plugin, this.gameLoop, 20, 20);
+        this.teleport();
     }
 
     /**
@@ -313,7 +376,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
         logger.severe("|> Damages: " + this.damagesActivated);
         logger.severe("|> PVP: " + this.pvpActivated);
-        logger.severe("|> World borders: " + this.getWorldBorder().getSize());
+        logger.severe("|> World borders: " + this.worldBorder.getSize());
 
         logger.severe("==================[ GAME DUMP ]==================");
     }
@@ -425,7 +488,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                                 gamePlayer.addKill(player.getUniqueId());
                                 gamePlayer.addCoins(20, "Meurtre de " + player.getName());
 
-                                this.increaseStat(finalKiller.getUniqueId(), "kills", 1);
+                                SamaGamesAPI.get().getStatsManager().getPlayerStats(finalKiller.getUniqueId()).getUHCRunStatistics().incrByKills(1);
                             });
 
                             killer.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 400, 1));
@@ -497,7 +560,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
                         this.coherenceMachine.getMessageManager().writeCustomMessage(message, true);
 
-                        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> increaseStat(player.getUniqueId(), "deaths", 1));
+                        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> SamaGamesAPI.get().getStatsManager().getPlayerStats(player.getUniqueId()).getUHCRunStatistics().incrByDeaths(1));
 
                         Titles.sendTitle(player, 0, 100, 5, ChatColor.RED + "✞", ChatColor.RED + "Vous êtes mort !");
                         player.setGameMode(GameMode.SPECTATOR);
@@ -518,9 +581,9 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                 this.dump();
             }
         }
-        catch (NullPointerException | IllegalStateException e)
+        catch (NullPointerException | IllegalStateException ignored)
         {
-            throw new GameException(e.getMessage());
+            throw new GameException(ignored.getMessage());
         }
     }
 
@@ -583,7 +646,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
         Collections.shuffle(this.spawns);
 
-        //this.waitingBlocks.addAll(this.spawns.stream().map(WaitingBlock::new).collect(Collectors.toList()));
+        this.waitingBlocks.addAll(this.spawns.stream().map(WaitingBlock::new).collect(Collectors.toList()));
     }
 
     /**
@@ -627,13 +690,28 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     }
 
     /**
-     * Get the world border instance
+     * Set the world border size
      *
-     * @return World border instance
+     * @param size The new size
      */
-    public WorldBorder getWorldBorder()
+    public void setWorldBorderSize(double size)
     {
-        return this.worldBorder;
+        this.worldBorder.setSize(size);
+        if (this.netherWorldBorder != null)
+            this.netherWorldBorder.setSize(size / 2);
+    }
+
+    /**
+     * Set the world border size
+     *
+     * @param size The new size
+     * @param time Reduction time
+     */
+    public void setWorldBorderSize(double size, long time)
+    {
+        this.worldBorder.setSize(size, time);
+        if (this.netherWorldBorder != null)
+            this.netherWorldBorder.setSize(size / 2, time);
     }
 
     /**

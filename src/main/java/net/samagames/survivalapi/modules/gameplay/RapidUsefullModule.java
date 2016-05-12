@@ -13,7 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Tree;
+import org.bukkit.material.Sapling;
 
 import java.util.*;
 
@@ -138,7 +138,7 @@ public class RapidUsefullModule extends AbstractSurvivalModule
 
             this.addDrop(new ItemStack(Material.SAPLING, 1, (short) -1), (base, random) ->
             {
-                double percent = ((Tree) base.getData()).getSpecies().equals(TreeSpecies.GENERIC) ? 0.1D : 0.3D;
+                double percent = ((Sapling) base.getData()).getSpecies().equals(TreeSpecies.GENERIC) ? 0.1D : 0.3D;
 
                 if (random.nextDouble() <= percent)
                     return new ItemStack(Material.APPLE, 1);
@@ -148,7 +148,6 @@ public class RapidUsefullModule extends AbstractSurvivalModule
 
             this.addDrop(new ItemStack(Material.SAND, 1), (base, random) -> new ItemStack(Material.GLASS_BOTTLE, 1), false);
             this.addDrop(new ItemStack(Material.CACTUS, 1), (base, random) -> new ItemStack(Material.LOG, 2), false);
-            this.addDrop(new ItemStack(Material.SUGAR_CANE, 1), (base, random) -> Meta.addMeta(new ItemStack(Material.SUGAR_CANE, 2)), false);
             this.addDrop(new ItemStack(Material.SULPHUR, 1), (base, random) -> Meta.addMeta(new ItemStack(Material.TNT, 1)), false);
 
             return this;

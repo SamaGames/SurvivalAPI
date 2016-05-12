@@ -1,8 +1,8 @@
 package net.samagames.survivalapi.modules.block;
 
-import net.minecraft.server.v1_8_R3.EntityExperienceOrb;
-import net.minecraft.server.v1_8_R3.MathHelper;
-import net.minecraft.server.v1_8_R3.World;
+import net.minecraft.server.v1_9_R1.EntityExperienceOrb;
+import net.minecraft.server.v1_9_R1.MathHelper;
+import net.minecraft.server.v1_9_R1.World;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
@@ -10,7 +10,7 @@ import net.samagames.survivalapi.modules.utility.DropTaggingModule;
 import net.samagames.survivalapi.utils.Meta;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_9_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -80,7 +80,7 @@ public class RapidOresModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event)
     {
         switch (event.getBlock().getType())

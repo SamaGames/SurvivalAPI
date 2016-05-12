@@ -1,24 +1,22 @@
 package net.samagames.survivalapi;
 
-import net.minecraft.server.v1_8_R3.BiomeBase;
-import net.minecraft.server.v1_8_R3.BiomeDecorator;
+import net.minecraft.server.v1_9_R1.MinecraftKey;
 import net.samagames.survivalapi.games.AbstractGame;
 import net.samagames.survivalapi.games.Game;
 import net.samagames.survivalapi.gen.WorldLoader;
-import net.samagames.survivalapi.utils.Reflection;
+import net.samagames.survivalapi.gen.biomes.BiomeRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 public class SurvivalGenerator extends JavaPlugin
 {
-    private List<BiomeBase> biomesToRemove;
+    public static final MinecraftKey BIOME_FOREST = new MinecraftKey("forest");
+    public static final MinecraftKey BIOME_PLAINS = new MinecraftKey("plains");
+
     private AbstractGame game;
+    private BiomeRegistry biomeRegistry;
     private BukkitTask startTimer;
     private boolean worldLoaded;
 
@@ -26,8 +24,6 @@ public class SurvivalGenerator extends JavaPlugin
     public void onEnable()
     {
         this.saveDefaultConfig();
-
-        this.biomesToRemove = new ArrayList<>();
 
         String gameRaw = this.getConfig().getString("game", "UHC");
 
@@ -63,9 +59,9 @@ public class SurvivalGenerator extends JavaPlugin
         Bukkit.shutdown();
     }
 
-    public void addBiomeToRemove(BiomeBase biomeBase)
+    public void removeBiome(int id, MinecraftKey from, MinecraftKey to)
     {
-        this.biomesToRemove.add(biomeBase);
+        this.biomeRegistry.register(id, from, this.biomeRegistry.getObject(to));
     }
 
     public boolean isWorldLoaded()
@@ -75,38 +71,10 @@ public class SurvivalGenerator extends JavaPlugin
 
     private void patchBiomes() throws ReflectiveOperationException
     {
-        BiomeBase[] biomes = BiomeBase.getBiomes();
-        Map<String, BiomeBase> biomesMap = BiomeBase.o;
-        BiomeBase defaultBiome = BiomeBase.FOREST;
+        this.biomeRegistry = BiomeRegistry.getInstance();
 
-        Reflection.setFinalStatic(BiomeBase.class.getDeclaredField("ad"), defaultBiome);
-
-        biomesMap.remove(BiomeBase.OCEAN.ah);
-        biomesMap.remove(BiomeBase.DEEP_OCEAN.ah);
-        biomesMap.remove(BiomeBase.FROZEN_OCEAN.ah);
-
-        for (BiomeBase biomeBase : this.biomesToRemove)
-            biomesMap.remove(biomeBase.ah);
-
-        this.setReedsPerChunk(BiomeBase.BEACH, 16);
-        this.setReedsPerChunk(BiomeBase.STONE_BEACH, 16);
-
-        for (int i = 0; i < biomes.length; i++)
-        {
-            if (biomes[i] != null)
-            {
-                if (!biomesMap.containsKey(biomes[i].ah))
-                    biomes[i] = defaultBiome;
-
-                this.setReedsPerChunk(biomes[i], (int) Reflection.getValue(biomes[i].as, BiomeDecorator.class, true, "F") * 2);
-            }
-        }
-
-        Reflection.setFinalStatic(BiomeBase.class.getDeclaredField("biomes"), biomes);
-    }
-
-    private void setReedsPerChunk(BiomeBase biome, int value) throws NoSuchFieldException, IllegalAccessException
-    {
-        Reflection.setValue(biome.as, BiomeDecorator.class, true, "F", value);
+        this.removeBiome(0, new MinecraftKey("ocean"), BIOME_FOREST);
+        this.removeBiome(10, new MinecraftKey("frozen_ocean"), BIOME_FOREST);
+        this.removeBiome(24, new MinecraftKey("deep_ocean"), BIOME_FOREST);
     }
 }

@@ -4,9 +4,11 @@ import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
@@ -47,10 +49,20 @@ public class HardObsidianModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event)
     {
         if (event.getBlock().getType() == Material.OBSIDIAN)
-            event.getPlayer().getItemInHand().setDurability((short) (event.getPlayer().getItemInHand().getDurability() - 500));
+        {
+            ItemStack item = event.getPlayer().getItemInHand();
+            item.setDurability((short) (item.getDurability() + 500));
+            if (item.getDurability() > item.getType().getMaxDurability())
+            {
+                event.getPlayer().getWorld().playSound(event.getPlayer().getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 1);
+                event.getPlayer().getInventory().setItemInHand(new ItemStack(Material.AIR));
+            }
+            else
+                event.getPlayer().getInventory().setItemInHand(item);
+        }
     }
 }

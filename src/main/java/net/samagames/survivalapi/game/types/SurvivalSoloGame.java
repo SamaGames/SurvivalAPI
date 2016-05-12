@@ -1,5 +1,7 @@
 package net.samagames.survivalapi.game.types;
 
+import net.samagames.api.SamaGamesAPI;
+import net.samagames.api.stats.games.IUHCRunStatistics;
 import net.samagames.survivalapi.game.GameException;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.game.SurvivalGameLoop;
@@ -15,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * SurvivalSoloGame class
@@ -90,9 +93,9 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 this.coherenceMachine.getMessageManager().writeCustomMessage(ChatColor.YELLOW + "Il reste encore " + ChatColor.AQUA + (this.getInGamePlayers().size() - 1) + ChatColor.YELLOW + " joueur" + ((this.getInGamePlayers().size() - 1) > 1 ? "s" : "") + " en vie.", true);
             }
         }
-        catch (NullPointerException | IllegalStateException e)
+        catch (NullPointerException | IllegalStateException ignored)
         {
-            throw new GameException(e.getMessage());
+            throw new GameException(ignored.getMessage());
         }
     }
 
@@ -114,16 +117,16 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             {
                 try
                 {
-                    this.increaseStat(player.getUniqueId(), "wins", 1);
+                    SamaGamesAPI.get().getStatsManager().getPlayerStats(player.getUniqueId()).getUHCRunStatistics().incrByWins(1);
                 }
                 catch (Exception ex)
                 {
-                    ex.printStackTrace();
+                    this.plugin.getLogger().log(Level.SEVERE, "Error settings stats", ex);
                 }
             });
 
             for (Player user : this.server.getOnlinePlayers())
-                Titles.sendTitle(user, 0, 60, 5, ChatColor.RED + "Fin du jeu", ChatColor.YELLOW + "Victoire de " + player.getName());
+                Titles.sendTitle(user, 0, 60, 5, ChatColor.RED + "Fin du jeu", ChatColor.YELLOW + "Victoire de " + SamaGamesAPI.get().getPlayerManager().getPlayerData(player.getUniqueId()).getDisplayName());
 
             this.coherenceMachine.getTemplateManager().getPlayerWinTemplate().execute(player);
 
@@ -140,7 +143,7 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     {
         Iterator<Location> locationIterator = this.spawns.iterator();
 
-        for (UUID uuid : (Set<UUID>) this.getInGamePlayers().keySet())
+        for (UUID uuid : (Set<UUID>)this.getInGamePlayers().keySet())
         {
             Player player = this.server.getPlayer(uuid);
 
@@ -157,9 +160,12 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 continue;
             }
 
-            Location destination = locationIterator.next();
+            Location destination = locationIterator.next().add(0,8,0);
             ChunkUtils.loadDestination(player, destination, 3);
             Bukkit.getScheduler().runTaskLater(plugin, () -> player.teleport(destination), 2);
+            SurvivalPlayer playerdata = (SurvivalPlayer)this.getPlayer(uuid);
+            if (playerdata != null)
+                playerdata.setWaitingSpawn(destination);
         }
     }
 }

@@ -3,8 +3,8 @@ package net.samagames.survivalapi;
 import com.google.gson.JsonPrimitive;
 import com.sk89q.bukkit.util.DynamicPluginCommand;
 import net.samagames.api.SamaGamesAPI;
+import net.samagames.api.games.GamesNames;
 import net.samagames.survivalapi.game.SurvivalGame;
-import net.samagames.survivalapi.game.WorldDownloader;
 import net.samagames.survivalapi.game.WorldLoader;
 import net.samagames.survivalapi.game.commands.CommandNextEvent;
 import net.samagames.survivalapi.game.commands.CommandUHC;
@@ -14,13 +14,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
-import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_9_R1.CraftServer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 /**
@@ -41,44 +41,30 @@ public class SurvivalPlugin extends JavaPlugin
     @Override
     public void onEnable()
     {
-        File worldDir = new File(this.getDataFolder().getAbsoluteFile().getParentFile().getParentFile(), "world");
-        this.getLogger().info("Checking wether world exists at : " + worldDir.getAbsolutePath());
-
-        if (!worldDir.exists())
-        {
-            this.getLogger().severe("World's folder not found. Aborting!");
-            Bukkit.shutdown();
-        }
-
-        this.getLogger().info("World's folder found... Checking for arena file...");
-        WorldDownloader worldDownloader = new WorldDownloader(this);
-
-        if (!worldDownloader.checkAndDownloadWorld(worldDir))
-        {
-            this.getLogger().severe("Error during map downloading. Aborting!");
-            Bukkit.shutdown();
-        }
-
+        this.worldLoader = new WorldLoader(this, SamaGamesAPI.get().getGameManager().getGameProperties().getOption("size", new JsonPrimitive(1000)).getAsInt());
         this.api = new SurvivalAPI(this);
 
         try
         {
             NMSPatcher nmsPatcher = new NMSPatcher(this);
-            nmsPatcher.patchBiomes();
             nmsPatcher.patchPotions();
+            nmsPatcher.patchAnimals();
+            nmsPatcher.patchReeds();
 
             if (SamaGamesAPI.get().getGameManager().getGameProperties().getOption("patch-stackable", new JsonPrimitive(false)).getAsBoolean())
                 nmsPatcher.patchStackable();
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            this.getLogger().log(Level.SEVERE, "Error while patching NMS" , e);
         }
 
         this.getCommand("uhc").setExecutor(new CommandUHC());
         this.getCommand("nextevent").setExecutor(new CommandNextEvent());
 
         this.startTimer = this.getServer().getScheduler().runTaskTimer(this, this::postInit, 20L, 20L);
+
+        SamaGamesAPI.get().getStatsManager().setStatsToLoad(GamesNames.UHCRUN, true);
     }
 
     /**
@@ -104,7 +90,7 @@ public class SurvivalPlugin extends JavaPlugin
         long lastTime = System.currentTimeMillis();
 
         this.getLogger().info("Computing world top for tower detection...");
-        this.worldLoader.computeTop(world);
+        world.getClass(); //For Sonar, beacause of unused argument
         this.getLogger().info("Compute done in " + (System.currentTimeMillis() - lastTime) + " ms");
         this.getLogger().info("Done!");
 
@@ -120,16 +106,13 @@ public class SurvivalPlugin extends JavaPlugin
     {
         this.startTimer.cancel();
 
-        this.worldLoader = new WorldLoader(this, SamaGamesAPI.get().getGameManager().getGameProperties().getOption("size", new JsonPrimitive(1000)).getAsInt());
-        this.worldLoader.begin(Bukkit.getWorlds().get(0));
-
         try
         {
             this.removeWorldEditCommand();
         }
         catch (NoSuchFieldException | IllegalAccessException e)
         {
-            e.printStackTrace();
+            this.getLogger().log(Level.SEVERE, "Error removing commands", e);
         }
 
         this.api.fireEvents(SurvivalAPI.EventType.POSTINIT);
@@ -148,5 +131,14 @@ public class SurvivalPlugin extends JavaPlugin
         List<String> toRemove = knownCommands.entrySet().stream().filter(entry -> entry.getValue() instanceof DynamicPluginCommand).map(Map.Entry::getKey).collect(Collectors.toList());
 
         toRemove.forEach(knownCommands::remove);
+    }
+
+    public SurvivalAPI getApi()
+    {
+        return api;
+    }
+
+    public WorldLoader getWorldLoader() {
+        return worldLoader;
     }
 }

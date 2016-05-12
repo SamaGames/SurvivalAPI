@@ -20,6 +20,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -28,6 +30,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
+
+import java.util.logging.Level;
 
 public class GameListener implements Listener
 {
@@ -78,6 +82,8 @@ public class GameListener implements Listener
 
                 if (((Player) damager).hasPotionEffect(PotionEffectType.INCREASE_DAMAGE))
                     event.setDamage(EntityDamageEvent.DamageModifier.MAGIC, event.getDamage(EntityDamageEvent.DamageModifier.MAGIC) / 2);
+
+                ((SurvivalPlayer) this.game.getPlayer(damager.getUniqueId())).getDamageReporter().addPlayerDamages(damaged.getUniqueId(), event.getDamage());
             }
             else if (damager instanceof Projectile)
             {
@@ -86,7 +92,6 @@ public class GameListener implements Listener
                 if (arrow.getShooter() instanceof Player)
                 {
                     Player shooter = (Player) arrow.getShooter();
-
                     if (!this.game.isPvPActivated() || (this.game instanceof SurvivalTeamGame && ((SurvivalTeamGame<SurvivalGameLoop>) this.game).getPlayerTeam(shooter.getUniqueId()).hasPlayer(damaged.getUniqueId())))
                     {
                         event.setCancelled(true);
@@ -112,6 +117,8 @@ public class GameListener implements Listener
 
                     if (shooter.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE))
                         event.setDamage(EntityDamageEvent.DamageModifier.MAGIC, event.getDamage(EntityDamageEvent.DamageModifier.MAGIC) / 2);
+
+                    ((SurvivalPlayer) this.game.getPlayer(shooter.getUniqueId())).getDamageReporter().addPlayerDamages(damaged.getUniqueId(), event.getDamage());
                 }
             }
             else
@@ -122,19 +129,22 @@ public class GameListener implements Listener
                 damaged.setMetadata("lastDamager", new FixedMetadataValue(this.game.getPlugin(), damager));
             }
         }
+        else if (event.getDamager().getType() == EntityType.PLAYER)
+        {
+            ((SurvivalPlayer) this.game.getPlayer(event.getDamager().getUniqueId())).getDamageReporter().addEntityDamages(event.getEntityType(), event.getDamage());
+        }
     }
 
     /**
-     * Increase the Renegartion boost when a golden apple is eaten
+     * Increase the Regeneration boost when a golden apple is eaten
      *
      * @param event Event
      */
     @EventHandler
     public void onItemConsume(PlayerItemConsumeEvent event)
     {
-        if (this.game instanceof RunBasedGame)
-            if (event.getItem().getType() == Material.GOLDEN_APPLE)
-                event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 10 * 20, 1));
+        if (this.game instanceof RunBasedGame && event.getItem().getType() == Material.GOLDEN_APPLE)
+            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 10 * 20, 1));
     }
 
     /**
@@ -176,7 +186,7 @@ public class GameListener implements Listener
             }
             catch (GameException e)
             {
-                e.printStackTrace();
+                this.game.getPlugin().getLogger().log(Level.SEVERE, "Error stumping player", e);
             }
 
             event.getDrops().add(new ItemStack(Material.GOLDEN_APPLE));
@@ -189,7 +199,7 @@ public class GameListener implements Listener
 
             //new DeadCorpses(event.getEntity()).spawn(event.getEntity().getLocation());
 
-            GameUtils.broadcastSound(Sound.WITHER_SPAWN);
+            GameUtils.broadcastSound(Sound.ENTITY_WITHER_SPAWN);
         }
     }
 
@@ -240,7 +250,7 @@ public class GameListener implements Listener
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event)
     {
-        if (this.game.isPvPActivated() && event.getBlockPlaced().getY() > WorldLoader.getHighestNaturalBlockAt(event.getBlockPlaced().getX(), event.getBlockPlaced().getZ()) + 15)
+        if (this.game.isPvPActivated() && event.getBlockPlaced().getY() > event.getBlock().getWorld().getHighestBlockYAt(event.getBlockPlaced().getX(), event.getBlockPlaced().getZ()) + 15)
         {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatColor.DARK_RED + "[" + ChatColor.RED + "Tours" + ChatColor.DARK_RED + "] " + ChatColor.RED + "Les Tours sont interdites !");
@@ -284,5 +294,29 @@ public class GameListener implements Listener
         for (int i = 0; i < 4; i++)
             if (event.getLine(i).matches("^[a-zA-Z0-9ÀÁÂÄÇÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜàáâäçèéêëîïôöûü &]*$") && event.getLine(i).length() > 20)
                 event.setCancelled(true);
+    }
+
+    /**
+     * Cancel the craft of the shield
+     *
+     * @param event Event
+     */
+    @EventHandler
+    public void onCraftItem(CraftItemEvent event)
+    {
+        if (event.getRecipe().getResult().getType() == Material.SHIELD)
+            event.getInventory().setResult(null);
+    }
+
+    /**
+     * Cancel the craft of the shield
+     *
+     * @param event Event
+     */
+    @EventHandler
+    public void onCraftItem(PrepareItemCraftEvent event)
+    {
+        if (event.getRecipe().getResult().getType() == Material.SHIELD)
+            event.getInventory().setResult(null);
     }
 }

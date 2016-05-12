@@ -1,12 +1,14 @@
 package net.samagames.survivalapi.game;
 
+import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.game.types.SurvivalTeamGame;
 import net.samagames.survivalapi.utils.TimedEvent;
+import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.tools.Titles;
 import net.samagames.tools.chat.ActionBarAPI;
 import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
@@ -33,6 +35,7 @@ public class SurvivalGameLoop implements Runnable
     protected int seconds;
     protected int episode;
     protected boolean episodeEnabled;
+    protected boolean blocksProtected;
 
     /**
      * Constructor
@@ -54,18 +57,21 @@ public class SurvivalGameLoop implements Runnable
         this.episode = 1;
 
         this.episodeEnabled = false;
+        this.blocksProtected = true;
 
-        this.createDamageEvent();
+        this.createWaitingBlockRemovingEvent();
     }
 
-    /**public void createWaitingBlockRemovingEvent()
+    public void createWaitingBlockRemovingEvent()
     {
         this.nextEvent = new TimedEvent(0, 10, "Suppression des cages", ChatColor.GREEN, true, () ->
         {
             this.game.removeWaitingBlocks();
+            this.blocksProtected = false;
             this.createDamageEvent();
+            SurvivalAPI.get().fireGameStart(this.game);
         });
-    }**/
+    }
 
     public void createDamageEvent()
     {
@@ -80,7 +86,7 @@ public class SurvivalGameLoop implements Runnable
 
     public void createPvPEvent()
     {
-        this.nextEvent = new TimedEvent(19, 0, "Combats actifs", ChatColor.YELLOW, false, () ->
+        this.nextEvent = new TimedEvent(19, 0, "Combats actifs", ChatColor.GOLD, false, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les combats sont désormais actifs.", true);
             this.game.enablePVP();
@@ -91,9 +97,9 @@ public class SurvivalGameLoop implements Runnable
 
     public void createReducingEvent()
     {
-        this.nextEvent = new TimedEvent(20, 0, "Réduction des bordures", ChatColor.RED, false, () ->
+        this.nextEvent = new TimedEvent(70, 0, "Réduction des bordures", ChatColor.RED, false, () ->
         {
-            this.game.getWorldBorder().setSize(64, 60L * 20L);
+            this.game.setWorldBorderSize(64, 60L * 20L);
             this.displayReducingMessage();
             this.createEndOfReducingEvent();
         });
@@ -101,9 +107,9 @@ public class SurvivalGameLoop implements Runnable
 
     public void createEndOfReducingEvent()
     {
-        this.nextEvent = new TimedEvent(20, 0, "Fin de la réduction", ChatColor.YELLOW, false, () ->
+        this.nextEvent = new TimedEvent(30, 0, "Fin de la réduction", ChatColor.YELLOW, false, () ->
         {
-            this.game.getWorldBorder().setSize(100);
+            this.game.setWorldBorderSize(100);
             this.createEndingEvent();
         });
     }
@@ -121,7 +127,7 @@ public class SurvivalGameLoop implements Runnable
         for (Player player : Bukkit.getOnlinePlayers())
         {
             Titles.sendTitle(player, 0, 100, 5, ChatColor.RED + "Attention !", ChatColor.YELLOW + "Les bordures se réduisent !");
-            player.playSound(player.getLocation(), Sound.BLAZE_DEATH, 1.0F, 1.0F);
+            player.playSound(player.getLocation(), Sound.ENTITY_BLAZE_DEATH, 1.0F, 1.0F);
         }
 
         this.game.getCoherenceMachine().getMessageManager().writeCustomMessage(ChatColor.RED + "Les bordures se réduisent !", true);
@@ -337,5 +343,14 @@ public class SurvivalGameLoop implements Runnable
     private String toString(int minutes, int seconds)
     {
         return (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+    }
+
+    /**
+     * Return if blocks are protected from breaking
+     * Usefull for cages
+     */
+    public boolean areBlocksProtected()
+    {
+        return this.blocksProtected;
     }
 }

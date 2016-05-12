@@ -42,8 +42,8 @@ public class CatsEyesModule extends AbstractSurvivalModule
     @Override
     public void onGameStart(SurvivalGame game)
     {
-        for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers())
-            player.getPlayerIfOnline().addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 255, 255));
+        for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
+            player.getPlayerIfOnline().addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 255));
     }
 
     /**

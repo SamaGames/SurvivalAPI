@@ -140,28 +140,28 @@ public class NbtFactory {
             return containsKey(key) ? (Byte)get(key) : defaultValue;
         }
         public Short getShort(String key, Short defaultValue) {
-            return containsKey(key) ? (Short)get(key) : defaultValue;
+            return containsKey(key) ? (Short)super.get(key) : defaultValue;
         }
         public Integer getInteger(String key, Integer defaultValue) {
-            return containsKey(key) ? (Integer)get(key) : defaultValue;
+            return containsKey(key) ? (Integer)super.get(key) : defaultValue;
         }
         public Long getLong(String key, Long defaultValue) {
             return containsKey(key) ? (Long)get(key) : defaultValue;
         }
         public Float getFloat(String key, Float defaultValue) {
-            return containsKey(key) ? (Float)get(key) : defaultValue;
+            return containsKey(key) ? (Float)super.get(key) : defaultValue;
         }
         public Double getDouble(String key, Double defaultValue) {
-            return containsKey(key) ? (Double)get(key) : defaultValue;
+            return containsKey(key) ? (Double)super.get(key) : defaultValue;
         }
         public String getString(String key, String defaultValue) {
-            return containsKey(key) ? (String)get(key) : defaultValue;
+            return containsKey(key) ? (String)super.get(key) : defaultValue;
         }
         public byte[] getByteArray(String key, byte[] defaultValue) {
-            return containsKey(key) ? (byte[])get(key) : defaultValue;
+            return containsKey(key) ? (byte[])super.get(key) : defaultValue;
         }
         public int[] getIntegerArray(String key, int[] defaultValue) {
-            return containsKey(key) ? (int[])get(key) : defaultValue;
+            return containsKey(key) ? (int[])super.get(key) : defaultValue;
         }
 
         /**
@@ -171,7 +171,7 @@ public class NbtFactory {
          * @return An existing list, a new list or NULL.
          */
         public NbtList getList(String key, boolean createNew) {
-            NbtList list = (NbtList) get(key);
+            NbtList list = (NbtList) super.get(key);
 
             if (list == null && createNew)
                 put(key, list = createList());
@@ -349,7 +349,7 @@ public class NbtFactory {
         try {
             STREAM_TOOLS = loader.loadClass(nmsPackage + ".NBTCompressedStreamTools");
             READ_LIMITER_CLASS = loader.loadClass(nmsPackage + ".NBTReadLimiter");
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException ignored) {
             // Ignore - we will detect this later
         }
     }
@@ -481,7 +481,7 @@ public class NbtFactory {
             if (data != null)
                 Closeables.close(data, suppress);
             else if (output != null)
-                Closeables.close(output, suppress);
+                Closeables.close(output, true);
         }
     }
 
