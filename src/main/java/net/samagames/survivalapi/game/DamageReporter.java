@@ -46,7 +46,7 @@ public class DamageReporter
         for (double damages : this.playerDamages.values())
             total += damages;
 
-        return total;
+        return (double)((long)(total * 10)) / 10D;
     }
 
     public Map<EntityType, Double> getEntityDamages()
