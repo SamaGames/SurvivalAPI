@@ -53,7 +53,10 @@ public class OneShieldModule extends AbstractSurvivalModule
 
         if (event.getRecipe().getResult().getType() == Material.SHIELD
                 && !this.crafters.contains(event.getWhoClicked().getUniqueId()))
+        {
             this.crafters.add(event.getWhoClicked().getUniqueId());
+            this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> this.crafters.remove(event.getWhoClicked().getUniqueId()), 6000);
+        }
     }
 
     /**
