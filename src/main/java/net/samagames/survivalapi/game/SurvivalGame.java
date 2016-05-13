@@ -109,7 +109,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         SurvivalPlayer.setGame(this);
 
         this.scoreboard = this.server.getScoreboardManager().getMainScoreboard();
-        
+
         SurvivalAPI.get().registerEvent(SurvivalAPI.EventType.WORLDLOADED, () ->
         {
             this.world = this.server.getWorlds().get(0);
