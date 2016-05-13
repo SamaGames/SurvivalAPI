@@ -307,16 +307,4 @@ public class GameListener implements Listener
         if (event.getRecipe().getResult().getType() == Material.SHIELD)
             event.getInventory().setResult(null);
     }
-
-    /**
-     * Cancel the craft of the shield
-     *
-     * @param event Event
-     */
-    @EventHandler
-    public void onCraftItem(PrepareItemCraftEvent event)
-    {
-        if (event.getRecipe().getResult().getType() == Material.SHIELD)
-            event.getInventory().setResult(null);
-    }
 }
