@@ -1,5 +1,6 @@
 package net.samagames.survivalapi.game;
 
+import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.game.types.SurvivalTeamGame;
 import net.samagames.tools.chat.FancyMessage;
 import org.bukkit.Bukkit;
@@ -29,7 +30,7 @@ public class SurvivalTeam
     private final HashMap<UUID, Boolean> players;
     private final ItemStack icon;
     private final ChatColor chatColor;
-    private final Team team;
+    private Team team;
 
     private String teamName;
     private int maxSize;
@@ -54,13 +55,16 @@ public class SurvivalTeam
         this.invited = new ArrayList<>();
         this.players = new HashMap<>();
 
-        Scoreboard board = game.getScoreboard();
+        SurvivalAPI.get().registerEvent(SurvivalAPI.EventType.WORLDLOADED, () -> {
+            Scoreboard board = game.getScoreboard();
 
-        this.team = board.registerNewTeam("meow" + chatColor.getChar());
-        this.team.setDisplayName(name);
-        this.team.setCanSeeFriendlyInvisibles(true);
-        this.team.setPrefix(chatColor + "");
-        this.team.setSuffix(ChatColor.RESET + "");
+            this.team = board.registerNewTeam("meow" + chatColor.getChar());
+            this.team.setDisplayName(name);
+            this.team.setCanSeeFriendlyInvisibles(true);
+            this.team.setPrefix(chatColor + "");
+            this.team.setSuffix(ChatColor.RESET + "");
+        });
+
     }
 
     /**
