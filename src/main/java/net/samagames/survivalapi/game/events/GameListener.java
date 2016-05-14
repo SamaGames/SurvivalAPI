@@ -295,16 +295,4 @@ public class GameListener implements Listener
             if (event.getLine(i).matches("^[a-zA-Z0-9ÀÁÂÄÇÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜàáâäçèéêëîïôöûü &]*$") && event.getLine(i).length() > 20)
                 event.setCancelled(true);
     }
-
-    /**
-     * Cancel the craft of the shield
-     *
-     * @param event Event
-     */
-    @EventHandler
-    public void onCraftItem(CraftItemEvent event)
-    {
-        if (event.getRecipe().getResult().getType() == Material.SHIELD)
-            event.getInventory().setResult(null);
-    }
 }
