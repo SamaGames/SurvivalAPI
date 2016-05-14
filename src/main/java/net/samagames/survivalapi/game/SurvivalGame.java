@@ -599,6 +599,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         if (player != null)
         {
             player.setSpectator();
+            player.setWaitingSpawn(null);
         }
         else
         {

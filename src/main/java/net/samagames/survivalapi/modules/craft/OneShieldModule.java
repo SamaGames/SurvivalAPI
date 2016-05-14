@@ -3,6 +3,7 @@ package net.samagames.survivalapi.modules.craft;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
@@ -42,7 +43,7 @@ public class OneShieldModule extends AbstractSurvivalModule
     }
 
     /**
-     * Accept only one bench crafting
+     * Accept only one shield crafting per 5 minutes
      *
      * @param event Event
      */
@@ -59,20 +60,12 @@ public class OneShieldModule extends AbstractSurvivalModule
         }
     }
 
-    /**
-     * Accept only one bench crafting
-     *
-     * @param event Event
-     */
-    @EventHandler
-    public void onPrepareItemCraft(PrepareItemCraftEvent event)
-    {
-        this.onCraftItem(event.getRecipe(), event.getInventory(), event.getView().getPlayer());
-    }
-
     private void onCraftItem(Recipe recipe, CraftingInventory inventory, HumanEntity human)
     {
         if (recipe.getResult().getType() == Material.SHIELD && this.crafters.contains(human.getUniqueId()))
+        {
             inventory.setResult(new ItemStack(Material.AIR, 1));
+            human.sendMessage(ChatColor.RED + "Vous ne pouvez créer de bouclier que toutes les 5 minutes !");
+        }
     }
 }
