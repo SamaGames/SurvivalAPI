@@ -153,7 +153,7 @@ public class GuiSelectTeam extends AbstractGui
         }
         else if ("teamname".equals(action))
         {
-            if (SamaGamesAPI.get().getPermissionsManager().hasPermission(player, "uhc.teamname"))
+            if (SamaGamesAPI.get().getPermissionsManager().hasPermission(player, "network.vip"))
             {
                 if (game.getPlayerTeam(player.getUniqueId()) != null)
                 {
@@ -202,7 +202,7 @@ public class GuiSelectTeam extends AbstractGui
         }
         else if ("openclose".equals(action))
         {
-            if (SamaGamesAPI.get().getPermissionsManager().hasPermission(player, "uhc.teamlock"))
+            if (SamaGamesAPI.get().getPermissionsManager().hasPermission(player, "network.vip"))
             {
                 if (game.getPlayerTeam(player.getUniqueId()) != null)
                 {
@@ -229,7 +229,7 @@ public class GuiSelectTeam extends AbstractGui
         }
         else if ("invit".equals(action))
         {
-            if (SamaGamesAPI.get().getPermissionsManager().hasPermission(player, "uhc.teaminvite"))
+            if (SamaGamesAPI.get().getPermissionsManager().hasPermission(player, "network.vip"))
             {
                 if (game.getPlayerTeam(player.getUniqueId()) != null)
                 {
