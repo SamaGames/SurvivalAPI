@@ -560,7 +560,9 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
                         this.coherenceMachine.getMessageManager().writeCustomMessage(message, true);
 
-                        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> SamaGamesAPI.get().getStatsManager().getPlayerStats(player.getUniqueId()).getUHCRunStatistics().incrByDeaths(1));
+                        try {
+                            Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> SamaGamesAPI.get().getStatsManager().getPlayerStats(player.getUniqueId()).getUHCRunStatistics().incrByDeaths(1));
+                        } catch (Exception ignored){}
 
                         Titles.sendTitle(player, 0, 100, 5, ChatColor.RED + "✞", ChatColor.RED + "Vous êtes mort !");
                         player.setGameMode(GameMode.SPECTATOR);
