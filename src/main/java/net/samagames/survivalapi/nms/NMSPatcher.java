@@ -1,17 +1,15 @@
 package net.samagames.survivalapi.nms;
 
-import net.minecraft.server.v1_9_R1.*;
+import net.minecraft.server.v1_9_R2.*;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.nms.stack.CustomAxe;
 import net.samagames.survivalapi.nms.stack.CustomPotion;
 import net.samagames.survivalapi.nms.stack.CustomSoup;
 import net.samagames.tools.Reflection;
-import org.bukkit.potion.PotionEffectType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

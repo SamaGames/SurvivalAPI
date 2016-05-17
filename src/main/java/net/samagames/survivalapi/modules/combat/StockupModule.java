@@ -1,12 +1,12 @@
 package net.samagames.survivalapi.modules.combat;
 
-import net.minecraft.server.v1_9_R1.EntityPlayer;
+import net.minecraft.server.v1_9_R2.EntityPlayer;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.SurvivalPlayer;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_9_R2.entity.CraftPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 

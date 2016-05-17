@@ -1,4 +1,4 @@
-package net.samagames.survivalapi.modules.gameplay;
+package net.samagames.survivalapi.modules.combat;
 
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
