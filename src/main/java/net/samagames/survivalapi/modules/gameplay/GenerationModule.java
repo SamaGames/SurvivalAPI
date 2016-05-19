@@ -20,11 +20,10 @@ public class GenerationModule extends AbstractSurvivalModule
      * @param plugin              Parent plugin
      * @param api                 API instance
      * @param moduleConfiguration Module configuration
-     * @param name The map sub-name
      */
-    public GenerationModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration, String name)
+    public GenerationModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
-        SurvivalAPI.get().setCustomMapName(name);
+        //TODO Renable this when map generated : SurvivalAPI.get().setCustomMapName((String)moduleConfiguration.get("mapname"));
     }
 }
