@@ -1,6 +1,6 @@
 package net.samagames.survivalapi;
 
-import net.minecraft.server.v1_9_R1.MinecraftKey;
+import net.minecraft.server.v1_9_R2.MinecraftKey;
 import net.samagames.survivalapi.games.AbstractGame;
 import net.samagames.survivalapi.games.Game;
 import net.samagames.survivalapi.gen.WorldLoader;
