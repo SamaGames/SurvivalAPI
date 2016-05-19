@@ -176,12 +176,10 @@ public class SurvivalGameLoop implements Runnable
             this.minutes++;
             this.seconds = 0;
 
-            if (this.episodeEnabled && this.minutes >= 20)
+            if (this.episodeEnabled && this.minutes % 20 == 0)
             {
                 this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Fin de l'épisode " + this.episode, true);
                 this.episode++;
-
-                this.minutes = 0;
             }
         }
 
