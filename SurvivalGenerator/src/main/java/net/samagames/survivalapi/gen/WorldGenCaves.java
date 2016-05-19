@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 /**
  * @author Florian Cassayre (6infinity8)
  */
-public class WorldGenCaves extends net.minecraft.server.v1_9_R1.WorldGenCaves
+public class WorldGenCaves extends net.minecraft.server.v1_9_R2.WorldGenCaves
 {
     private final int amount;
 

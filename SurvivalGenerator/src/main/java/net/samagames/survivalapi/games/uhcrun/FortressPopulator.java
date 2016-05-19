@@ -5,7 +5,7 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 import com.sk89q.worldedit.world.DataException;
 import net.minecraft.server.v1_9_R2.MathHelper;
-import net.minecraft.server.v1_9_R2.StructurePieceTreasure;
+import net.samagames.survivalapi.utils.StructurePieceTreasure;
 import net.samagames.survivalapi.SurvivalGenerator;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
