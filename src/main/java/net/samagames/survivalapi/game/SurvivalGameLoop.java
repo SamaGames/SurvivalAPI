@@ -252,6 +252,8 @@ public class SurvivalGameLoop implements Runnable
                 objective.setLine(lastLine + 1, ChatColor.GRAY + "Bordure :");
                 objective.setLine(lastLine + 2, ChatColor.WHITE + "-" + (int) this.world.getWorldBorder().getSize() / 2 + " +" + (int) this.world.getWorldBorder().getSize() / 2);
                 objective.setLine(lastLine + 3, ChatColor.LIGHT_PURPLE + "");
+                if (this.episodeEnabled)
+                    objective.setLine(lastLine++ + 4, ChatColor.GRAY + "Episode : " + ChatColor.WHITE + this.episode);
                 objective.setLine(lastLine + 4, ChatColor.GRAY + "Temps de jeu : " + ChatColor.WHITE + this.toString(this.minutes, this.seconds));
 
                 objective.updateLines();
