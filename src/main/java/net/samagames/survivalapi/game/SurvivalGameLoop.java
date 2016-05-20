@@ -88,7 +88,7 @@ public class SurvivalGameLoop implements Runnable
 
     public void createPvPEvent()
     {
-        this.nextEvent = new TimedEvent(19, 0, "Combats actifs", ChatColor.GOLD, false, () ->
+        this.nextEvent = new TimedEvent(29, 0, "Combats actifs", ChatColor.GOLD, false, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les combats sont désormais actifs.", true);
             this.game.enablePVP();
@@ -99,7 +99,7 @@ public class SurvivalGameLoop implements Runnable
 
     public void createReducingEvent()
     {
-        this.nextEvent = new TimedEvent(70, 0, "Réduction des bordures et fermeture du Nether", ChatColor.RED, false, () ->
+        this.nextEvent = new TimedEvent(30, 0, "Réduction des bordures et fermeture du Nether", ChatColor.RED, false, () ->
         {
             this.game.setWorldBorderSize(64, 60L * 20L);
             this.displayReducingMessage();
