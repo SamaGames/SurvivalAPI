@@ -33,7 +33,7 @@ public class SecurityListener implements Listener
     @EventHandler
     public void onPlayerPortal(PlayerPortalEvent event)
     {
-        if (!this.game.getPlugin().getServer().getAllowNether())
+        if (!this.game.getPlugin().getServer().getAllowNether() || this.game.getSurvivalGameLoop().isNetherClosed())
         {
             event.setCancelled(true);
             return;

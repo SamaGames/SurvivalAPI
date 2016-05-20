@@ -36,6 +36,7 @@ public class SurvivalGameLoop implements Runnable
     protected int episode;
     protected boolean episodeEnabled;
     protected boolean blocksProtected;
+    protected boolean netherClosed;
 
     /**
      * Constructor
@@ -58,6 +59,7 @@ public class SurvivalGameLoop implements Runnable
 
         this.episodeEnabled = false;
         this.blocksProtected = true;
+        this.netherClosed = false;
 
         this.createWaitingBlockRemovingEvent();
     }
@@ -338,6 +340,7 @@ public class SurvivalGameLoop implements Runnable
      */
     public void closeNether()
     {
+        this.netherClosed = true;
         World nether = this.plugin.getServer().getWorld("world_nether");
         World overworld = this.plugin.getServer().getWorld("world");
         if (nether == null)
@@ -371,5 +374,9 @@ public class SurvivalGameLoop implements Runnable
     public boolean areBlocksProtected()
     {
         return this.blocksProtected;
+    }
+
+    public boolean isNetherClosed() {
+        return netherClosed;
     }
 }
