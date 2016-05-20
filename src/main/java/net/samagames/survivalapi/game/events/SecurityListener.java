@@ -34,7 +34,10 @@ public class SecurityListener implements Listener
     public void onPlayerPortal(PlayerPortalEvent event)
     {
         if (!this.game.getPlugin().getServer().getAllowNether())
-            return ;
+        {
+            event.setCancelled(true);
+            return;
+        }
         TravelAgent travelAgent = event.getPortalTravelAgent();
         Location destination = travelAgent.findPortal(event.getTo());
 

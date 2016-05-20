@@ -97,11 +97,12 @@ public class SurvivalGameLoop implements Runnable
 
     public void createReducingEvent()
     {
-        this.nextEvent = new TimedEvent(70, 0, "Réduction des bordures", ChatColor.RED, false, () ->
+        this.nextEvent = new TimedEvent(70, 0, "Réduction des bordures et fermeture du Nether", ChatColor.RED, false, () ->
         {
             this.game.setWorldBorderSize(64, 60L * 20L);
             this.displayReducingMessage();
             this.createEndOfReducingEvent();
+            this.closeNether();
         });
     }
 
@@ -330,6 +331,24 @@ public class SurvivalGameLoop implements Runnable
             a += 360;
 
         return Character.toString("⬆⬈➡⬊⬇⬋⬅⬉".charAt((int) a / 45));
+    }
+
+    /**
+     * Close the nether, teleport players to OverWorld
+     */
+    public void closeNether()
+    {
+        World nether = this.plugin.getServer().getWorld("world_nether");
+        World overworld = this.plugin.getServer().getWorld("world");
+        if (nether == null)
+            return ;
+        this.plugin.getServer().getOnlinePlayers().forEach(player -> {
+            Location location = player.getLocation();
+            Location newLocation = new Location(overworld, location.getX() * 8, 0, location.getZ());
+            newLocation.setY(newLocation.getWorld().getHighestBlockYAt(newLocation));
+            player.teleport(newLocation);
+            player.sendMessage(ChatColor.RED + "Le nether a été fermé, vous avez été téléporté dans le monde normal.");
+        });
     }
 
     /**
