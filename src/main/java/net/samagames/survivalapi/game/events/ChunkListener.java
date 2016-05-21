@@ -1,6 +1,7 @@
 package net.samagames.survivalapi.game.events;
 
 import net.samagames.survivalapi.SurvivalAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
@@ -82,8 +83,7 @@ public class ChunkListener implements Runnable, Listener
     @EventHandler
     public void onWorldLoad(WorldLoadEvent event)
     {
-        //NOFIXME if nether exist think about it. EDIT : No need to do it =P
-        //Continue process of start by call the chain
-        SurvivalAPI.get().fireEvents(SurvivalAPI.EventType.WORLDLOADED);
+        if (event.getWorld().equals(Bukkit.getWorlds().get(0)))
+            SurvivalAPI.get().fireEvents(SurvivalAPI.EventType.WORLDLOADED);
     }
 }

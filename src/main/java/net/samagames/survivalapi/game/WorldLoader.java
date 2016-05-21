@@ -63,12 +63,12 @@ public class WorldLoader
         final long startTime = System.currentTimeMillis();
         final int size = 240;
 
-        for(final Location loc : spawns)
+        for (final Location loc : spawns)
         {
             new BukkitRunnable()
             {
-                private int x = loc.getBlockX()-size;
-                private int z = loc.getBlockZ()-size;
+                private int x = loc.getBlockX() - size;
+                private int z = loc.getBlockZ() - size;
 
                 @Override
                 public void run()
@@ -81,13 +81,13 @@ public class WorldLoader
 
                         this.z += 16;
 
-                        if (this.z >= size)
+                        if (this.z >= loc.getBlockX() + size)
                         {
-                            this.z = -size;
+                            this.z = loc.getBlockX() - size;
                             this.x += 16;
                         }
 
-                        if (this.x >= size)
+                        if (this.x >= loc.getBlockX() + size)
                         {
                             done++;
                             
@@ -109,7 +109,7 @@ public class WorldLoader
             @Override
             public void run()
             {
-                if(done >= spawns.size())
+                if (done >= spawns.size())
                 {
                     this.cancel();
                     plugin.finishGeneration(world, System.currentTimeMillis() - startTime);
