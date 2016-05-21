@@ -30,10 +30,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -651,9 +648,23 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.spawns.add(new Location(this.world, -200, 150, 200));
         this.spawns.add(new Location(this.world, -400, 150, 400));
 
+        this.spawns.forEach(this::checkSpawn);
+
         Collections.shuffle(this.spawns);
 
         this.waitingBlocks.addAll(this.spawns.stream().map(WaitingBlock::new).collect(Collectors.toList()));
+    }
+
+    /**
+     * Check if spawn is valid and safe
+     *
+     * @param location The Spawn
+     */
+    private void checkSpawn(Location location)
+    {
+        Random random = new Random();
+        while (location.getWorld().getHighestBlockYAt(location) < 10)
+            location.add((random.nextInt(3) - 1) * 16, 0, (random.nextInt(3) - 1) * 16);
     }
 
     /**
