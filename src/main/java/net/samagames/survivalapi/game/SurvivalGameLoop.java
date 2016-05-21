@@ -345,12 +345,16 @@ public class SurvivalGameLoop implements Runnable
         World overworld = this.plugin.getServer().getWorld("world");
         if (nether == null)
             return ;
-        this.plugin.getServer().getOnlinePlayers().forEach(player -> {
+        this.plugin.getServer().getOnlinePlayers().forEach(player ->
+        {
             Location location = player.getLocation();
-            Location newLocation = new Location(overworld, location.getX() * 8, 0, location.getZ());
-            newLocation.setY(newLocation.getWorld().getHighestBlockYAt(newLocation));
-            player.teleport(newLocation);
-            player.sendMessage(ChatColor.RED + "Le nether a été fermé, vous avez été téléporté dans le monde normal.");
+            if (location.getWorld().equals(nether))
+            {
+                Location newLocation = new Location(overworld, location.getX() * 8, 0, location.getZ());
+                newLocation.setY(newLocation.getWorld().getHighestBlockYAt(newLocation));
+                player.teleport(newLocation);
+                player.sendMessage(ChatColor.RED + "Le nether a été fermé, vous avez été téléporté dans le monde normal.");
+            }
         });
     }
 
