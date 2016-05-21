@@ -546,7 +546,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
                             case POISON:
                             case MAGIC:
-                                message += "a s'est confronté à meilleur sorcier que lui.";
+                                message += "s'est confronté à meilleur sorcier que lui.";
                                 break;
 
                             case LIGHTNING:
