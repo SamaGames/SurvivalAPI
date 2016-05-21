@@ -43,8 +43,8 @@ public class GoneFishingModule extends AbstractSurvivalModule
     public void onGameStart(SurvivalGame game)
     {
         ItemStack rod = new ItemStack(Material.FISHING_ROD);
-        rod.addUnsafeEnchantment(Enchantment.LUCK, Integer.MAX_VALUE);
-        rod.addUnsafeEnchantment(Enchantment.DURABILITY, Integer.MAX_VALUE);
+        rod.addUnsafeEnchantment(Enchantment.LUCK, 255);
+        rod.addUnsafeEnchantment(Enchantment.DURABILITY, 255);
         ItemMeta meta = rod.getItemMeta();
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         rod.setItemMeta(meta);
