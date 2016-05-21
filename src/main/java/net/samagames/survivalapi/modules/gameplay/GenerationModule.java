@@ -24,6 +24,6 @@ public class GenerationModule extends AbstractSurvivalModule
     public GenerationModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
-        //TODO Renable this when map generated : SurvivalAPI.get().setCustomMapName((String)moduleConfiguration.get("mapname"));
+        SurvivalAPI.get().setCustomMapName((String)moduleConfiguration.get("mapname"));
     }
 }
