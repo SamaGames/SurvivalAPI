@@ -98,7 +98,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.server.getPluginManager().registerEvents(new SecurityListener(this), plugin);
         this.server.getPluginManager().registerEvents(new GameListener(this), plugin);
 
-        SamaGamesAPI.get().getGameManager().setMaxReconnectTime(this.gameManager.getGameProperties().getOption("reconnectTime", new JsonPrimitive(5)).getAsInt());
+        //SamaGamesAPI.get().getGameManager().setMaxReconnectTime(this.gameManager.getGameProperties().getOption("reconnectTime", new JsonPrimitive(5)).getAsInt());
+        SamaGamesAPI.get().getGameManager().setMaxReconnectTime(-1);
         SamaGamesAPI.get().getGameManager().setLegacyPvP(true);
         SamaGamesAPI.get().getGameManager().setKeepPlayerCache(true);
 
@@ -307,10 +308,12 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         playerListLife.setDisplayName(ChatColor.RED + "❤");
         playerListLife.setDisplaySlot(DisplaySlot.PLAYER_LIST);
 
-        for (UUID uuid : this.getInGamePlayers().keySet()) {
+        for (UUID uuid : this.getInGamePlayers().keySet())
+        {
             Player player = this.server.getPlayer(uuid);
 
-            if (player == null) {
+            if (player == null)
+            {
                 this.gamePlayers.remove(uuid);
                 continue;
             }
@@ -561,9 +564,11 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
                         this.coherenceMachine.getMessageManager().writeCustomMessage(message, true);
 
-                        try {
+                        try
+                        {
                             Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> SamaGamesAPI.get().getStatsManager().getPlayerStats(player.getUniqueId()).getUHCRunStatistics().incrByDeaths(1));
-                        } catch (Exception ignored){}
+                        }
+                        catch (Exception ignored) {}
 
                         Titles.sendTitle(player, 0, 100, 5, ChatColor.RED + "✞", ChatColor.RED + "Vous êtes mort !");
                         player.setGameMode(GameMode.SPECTATOR);
