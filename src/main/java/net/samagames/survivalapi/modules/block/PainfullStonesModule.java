@@ -1,7 +1,9 @@
 package net.samagames.survivalapi.modules.block;
 
+import net.samagames.api.SamaGamesAPI;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
+import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -40,6 +42,8 @@ public class PainfullStonesModule extends AbstractSurvivalModule
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event)
     {
+        if (!((SurvivalGame) SamaGamesAPI.get().getGameManager().getGame()).isDamagesActivated())
+            return ;
         Block block = event.getTo().clone().subtract(0, 1, 0).getBlock();
         if (block != null && block.getType() == Material.GRAVEL
                 && (event.getPlayer().getInventory().getBoots() == null || event.getPlayer().getInventory().getBoots().getType() == Material.AIR)

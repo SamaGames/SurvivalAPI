@@ -30,7 +30,7 @@ sonarRunner {
 }
 
 dependencies {
-    compile(group: 'org.spigotmc', name: 'spigot', version: '1.9-R0.1-SNAPSHOT', changing: true) {
+    compile(group: 'org.spigotmc', name: 'spigot', version: '1.9.4-R0.1-SNAPSHOT', changing: true) {
         transitive = false
     }
 

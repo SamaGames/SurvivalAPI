@@ -1,15 +1,15 @@
 package net.samagames.survivalapi.gen;
 
-import net.minecraft.server.v1_9_R1.*;
-import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_9_R1.generator.NormalChunkGenerator;
+import net.minecraft.server.v1_9_R2.*;
+import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_9_R2.generator.NormalChunkGenerator;
 
 import java.lang.reflect.Field;
 
 /**
  * @author Florian Cassayre (6infinity8)
  */
-public class WorldGenCaves extends net.minecraft.server.v1_9_R1.WorldGenCaves
+public class WorldGenCaves extends net.minecraft.server.v1_9_R2.WorldGenCaves
 {
     private final int amount;
 

@@ -36,6 +36,7 @@ public class SurvivalGameLoop implements Runnable
     protected int episode;
     protected boolean episodeEnabled;
     protected boolean blocksProtected;
+    protected boolean netherClosed;
 
     /**
      * Constructor
@@ -58,6 +59,7 @@ public class SurvivalGameLoop implements Runnable
 
         this.episodeEnabled = false;
         this.blocksProtected = true;
+        this.netherClosed = false;
 
         this.createWaitingBlockRemovingEvent();
     }
@@ -86,7 +88,7 @@ public class SurvivalGameLoop implements Runnable
 
     public void createPvPEvent()
     {
-        this.nextEvent = new TimedEvent(19, 0, "Combats actifs", ChatColor.GOLD, false, () ->
+        this.nextEvent = new TimedEvent(29, 0, "Combats actifs", ChatColor.GOLD, false, () ->
         {
             this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Les combats sont désormais actifs.", true);
             this.game.enablePVP();
@@ -97,11 +99,12 @@ public class SurvivalGameLoop implements Runnable
 
     public void createReducingEvent()
     {
-        this.nextEvent = new TimedEvent(70, 0, "Réduction des bordures", ChatColor.RED, false, () ->
+        this.nextEvent = new TimedEvent(30, 0, "Réduction des bordures et fermeture du Nether", ChatColor.RED, false, () ->
         {
             this.game.setWorldBorderSize(64, 60L * 20L);
             this.displayReducingMessage();
             this.createEndOfReducingEvent();
+            this.closeNether();
         });
     }
 
@@ -176,12 +179,10 @@ public class SurvivalGameLoop implements Runnable
             this.minutes++;
             this.seconds = 0;
 
-            if (this.episodeEnabled && this.minutes >= 20)
+            if (this.episodeEnabled && this.minutes % 20 == 0)
             {
                 this.game.getCoherenceMachine().getMessageManager().writeCustomMessage("Fin de l'épisode " + this.episode, true);
                 this.episode++;
-
-                this.minutes = 0;
             }
         }
 
@@ -252,6 +253,8 @@ public class SurvivalGameLoop implements Runnable
                 objective.setLine(lastLine + 1, ChatColor.GRAY + "Bordure :");
                 objective.setLine(lastLine + 2, ChatColor.WHITE + "-" + (int) this.world.getWorldBorder().getSize() / 2 + " +" + (int) this.world.getWorldBorder().getSize() / 2);
                 objective.setLine(lastLine + 3, ChatColor.LIGHT_PURPLE + "");
+                if (this.episodeEnabled)
+                    objective.setLine(lastLine++ + 4, ChatColor.GRAY + "Episode : " + ChatColor.WHITE + this.episode);
                 objective.setLine(lastLine + 4, ChatColor.GRAY + "Temps de jeu : " + ChatColor.WHITE + this.toString(this.minutes, this.seconds));
 
                 objective.updateLines();
@@ -333,6 +336,29 @@ public class SurvivalGameLoop implements Runnable
     }
 
     /**
+     * Close the nether, teleport players to OverWorld
+     */
+    public void closeNether()
+    {
+        this.netherClosed = true;
+        World nether = this.plugin.getServer().getWorld("world_nether");
+        World overworld = this.plugin.getServer().getWorld("world");
+        if (nether == null)
+            return ;
+        this.plugin.getServer().getOnlinePlayers().forEach(player ->
+        {
+            Location location = player.getLocation();
+            if (location.getWorld().equals(nether))
+            {
+                Location newLocation = new Location(overworld, location.getX() * 8, 0, location.getZ());
+                newLocation.setY(newLocation.getWorld().getHighestBlockYAt(newLocation));
+                player.teleport(newLocation);
+                player.sendMessage(ChatColor.RED + "Le nether a été fermé, vous avez été téléporté dans le monde normal.");
+            }
+        });
+    }
+
+    /**
      * Format a time into a formatted string
      *
      * @param minutes Minutes
@@ -352,5 +378,9 @@ public class SurvivalGameLoop implements Runnable
     public boolean areBlocksProtected()
     {
         return this.blocksProtected;
+    }
+
+    public boolean isNetherClosed() {
+        return netherClosed;
     }
 }

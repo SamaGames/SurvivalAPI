@@ -30,10 +30,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -104,6 +101,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         //SamaGamesAPI.get().getGameManager().setMaxReconnectTime(this.gameManager.getGameProperties().getOption("reconnectTime", new JsonPrimitive(5)).getAsInt());
         SamaGamesAPI.get().getGameManager().setMaxReconnectTime(-1);
         SamaGamesAPI.get().getGameManager().setLegacyPvP(true);
+        SamaGamesAPI.get().getGameManager().setKeepPlayerCache(true);
 
         CommandUHC.setGame(this);
         CommandNextEvent.setGame(this);
@@ -221,7 +219,10 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             return null;
         String map = worldStorage.getAsString();
         if (map != null && SurvivalAPI.get().getCustomMapName() != null)
-            map += '_' + SurvivalAPI.get().getCustomMapName();
+        {
+            map = map.substring(0, map.length() - 1);
+            map += '_' + SurvivalAPI.get().getCustomMapName() + "/";
+        }
         return map;
     }
 
@@ -548,7 +549,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
                             case POISON:
                             case MAGIC:
-                                message += "a s'est confronté à meilleur sorcier que lui.";
+                                message += "s'est confronté à meilleur sorcier que lui.";
                                 break;
 
                             case LIGHTNING:
@@ -652,9 +653,23 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.spawns.add(new Location(this.world, -200, 150, 200));
         this.spawns.add(new Location(this.world, -400, 150, 400));
 
+        this.spawns.forEach(this::checkSpawn);
+
         Collections.shuffle(this.spawns);
 
         this.waitingBlocks.addAll(this.spawns.stream().map(WaitingBlock::new).collect(Collectors.toList()));
+    }
+
+    /**
+     * Check if spawn is valid and safe
+     *
+     * @param location The Spawn
+     */
+    private void checkSpawn(Location location)
+    {
+        Random random = new Random();
+        while (location.getWorld().getHighestBlockYAt(location) < 10)
+            location.add((random.nextInt(3) - 1) * 16, 0, (random.nextInt(3) - 1) * 16);
     }
 
     /**
