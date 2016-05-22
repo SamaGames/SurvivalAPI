@@ -3,8 +3,8 @@ package net.samagames.survivalapi.game;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
-import net.minecraft.server.v1_9_R1.MinecraftServer;
-import net.minecraft.server.v1_9_R1.SpawnerCreature;
+import net.minecraft.server.v1_9_R2.MinecraftServer;
+import net.minecraft.server.v1_9_R2.SpawnerCreature;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Game;
 import net.samagames.api.games.GamePlayer;
@@ -30,10 +30,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -103,6 +100,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
         SamaGamesAPI.get().getGameManager().setMaxReconnectTime(this.gameManager.getGameProperties().getOption("reconnectTime", new JsonPrimitive(5)).getAsInt());
         SamaGamesAPI.get().getGameManager().setLegacyPvP(true);
+        SamaGamesAPI.get().getGameManager().setKeepPlayerCache(true);
 
         CommandUHC.setGame(this);
         CommandNextEvent.setGame(this);
@@ -220,7 +218,10 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             return null;
         String map = worldStorage.getAsString();
         if (map != null && SurvivalAPI.get().getCustomMapName() != null)
-            map += '_' + SurvivalAPI.get().getCustomMapName();
+        {
+            map = map.substring(0, map.length() - 1);
+            map += '_' + SurvivalAPI.get().getCustomMapName() + "/";
+        }
         return map;
     }
 
@@ -545,7 +546,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
                             case POISON:
                             case MAGIC:
-                                message += "a s'est confronté à meilleur sorcier que lui.";
+                                message += "s'est confronté à meilleur sorcier que lui.";
                                 break;
 
                             case LIGHTNING:
@@ -560,7 +561,9 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
                         this.coherenceMachine.getMessageManager().writeCustomMessage(message, true);
 
-                        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> SamaGamesAPI.get().getStatsManager().getPlayerStats(player.getUniqueId()).getUHCRunStatistics().incrByDeaths(1));
+                        try {
+                            Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> SamaGamesAPI.get().getStatsManager().getPlayerStats(player.getUniqueId()).getUHCRunStatistics().incrByDeaths(1));
+                        } catch (Exception ignored){}
 
                         Titles.sendTitle(player, 0, 100, 5, ChatColor.RED + "✞", ChatColor.RED + "Vous êtes mort !");
                         player.setGameMode(GameMode.SPECTATOR);
@@ -645,9 +648,23 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.spawns.add(new Location(this.world, -200, 150, 200));
         this.spawns.add(new Location(this.world, -400, 150, 400));
 
+        this.spawns.forEach(this::checkSpawn);
+
         Collections.shuffle(this.spawns);
 
         this.waitingBlocks.addAll(this.spawns.stream().map(WaitingBlock::new).collect(Collectors.toList()));
+    }
+
+    /**
+     * Check if spawn is valid and safe
+     *
+     * @param location The Spawn
+     */
+    private void checkSpawn(Location location)
+    {
+        Random random = new Random();
+        while (location.getWorld().getHighestBlockYAt(location) < 10)
+            location.add((random.nextInt(3) - 1) * 16, 0, (random.nextInt(3) - 1) * 16);
     }
 
     /**

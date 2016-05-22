@@ -89,7 +89,7 @@ public class RiskyRetrievalModule extends AbstractSurvivalModule
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event)
     {
-        if (!event.getClickedInventory().equals(this.inventory))
+        if (event.getClickedInventory() == null || !event.getClickedInventory().equals(this.inventory))
             return ;
         switch (event.getAction())
         {

@@ -61,7 +61,7 @@ public class NineSlotsModule extends AbstractSurvivalModule
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event)
     {
-        if (event.getClickedInventory().getType() == InventoryType.PLAYER && event.getCurrentItem().getType() == Material.BARRIER)
+        if (event.getClickedInventory().getType() == InventoryType.PLAYER && event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.BARRIER)
             event.setCancelled(true);
     }
 

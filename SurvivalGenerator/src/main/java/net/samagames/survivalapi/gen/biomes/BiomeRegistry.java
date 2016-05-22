@@ -1,9 +1,9 @@
 package net.samagames.survivalapi.gen.biomes;
 
-import net.minecraft.server.v1_9_R1.BiomeBase;
-import net.minecraft.server.v1_9_R1.MinecraftKey;
-import net.minecraft.server.v1_9_R1.RegistryID;
-import net.minecraft.server.v1_9_R1.RegistryMaterials;
+import net.minecraft.server.v1_9_R2.BiomeBase;
+import net.minecraft.server.v1_9_R2.MinecraftKey;
+import net.minecraft.server.v1_9_R2.RegistryID;
+import net.minecraft.server.v1_9_R2.RegistryMaterials;
 import net.samagames.survivalapi.utils.Reflection;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;

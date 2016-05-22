@@ -55,7 +55,8 @@ public class SurvivalTeam
         this.invited = new ArrayList<>();
         this.players = new HashMap<>();
 
-        SurvivalAPI.get().registerEvent(SurvivalAPI.EventType.WORLDLOADED, () -> {
+        SurvivalAPI.get().registerEvent(SurvivalAPI.EventType.WORLDLOADED, () ->
+        {
             Scoreboard board = game.getScoreboard();
 
             this.team = board.registerNewTeam("meow" + chatColor.getChar());

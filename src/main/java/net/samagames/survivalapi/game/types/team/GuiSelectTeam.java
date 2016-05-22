@@ -1,7 +1,7 @@
 package net.samagames.survivalapi.game.types.team;
 
-import net.minecraft.server.v1_9_R1.EntityHuman;
-import net.minecraft.server.v1_9_R1.TileEntitySign;
+import net.minecraft.server.v1_9_R2.EntityHuman;
+import net.minecraft.server.v1_9_R2.TileEntitySign;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.gui.AbstractGui;
 import net.samagames.survivalapi.game.SurvivalTeam;
@@ -12,8 +12,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
-import org.bukkit.craftbukkit.v1_9_R1.block.CraftSign;
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_9_R2.block.CraftSign;
+import org.bukkit.craftbukkit.v1_9_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -153,7 +153,7 @@ public class GuiSelectTeam extends AbstractGui
         }
         else if ("teamname".equals(action))
         {
-            if (SamaGamesAPI.get().getPermissionsManager().hasPermission(player, "uhc.teamname"))
+            if (SamaGamesAPI.get().getPermissionsManager().hasPermission(player, "network.vip"))
             {
                 if (game.getPlayerTeam(player.getUniqueId()) != null)
                 {
@@ -202,7 +202,7 @@ public class GuiSelectTeam extends AbstractGui
         }
         else if ("openclose".equals(action))
         {
-            if (SamaGamesAPI.get().getPermissionsManager().hasPermission(player, "uhc.teamlock"))
+            if (SamaGamesAPI.get().getPermissionsManager().hasPermission(player, "network.vip"))
             {
                 if (game.getPlayerTeam(player.getUniqueId()) != null)
                 {
@@ -229,7 +229,7 @@ public class GuiSelectTeam extends AbstractGui
         }
         else if ("invit".equals(action))
         {
-            if (SamaGamesAPI.get().getPermissionsManager().hasPermission(player, "uhc.teaminvite"))
+            if (SamaGamesAPI.get().getPermissionsManager().hasPermission(player, "network.vip"))
             {
                 if (game.getPlayerTeam(player.getUniqueId()) != null)
                 {

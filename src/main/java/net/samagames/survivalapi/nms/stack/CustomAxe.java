@@ -1,10 +1,10 @@
 package net.samagames.survivalapi.nms.stack;
 
 import com.google.common.collect.Multimap;
-import net.minecraft.server.v1_9_R1.AttributeModifier;
-import net.minecraft.server.v1_9_R1.EnumItemSlot;
-import net.minecraft.server.v1_9_R1.GenericAttributes;
-import net.minecraft.server.v1_9_R1.ItemAxe;
+import net.minecraft.server.v1_9_R2.AttributeModifier;
+import net.minecraft.server.v1_9_R2.EnumItemSlot;
+import net.minecraft.server.v1_9_R2.GenericAttributes;
+import net.minecraft.server.v1_9_R2.ItemAxe;
 
 public class CustomAxe extends ItemAxe
 {
