@@ -47,6 +47,8 @@ public class SpeedSwapModule extends AbstractSurvivalModule
         for (GamePlayer player : (Collection<GamePlayer>) SamaGamesAPI.get().getGameManager().getGame().getInGamePlayers().values())
         {
             Player p = player.getPlayerIfOnline();
+            if (p == null)
+                return ;
             p.addPotionEffect((this.isSpeed ? PotionEffectType.SPEED : PotionEffectType.SLOW).createEffect(Integer.MAX_VALUE, 1));
         }
         this.isSpeed = !this.isSpeed;
