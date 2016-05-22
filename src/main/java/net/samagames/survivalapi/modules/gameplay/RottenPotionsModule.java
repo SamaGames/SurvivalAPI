@@ -45,6 +45,10 @@ public class RottenPotionsModule extends AbstractSurvivalModule
     public void onPlayerItemConsume(PlayerItemConsumeEvent event)
     {
         if (event.getItem().getType() == Material.ROTTEN_FLESH)
-            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.values()[this.random.nextInt(PotionEffectType.values().length)], 200, 1));
+        {
+            PotionEffectType effectType = PotionEffectType.values()[this.random.nextInt(PotionEffectType.values().length)];
+            if (effectType != null)
+                event.getPlayer().addPotionEffect(new PotionEffect(effectType, 200, 1));
+        }
     }
 }
