@@ -45,6 +45,8 @@ public class SuperheroesPlusModule extends AbstractSurvivalModule
         for (SurvivalPlayer player : (Collection<SurvivalPlayer>)game.getInGamePlayers().values())
         {
             Player p = player.getPlayerIfOnline();
+            if (p == null)
+                continue ;
             p.addPotionEffect(PotionEffectType.SPEED.createEffect(Integer.MAX_VALUE, 2));
             p.addPotionEffect(PotionEffectType.FAST_DIGGING.createEffect(Integer.MAX_VALUE, 2));
             p.addPotionEffect(PotionEffectType.SATURATION.createEffect(Integer.MAX_VALUE, 10));
