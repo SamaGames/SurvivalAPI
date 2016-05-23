@@ -63,8 +63,8 @@ public class WorldGenCaves extends net.minecraft.server.v1_9_R2.WorldGenCaves
         World craftworld = ((CraftWorld) world).getHandle();
 
         Object chunkProviderServer = getFieldValue(World.class, "chunkProvider", craftworld);
-        Object normalChunkProvider = getFieldValue(ChunkProviderServer.class, "chunkProvider", chunkProviderServer);
-        Object chunkProviderGenerate = getFieldValue(NormalChunkGenerator.class, "provider", normalChunkProvider);
+        Object normalChunkProvider = getFieldValue(ChunkProviderServer.class, "chunkGenerator", chunkProviderServer);
+        Object chunkProviderGenerate = getFieldValue(NormalChunkGenerator.class, "generator", normalChunkProvider);
 
         changeFieldValue(ChunkProviderGenerate.class, "v", chunkProviderGenerate, new WorldGenCaves(amountOfCaves));
     }
