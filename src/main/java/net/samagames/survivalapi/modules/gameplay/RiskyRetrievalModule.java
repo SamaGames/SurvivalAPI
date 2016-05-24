@@ -4,6 +4,7 @@ import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.survivalapi.modules.utility.DropTaggingModule;
 import net.samagames.survivalapi.utils.Meta;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
@@ -18,6 +19,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -113,7 +116,8 @@ public class RiskyRetrievalModule extends AbstractSurvivalModule
     public void onItemSpawn(ItemSpawnEvent event)
     {
         if (event.getEntityType() != EntityType.DROPPED_ITEM
-            || Meta.hasMeta(event.getEntity().getItemStack()))
+                || Meta.hasMeta(event.getEntity().getItemStack())
+                || event.getEntity().hasMetadata("playerDrop"))
             return ;
 
         for (int i = 0; i < MATERIALS.length; i++)
@@ -157,5 +161,15 @@ public class RiskyRetrievalModule extends AbstractSurvivalModule
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatColor.RED + "Il n'est pas possible de casser de blocs à proximité du coffre des minerais.");
         }
+    }
+
+    @Override
+    public List<Class<? extends AbstractSurvivalModule>> getRequiredModules()
+    {
+        ArrayList<Class<? extends AbstractSurvivalModule>> requiredModules = new ArrayList<>();
+
+        requiredModules.add(DropTaggingModule.class);
+
+        return requiredModules;
     }
 }

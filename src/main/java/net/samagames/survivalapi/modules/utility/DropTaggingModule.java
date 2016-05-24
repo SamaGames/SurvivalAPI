@@ -4,6 +4,7 @@ import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -27,7 +28,7 @@ public class DropTaggingModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerItemDrop(PlayerDropItemEvent event)
     {
         if (!event.getItemDrop().hasMetadata("playerDrop"))
