@@ -75,6 +75,8 @@ public class SurvivalGenerator extends JavaPlugin
 
         this.removeBiome(0, new MinecraftKey("ocean"), BIOME_FOREST);
         this.removeBiome(10, new MinecraftKey("frozen_ocean"), BIOME_FOREST);
+        this.removeBiome(14, new MinecraftKey("mushroom_island"), BIOME_PLAINS);
+        this.removeBiome(15, new MinecraftKey("mushroom_island_shore"), BIOME_FOREST);
         this.removeBiome(24, new MinecraftKey("deep_ocean"), BIOME_FOREST);
     }
 }
