@@ -7,6 +7,7 @@ import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.SurvivalPlayer;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.craftbukkit.v1_9_R2.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
@@ -44,8 +45,11 @@ public class StockupModule extends AbstractSurvivalModule
         for (SurvivalPlayer survivalPlayer : (Collection<SurvivalPlayer>) SamaGamesAPI.get().getGameManager().getGame().getInGamePlayers().values())
             if (!survivalPlayer.getUUID().equals(event.getEntity().getUniqueId()))
             {
-                EntityPlayer player = ((CraftPlayer)survivalPlayer.getPlayerIfOnline()).getHandle();
-                player.setAbsorptionHearts(player.getAbsorptionHearts() + 1);
+                Player player = survivalPlayer.getPlayerIfOnline();
+                if (player == null)
+                    continue ;
+                EntityPlayer eplayer = ((CraftPlayer)player).getHandle();
+                eplayer.setAbsorptionHearts(eplayer.getAbsorptionHearts() + 1);
             }
     }
 }
