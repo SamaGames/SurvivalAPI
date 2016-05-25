@@ -270,7 +270,6 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     @Override
     public void handleReconnectTimeOut(OfflinePlayer player, boolean silent)
     {
-        super.handleReconnectTimeOut(player, silent);
 
         try
         {
@@ -280,6 +279,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         {
             this.plugin.getLogger().log(Level.SEVERE, "Error stumping player", e);
         }
+        
+        super.handleReconnectTimeOut(player, silent);
     }
 
     /**
