@@ -575,10 +575,6 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                         player.setHealth(20.0D);
                     }
                 }
-                else
-                {
-                    this.coherenceMachine.getMessageManager().writePlayerReconnectTimeOut(Bukkit.getOfflinePlayer(playerUUID));
-                }
 
                 this.plugin.getLogger().info("Stumping player " + playerUUID.toString() + "...");
                 this.checkStump(playerUUID, silent);
