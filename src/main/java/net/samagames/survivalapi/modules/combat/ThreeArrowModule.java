@@ -7,12 +7,12 @@ import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_9_R2.entity.CraftLivingEntity;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.Vector;
 
 import java.util.Map;
 
@@ -47,13 +47,14 @@ public class ThreeArrowModule extends AbstractSurvivalModule
         if (event.getEntity().getType() != EntityType.ARROW || !(event.getEntity().getShooter() instanceof Player) || event.getEntity().hasMetadata("TAM"))
             return;
 
+        final Vector velocity = event.getEntity().getVelocity();
         for(int i = 0; i < 2; i++)
             Bukkit.getScheduler().runTaskLater(this.plugin, () ->
             {
                 EntityTippedArrow entityTippedArrow = new EntityTippedArrow(((CraftWorld)event.getEntity().getWorld()).getHandle(), ((CraftLivingEntity)event.getEntity().getShooter()).getHandle());
                 entityTippedArrow.a(((CraftLivingEntity)event.getEntity().getShooter()).getHandle(), ((CraftLivingEntity)event.getEntity().getShooter()).getHandle().pitch, ((CraftLivingEntity)event.getEntity().getShooter()).getHandle().yaw, 0.0F, 3.0F, 1.0F);
                 entityTippedArrow.getBukkitEntity().setMetadata("TAM", new FixedMetadataValue(this.plugin, true));
-                entityTippedArrow.getBukkitEntity().setVelocity(event.getEntity().getVelocity());
+                entityTippedArrow.getBukkitEntity().setVelocity(velocity);
                 ((CraftWorld)event.getEntity().getWorld()).getHandle().addEntity(entityTippedArrow);
             }, 5L * (i + 1));
     }
