@@ -8,6 +8,7 @@ import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -45,7 +46,11 @@ public class PyroTechnicsModule extends AbstractSurvivalModule
     public void onGameStart(SurvivalGame game)
     {
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
-            player.getPlayerIfOnline().getInventory().addItem(new ItemStack(Material.WATER_BUCKET));
+        {
+            Player player1 = player.getPlayerIfOnline();
+            if (player1 != null)
+                player1.getInventory().addItem(new ItemStack(Material.WATER_BUCKET));
+        }
     }
 
     /**

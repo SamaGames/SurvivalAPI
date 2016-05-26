@@ -43,6 +43,8 @@ public class ChickenModule extends AbstractSurvivalModule
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
         {
             Player p = player.getPlayerIfOnline();
+            if (p == null)
+                continue ;
             p.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE, 1, (short)1));
             p.setHealth(3);
         }

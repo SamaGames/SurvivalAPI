@@ -43,6 +43,8 @@ public class HighwayToHellModule extends AbstractSurvivalModule
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
         {
             Player p = player.getPlayerIfOnline();
+            if (p == null)
+                continue ;
             p.getInventory().addItem(new ItemStack(Material.OBSIDIAN, 4));
             p.getInventory().addItem(new ItemStack(Material.FLINT_AND_STEEL));
             p.getInventory().addItem(new ItemStack(Material.LAVA_BUCKET));

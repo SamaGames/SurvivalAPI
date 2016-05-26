@@ -41,6 +41,8 @@ public class PotentialHeartsModule extends AbstractSurvivalModule
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
         {
             Player p = player.getPlayerIfOnline();
+            if (p == null)
+                continue ;
             p.setMaxHealth(40D);
             p.setHealth(20D);
         }

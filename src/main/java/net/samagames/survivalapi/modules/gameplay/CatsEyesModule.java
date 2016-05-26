@@ -6,6 +6,7 @@ import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.potion.PotionEffect;
@@ -43,7 +44,11 @@ public class CatsEyesModule extends AbstractSurvivalModule
     public void onGameStart(SurvivalGame game)
     {
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
-            player.getPlayerIfOnline().addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 255));
+        {
+            Player player1 = player.getPlayerIfOnline();
+            if (player1 != null)
+                player1.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 255));
+        }
     }
 
     /**

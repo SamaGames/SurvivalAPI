@@ -7,6 +7,7 @@ import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -53,7 +54,11 @@ public class PopeyeModule extends AbstractSurvivalModule
     public void onGameStart(SurvivalGame game)
     {
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
-            player.getPlayerIfOnline().getInventory().addItem(spinash);
+        {
+            Player player1 = player.getPlayerIfOnline();
+            if (player1 != null)
+                player1.getInventory().addItem(spinash);
+        }
     }
 
     /**

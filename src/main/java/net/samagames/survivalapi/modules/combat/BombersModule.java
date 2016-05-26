@@ -7,6 +7,7 @@ import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
@@ -46,7 +47,11 @@ public class BombersModule extends AbstractSurvivalModule
         flintAndSteel.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
 
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
-            player.getPlayerIfOnline().getInventory().addItem(flintAndSteel);
+        {
+            Player player1 = player.getPlayerIfOnline();
+            if (player1 != null)
+                player1.getInventory().addItem(flintAndSteel);
+        }
     }
 
     /**

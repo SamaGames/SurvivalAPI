@@ -7,6 +7,7 @@ import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -47,6 +48,10 @@ public class ElytraModule extends AbstractSurvivalModule
         elytra.setItemMeta(itemMeta);
 
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
-            player.getPlayerIfOnline().getInventory().setChestplate(elytra);
+        {
+            Player player1 = player.getPlayerIfOnline();
+            if (player1 != null)
+                player1.getInventory().setChestplate(elytra);
+        }
     }
 }

@@ -39,7 +39,6 @@ public class LoveMachineModule extends AbstractSurvivalModule implements Runnabl
         this.couples.add(new ImmutablePair<>(UUID.fromString("012bee10-0032-42e2-9f3c-9c6b4e4f1fff"), UUID.fromString("b158fe72-dcac-49da-ac60-99feb4e29a8f"))); // Wosty & Pepette_
         this.couples.add(new ImmutablePair<>(UUID.fromString("29b2b527-1b59-45df-b7b0-d5ab20d8731a"), UUID.fromString("568046c8-6045-4c59-a255-28027aac8c33"))); // Blue & ???
         this.couples.add(new ImmutablePair<>(UUID.fromString("6a7f2000-5853-4934-981d-5077be5a0b50"), UUID.fromString("61d0de9f-a2a8-4d07-899a-f3ddf18240b5"))); // Thog & Mino
-        this.couples.add(new ImmutablePair<>(UUID.fromString("c1f45796-d2f9-4622-9475-2afe58324dee"), UUID.fromString("7f09f563-f1fd-47eb-8453-ff82544df1ab"))); // Rigner & Banano
 
         plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, this, 20L, 20L);
     }

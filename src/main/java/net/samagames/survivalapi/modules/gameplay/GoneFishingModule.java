@@ -7,6 +7,7 @@ import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -50,6 +51,10 @@ public class GoneFishingModule extends AbstractSurvivalModule
         rod.setItemMeta(meta);
 
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
-            player.getPlayerIfOnline().getInventory().addItem(rod);
+        {
+            Player player1 = player.getPlayerIfOnline();
+            if (player1 != null)
+                player1.getInventory().addItem(rod);
+        }
     }
 }

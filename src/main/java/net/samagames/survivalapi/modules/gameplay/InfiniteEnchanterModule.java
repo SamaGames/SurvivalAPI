@@ -48,6 +48,8 @@ public class InfiniteEnchanterModule extends AbstractSurvivalModule
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
         {
             Player p = player.getPlayerIfOnline();
+            if (p == null)
+                continue ;
             p.getInventory().addItem(tables);
             p.getInventory().addItem(anvils);
             p.getInventory().addItem(bookshelves);

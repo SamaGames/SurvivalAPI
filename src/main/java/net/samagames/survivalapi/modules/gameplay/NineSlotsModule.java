@@ -48,6 +48,8 @@ public class NineSlotsModule extends AbstractSurvivalModule
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
         {
             Player bukkitPlayer = player.getPlayerIfOnline();
+            if (bukkitPlayer == null)
+                continue ;
             for (int i = 9; i < 36; i++)
                 bukkitPlayer.getInventory().setItem(i, new ItemStack(Material.BARRIER, 1));
         }

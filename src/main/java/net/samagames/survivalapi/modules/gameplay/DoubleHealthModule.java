@@ -5,6 +5,7 @@ import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import org.bukkit.entity.Player;
 
 import java.util.Collection;
 import java.util.Map;
@@ -39,8 +40,11 @@ public class DoubleHealthModule extends AbstractSurvivalModule
     {
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
         {
-            player.getPlayerIfOnline().setMaxHealth(40.0D);
-            player.getPlayerIfOnline().setHealth(40.0D);
+            Player player1 = player.getPlayerIfOnline();
+            if (player1 == null)
+                continue ;
+            player1.setMaxHealth(40.0D);
+            player1.setHealth(40.0D);
         }
     }
 }

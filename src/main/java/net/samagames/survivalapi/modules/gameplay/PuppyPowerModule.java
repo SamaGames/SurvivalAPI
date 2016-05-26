@@ -47,6 +47,8 @@ public class PuppyPowerModule extends AbstractSurvivalModule
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
         {
             Player bplayer = player.getPlayerIfOnline();
+            if (bplayer == null)
+                continue ;
             bplayer.getInventory().addItem(new ItemStack(Material.BONE, 64));
             bplayer.getInventory().addItem(new ItemStack(Material.ROTTEN_FLESH, 64));
             bplayer.getInventory().addItem(eggs);
