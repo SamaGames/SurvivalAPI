@@ -9,6 +9,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.Map;
 
@@ -40,10 +41,10 @@ public class ThreeArrowModule extends AbstractSurvivalModule
     @EventHandler
     public void onProjectileLaunch(ProjectileLaunchEvent event)
     {
-        if (event.getEntity().getType() != EntityType.ARROW || !(event.getEntity().getShooter() instanceof Player))
+        if (event.getEntity().getType() != EntityType.ARROW || !(event.getEntity().getShooter() instanceof Player) || event.getEntity().hasMetadata("TAM"))
             return;
 
         for(int i = 0; i < 2; i++)
-            Bukkit.getScheduler().runTaskLater(this.plugin, () -> event.getEntity().getShooter().launchProjectile(Arrow.class, event.getEntity().getVelocity()), 5L * (i + 1));
+            Bukkit.getScheduler().runTaskLater(this.plugin, () -> event.getEntity().getShooter().launchProjectile(Arrow.class, event.getEntity().getVelocity()).setMetadata("TAM", new FixedMetadataValue(this.plugin, true)), 5L * (i + 1));
     }
 }
