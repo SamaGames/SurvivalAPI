@@ -5,6 +5,7 @@ import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.CraftingInventory;
@@ -38,7 +39,7 @@ public class NoSwordModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onCraftItem(CraftItemEvent event)
     {
         onCraftItem(event.getRecipe(), event.getInventory());
@@ -49,7 +50,7 @@ public class NoSwordModule extends AbstractSurvivalModule
      *
      * @param event Event
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onPrepareItemCraft(PrepareItemCraftEvent event)
     {
         onCraftItem(event.getRecipe(), event.getInventory());
