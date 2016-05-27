@@ -1,6 +1,7 @@
 package net.samagames.survivalapi;
 
 import net.minecraft.server.v1_9_R2.MinecraftKey;
+import net.minecraft.server.v1_9_R2.WorldGenMonument;
 import net.samagames.survivalapi.games.AbstractGame;
 import net.samagames.survivalapi.games.Game;
 import net.samagames.survivalapi.gen.WorldLoader;
@@ -78,5 +79,8 @@ public class SurvivalGenerator extends JavaPlugin
         this.removeBiome(14, new MinecraftKey("mushroom_island"), BIOME_PLAINS);
         this.removeBiome(15, new MinecraftKey("mushroom_island_shore"), BIOME_FOREST);
         this.removeBiome(24, new MinecraftKey("deep_ocean"), BIOME_FOREST);
+
+        WorldGenMonument.a.clear();
+        WorldGenMonument.b.clear();
     }
 }
