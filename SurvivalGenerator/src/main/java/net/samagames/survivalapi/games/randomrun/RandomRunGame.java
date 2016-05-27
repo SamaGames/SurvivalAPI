@@ -49,12 +49,20 @@ public class RandomRunGame extends AbstractGame
         String gen = this.plugin.getConfig().getString("generator", null);
         if (gen == null)
             return ;
-        if (gen.equalsIgnoreCase("bigcrack"))
-            world.getPopulators().add(new BigCrackPopulator());
-        else if (gen.equalsIgnoreCase("chunkapocalypse"))
-            world.getPopulators().add(new ChunkApocalypsePopulator());
-        else
-            return ;
+        switch (gen.toLowerCase())
+        {
+            case "bigcrack":
+                world.getPopulators().add(new BigCrackPopulator());
+                break ;
+            case "chunkapocalypse":
+                world.getPopulators().add(new ChunkApocalypsePopulator());
+                break ;
+            case "nodiamonds":
+                world.getPopulators().add(new NoDiamondsPopulator());
+                break ;
+            default:
+                return ;
+        }
         this.plugin.getLogger().info("Added " + gen + " generator");
     }
 }
