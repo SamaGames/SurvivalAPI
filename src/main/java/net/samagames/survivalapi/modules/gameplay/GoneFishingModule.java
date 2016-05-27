@@ -12,7 +12,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -56,5 +58,13 @@ public class GoneFishingModule extends AbstractSurvivalModule
             if (player1 != null)
                 player1.getInventory().addItem(rod);
         }
+    }
+
+    @Override
+    public List<Class<? extends AbstractSurvivalModule>> getRequiredModules()
+    {
+        List<Class<? extends AbstractSurvivalModule>> list = new ArrayList<>();
+        list.add(InfiniteEnchanterModule.class);
+        return list;
     }
 }
