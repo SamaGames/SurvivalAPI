@@ -493,7 +493,11 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                                 gamePlayer.addKill(player.getUniqueId());
                                 gamePlayer.addCoins(20, "Meurtre de " + player.getName());
 
-                                SamaGamesAPI.get().getStatsManager().getPlayerStats(finalKiller.getUniqueId()).getUHCRunStatistics().incrByKills(1);
+                                try
+                                {
+                                    SamaGamesAPI.get().getStatsManager().getPlayerStats(finalKiller.getUniqueId()).getUHCRunStatistics().incrByKills(1);
+                                }
+                                catch (Exception ignored){}
                             });
 
                             killer.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 400, 1));
