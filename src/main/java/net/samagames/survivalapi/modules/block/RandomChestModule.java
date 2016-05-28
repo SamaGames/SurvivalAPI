@@ -89,7 +89,7 @@ public class RandomChestModule extends AbstractSurvivalModule
                     {
                         slot++;
 
-                        if (slot > inventory.getSize())
+                        if (slot >= inventory.getSize())
                             slot = 0;
                     }
 
