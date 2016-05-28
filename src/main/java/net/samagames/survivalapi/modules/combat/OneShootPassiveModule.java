@@ -1,15 +1,11 @@
 package net.samagames.survivalapi.modules.combat;
 
-import net.minecraft.server.v1_9_R2.EntityAnimal;
-import net.minecraft.server.v1_9_R2.EntityLiving;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
-import org.bukkit.craftbukkit.v1_9_R2.entity.CraftLivingEntity;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 
 import java.util.Map;
 import java.util.Random;
@@ -42,11 +38,10 @@ public class OneShootPassiveModule extends AbstractSurvivalModule
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
     {
-        event.getDamager().getWorld().spawn(event.getEntity().getLocation().add(1, 0, 0), ExperienceOrb.class).setExperience(1+ new Random().nextInt(5));
-
-        if (event.getDamager() instanceof Player && (event.getEntity() instanceof Animals || event.getEntity() instanceof Ambient || event.getEntity() instanceof Squid))
-            ((LivingEntity) event.getEntity()).damage(150.0D);
-        if (event.getDamager() instanceof Projectile && (event.getEntity() instanceof Animals || event.getEntity() instanceof Ambient || event.getEntity() instanceof Squid))
-            ((LivingEntity) event.getEntity()).damage(150.0D);
+        if ((event.getEntity() instanceof Animals || event.getEntity() instanceof Ambient || event.getEntity() instanceof Squid) && (event.getDamager() instanceof Player || event.getDamager() instanceof Projectile))
+        {
+            ((LivingEntity)event.getEntity()).damage(150.0D);
+            event.getDamager().getWorld().spawn(event.getEntity().getLocation().add(1, 0, 0), ExperienceOrb.class).setExperience(1+ new Random().nextInt(5));
+        }
     }
 }
