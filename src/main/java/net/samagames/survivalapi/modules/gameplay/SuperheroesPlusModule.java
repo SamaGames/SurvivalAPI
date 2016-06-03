@@ -51,7 +51,7 @@ public class SuperheroesPlusModule extends AbstractSurvivalModule
             p.addPotionEffect(PotionEffectType.FAST_DIGGING.createEffect(Integer.MAX_VALUE, 2));
             p.addPotionEffect(PotionEffectType.SATURATION.createEffect(Integer.MAX_VALUE, 10));
             p.addPotionEffect(PotionEffectType.INCREASE_DAMAGE.createEffect(Integer.MAX_VALUE, 1));
-            p.addPotionEffect(PotionEffectType.DAMAGE_RESISTANCE.createEffect(Integer.MAX_VALUE, 2));
+            p.addPotionEffect(PotionEffectType.DAMAGE_RESISTANCE.createEffect(Integer.MAX_VALUE, 1));
             p.addPotionEffect(PotionEffectType.FIRE_RESISTANCE.createEffect(Integer.MAX_VALUE, 1));
             p.addPotionEffect(PotionEffectType.JUMP.createEffect(Integer.MAX_VALUE, 4));
             p.addPotionEffect(PotionEffectType.WATER_BREATHING.createEffect(Integer.MAX_VALUE, 1));

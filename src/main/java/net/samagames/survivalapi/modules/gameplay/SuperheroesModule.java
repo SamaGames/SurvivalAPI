@@ -49,7 +49,7 @@ public class SuperheroesModule extends AbstractSurvivalModule
                 continue ;
             p.addPotionEffect(PotionEffectType.SPEED.createEffect(Integer.MAX_VALUE, 1));
             p.addPotionEffect(PotionEffectType.INCREASE_DAMAGE.createEffect(Integer.MAX_VALUE, 1));
-            p.addPotionEffect(PotionEffectType.DAMAGE_RESISTANCE.createEffect(Integer.MAX_VALUE, 2));
+            p.addPotionEffect(PotionEffectType.DAMAGE_RESISTANCE.createEffect(Integer.MAX_VALUE, 1));
             p.addPotionEffect(PotionEffectType.JUMP.createEffect(Integer.MAX_VALUE, 4));
             p.setMaxHealth(32);
             p.setHealth(32);
