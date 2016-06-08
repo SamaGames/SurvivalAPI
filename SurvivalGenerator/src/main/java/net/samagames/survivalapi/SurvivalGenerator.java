@@ -1,15 +1,17 @@
 package net.samagames.survivalapi;
 
-import net.minecraft.server.v1_9_R2.MinecraftKey;
-import net.minecraft.server.v1_9_R2.WorldGenMonument;
+import net.minecraft.server.v1_9_R2.*;
 import net.samagames.survivalapi.games.AbstractGame;
 import net.samagames.survivalapi.games.Game;
 import net.samagames.survivalapi.gen.WorldLoader;
 import net.samagames.survivalapi.gen.biomes.BiomeRegistry;
+import net.samagames.survivalapi.utils.Reflection;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
+
+import java.util.ArrayList;
 
 public class SurvivalGenerator extends JavaPlugin
 {
@@ -80,7 +82,7 @@ public class SurvivalGenerator extends JavaPlugin
         this.removeBiome(15, new MinecraftKey("mushroom_island_shore"), BIOME_FOREST);
         this.removeBiome(24, new MinecraftKey("deep_ocean"), BIOME_FOREST);
 
-        WorldGenMonument.a.clear();
-        WorldGenMonument.b.clear();
+        Reflection.setFinalStatic(Reflection.getField(WorldGenMonument.class, "a"), new ArrayList<BiomeBase>());
+        Reflection.setFinalStatic(Reflection.getField(WorldGenMonument.class, "b"), new ArrayList<BiomeBase>());
     }
 }
