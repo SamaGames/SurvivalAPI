@@ -31,9 +31,9 @@ public class SurvivalGenerator extends JavaPlugin
         try
         {
             this.game = Game.valueOf(gameRaw).getGameClass().getConstructor(SurvivalGenerator.class).newInstance(this);
-            this.game.preInit();
 
             this.patchBiomes();
+            this.game.preInit();
 
             this.getServer().getPluginManager().registerEvents(this.game, this);
 
