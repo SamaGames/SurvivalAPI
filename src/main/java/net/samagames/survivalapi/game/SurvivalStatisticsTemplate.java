@@ -40,7 +40,8 @@ public class SurvivalStatisticsTemplate
         finalLines.add("");
 
         finalLines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "1er" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(killers.get(0).getUUID()) + ChatColor.GRAY + " (" + killers.get(0).getKills().size() + ")"));
-        finalLines.add(ChatUtils.getCenteredText(ChatColor.YELLOW + "2e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(killers.get(1).getUUID()) + ChatColor.GRAY + " (" + killers.get(1).getKills().size() + ")"));
+        if(killers.size() > 1)
+            finalLines.add(ChatUtils.getCenteredText(ChatColor.YELLOW + "2e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(killers.get(1).getUUID()) + ChatColor.GRAY + " (" + killers.get(1).getKills().size() + ")"));
 
         if(killers.size() > 2)
             finalLines.add(ChatUtils.getCenteredText(ChatColor.RED + "3e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(killers.get(2).getUUID()) + ChatColor.GRAY + " (" + killers.get(2).getKills().size() + ")"));
@@ -51,7 +52,8 @@ public class SurvivalStatisticsTemplate
         finalLines.add("");
 
         finalLines.add(ChatUtils.getCenteredText(ChatColor.GREEN + "1er" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(damagers.get(0).getUUID()) + ChatColor.GRAY + " (" + damagers.get(0).getDamageReporter().getTotalPlayerDamages() + ")"));
-        finalLines.add(ChatUtils.getCenteredText(ChatColor.YELLOW + "2e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(damagers.get(1).getUUID()) + ChatColor.GRAY + " (" + damagers.get(1).getDamageReporter().getTotalPlayerDamages() + ")"));
+        if(damagers.size() > 1)
+            finalLines.add(ChatUtils.getCenteredText(ChatColor.YELLOW + "2e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(damagers.get(1).getUUID()) + ChatColor.GRAY + " (" + damagers.get(1).getDamageReporter().getTotalPlayerDamages() + ")"));
 
         if(damagers.size() > 2)
             finalLines.add(ChatUtils.getCenteredText(ChatColor.RED + "3e" + ChatColor.GRAY + " - " + ChatColor.RESET + PlayerUtils.getFullyFormattedPlayerName(damagers.get(2).getUUID()) + ChatColor.GRAY + " (" + damagers.get(2).getDamageReporter().getTotalPlayerDamages() + ")"));
