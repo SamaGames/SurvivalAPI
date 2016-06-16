@@ -27,7 +27,7 @@ import java.util.logging.Level;
  * Copyright (c) for SamaGames
  * All right reserved
  */
-public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends SurvivalGame
+public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends SurvivalGame<SURVIVALLOOP>
 {
     private final int personsPerTeam;
     private SurvivalTeamSelector teamSelector;
@@ -161,7 +161,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 {
                     ChunkUtils.loadDestination(p, destination, 3);
                     Bukkit.getScheduler().runTaskLater(plugin, () -> p.teleport(destination), 2);
-                    SurvivalPlayer playerdata = (SurvivalPlayer)this.getPlayer(player);
+                    SurvivalPlayer playerdata = this.getPlayer(player);
                     if (playerdata != null)
                         playerdata.setWaitingSpawn(destination);
                 }
@@ -251,7 +251,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     {
         for (final UUID playerID : team.getPlayersUUID().keySet())
         {
-            SurvivalPlayer playerData = (SurvivalPlayer) this.getPlayer(playerID);
+            SurvivalPlayer playerData = this.getPlayer(playerID);
 
             if(playerData != null)
             {
@@ -259,7 +259,10 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
                 playerData.addStars(2, "Victoire !");
             }
 
-            SamaGamesAPI.get().getStatsManager().getPlayerStats(playerID).getUHCRunStatistics().incrByWins(1);
+            try
+            {
+                SamaGamesAPI.get().getStatsManager().getPlayerStats(playerID).getUHCRunStatistics().incrByWins(1);
+            } catch (Exception ignored) {}
 
             Player player = Bukkit.getPlayer(playerID);
             if (player == null)
