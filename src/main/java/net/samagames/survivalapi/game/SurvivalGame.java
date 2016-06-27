@@ -116,8 +116,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             this.worldBorder.setSize(1000);
             this.worldBorder.setWarningDistance(20);
             this.worldBorder.setWarningTime(0);
-            this.worldBorder.setDamageBuffer(3D);
-            this.worldBorder.setDamageAmount(2D);
+            this.worldBorder.setDamageBuffer(6D);
+            this.worldBorder.setDamageAmount(4D);
 
             this.netherWorldBorder = null;
             if (this.server.getAllowNether())
