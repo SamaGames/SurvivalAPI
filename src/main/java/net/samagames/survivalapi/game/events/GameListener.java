@@ -275,7 +275,10 @@ public class GameListener implements Listener
         {
             event.getPlayer().sendMessage(ChatColor.RED + "Le PvP est désactivé, l'utilisation de sources de lave est interdite.");
             event.getPlayer().getWorld().getBlockAt(event.getBlockClicked().getLocation().add(event.getBlockFace().getModX(), event.getBlockFace().getModY(), event.getBlockFace().getModZ())).setType(Material.AIR);
-            event.getPlayer().getItemInHand().setType(Material.LAVA_BUCKET);
+
+            ItemStack rightHand = event.getPlayer().getInventory().getItemInMainHand();
+            boolean right = rightHand != null && rightHand.getType() == Material.BUCKET;
+            (right ? event.getPlayer().getInventory().getItemInMainHand() : event.getPlayer().getInventory().getItemInOffHand()).setType(Material.LAVA_BUCKET);
 
             event.setCancelled(true);
         }

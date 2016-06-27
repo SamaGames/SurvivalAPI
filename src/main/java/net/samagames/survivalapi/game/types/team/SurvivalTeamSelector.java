@@ -6,6 +6,7 @@ import net.samagames.survivalapi.game.SurvivalTeam;
 import net.samagames.survivalapi.game.types.SurvivalTeamGame;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -132,6 +133,11 @@ public class SurvivalTeamSelector implements Listener
                 event.getPlayer().sendMessage(this.game.getCoherenceMachine().getGameTag() + " " + ChatColor.RED + "Le nom de l'équipe ne peut être vide.");
                 this.openGui(event.getPlayer(), new GuiSelectTeam());
             }
+            this.game.getPlugin().getServer().getScheduler().runTaskLater(this.game.getPlugin(), () ->
+            {
+                event.getBlock().setType(Material.AIR);
+                event.getBlock().getRelative(BlockFace.DOWN).setType(Material.AIR);
+            }, 1L);
         }
     }
 

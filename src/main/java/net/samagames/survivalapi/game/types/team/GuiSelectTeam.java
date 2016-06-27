@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.craftbukkit.v1_9_R2.block.CraftSign;
 import org.bukkit.craftbukkit.v1_9_R2.entity.CraftPlayer;
@@ -36,6 +37,7 @@ public class GuiSelectTeam extends AbstractGui
 {
     private static SurvivalTeamGame game;
     private static SurvivalTeamSelector selector = SurvivalTeamSelector.getInstance();
+    private static int x = 0;
 
     private Field signField;
     private Field isEditable;
@@ -157,8 +159,9 @@ public class GuiSelectTeam extends AbstractGui
             {
                 if (game.getPlayerTeam(player.getUniqueId()) != null)
                 {
-                    final Block block = player.getWorld().getBlockAt(0, 250, 150);
+                    final Block block = player.getWorld().getBlockAt(++x, 250, 150);
                     block.setTypeIdAndData(Material.SIGN_POST.getId(), (byte) 2, false);
+                    block.getRelative(BlockFace.DOWN).setType(Material.BARRIER);
                     Sign sign = (Sign) block.getState();
                     sign.setLine(0, game.getPlayerTeam(player.getUniqueId()).getTeamName());
                     sign.update(true);
