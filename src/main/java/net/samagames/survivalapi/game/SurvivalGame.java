@@ -201,6 +201,12 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         apiplugin.getLogger().info("World's folder found... Checking for arena file...");
         WorldDownloader worldDownloader = new WorldDownloader(apiplugin);
 
+        if (SamaGamesAPI.get().getGameManager().getGameProperties().getConfig("local-map", new JsonPrimitive(false)).getAsBoolean())
+        {
+            apiplugin.getLogger().info("Using local map instead of downloading one");
+            return ;
+        }
+
         if (!worldDownloader.checkAndDownloadWorld(worldDir, getDownloadWorldLink()))
         {
             apiplugin.getLogger().severe("Error during map downloading. Aborting!");
