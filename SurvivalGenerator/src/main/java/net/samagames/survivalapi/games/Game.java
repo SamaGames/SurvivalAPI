@@ -5,6 +5,7 @@ import net.samagames.survivalapi.games.uhc.UHCGame;
 import net.samagames.survivalapi.games.uhcrandom.UHCRandomGame;
 import net.samagames.survivalapi.games.uhcrun.UHCRunGame;
 import net.samagames.survivalapi.games.randomrun.RandomRunGame;
+import net.samagames.survivalapi.games.ultraflagkeeper.UltraFlagKeeperGame;
 
 public enum Game
 {
@@ -12,7 +13,8 @@ public enum Game
     UHCRUN(UHCRunGame.class),
     UHCRANDOM(UHCRandomGame.class),
     DOUBLERUNNER(DoubleRunnerGame.class),
-    RANDOMRUN(RandomRunGame.class);
+    RANDOMRUN(RandomRunGame.class),
+    ULTRAFLAGKEEPER(UltraFlagKeeperGame.class);
 
     private Class<? extends AbstractGame> gameClass;
 

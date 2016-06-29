@@ -312,4 +312,14 @@ public class SurvivalTeam
     {
         return this.players.size() == this.game.getPersonsPerTeam();
     }
+
+    /**
+     * Get the scoreboard team
+     *
+     * @return Scoreboard's team
+     */
+    public Team getScoreboardTeam()
+    {
+        return this.team;
+    }
 }
