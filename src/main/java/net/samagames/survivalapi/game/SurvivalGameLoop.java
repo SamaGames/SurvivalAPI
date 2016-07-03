@@ -289,7 +289,7 @@ public class SurvivalGameLoop implements Runnable
      *
      * @return A color
      */
-    private static ChatColor getPrefixColorByHealth(double health, double max)
+    protected static ChatColor getPrefixColorByHealth(double health, double max)
     {
         double q = max / 4;
 
@@ -311,7 +311,7 @@ public class SurvivalGameLoop implements Runnable
      *
      * @return A arrow
      */
-    private static String getDirection(Player p, Player mate)
+    protected static String getDirection(Player p, Player mate)
     {
         Location ploc = p.getLocation().clone();
         Location point = mate.getLocation().clone();
@@ -366,7 +366,7 @@ public class SurvivalGameLoop implements Runnable
      *
      * @return Formatted string
      */
-    private String toString(int minutes, int seconds)
+    protected String toString(int minutes, int seconds)
     {
         return (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
     }
