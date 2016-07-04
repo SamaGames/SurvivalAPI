@@ -263,6 +263,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     @Override
     public void handleGameEnd()
     {
+        this.status = Status.FINISHED;
         this.dump();
 
         this.server.getScheduler().runTaskLater(this.plugin, () -> this.mainTask.cancel(), 20L);
