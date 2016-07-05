@@ -97,6 +97,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         this.server.getPluginManager().registerEvents(new SpectatorListener(this), plugin);
         this.server.getPluginManager().registerEvents(new SecurityListener(this), plugin);
         this.server.getPluginManager().registerEvents(new GameListener(this), plugin);
+        new AntiTowerListener(plugin);
 
         //SamaGamesAPI.get().getGameManager().setMaxReconnectTime(this.gameManager.getGameProperties().getOption("reconnectTime", new JsonPrimitive(5)).getAsInt());
         SamaGamesAPI.get().getGameManager().setMaxReconnectTime(-1);

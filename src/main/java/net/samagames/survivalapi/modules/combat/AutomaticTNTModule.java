@@ -31,6 +31,7 @@ public class AutomaticTNTModule extends AbstractSurvivalModule
     public AutomaticTNTModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
+        this.game = null;
     }
 
     @Override
@@ -47,7 +48,7 @@ public class AutomaticTNTModule extends AbstractSurvivalModule
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event)
     {
-        if (this.game.isPvPActivated() && event.getBlock().getType() == Material.TNT)
+        if (this.game != null && this.game.isPvPActivated() && event.getBlock().getType() == Material.TNT)
         {
             event.getBlock().setType(Material.AIR);
 

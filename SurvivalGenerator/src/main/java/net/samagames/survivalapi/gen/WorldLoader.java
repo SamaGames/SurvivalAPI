@@ -5,6 +5,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class WorldLoader
@@ -64,7 +68,7 @@ public class WorldLoader
                     if (this.x >= size)
                     {
                         task.cancel();
-                        plugin.finishGeneration(world, System.currentTimeMillis() - startTime);
+                        computeTop(world, startTime);
                         return;
                     }
 
@@ -75,22 +79,54 @@ public class WorldLoader
         }, 1L, 1L);
     }
 
-    public void computeTop(World world)
+    public void computeTop(World world, long startTime)
     {
-        int x = -this.size;
-
-        while (x < this.size)
+        File file = new File("world/tops.dat");
+        FileOutputStream writer;
+        try
         {
-            int z = -this.size;
-
-            while (z < this.size)
+            if (!file.createNewFile())
             {
-                Pos.registerY(x, world.getHighestBlockYAt(x, z), z);
-                z++;
+                this.plugin.getLogger().severe("Can't create tops file.");
+                Bukkit.shutdown();
+                return;
             }
-
-            x++;
+            writer = new FileOutputStream(file);
         }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            this.plugin.getLogger().severe("Can't create tops file.");
+            Bukkit.shutdown();
+            return ;
+        }
+        this.task = this.plugin.getServer().getScheduler().runTaskTimer(this.plugin, new Runnable()
+        {
+            private int x = -size;
+
+            @Override
+            public void run()
+            {
+                try
+                {
+                    if (x >= size)
+                    {
+                        writer.close();
+                        task.cancel();
+                        plugin.finishGeneration(world, System.currentTimeMillis() - startTime);
+                        return ;
+                    }
+
+                    for (int z = -size; z < size; z++)
+                        writer.write(new byte[]{(byte)world.getHighestBlockAt(x, z).getY()});
+                    x++;
+                }
+                catch (Exception exception)
+                {
+                    exception.printStackTrace();
+                }
+            }
+        }, 1L, 1L);
     }
 
 
