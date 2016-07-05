@@ -587,7 +587,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
                         try
                         {
-                            Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> SamaGamesAPI.get().getStatsManager().getPlayerStats(player.getUniqueId()).getUHCRunStatistics().incrByDeaths(1));
+                            SamaGamesAPI.get().getStatsManager().getPlayerStats(player.getUniqueId()).getUHCRunStatistics().incrByDeaths(1);
                         }
                         catch (Exception ignored) {}
 
