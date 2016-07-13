@@ -228,7 +228,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         if (map != null && SurvivalAPI.get().getCustomMapName() != null)
         {
             map = map.substring(0, map.length() - 1);
-            map += '_' + SurvivalAPI.get().getCustomMapName() + "/";
+            map += '/' + SurvivalAPI.get().getCustomMapName() + "/";
         }
         return map;
     }
