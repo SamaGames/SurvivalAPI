@@ -44,6 +44,7 @@ public class UltraFlagKeeperGame extends AbstractGame
         this.plugin.saveResource("ufk_flag.schematic", true);
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public void init(World world)
     {
@@ -69,6 +70,11 @@ public class UltraFlagKeeperGame extends AbstractGame
 
         world.getPopulators().add(orePopulator);
         world.getPopulators().add(oreRemoverPopulator);
-        this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> new FlagPopulator(this.plugin).populate(world), 10L);
+    }
+
+    @Override
+    public void onFinish(World world)
+    {
+        new FlagPopulator(this.plugin).populate(world);
     }
 }

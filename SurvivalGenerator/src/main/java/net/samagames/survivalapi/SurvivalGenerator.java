@@ -85,4 +85,9 @@ public class SurvivalGenerator extends JavaPlugin
         Reflection.setFinalStatic(Reflection.getField(WorldGenMonument.class, "a"), new ArrayList<BiomeBase>());
         Reflection.setFinalStatic(Reflection.getField(WorldGenMonument.class, "b"), new ArrayList<BiomeBase>());
     }
+
+    public AbstractGame getGame()
+    {
+        return this.game;
+    }
 }

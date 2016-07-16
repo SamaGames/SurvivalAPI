@@ -316,6 +316,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     @Override
     public void startGame()
     {
+        this.getInGamePlayers().forEach(((uuid1, survivalPlayer) -> survivalPlayer.getPlayerIfOnline().closeInventory()));
         super.startGame();
         
         Objective displayNameLife = this.scoreboard.registerNewObjective("vie", "health");

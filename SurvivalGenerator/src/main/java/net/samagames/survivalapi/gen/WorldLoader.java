@@ -68,6 +68,7 @@ public class WorldLoader
                     if (this.x >= size)
                     {
                         task.cancel();
+                        plugin.getGame().onFinish(world);
                         computeTop(world, startTime);
                         return;
                     }

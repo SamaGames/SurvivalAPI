@@ -17,6 +17,7 @@ public abstract class AbstractGame implements Listener
 
     public abstract void preInit();
     public abstract void init(World world);
+    public void onFinish(World world) {}
 
     @EventHandler
     public void onWorldInit(final WorldInitEvent event)
