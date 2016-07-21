@@ -339,7 +339,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
             player.setGameMode(GameMode.SURVIVAL);
             player.setHealth(player.getMaxHealth());
-            player.setFoodLevel(50);
+            player.setFoodLevel(80);
             player.setExhaustion(0.0F);
             player.setScoreboard(this.scoreboard);
             player.setLevel(0);
