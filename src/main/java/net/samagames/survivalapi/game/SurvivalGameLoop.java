@@ -3,7 +3,6 @@ package net.samagames.survivalapi.game;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.game.types.SurvivalTeamGame;
 import net.samagames.survivalapi.utils.TimedEvent;
-import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.tools.Titles;
 import net.samagames.tools.chat.ActionBarAPI;
 import net.samagames.tools.scoreboards.ObjectiveSign;
@@ -242,7 +241,7 @@ public class SurvivalGameLoop implements Runnable
                         else if (this.game.getPlayer(teammateUUID).isSpectator())
                             objective.setLine(lastLine + teammates, ChatColor.RED + "× " + teammate.getName() + " : ✞");
                         else
-                            objective.setLine(lastLine + teammates, getPrefixColorByHealth(teammate.getHealth(), teammate.getMaxHealth()) + getDirection(player, teammate) + " " + teammate.getName() + ChatColor.WHITE + " : " + (int) (teammate.getHealth() + ((CraftPlayer) teammate).getHandle().getAbsorptionHearts()) + ChatColor.RED + " ❤");
+                            objective.setLine(lastLine + teammates, getPrefixColorByHealth(teammate.getHealth(), teammate.getMaxHealth()) + getDirection(player.getLocation(), teammate.getLocation()) + " " + teammate.getName() + ChatColor.WHITE + " : " + (int) (teammate.getHealth() + ((CraftPlayer) teammate).getHandle().getAbsorptionHearts()) + ChatColor.RED + " ❤");
                     }
 
                     objective.setLine(lastLine + teammates + 1, ChatColor.DARK_PURPLE + "");
@@ -311,10 +310,10 @@ public class SurvivalGameLoop implements Runnable
      *
      * @return A arrow
      */
-    protected static String getDirection(Player p, Player mate)
+    protected static String getDirection(Location p, Location mate)
     {
-        Location ploc = p.getLocation().clone();
-        Location point = mate.getLocation().clone();
+        Location ploc = p.clone();
+        Location point = mate.clone();
 
         if (ploc.getWorld().getEnvironment() != point.getWorld().getEnvironment())
             return "•";
