@@ -8,11 +8,15 @@ import java.util.UUID;
 
 public class DamageReporter
 {
+    private static SurvivalGame game;
+
+    private final UUID owner;
     private final Map<EntityType, Double> entityDamages;
     private final Map<UUID, Double> playerDamages;
 
-    public DamageReporter()
+    public DamageReporter(UUID owner)
     {
+        this.owner = owner;
         this.entityDamages = new HashMap<>();
         this.playerDamages = new HashMap<>();
     }
@@ -37,6 +41,9 @@ public class DamageReporter
 
         this.entityDamages.remove(damaged);
         this.entityDamages.put(damaged, total);
+
+        if (game.getSurvivalGameStatisticsHelper() != null)
+            game.getSurvivalGameStatisticsHelper().increaseDamages(this.owner, damages);
     }
 
     public double getTotalPlayerDamages()
@@ -57,5 +64,10 @@ public class DamageReporter
     public Map<UUID, Double> getPlayerDamages()
     {
         return this.playerDamages;
+    }
+
+    public static void setGame(SurvivalGame instance)
+    {
+        game = instance;
     }
 }

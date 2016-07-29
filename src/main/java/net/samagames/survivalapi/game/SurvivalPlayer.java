@@ -39,7 +39,7 @@ public class SurvivalPlayer extends GamePlayer
         super(player);
 
         this.kills = new ArrayList<>();
-        this.damageReporter = new DamageReporter();
+        this.damageReporter = new DamageReporter(player.getUniqueId());
         this.team = null;
         this.waitingspawn = null;
     }

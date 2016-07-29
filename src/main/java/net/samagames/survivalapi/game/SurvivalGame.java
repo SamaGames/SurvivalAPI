@@ -107,6 +107,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         CommandUHC.setGame(this);
         CommandNextEvent.setGame(this);
         SurvivalPlayer.setGame(this);
+        DamageReporter.setGame(this);
 
         SurvivalAPI.get().registerEvent(SurvivalAPI.EventType.WORLDLOADED, () ->
         {
@@ -256,6 +257,9 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     {
         super.handlePostRegistration();
         this.setStatus(Status.STARTING);
+
+        if (SamaGamesAPI.get().getGameManager().getGameStatisticsHelper() != null && !(SamaGamesAPI.get().getGameManager().getGameStatisticsHelper() instanceof SurvivalGameStatisticsHelper))
+            this.plugin.getLogger().severe("The statistics helper registered isn't a Survival based statistics helper. Statistics will not be increased.");
     }
 
     /**
@@ -343,7 +347,6 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
             player.setExhaustion(0.0F);
             player.setScoreboard(this.scoreboard);
             player.setLevel(0);
-            //player.setAllowFlight(true);
             player.getInventory().clear();
 
             this.server.getScheduler().runTaskLater(this.plugin, () -> player.setAllowFlight(false), 20L * 5);
@@ -511,11 +514,8 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                                 gamePlayer.addKill(player.getUniqueId());
                                 gamePlayer.addCoins(20, "Meurtre de " + player.getName());
 
-                                try
-                                {
-                                    SamaGamesAPI.get().getStatsManager().getPlayerStats(finalKiller.getUniqueId()).getUHCRunStatistics().incrByKills(1);
-                                }
-                                catch (Exception ignored){}
+                                if (this.getSurvivalGameStatisticsHelper() != null)
+                                    this.getSurvivalGameStatisticsHelper().increaseKills(gamePlayer.getUUID());
                             });
 
                             killer.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 400, 1));
@@ -586,17 +586,14 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
 
                         this.coherenceMachine.getMessageManager().writeCustomMessage(message, true);
-
-                        try
-                        {
-                            SamaGamesAPI.get().getStatsManager().getPlayerStats(player.getUniqueId()).getUHCRunStatistics().incrByDeaths(1);
-                        }
-                        catch (Exception ignored) {}
-
-                        Titles.sendTitle(player, 0, 100, 5, ChatColor.RED + "✞", ChatColor.RED + "Vous êtes mort !");
-                        player.setGameMode(GameMode.SPECTATOR);
-                        player.setHealth(20.0D);
                     }
+
+                    if (this.getSurvivalGameStatisticsHelper() != null)
+                        this.getSurvivalGameStatisticsHelper().increaseDeaths(player.getUniqueId());
+
+                    Titles.sendTitle(player, 0, 100, 5, ChatColor.RED + "✞", ChatColor.RED + "Vous êtes mort !");
+                    player.setGameMode(GameMode.SPECTATOR);
+                    player.setHealth(20.0D);
                 }
 
                 this.plugin.getLogger().info("Stumping player " + playerUUID.toString() + "...");
@@ -729,6 +726,23 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
     public SURVIVALLOOP getSurvivalGameLoop()
     {
         return this.gameLoop;
+    }
+
+    /**
+     * Get the game statistics helper relative to the survival
+     * based games. If it's not registered or if it isn't a survival
+     * games statictics helper, {@code null} returned.
+     *
+     * @return Instance or {@code null}.
+     */
+    public SurvivalGameStatisticsHelper getSurvivalGameStatisticsHelper()
+    {
+        if (SamaGamesAPI.get().getGameManager().getGameStatisticsHelper() == null)
+            return null;
+        else if (!(SamaGamesAPI.get().getGameManager().getGameStatisticsHelper() instanceof SurvivalGameStatisticsHelper))
+            return null;
+
+        return (SurvivalGameStatisticsHelper) SamaGamesAPI.get().getGameManager().getGameStatisticsHelper();
     }
 
     /**
