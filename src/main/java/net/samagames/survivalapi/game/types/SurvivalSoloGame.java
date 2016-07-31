@@ -1,7 +1,6 @@
 package net.samagames.survivalapi.game.types;
 
 import net.samagames.api.SamaGamesAPI;
-import net.samagames.api.stats.games.IUHCRunStatistics;
 import net.samagames.survivalapi.game.GameException;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.game.SurvivalGameLoop;
@@ -17,7 +16,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
-import java.util.logging.Level;
 
 /**
  * SurvivalSoloGame class
@@ -113,25 +111,15 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             playerData.addStars(2, "Victoire !");
             playerData.addCoins(100, "Victoire ! ");
 
-            this.server.getScheduler().runTaskAsynchronously(this.plugin, () ->
-            {
-                try
-                {
-                    SamaGamesAPI.get().getStatsManager().getPlayerStats(player.getUniqueId()).getUHCRunStatistics().incrByWins(1);
-                }
-                catch (Exception ex)
-                {
-                    this.plugin.getLogger().log(Level.SEVERE, "Error settings stats", ex);
-                }
-            });
-
             for (Player user : this.server.getOnlinePlayers())
                 Titles.sendTitle(user, 0, 60, 5, ChatColor.RED + "Fin du jeu", ChatColor.YELLOW + "Victoire de " + SamaGamesAPI.get().getPlayerManager().getPlayerData(player.getUniqueId()).getDisplayName());
 
             this.coherenceMachine.getTemplateManager().getPlayerWinTemplate().execute(player);
 
+            this.handleWinner(player.getUniqueId());
             this.effectsOnWinner(player);
         }
+
         this.handleGameEnd();
     }
 
