@@ -31,6 +31,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
     private final int personsPerTeam;
     private SurvivalTeamSelector teamSelector;
     protected SurvivalTeamList teams;
+    protected boolean teamBalancing;
 
     /**
      * Constructor
@@ -51,6 +52,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         SamaGamesAPI.get().getServerOptions().setRankTabColorEnable(false);
 
         this.personsPerTeam = personsPerTeam;
+        this.teamBalancing = false;
         this.teams = new SurvivalTeamList();
 
         try
@@ -107,17 +109,16 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
 
             if (this.getPlayerTeam(uuid) == null)
             {
-                for (SurvivalTeam team : teams)
-                {
-                    if (!team.isFull() && !team.isLocked())
-                    {
-                        team.join(uuid);
-                        break;
-                    }
-                }
+                SurvivalTeam team;
+                if (this.teamBalancing)
+                    team = this.teams.stream().filter(t -> !t.isFull() && !t.isLocked()).sorted((t1, t2) -> t2.getPlayersUUID().size() - t1.getPlayersUUID().size()).findFirst().orElse(null);
+                else
+                    team = this.teams.stream().filter(t -> !t.isFull() && !t.isLocked()).findFirst().orElse(null);
 
-                if (this.getPlayerTeam(uuid) == null)
+                if (team == null)
                     player.kickPlayer(ChatColor.RED + "Aucune team était apte à vous reçevoir, vous avez été réenvoyé dans le hub.");
+                else
+                    team.join(uuid);
             }
         }
 
