@@ -111,7 +111,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             {
                 SurvivalTeam team;
                 if (this.teamBalancing)
-                    team = this.teams.stream().filter(t -> !t.isFull() && !t.isLocked()).sorted((t1, t2) -> t2.getPlayersUUID().size() - t1.getPlayersUUID().size()).findFirst().orElse(null);
+                    team = this.teams.stream().filter(t -> !t.isFull() && !t.isLocked()).sorted((t1, t2) -> t1.getPlayersUUID().size() - t2.getPlayersUUID().size()).findFirst().orElse(null);
                 else
                     team = this.teams.stream().filter(t -> !t.isFull() && !t.isLocked()).findFirst().orElse(null);
 

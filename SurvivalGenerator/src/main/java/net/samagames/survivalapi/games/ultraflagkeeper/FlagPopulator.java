@@ -61,11 +61,26 @@ public class FlagPopulator
             try
             {
                 int x = locationShortPair.getLeft().getBlockX();
-                int y = locationShortPair.getLeft().getWorld().getHighestBlockYAt(locationShortPair.getLeft()) + 2;
+                int y = locationShortPair.getLeft().getWorld().getHighestBlockYAt(locationShortPair.getLeft());
                 int z = locationShortPair.getLeft().getBlockZ();
+
+                this.plugin.getLogger().info("Removing trees at " + x + "; " + y + "; " + z);
+
+                for (int i = x - 10; i < x + 10; i++)
+                    for (int j = y - 20; j < y + 30; j++)
+                        for (int k = z - 10; k < z + 10; k++)
+                        {
+                            Block block = world.getBlockAt(i, j, k);
+                            if (block.getType() == Material.LOG || block.getType() == Material.LOG_2 || block.getType() == Material.LEAVES || block.getType() == Material.LEAVES_2)
+                                block.setType(Material.AIR);
+                        }
+
+                y = locationShortPair.getLeft().getWorld().getHighestBlockYAt(locationShortPair.getLeft());
+
                 this.plugin.getLogger().info("Generating flag at " + x + "; " + y + "; " + z + " with color " + locationShortPair.getRight());
 
                 Chunk chunk_ = world.getChunkAt(new Location(world, x, y, z));
+                chunk_.load(true);
 
                 int chunkX = chunk_.getX();
                 int chunkZ = chunk_.getZ();
@@ -78,6 +93,8 @@ public class FlagPopulator
                 world.getChunkAt(chunkX, chunkZ + 1).load(true);
                 world.getChunkAt(chunkX, chunkZ - 1).load(true);
 
+                this.flag.paste(this.es, new Vector(x, y, z), true);
+                this.flag.paste(this.es, new Vector(x, y, z), true);
                 this.flag.paste(this.es, new Vector(x, y, z), true);
 
                 int bx = x - (this.flag.getWidth() / 2);
@@ -112,15 +129,6 @@ public class FlagPopulator
 
                     bx++;
                 }
-
-                for (int i = x - 10; i < x + 10; i++)
-                    for (int j = y - 10; j < y + 10; j++)
-                        for (int k = z - 10; k < z + 10; k++)
-                        {
-                            Block block = world.getBlockAt(i, j, k);
-                            if (block.getType() == Material.LOG || block.getType() == Material.LOG_2 || block.getType() == Material.LEAVES || block.getType() == Material.LEAVES_2)
-                                block.setType(Material.AIR);
-                        }
             }
             catch (Exception ex)
             {
