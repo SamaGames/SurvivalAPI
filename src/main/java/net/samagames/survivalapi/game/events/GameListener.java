@@ -55,7 +55,7 @@ public class GameListener implements Listener
 
             if (damager instanceof Player)
             {
-                if (!this.game.isPvPActivated() || (this.game instanceof SurvivalTeamGame && ((SurvivalTeamGame) this.game).getPlayerTeam(damager.getUniqueId()).hasPlayer(damaged.getUniqueId())))
+                if (!this.game.isPvPActivated() || !this.game.hasPlayer((Player)damager) || this.game instanceof SurvivalTeamGame && ((SurvivalTeamGame) this.game).getPlayerTeam(damager.getUniqueId()).hasPlayer(damaged.getUniqueId()))
                 {
                     event.setCancelled(true);
                     return;
@@ -150,6 +150,7 @@ public class GameListener implements Listener
      *
      * @param event Event
      */
+    @SuppressWarnings("deprecation")
     @EventHandler(ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event)
     {
