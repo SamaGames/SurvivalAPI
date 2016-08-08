@@ -33,6 +33,7 @@ import java.util.logging.Level;
 
 public class GameListener implements Listener
 {
+    private static boolean deathSound = true;
     private final SurvivalGame game;
 
     public GameListener(SurvivalGame game)
@@ -192,13 +193,12 @@ public class GameListener implements Listener
             event.setDeathMessage("");
 
             if (event.getEntity().getKiller() != null)
-            {
                 event.getEntity().getKiller().addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 20 * 20, 1));
-            }
 
             //new DeadCorpses(event.getEntity()).spawn(event.getEntity().getLocation());
 
-            GameUtils.broadcastSound(Sound.ENTITY_WITHER_SPAWN);
+            if (deathSound)
+                GameUtils.broadcastSound(Sound.ENTITY_WITHER_SPAWN);
         }
     }
 
@@ -296,5 +296,15 @@ public class GameListener implements Listener
         for (int i = 0; i < 4; i++)
             if (event.getLine(i).matches("^[a-zA-Z0-9ÀÁÂÄÇÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜàáâäçèéêëîïôöûü &]*$") && event.getLine(i).length() > 20)
                 event.setCancelled(true);
+    }
+
+    /**
+     * Toggle death wither sound on death
+     *
+     * @param deathSound New value
+     */
+    public static void setDeathSound(boolean deathSound)
+    {
+        GameListener.deathSound = deathSound;
     }
 }
