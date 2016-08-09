@@ -51,9 +51,9 @@ public class WorldGeneratorUFK
             //This is where the data for each biome is set, including terrain height
             //Set all the new biome data - this needs to include EVERY biome, or stuff will get all mushroomy.
             //If you really want to see your world on shrooms, leave some stuff out.
-            registerBiome(0, "ocean", Plains.get(false, new BiomeData("Plains").height(-0.5F).hills(0.05F).temp(0.8F).rain(0.4F)));
+            registerBiome(0, "ocean", Plains.get(false, new BiomeData("Plains").height(0.125F).hills(0.05F).temp(0.8F).rain(0.4F)));
             registerBiome(1, "plains", Plains.get(false, new BiomeData("Plains").height(0.125F).hills(0.05F).temp(0.8F).rain(0.4F)));
-            registerBiome(2, "desert", new BiomeDesert(new BiomeData("Desert").height(-0.5F).hills(0.05F).temp(2.0F).rain(0.0F)));
+            registerBiome(2, "desert", new BiomeDesert(new BiomeData("Desert").height(0.05F).hills(0.05F).temp(2.0F).rain(0.0F)));
             registerBiome(3, "extreme_hills", Plains.get(false, new BiomeData("Plains").height(0.125F).hills(0.05F).temp(0.8F).rain(0.4F)));
             registerBiome(4, "forest", new BiomeForest(BiomeForest.Type.NORMAL, new BiomeData("Forest").temp(0.7F).rain(0.8F)));
             registerBiome(5, "taiga", new BiomeForest(BiomeForest.Type.NORMAL, new BiomeData("Forest").temp(0.7F).rain(0.8F)));
@@ -77,7 +77,7 @@ public class WorldGeneratorUFK
             registerBiome(21, "jungle", new BiomeForest(BiomeForest.Type.NORMAL, new BiomeData("Forest").temp(0.7F).rain(0.8F)));
             registerBiome(22, "jungle_hills", Plains.get(false, new BiomeData("Plains").height(0.125F).hills(0.05F).temp(0.8F).rain(0.4F)));
             registerBiome(23, "jungle_edge", Plains.get(false, new BiomeData("Plains").height(0.125F).hills(0.05F).temp(0.8F).rain(0.4F)));
-            registerBiome(24, "deep_ocean", Plains.get(false, new BiomeData("Plains").height(-0.5F).hills(0.05F).temp(0.8F).rain(0.4F)));
+            registerBiome(24, "deep_ocean", Plains.get(false, new BiomeData("Plains").height(0.125F).hills(0.05F).temp(0.8F).rain(0.4F)));
             registerBiome(25, "stone_beach", new BiomeStoneBeach(new BiomeData("Stone Beach").height(0.1F).hills(0.05F).temp(0.2F).rain(0.3F)));
             registerBiome(26, "cold_beach", new BiomeBeach(new BiomeData("Cold Beach").height(0.0F).hills(0.025F).temp(0.05F).rain(0.3F)));
             registerBiome(27, "birch_forest", new BiomeForest(BiomeForest.Type.BIRCH, new BiomeData("Birch Forest").temp(0.6F).rain(0.6F)));
