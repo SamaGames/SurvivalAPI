@@ -1,6 +1,5 @@
 package net.samagames.survivalapi.games.ultraflagkeeper;
 
-import net.minecraft.server.v1_9_R2.MinecraftKey;
 import net.samagames.survivalapi.SurvivalGenerator;
 import net.samagames.survivalapi.games.AbstractGame;
 import net.samagames.survivalapi.gen.OrePopulator;
@@ -19,19 +18,16 @@ public class UltraFlagKeeperGame extends AbstractGame
     @Override
     public void preInit()
     {
-        this.plugin.removeBiome(2, new MinecraftKey("desert"), SurvivalGenerator.BIOME_PLAINS);
-        this.plugin.removeBiome(3, new MinecraftKey("extreme_hills"), SurvivalGenerator.BIOME_FOREST);
-        this.plugin.removeBiome(11, new MinecraftKey("frozen_river"), SurvivalGenerator.BIOME_PLAINS);
+        /*this.plugin.removeBiome(11, new MinecraftKey("frozen_river"), SurvivalGenerator.BIOME_PLAINS);
         this.plugin.removeBiome(12, new MinecraftKey("ice_flats"), SurvivalGenerator.BIOME_PLAINS);
-        this.plugin.removeBiome(13, new MinecraftKey("ice_mountains"), SurvivalGenerator.BIOME_PLAINS);
-        this.plugin.removeBiome(14, new MinecraftKey("mushroom_island"), SurvivalGenerator.BIOME_PLAINS);
-        this.plugin.removeBiome(15, new MinecraftKey("mushroom_island_shore"), SurvivalGenerator.BIOME_PLAINS);
-        this.plugin.removeBiome(17, new MinecraftKey("desert_hills"), SurvivalGenerator.BIOME_PLAINS);
-        this.plugin.removeBiome(21, new MinecraftKey("jungle"), SurvivalGenerator.BIOME_PLAINS);
+        this.plugin.removeBiome(13, new MinecraftKey("ice_mountains"), SurvivalGenerator.BIOME_FOREST);
+        this.plugin.removeBiome(14, new MinecraftKey("mushroom_island"), SurvivalGenerator.BIOME_FOREST);
+        this.plugin.removeBiome(15, new MinecraftKey("mushroom_island_shore"), SurvivalGenerator.BIOME_FOREST);
+        this.plugin.removeBiome(21, new MinecraftKey("jungle"), SurvivalGenerator.BIOME_FOREST);
         this.plugin.removeBiome(22, new MinecraftKey("jungle_hills"), SurvivalGenerator.BIOME_PLAINS);
         this.plugin.removeBiome(23, new MinecraftKey("jungle_edge"), SurvivalGenerator.BIOME_PLAINS);
         this.plugin.removeBiome(26, new MinecraftKey("cold_beach"), SurvivalGenerator.BIOME_PLAINS);
-        this.plugin.removeBiome(30, new MinecraftKey("taiga_cold"), SurvivalGenerator.BIOME_PLAINS);
+        this.plugin.removeBiome(30, new MinecraftKey("taiga_cold"), SurvivalGenerator.BIOME_FOREST);
         this.plugin.removeBiome(31, new MinecraftKey("taiga_cold_hills"), SurvivalGenerator.BIOME_FOREST);
         this.plugin.removeBiome(32, new MinecraftKey("redwood_taiga"), SurvivalGenerator.BIOME_FOREST);
         this.plugin.removeBiome(33, new MinecraftKey("redwood_taiga_hills"), SurvivalGenerator.BIOME_PLAINS);
@@ -39,7 +35,9 @@ public class UltraFlagKeeperGame extends AbstractGame
         this.plugin.removeBiome(36, new MinecraftKey("savanna_rock"), SurvivalGenerator.BIOME_PLAINS);
         this.plugin.removeBiome(37, new MinecraftKey("mesa"), SurvivalGenerator.BIOME_FOREST);
         this.plugin.removeBiome(38, new MinecraftKey("mesa_rock"), SurvivalGenerator.BIOME_PLAINS);
-        this.plugin.removeBiome(39, new MinecraftKey("mesa_clear_rock"), SurvivalGenerator.BIOME_PLAINS);
+        this.plugin.removeBiome(39, new MinecraftKey("mesa_clear_rock"), SurvivalGenerator.BIOME_PLAINS);*/
+
+        WorldGeneratorUFK.patchBiomeParams();
 
         this.plugin.saveResource("ufk_flag.schematic", true);
     }
