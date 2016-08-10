@@ -71,7 +71,7 @@ public class UltraFlagKeeperGame extends AbstractGame
     }
 
     @Override
-    public void onFinish(World world)
+    public void onLoaded(World world)
     {
         new FlagPopulator(this.plugin).populate(world);
     }
