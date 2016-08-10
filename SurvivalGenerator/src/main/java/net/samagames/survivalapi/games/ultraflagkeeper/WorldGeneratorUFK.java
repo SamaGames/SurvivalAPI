@@ -53,9 +53,9 @@ public class WorldGeneratorUFK
             //If you really want to see your world on shrooms, leave some stuff out.
             registerBiome(0, "ocean", Plains.get(false, new BiomeData("Plains").height(0.125F).hills(0.05F).temp(0.8F).rain(0.4F)));
             registerBiome(1, "plains", Plains.get(false, new BiomeData("Plains").height(0.125F).hills(0.05F).temp(0.8F).rain(0.4F)));
-            registerBiome(2, "desert", new BiomeDesert(new BiomeData("Desert").height(0.05F).hills(0.05F).temp(2.0F).rain(0.0F)));
+            registerBiome(2, "desert", new BiomeDesert(new BiomeData("Desert").height(0.05F).hills(0.05F).temp(0.8F).rain(0.0F)));
             registerBiome(3, "extreme_hills", Plains.get(false, new BiomeData("Plains").height(0.125F).hills(0.05F).temp(0.8F).rain(0.4F)));
-            registerBiome(4, "forest", new BiomeForest(BiomeForest.Type.NORMAL, new BiomeData("Forest").temp(0.7F).rain(0.8F).hills(0.05F)));
+            registerBiome(4, "forest", new BiomeForest(BiomeForest.Type.NORMAL, new BiomeData("Forest").temp(2.7F).rain(0.8F).hills(0.05F)));
             registerBiome(5, "taiga", new BiomeForest(BiomeForest.Type.NORMAL, new BiomeData("Forest").temp(0.7F).rain(0.8F).hills(0.05F)));
             // Example: adjust swamp depth to be less deep, giving a depth of about 1 water block with this preset
             // normal swamp depth is -0.2, set it to 0.11 instead, a good deal higher in the world preset this was made for
