@@ -52,10 +52,10 @@ public class WorldGeneratorUFK
             //Set all the new biome data - this needs to include EVERY biome, or stuff will get all mushroomy.
             //If you really want to see your world on shrooms, leave some stuff out.
             registerBiome(0, "ocean", Plains.get(false, new BiomeData("Plains").height(0.125F).hills(0.05F).temp(0.8F).rain(0.4F)));
-            registerBiome(1, "plains", Plains.get(false, new BiomeData("Plains").height(0.125F).hills(0.05F).temp(0.8F).rain(0.4F)));
+            registerBiome(1, "plains", Plains.get(false, new BiomeData("Plains").height(0.125F).hills(0.05F).temp(2.7F).rain(0.4F)));
             registerBiome(2, "desert", new BiomeDesert(new BiomeData("Desert").height(0.05F).hills(0.05F).temp(0.8F).rain(0.0F)));
             registerBiome(3, "extreme_hills", Plains.get(false, new BiomeData("Plains").height(0.125F).hills(0.05F).temp(0.8F).rain(0.4F)));
-            registerBiome(4, "forest", new BiomeForest(BiomeForest.Type.NORMAL, new BiomeData("Forest").temp(2.7F).rain(0.8F).hills(0.05F)));
+            registerBiome(4, "forest", new BiomeForest(BiomeForest.Type.NORMAL, new BiomeData("Forest").temp(1.5F).rain(0.8F).hills(0.05F)));
             registerBiome(5, "taiga", new BiomeForest(BiomeForest.Type.NORMAL, new BiomeData("Forest").temp(0.7F).rain(0.8F).hills(0.05F)));
             // Example: adjust swamp depth to be less deep, giving a depth of about 1 water block with this preset
             // normal swamp depth is -0.2, set it to 0.11 instead, a good deal higher in the world preset this was made for
@@ -70,7 +70,7 @@ public class WorldGeneratorUFK
             registerBiome(14, "mushroom_island", new BiomeForest(BiomeForest.Type.NORMAL, new BiomeData("Forest").temp(0.7F).rain(0.8F).hills(0.05F)));
             registerBiome(15, "mushroom_island_shore", new BiomeForest(BiomeForest.Type.NORMAL, new BiomeData("Forest").temp(0.7F).rain(0.8F).hills(0.05F)));
             registerBiome(16, "beaches", Plains.get(false, new BiomeData("Plains").height(0.125F).hills(0.05F).temp(0.8F).rain(0.4F)));
-            registerBiome(17, "desert_hills", new BiomeDesert(new BiomeData("DesertHills").height(0.45F).hills(0.05F).temp(2.0F).rain(0.0F)));
+            registerBiome(17, "desert_hills", new BiomeDesert(new BiomeData("DesertHills").height(0.45F).hills(0.05F).temp(0.8F).rain(0.0F)));
             registerBiome(18, "forest_hills", new BiomeForest(BiomeForest.Type.NORMAL, new BiomeData("ForestHills").height(0.45F).hills(0.05F).temp(0.7F).rain(0.8F)));
             registerBiome(19, "taiga_hills", new BiomeForest(BiomeForest.Type.NORMAL, new BiomeData("Forest").temp(0.7F).rain(0.8F)));
             registerBiome(20, "smaller_extreme_hills", Plains.get(false, new BiomeData("Plains").height(0.125F).hills(0.05F).temp(0.8F).rain(0.4F)));
@@ -110,8 +110,8 @@ public class WorldGeneratorUFK
             registerBiome(160, "mutated_redwood_taiga", new BiomeTaiga(BiomeTaiga.Type.MEGA_SPRUCE, new BiomeData("Mega Spruce Taiga").name("redwood_taiga").height(0.2F).hills(0.05F).temp(0.25F).rain(0.8F)));
             registerBiome(161, "mutated_redwood_taiga_hills", new BiomeTaiga(BiomeTaiga.Type.MEGA_SPRUCE, new BiomeData("Redwood Taiga Hills M").name("redwood_taiga_hills").height(0.2F).hills(0.05F).temp(0.25F).rain(0.8F)));
             registerBiome(162, "mutated_extreme_hills_with_hillss", BigHills.get(BiomeBigHills.Type.MUTATED, new BiomeData("Extreme Hills+ M").name("extreme_hills_with_hillss").height(1.0F).hills(0.05F).temp(0.2F).rain(0.3F)));
-            registerBiome(163, "mutated_savanna", new BiomeSavannaMutated(new BiomeData("Savanna M").name("savanna").height(0.3625F).hills(0.05F).temp(1.1F).rain(0.0F)));
-            registerBiome(164, "mutated_savanna_rock", new BiomeSavannaMutated(new BiomeData("Savanna Plateau M").name("savanna_rock").height(1.05F).hills(0.05F).temp(1.0F).rain(0.0F)));
+            registerBiome(163, "mutated_savanna", new BiomeSavannaMutated(new BiomeData("Savanna M").name("savanna").height(0.3625F).hills(0.05F).temp(0.8F).rain(0.0F)));
+            registerBiome(164, "mutated_savanna_rock", new BiomeSavannaMutated(new BiomeData("Savanna Plateau M").name("savanna_rock").height(1.05F).hills(0.05F).temp(0.5F).rain(0.0F)));
             registerBiome(165, "mutated_mesa", new BiomeForest(BiomeForest.Type.NORMAL, new BiomeData("Forest").temp(0.7F).rain(0.8F).hills(0.05F)));
             registerBiome(166, "mutated_mesa_rock", Plains.get(false, new BiomeData("Plains").height(0.125F).hills(0.05F).temp(0.8F).rain(0.4F)));
             registerBiome(167, "mutated_mesa_clear_rock", Plains.get(false, new BiomeData("Plains").height(0.125F).hills(0.05F).temp(0.8F).rain(0.4F)));
