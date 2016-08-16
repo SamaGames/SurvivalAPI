@@ -30,7 +30,7 @@ public class DamageReporter
 
         this.playerDamages.remove(damaged);
         this.playerDamages.put(damaged, total);
-        
+
         if (game.getSurvivalGameStatisticsHelper() != null)
             game.getSurvivalGameStatisticsHelper().increaseDamages(this.owner, damages);
     }
@@ -44,9 +44,6 @@ public class DamageReporter
 
         this.entityDamages.remove(damaged);
         this.entityDamages.put(damaged, total);
-
-        if (game.getSurvivalGameStatisticsHelper() != null)
-            game.getSurvivalGameStatisticsHelper().increaseDamages(this.owner, damages);
     }
 
     public double getTotalPlayerDamages()
