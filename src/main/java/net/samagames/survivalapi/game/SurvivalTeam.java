@@ -64,6 +64,7 @@ public class SurvivalTeam
             this.team.setCanSeeFriendlyInvisibles(true);
             this.team.setPrefix(chatColor + "");
             this.team.setSuffix(ChatColor.RESET + "");
+            this.team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.FOR_OTHER_TEAMS);
         });
 
     }
