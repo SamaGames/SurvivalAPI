@@ -5,7 +5,6 @@ import net.samagames.survivalapi.games.AbstractGame;
 import net.samagames.survivalapi.gen.OrePopulator;
 import net.samagames.survivalapi.gen.OreRemoverPopulator;
 import net.samagames.survivalapi.gen.WorldGenCaves;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 
@@ -74,7 +73,10 @@ public class UltraFlagKeeperGame extends AbstractGame
     @Override
     public void onFinish(World world)
     {
-        Bukkit.getScheduler().runTaskLater(plugin, () -> new FlagPopulator(plugin).populate(world), 40L);
-
+        this.plugin.getWorldLoader().computeTop(world, () ->
+        {
+            new FlagPopulator(plugin).populate(world);
+            plugin.finishGeneration(world, System.currentTimeMillis() - this.plugin.getWorldLoader().getStartTime());
+        });
     }
 }

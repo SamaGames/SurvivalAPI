@@ -1,5 +1,6 @@
 package net.samagames.survivalapi.game;
 
+import net.samagames.api.games.GamePlayer;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.game.types.SurvivalTeamGame;
 import net.samagames.survivalapi.utils.TimedEvent;
@@ -235,10 +236,11 @@ public class SurvivalGameLoop implements Runnable
                         teammates++;
 
                         Player teammate = Bukkit.getPlayer(teammateUUID);
+                        GamePlayer teammatePlayer;
 
-                        if (teammate == null)
+                        if (teammate == null || (teammatePlayer = this.game.getPlayer(teammateUUID)) == null)
                             objective.setLine(lastLine + teammates, ChatColor.RED + "× " + Bukkit.getOfflinePlayer(teammateUUID).getName() + " : Déconnecté");
-                        else if (this.game.getPlayer(teammateUUID).isSpectator())
+                        else if (teammatePlayer.isSpectator())
                             objective.setLine(lastLine + teammates, ChatColor.RED + "× " + teammate.getName() + " : ✞");
                         else
                             objective.setLine(lastLine + teammates, getPrefixColorByHealth(teammate.getHealth(), teammate.getMaxHealth()) + getDirection(player.getLocation(), teammate.getLocation()) + " " + teammate.getName() + ChatColor.WHITE + " : " + (int) (teammate.getHealth() + ((CraftPlayer) teammate).getHandle().getAbsorptionHearts()) + ChatColor.RED + " ❤");

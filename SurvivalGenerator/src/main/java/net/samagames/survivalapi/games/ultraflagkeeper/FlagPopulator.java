@@ -1,6 +1,7 @@
 package net.samagames.survivalapi.games.ultraflagkeeper;
 
 import com.sk89q.worldedit.*;
+import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 import net.samagames.survivalapi.SurvivalGenerator;
@@ -49,6 +50,7 @@ public class FlagPopulator
         }
     }
 
+    @SuppressWarnings("deprecation")
     public void populate(World world)
     {
         if (this.done)
@@ -93,9 +95,17 @@ public class FlagPopulator
                 world.getChunkAt(chunkX, chunkZ + 1).load(true);
                 world.getChunkAt(chunkX, chunkZ - 1).load(true);
 
-                this.flag.paste(this.es, new Vector(x, y, z), true);
-                this.flag.paste(this.es, new Vector(x, y, z), true);
-                this.flag.paste(this.es, new Vector(x, y, z), true);
+                for (int i = 0; i < this.flag.getSize().getBlockX(); ++i)
+                    for (int j = 0; j < this.flag.getSize().getBlockY(); ++j)
+                        for (int k = 0; k < this.flag.getSize().getBlockZ(); ++k)
+                        {
+                            BaseBlock block = this.flag.getPoint(new Vector(i, j, k));
+                            if (block.isAir())
+                                continue;
+                            Block bBlock = world.getBlockAt(i + x + this.flag.getOffset().getBlockX(), j + y + this.flag.getOffset().getBlockY(), k + z + this.flag.getOffset().getBlockZ());
+                            bBlock.setTypeId(block.getId());
+                            bBlock.setData((byte)block.getData());
+                        }
 
                 int bx = x - (this.flag.getWidth() / 2);
                 int maxX = x + (this.flag.getWidth() / 2) + 1;

@@ -18,6 +18,7 @@ public class WorldLoader
     private BukkitTask task;
     private int lastShow;
     private int numberChunk;
+    private long startTime;
 
     public WorldLoader(SurvivalGenerator plugin, int size)
     {
@@ -34,7 +35,7 @@ public class WorldLoader
 
     public void begin(final World world)
     {
-        long startTime = System.currentTimeMillis();
+        startTime = System.currentTimeMillis();
 
         this.task = Bukkit.getScheduler().runTaskTimer(this.plugin, new Runnable()
         {
@@ -69,7 +70,6 @@ public class WorldLoader
                     {
                         task.cancel();
                         plugin.getGame().onFinish(world);
-                        computeTop(world, startTime);
                         return;
                     }
 
@@ -80,8 +80,9 @@ public class WorldLoader
         }, 1L, 1L);
     }
 
-    public void computeTop(World world, long startTime)
+    public void computeTop(World world, Runnable callback)
     {
+        this.plugin.getLogger().info("Computing map top height");
         File file = new File("world/tops.dat");
         FileOutputStream writer;
         try
@@ -89,7 +90,7 @@ public class WorldLoader
             if (!file.createNewFile())
             {
                 this.plugin.getLogger().severe("Can't create tops file.");
-                Bukkit.shutdown();
+                callback.run();
                 return;
             }
             writer = new FileOutputStream(file);
@@ -98,7 +99,7 @@ public class WorldLoader
         {
             e.printStackTrace();
             this.plugin.getLogger().severe("Can't create tops file.");
-            Bukkit.shutdown();
+            callback.run();
             return ;
         }
         this.task = this.plugin.getServer().getScheduler().runTaskTimer(this.plugin, new Runnable()
@@ -114,7 +115,7 @@ public class WorldLoader
                     {
                         writer.close();
                         task.cancel();
-                        plugin.finishGeneration(world, System.currentTimeMillis() - startTime);
+                        callback.run();
                         return ;
                     }
 
@@ -130,6 +131,10 @@ public class WorldLoader
         }, 1L, 1L);
     }
 
+    public long getStartTime()
+    {
+        return startTime;
+    }
 
     private static final class Pos
     {

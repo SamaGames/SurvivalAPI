@@ -18,7 +18,12 @@ public abstract class AbstractGame implements Listener
 
     public abstract void preInit();
     public abstract void init(World world);
-    public void onFinish(World world) {}
+
+    public void onFinish(World world)
+    {
+        this.plugin.getWorldLoader().computeTop(world, () -> plugin.finishGeneration(world, System.currentTimeMillis() - this.plugin.getWorldLoader().getStartTime()));
+    }
+
     public void onLoaded(World world) {}
 
     @EventHandler

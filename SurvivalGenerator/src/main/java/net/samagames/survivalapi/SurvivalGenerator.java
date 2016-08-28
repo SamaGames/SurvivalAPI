@@ -22,6 +22,7 @@ public class SurvivalGenerator extends JavaPlugin
     private BiomeRegistry biomeRegistry;
     private BukkitTask startTimer;
     private boolean worldLoaded;
+    private WorldLoader worldLoader;
 
     @Override
     public void onEnable()
@@ -52,7 +53,7 @@ public class SurvivalGenerator extends JavaPlugin
         this.startTimer.cancel();
         this.worldLoaded = true;
 
-        WorldLoader worldLoader = new WorldLoader(this, this.getConfig().getInt("size", 1000));
+        worldLoader = new WorldLoader(this, this.getConfig().getInt("size", 1000));
         worldLoader.begin(this.getServer().getWorld("world"));
     }
 
@@ -89,5 +90,10 @@ public class SurvivalGenerator extends JavaPlugin
     public AbstractGame getGame()
     {
         return this.game;
+    }
+
+    public WorldLoader getWorldLoader()
+    {
+        return worldLoader;
     }
 }
