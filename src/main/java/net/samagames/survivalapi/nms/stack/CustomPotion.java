@@ -1,6 +1,13 @@
 package net.samagames.survivalapi.nms.stack;
 
-import net.minecraft.server.v1_9_R2.*;
+import net.minecraft.server.v1_10_R1.EntityHuman;
+import net.minecraft.server.v1_10_R1.EntityLiving;
+import net.minecraft.server.v1_10_R1.ItemPotion;
+import net.minecraft.server.v1_10_R1.ItemStack;
+import net.minecraft.server.v1_10_R1.MobEffect;
+import net.minecraft.server.v1_10_R1.PotionUtil;
+import net.minecraft.server.v1_10_R1.StatisticList;
+import net.minecraft.server.v1_10_R1.World;
 
 import java.util.List;
 

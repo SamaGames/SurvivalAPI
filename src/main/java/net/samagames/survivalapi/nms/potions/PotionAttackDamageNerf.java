@@ -1,6 +1,9 @@
 package net.samagames.survivalapi.nms.potions;
 
-import net.minecraft.server.v1_9_R2.*;
+import net.minecraft.server.v1_10_R1.AttributeModifier;
+import net.minecraft.server.v1_10_R1.GenericAttributes;
+import net.minecraft.server.v1_10_R1.MobEffectAttackDamage;
+import net.minecraft.server.v1_10_R1.MobEffects;
 
 /**
  * PotionAttackDamageNerf class

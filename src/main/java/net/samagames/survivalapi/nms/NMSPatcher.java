@@ -1,6 +1,16 @@
 package net.samagames.survivalapi.nms;
 
-import net.minecraft.server.v1_9_R2.*;
+import net.minecraft.server.v1_10_R1.BiomeBase;
+import net.minecraft.server.v1_10_R1.BiomeDecorator;
+import net.minecraft.server.v1_10_R1.EntityChicken;
+import net.minecraft.server.v1_10_R1.EntityCow;
+import net.minecraft.server.v1_10_R1.EntityPig;
+import net.minecraft.server.v1_10_R1.EntityRabbit;
+import net.minecraft.server.v1_10_R1.EntitySheep;
+import net.minecraft.server.v1_10_R1.EntityWolf;
+import net.minecraft.server.v1_10_R1.Item;
+import net.minecraft.server.v1_10_R1.Items;
+import net.minecraft.server.v1_10_R1.MinecraftKey;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.nms.stack.CustomAxe;
 import net.samagames.survivalapi.nms.stack.CustomPotion;
