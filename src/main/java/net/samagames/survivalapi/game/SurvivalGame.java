@@ -73,7 +73,10 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
      */
     public SurvivalGame(JavaPlugin plugin, String gameCodeName, String gameName, String gameDescription, String magicSymbol, Class<? extends SURVIVALLOOP> survivalGameLoopClass)
     {
-        super(gameCodeName, gameName, gameDescription, SurvivalPlayer.class);
+        super(gameCodeName, gameName, gameDescription, SurvivalPlayer.class, new UUID[] {
+                UUID.fromString("29b2b527-1b59-45df-b7b0-d5ab20d8731a"),
+                UUID.fromString("c1f45796-d2f9-4622-9475-2afe58324dee")
+        });
 
         plugin.saveResource("lobby.schematic", false);
 
