@@ -96,7 +96,7 @@ public class SpectatorListener implements Listener
      *
      * @param event Event
      */
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler
     public void onEntityDamage(EntityDamageEvent event)
     {
         if (event.getEntity() instanceof Player)

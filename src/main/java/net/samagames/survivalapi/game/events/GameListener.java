@@ -56,7 +56,7 @@ public class GameListener implements Listener
 
             if (damager instanceof Player)
             {
-                if (!this.game.isPvPActivated() || !this.game.hasPlayer((Player)damager) || this.game instanceof SurvivalTeamGame && ((SurvivalTeamGame) this.game).getPlayerTeam(damager.getUniqueId()).hasPlayer(damaged.getUniqueId()))
+                if (!this.game.isPvPActivated() || !this.game.hasPlayer((Player) damager) || this.game.isSpectator((Player) damager) || this.game instanceof SurvivalTeamGame && ((SurvivalTeamGame) this.game).getPlayerTeam(damager.getUniqueId()).hasPlayer(damaged.getUniqueId()))
                 {
                     event.setCancelled(true);
                     return;
@@ -195,7 +195,7 @@ public class GameListener implements Listener
             if (event.getEntity().getKiller() != null)
                 event.getEntity().getKiller().addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 20 * 20, 1));
 
-            //new DeadCorpses(event.getEntity()).spawn(event.getEntity().getLocation());
+            new DeadCorpses(event.getEntity()).spawn(event.getEntity().getLocation());
 
             if (deathSound)
                 GameUtils.broadcastSound(Sound.WITHER_SPAWN);
