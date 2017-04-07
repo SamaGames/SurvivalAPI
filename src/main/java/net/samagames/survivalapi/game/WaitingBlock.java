@@ -65,19 +65,19 @@ public class WaitingBlock
 
         // Walls
         for (int x = xMin; x < xMax; x++)
-            for (int y = baseLocation.getBlockY() + 1; y < baseLocation.getBlockY() + 1 + 3; y++)
+            for (int y = baseLocation.getBlockY() + 1; y < baseLocation.getBlockY() + 1 + 5; y++)
                 this.blocks.add(this.setBlock(Material.BARRIER, new Location(baseLocation.getWorld(), x, y, zMin)));
 
         for (int x = xMin; x < xMax; x++)
-            for (int y = baseLocation.getBlockY() + 1; y < baseLocation.getBlockY() + 1 + 3; y++)
+            for (int y = baseLocation.getBlockY() + 1; y < baseLocation.getBlockY() + 1 + 5; y++)
                 this.blocks.add(this.setBlock(Material.BARRIER, new Location(baseLocation.getWorld(), x, y, zMax - 1)));
 
         for (int z = zMin + 1; z < zMax; z++)
-            for (int y = baseLocation.getBlockY() + 1; y < baseLocation.getBlockY() + 1 + 3; y++)
+            for (int y = baseLocation.getBlockY() + 1; y < baseLocation.getBlockY() + 1 + 5; y++)
                 this.blocks.add(this.setBlock(Material.BARRIER, new Location(baseLocation.getWorld(), xMin, y, z)));
 
         for (int z = zMin + 1; z < zMax; z++)
-            for (int y = baseLocation.getBlockY() + 1; y < baseLocation.getBlockY() + 1 + 3; y++)
+            for (int y = baseLocation.getBlockY() + 1; y < baseLocation.getBlockY() + 1 + 5; y++)
                 this.blocks.add(this.setBlock(Material.BARRIER, new Location(baseLocation.getWorld(), xMax - 1, y, z)));
     }
 

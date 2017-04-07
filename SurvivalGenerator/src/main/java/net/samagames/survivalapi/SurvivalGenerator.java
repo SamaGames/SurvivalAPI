@@ -87,9 +87,6 @@ public class SurvivalGenerator extends JavaPlugin
         for (BiomeBase biomeBase : this.biomesToRemove)
             biomesMap.remove(biomeBase.ah);
 
-        this.setReedsPerChunk(BiomeBase.BEACH, 8);
-        this.setReedsPerChunk(BiomeBase.STONE_BEACH, 8);
-
         for (int i = 0; i < biomes.length; i++)
         {
             if (biomes[i] != null)
@@ -97,7 +94,7 @@ public class SurvivalGenerator extends JavaPlugin
                 if (!biomesMap.containsKey(biomes[i].ah))
                     biomes[i] = defaultBiome;
 
-                this.setReedsPerChunk(biomes[i], (int) Reflection.getValue(biomes[i].as, BiomeDecorator.class, true, "F") * 2);
+                this.setReedsPerChunk(biomes[i], 14);
             }
         }
 

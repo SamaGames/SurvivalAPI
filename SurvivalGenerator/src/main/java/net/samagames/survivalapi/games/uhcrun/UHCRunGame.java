@@ -26,7 +26,7 @@ public class UHCRunGame extends AbstractGame
     {
         try
         {
-            WorldGenCaves.loadForWorld(world, 2);
+            WorldGenCaves.loadForWorld(world, 4);
         }
         catch (NoSuchFieldException | IllegalAccessException e)
         {

@@ -28,7 +28,7 @@ public class RandomRunGame extends AbstractGame
     {
         try
         {
-            WorldGenCaves.loadForWorld(world, 2);
+            WorldGenCaves.loadForWorld(world, 4);
         }
         catch (NoSuchFieldException | IllegalAccessException e)
         {
@@ -37,7 +37,7 @@ public class RandomRunGame extends AbstractGame
 
         OrePopulator orePopulator = new OrePopulator();
 
-        orePopulator.addRule(new OrePopulator.Rule(Material.DIAMOND_ORE, 4, 0, 64, 5));
+        orePopulator.addRule(new OrePopulator.Rule(Material.DIAMOND_ORE, 4, 0, 64, 6));
         orePopulator.addRule(new OrePopulator.Rule(Material.IRON_ORE, 2, 0, 64, 15));
         orePopulator.addRule(new OrePopulator.Rule(Material.GOLD_ORE, 2, 0, 64, 8));
         orePopulator.addRule(new OrePopulator.Rule(Material.LAPIS_ORE, 3, 0, 64, 4));
