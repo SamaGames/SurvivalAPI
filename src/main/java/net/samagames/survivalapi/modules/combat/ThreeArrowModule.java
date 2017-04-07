@@ -1,12 +1,11 @@
 package net.samagames.survivalapi.modules.combat;
 
-import net.minecraft.server.v1_10_R1.EntityTippedArrow;
+import net.minecraft.server.v1_8_R3.EntityArrow;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_10_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_10_R1.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,14 +47,17 @@ public class ThreeArrowModule extends AbstractSurvivalModule
             return;
 
         final Vector velocity = event.getEntity().getVelocity();
+
         for(int i = 0; i < 2; i++)
-            Bukkit.getScheduler().runTaskLater(this.plugin, () ->
+        {
+            this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () ->
             {
-                EntityTippedArrow entityTippedArrow = new EntityTippedArrow(((CraftWorld)event.getEntity().getWorld()).getHandle(), ((CraftLivingEntity)event.getEntity().getShooter()).getHandle());
-                entityTippedArrow.a(((CraftLivingEntity)event.getEntity().getShooter()).getHandle(), ((CraftLivingEntity)event.getEntity().getShooter()).getHandle().pitch, ((CraftLivingEntity)event.getEntity().getShooter()).getHandle().yaw, 0.0F, 3.0F, 1.0F);
-                entityTippedArrow.getBukkitEntity().setMetadata("TAM", new FixedMetadataValue(this.plugin, true));
-                entityTippedArrow.getBukkitEntity().setVelocity(velocity);
-                ((CraftWorld)event.getEntity().getWorld()).getHandle().addEntity(entityTippedArrow);
+                EntityArrow entityArrow = new EntityArrow(((CraftWorld)event.getEntity().getWorld()).getHandle(), ((CraftLivingEntity)event.getEntity().getShooter()).getHandle(), 1F);
+                entityArrow.shoot(((CraftLivingEntity)event.getEntity().getShooter()).getHandle().pitch, ((CraftLivingEntity)event.getEntity().getShooter()).getHandle().yaw, 0.0F, 3.0F, 1.0F);
+                entityArrow.getBukkitEntity().setMetadata("TAM", new FixedMetadataValue(this.plugin, true));
+                entityArrow.getBukkitEntity().setVelocity(velocity);
+                ((CraftWorld)event.getEntity().getWorld()).getHandle().addEntity(entityArrow);
             }, 5L * (i + 1));
+        }
     }
 }

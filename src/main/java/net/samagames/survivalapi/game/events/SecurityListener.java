@@ -10,7 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 public class SecurityListener implements Listener
 {
@@ -103,17 +102,5 @@ public class SecurityListener implements Listener
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatColor.RED + "Vous ne pouvez pas placer de bloc ici !");
         }
-    }
-
-    /**
-     * Prevent swapping leave door before start
-     *
-     * @param event Event
-     */
-    @EventHandler
-    public void onSecondHand(PlayerSwapHandItemsEvent event)
-    {
-        if (!this.game.isGameStarted())
-            event.setCancelled(true);
     }
 }

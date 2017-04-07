@@ -78,7 +78,7 @@ public class CookieHeadModule extends AbstractSurvivalModule
         {
             effectList.forEach(event.getPlayer()::addPotionEffect);
             this.effects.remove(skullMeta.getOwner());
-            event.getPlayer().getWorld().playSound(event.getPlayer().getLocation(), Sound.ENTITY_PLAYER_BURP, 1F, 1F);
+            event.getPlayer().getWorld().playSound(event.getPlayer().getLocation(), Sound.BURP, 1F, 1F);
         }
     }
 }

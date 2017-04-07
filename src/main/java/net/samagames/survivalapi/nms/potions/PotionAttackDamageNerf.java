@@ -1,9 +1,6 @@
 package net.samagames.survivalapi.nms.potions;
 
-import net.minecraft.server.v1_10_R1.AttributeModifier;
-import net.minecraft.server.v1_10_R1.GenericAttributes;
-import net.minecraft.server.v1_10_R1.MobEffectAttackDamage;
-import net.minecraft.server.v1_10_R1.MobEffects;
+import net.minecraft.server.v1_8_R3.*;
 
 /**
  * PotionAttackDamageNerf class
@@ -16,14 +13,9 @@ public class PotionAttackDamageNerf extends MobEffectAttackDamage
     /**
      * Constructor
      */
-    public PotionAttackDamageNerf()
+    public PotionAttackDamageNerf(int i, MinecraftKey minecraftKey, boolean b, int i1)
     {
-        super(false, 9643043, 3.0D);
-
-        this.b(4, 0);
-        this.c("potion.damageBoost");
-        this.a(GenericAttributes.ATTACK_DAMAGE, "648D7064-6A60-4F59-8ABE-C2C23A6DD7A9", 0.0D, 0);
-        this.j();
+        super(i, minecraftKey, b, i1);
     }
 
     /**
@@ -39,7 +31,7 @@ public class PotionAttackDamageNerf extends MobEffectAttackDamage
     {
         double result = super.a(id, modifier);
 
-        if (this == MobEffects.INCREASE_DAMAGE)
+        if (this.id == MobEffectList.INCREASE_DAMAGE.id)
             result /= 3;
 
         return result;

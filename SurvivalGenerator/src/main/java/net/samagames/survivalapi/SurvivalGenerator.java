@@ -1,10 +1,9 @@
 package net.samagames.survivalapi;
 
-import net.minecraft.server.v1_9_R2.*;
+import net.minecraft.server.v1_8_R3.*;
 import net.samagames.survivalapi.games.AbstractGame;
 import net.samagames.survivalapi.games.Game;
 import net.samagames.survivalapi.gen.WorldLoader;
-import net.samagames.survivalapi.gen.biomes.BiomeRegistry;
 import net.samagames.survivalapi.utils.Reflection;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -12,14 +11,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class SurvivalGenerator extends JavaPlugin
 {
-    public static final MinecraftKey BIOME_FOREST = new MinecraftKey("forest");
-    public static final MinecraftKey BIOME_PLAINS = new MinecraftKey("plains");
-
+    private List<BiomeBase> biomesToRemove;
     private AbstractGame game;
-    private BiomeRegistry biomeRegistry;
     private BukkitTask startTimer;
     private boolean worldLoaded;
     private WorldLoader worldLoader;
@@ -28,6 +26,7 @@ public class SurvivalGenerator extends JavaPlugin
     public void onEnable()
     {
         this.saveDefaultConfig();
+        this.biomesToRemove = new ArrayList<>();
 
         String gameRaw = this.getConfig().getString("game", "UHC");
 
@@ -53,8 +52,8 @@ public class SurvivalGenerator extends JavaPlugin
         this.startTimer.cancel();
         this.worldLoaded = true;
 
-        worldLoader = new WorldLoader(this, this.getConfig().getInt("size", 1000));
-        worldLoader.begin(this.getServer().getWorld("world"));
+        this.worldLoader = new WorldLoader(this, this.getConfig().getInt("size", 1000));
+        this.worldLoader.begin(this.getServer().getWorld("world"));
     }
 
     public void finishGeneration(World world, long time)
@@ -63,9 +62,9 @@ public class SurvivalGenerator extends JavaPlugin
         Bukkit.shutdown();
     }
 
-    public void removeBiome(int id, MinecraftKey from, MinecraftKey to)
+    public void addBiomeToRemove(BiomeBase biomeBase)
     {
-        this.biomeRegistry.register(id, from, this.biomeRegistry.getObject(to));
+        this.biomesToRemove.add(biomeBase);
     }
 
     public boolean isWorldLoaded()
@@ -75,16 +74,34 @@ public class SurvivalGenerator extends JavaPlugin
 
     private void patchBiomes() throws ReflectiveOperationException
     {
-        this.biomeRegistry = BiomeRegistry.getInstance();
+        BiomeBase[] biomes = BiomeBase.getBiomes();
+        Map<String, BiomeBase> biomesMap = BiomeBase.o;
+        BiomeBase defaultBiome = BiomeBase.FOREST;
 
-        this.removeBiome(0, new MinecraftKey("ocean"), BIOME_FOREST);
-        this.removeBiome(10, new MinecraftKey("frozen_ocean"), BIOME_FOREST);
-        this.removeBiome(14, new MinecraftKey("mushroom_island"), BIOME_PLAINS);
-        this.removeBiome(15, new MinecraftKey("mushroom_island_shore"), BIOME_FOREST);
-        this.removeBiome(24, new MinecraftKey("deep_ocean"), BIOME_FOREST);
+        Reflection.setFinalStatic(BiomeBase.class.getDeclaredField("ad"), defaultBiome);
 
-        Reflection.setFinalStatic(Reflection.getField(WorldGenMonument.class, "a"), new ArrayList<BiomeBase>());
-        Reflection.setFinalStatic(Reflection.getField(WorldGenMonument.class, "b"), new ArrayList<BiomeBase>());
+        biomesMap.remove(BiomeBase.OCEAN.ah);
+        biomesMap.remove(BiomeBase.DEEP_OCEAN.ah);
+        biomesMap.remove(BiomeBase.FROZEN_OCEAN.ah);
+
+        for (BiomeBase biomeBase : this.biomesToRemove)
+            biomesMap.remove(biomeBase.ah);
+
+        this.setReedsPerChunk(BiomeBase.BEACH, 8);
+        this.setReedsPerChunk(BiomeBase.STONE_BEACH, 8);
+
+        for (int i = 0; i < biomes.length; i++)
+        {
+            if (biomes[i] != null)
+            {
+                if (!biomesMap.containsKey(biomes[i].ah))
+                    biomes[i] = defaultBiome;
+
+                this.setReedsPerChunk(biomes[i], (int) Reflection.getValue(biomes[i].as, BiomeDecorator.class, true, "F") * 2);
+            }
+        }
+
+        Reflection.setFinalStatic(BiomeBase.class.getDeclaredField("biomes"), biomes);
     }
 
     public AbstractGame getGame()
@@ -95,5 +112,10 @@ public class SurvivalGenerator extends JavaPlugin
     public WorldLoader getWorldLoader()
     {
         return worldLoader;
+    }
+
+    private void setReedsPerChunk(BiomeBase biome, int value) throws NoSuchFieldException, IllegalAccessException
+    {
+        Reflection.setValue(biome.as, BiomeDecorator.class, true, "F", value);
     }
 }

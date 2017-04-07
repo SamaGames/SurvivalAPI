@@ -68,7 +68,6 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             else if (this.getInGamePlayers().size() == 2)
             {
                 playerData.addCoins(50, "Second au classement !");
-                playerData.addStars(1, "Second au classement !");
 
                 this.gamePlayers.remove(playerData.getUUID());
                 UUID winnerId = (UUID) this.getInGamePlayers().keySet().iterator().next();
@@ -108,7 +107,6 @@ public class SurvivalSoloGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
 
         if (playerData != null)
         {
-            playerData.addStars(2, "Victoire !");
             playerData.addCoins(100, "Victoire ! ");
 
             for (Player user : this.server.getOnlinePlayers())

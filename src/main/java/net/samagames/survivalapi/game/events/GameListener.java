@@ -198,7 +198,7 @@ public class GameListener implements Listener
             //new DeadCorpses(event.getEntity()).spawn(event.getEntity().getLocation());
 
             if (deathSound)
-                GameUtils.broadcastSound(Sound.ENTITY_WITHER_SPAWN);
+                GameUtils.broadcastSound(Sound.WITHER_SPAWN);
         }
     }
 
@@ -276,10 +276,7 @@ public class GameListener implements Listener
         {
             event.getPlayer().sendMessage(ChatColor.RED + "Le PvP est désactivé, l'utilisation de sources de lave est interdite.");
             event.getPlayer().getWorld().getBlockAt(event.getBlockClicked().getLocation().add(event.getBlockFace().getModX(), event.getBlockFace().getModY(), event.getBlockFace().getModZ())).setType(Material.AIR);
-
-            ItemStack rightHand = event.getPlayer().getInventory().getItemInMainHand();
-            boolean right = rightHand != null && rightHand.getType() == Material.BUCKET;
-            (right ? event.getPlayer().getInventory().getItemInMainHand() : event.getPlayer().getInventory().getItemInOffHand()).setType(Material.LAVA_BUCKET);
+            event.getPlayer().getInventory().getItemInHand().setType(Material.LAVA_BUCKET);
 
             event.setCancelled(true);
         }

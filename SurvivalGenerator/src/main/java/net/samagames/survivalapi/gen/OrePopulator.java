@@ -1,13 +1,13 @@
 package net.samagames.survivalapi.gen;
 
-import net.minecraft.server.v1_9_R2.ChunkSnapshot;
-import net.minecraft.server.v1_9_R2.WorldGenCanyon;
-import net.minecraft.server.v1_9_R2.WorldGenCaves;
+import net.minecraft.server.v1_8_R3.ChunkSnapshot;
+import net.minecraft.server.v1_8_R3.WorldGenCanyon;
+import net.minecraft.server.v1_8_R3.WorldGenCaves;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.generator.BlockPopulator;
 
 import java.util.ArrayList;
@@ -43,9 +43,9 @@ public class OrePopulator extends BlockPopulator
         int xr = this.randInt(random, -200, 200);
 
         if (xr >= 50)
-            new WorldGenCaves().a(handle.getHandle(), chunk.getX(), chunk.getZ(), new ChunkSnapshot());
+            new WorldGenCaves().a(handle.getHandle().chunkProviderServer, handle.getHandle(), chunk.getX(), chunk.getZ(), new ChunkSnapshot());
         else if (xr <= -50)
-            new WorldGenCanyon().a(handle.getHandle(), chunk.getX(), chunk.getZ(), new ChunkSnapshot());
+            new WorldGenCanyon().a(handle.getHandle().chunkProviderServer, handle.getHandle(), chunk.getX(), chunk.getZ(), new ChunkSnapshot());
 
         for (Rule bloc : this.rules)
         {

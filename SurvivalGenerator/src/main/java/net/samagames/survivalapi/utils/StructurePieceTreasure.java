@@ -1,12 +1,11 @@
 package net.samagames.survivalapi.utils;
 
-import net.minecraft.server.v1_9_R2.*;
+import net.minecraft.server.v1_8_R3.*;
 
 import java.util.List;
 import java.util.Random;
 
-public class StructurePieceTreasure
-        extends WeightedRandom.WeightedRandomChoice
+public class StructurePieceTreasure extends WeightedRandom.WeightedRandomChoice
 {
     private ItemStack b;
     private int c;

@@ -1,15 +1,15 @@
 package net.samagames.survivalapi.gen;
 
-import net.minecraft.server.v1_9_R2.*;
-import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_9_R2.generator.NormalChunkGenerator;
+import net.minecraft.server.v1_8_R3.*;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.generator.NormalChunkGenerator;
 
 import java.lang.reflect.Field;
 
 /**
  * @author Florian Cassayre (6infinity8)
  */
-public class WorldGenCaves extends net.minecraft.server.v1_9_R2.WorldGenCaves
+public class WorldGenCaves extends net.minecraft.server.v1_8_R3.WorldGenCaves
 {
     private final int amount;
 
@@ -26,16 +26,16 @@ public class WorldGenCaves extends net.minecraft.server.v1_9_R2.WorldGenCaves
     }
 
     @Override
-    public void a(World world, int chunkX, int chunkZ, ChunkSnapshot chunksnapshot)
+    public void a(IChunkProvider chunkProvider, World world, int chunkX, int chunkZ, ChunkSnapshot chunksnapshot)
     {
         for(int i = 0; i < this.amount; i++)
         {
-            int k = this.e;
+            int k = this.a;
 
-            this.g = world;
-            this.f.setSeed(world.getSeed() + i);
-            long l = this.f.nextLong();
-            long i1 = this.f.nextLong();
+            this.c = world;
+            this.b.setSeed(world.getSeed() + i);
+            long l = this.b.nextLong();
+            long i1 = this.b.nextLong();
 
             for (int j1 = chunkX - k; j1 <= chunkX + k; ++j1)
             {
@@ -44,7 +44,7 @@ public class WorldGenCaves extends net.minecraft.server.v1_9_R2.WorldGenCaves
                     long l1 = (long) j1 * l;
                     long i2 = (long) k1 * i1;
 
-                    this.f.setSeed(l1 ^ i2 ^ world.getSeed());
+                    this.b.setSeed(l1 ^ i2 ^ world.getSeed());
                     this.a(world, j1, k1, chunkX, chunkZ, chunksnapshot);
                 }
             }
@@ -66,7 +66,7 @@ public class WorldGenCaves extends net.minecraft.server.v1_9_R2.WorldGenCaves
         Object normalChunkProvider = getFieldValue(ChunkProviderServer.class, "chunkGenerator", chunkProviderServer);
         Object chunkProviderGenerate = getFieldValue(NormalChunkGenerator.class, "generator", normalChunkProvider);
 
-        changeFieldValue(ChunkProviderGenerate.class, "v", chunkProviderGenerate, new WorldGenCaves(amountOfCaves));
+        changeFieldValue(ChunkProviderGenerate.class, "u", chunkProviderGenerate, new WorldGenCaves(amountOfCaves));
     }
 
     private static void changeFieldValue(Class clazz, String fieldName, Object object, Object value) throws NoSuchFieldException, IllegalAccessException

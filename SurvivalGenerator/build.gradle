@@ -3,7 +3,7 @@ apply plugin: 'idea'
 apply plugin: 'sonar-runner'
 
 group = 'net.samagames'
-version = '1.0.0'
+version = '2.0.0'
 archivesBaseName = 'SurvivalGenerator'
 
 sourceCompatibility = 1.8
@@ -30,7 +30,7 @@ sonarRunner {
 }
 
 dependencies {
-    compile(group: 'org.spigotmc', name: 'spigot', version: '1.9.4-R0.1-SNAPSHOT', changing: true) {
+    compile(group: 'org.spigotmc', name: 'spigot', version: '1.8.8-R0.1-SNAPSHOT', changing: true) {
         transitive = false
     }
 

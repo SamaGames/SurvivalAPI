@@ -254,10 +254,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
             SurvivalPlayer playerData = this.getPlayer(playerID);
 
             if(playerData != null)
-            {
                 playerData.addCoins(100, "Victoire !");
-                playerData.addStars(2, "Victoire !");
-            }
 
             this.handleWinner(playerID);
 

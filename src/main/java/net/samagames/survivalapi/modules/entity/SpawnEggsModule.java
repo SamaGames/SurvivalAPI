@@ -25,7 +25,7 @@ public class SpawnEggsModule extends AbstractSurvivalModule
             EntityType.PIG_ZOMBIE, EntityType.RABBIT, EntityType.SHEEP, EntityType.SILVERFISH, EntityType.SKELETON,
             EntityType.SLIME, EntityType.SNOWMAN, EntityType.SPIDER, EntityType.SQUID, EntityType.VILLAGER,
             EntityType.WOLF, EntityType.ZOMBIE, EntityType.HORSE, EntityType.MUSHROOM_COW,
-            EntityType.SHULKER, EntityType.WITHER_SKULL, EntityType.WITHER
+            EntityType.WITHER_SKULL, EntityType.WITHER
     };
     private Random random;
 

@@ -1,7 +1,6 @@
 package net.samagames.survivalapi.games.doublerunner;
 
-import net.minecraft.server.v1_9_R2.BiomeBase;
-import net.minecraft.server.v1_9_R2.MinecraftKey;
+import net.minecraft.server.v1_8_R3.BiomeBase;
 import net.samagames.survivalapi.SurvivalGenerator;
 import net.samagames.survivalapi.games.AbstractGame;
 import net.samagames.survivalapi.gen.OrePopulator;
@@ -20,24 +19,24 @@ public class DoubleRunnerGame extends AbstractGame
     @Override
     public void preInit()
     {
-        this.plugin.removeBiome(11, new MinecraftKey("frozen_river"), SurvivalGenerator.BIOME_PLAINS);
-        this.plugin.removeBiome(12, new MinecraftKey("ice_flats"), SurvivalGenerator.BIOME_PLAINS);
-        this.plugin.removeBiome(13, new MinecraftKey("ice_mountains"), SurvivalGenerator.BIOME_FOREST);
-        this.plugin.removeBiome(14, new MinecraftKey("mushroom_island"), SurvivalGenerator.BIOME_FOREST);
-        this.plugin.removeBiome(15, new MinecraftKey("mushroom_island_shore"), SurvivalGenerator.BIOME_FOREST);
-        this.plugin.removeBiome(21, new MinecraftKey("jungle"), SurvivalGenerator.BIOME_FOREST);
-        this.plugin.removeBiome(22, new MinecraftKey("jungle_hills"), SurvivalGenerator.BIOME_PLAINS);
-        this.plugin.removeBiome(23, new MinecraftKey("jungle_edge"), SurvivalGenerator.BIOME_PLAINS);
-        this.plugin.removeBiome(26, new MinecraftKey("cold_beach"), SurvivalGenerator.BIOME_PLAINS);
-        this.plugin.removeBiome(30, new MinecraftKey("taiga_cold"), SurvivalGenerator.BIOME_FOREST);
-        this.plugin.removeBiome(31, new MinecraftKey("taiga_cold_hills"), SurvivalGenerator.BIOME_FOREST);
-        this.plugin.removeBiome(32, new MinecraftKey("redwood_taiga"), SurvivalGenerator.BIOME_FOREST);
-        this.plugin.removeBiome(33, new MinecraftKey("redwood_taiga_hills"), SurvivalGenerator.BIOME_PLAINS);
-        this.plugin.removeBiome(35, new MinecraftKey("savanna"), SurvivalGenerator.BIOME_FOREST);
-        this.plugin.removeBiome(36, new MinecraftKey("savanna_rock"), SurvivalGenerator.BIOME_PLAINS);
-        this.plugin.removeBiome(37, new MinecraftKey("mesa"), SurvivalGenerator.BIOME_FOREST);
-        this.plugin.removeBiome(38, new MinecraftKey("mesa_rock"), SurvivalGenerator.BIOME_PLAINS);
-        this.plugin.removeBiome(39, new MinecraftKey("mesa_clear_rock"), SurvivalGenerator.BIOME_PLAINS);
+        this.plugin.addBiomeToRemove(BiomeBase.FROZEN_RIVER);
+        this.plugin.addBiomeToRemove(BiomeBase.ICE_PLAINS);
+        this.plugin.addBiomeToRemove(BiomeBase.ICE_MOUNTAINS);
+        this.plugin.addBiomeToRemove(BiomeBase.MUSHROOM_ISLAND);
+        this.plugin.addBiomeToRemove(BiomeBase.MUSHROOM_SHORE);
+        this.plugin.addBiomeToRemove(BiomeBase.JUNGLE);
+        this.plugin.addBiomeToRemove(BiomeBase.JUNGLE_HILLS);
+        this.plugin.addBiomeToRemove(BiomeBase.JUNGLE_EDGE);
+        this.plugin.addBiomeToRemove(BiomeBase.COLD_BEACH);
+        this.plugin.addBiomeToRemove(BiomeBase.COLD_TAIGA);
+        this.plugin.addBiomeToRemove(BiomeBase.COLD_TAIGA_HILLS);
+        this.plugin.addBiomeToRemove(BiomeBase.MEGA_TAIGA);
+        this.plugin.addBiomeToRemove(BiomeBase.MEGA_TAIGA_HILLS);
+        this.plugin.addBiomeToRemove(BiomeBase.SAVANNA);
+        this.plugin.addBiomeToRemove(BiomeBase.SAVANNA_PLATEAU);
+        this.plugin.addBiomeToRemove(BiomeBase.MESA);
+        this.plugin.addBiomeToRemove(BiomeBase.MESA_PLATEAU);
+        this.plugin.addBiomeToRemove(BiomeBase.MESA_PLATEAU_F);
     }
 
     @Override

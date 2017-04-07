@@ -1,8 +1,8 @@
 package net.samagames.survivalapi.utils;
 
-import net.minecraft.server.v1_10_R1.WorldServer;
+import net.minecraft.server.v1_8_R3.WorldServer;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_10_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Player;
 
 /**

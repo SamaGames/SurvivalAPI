@@ -18,14 +18,17 @@ public class UHCRandomGame extends AbstractGame
     public void init(World world)
     {
         String gen = this.plugin.getConfig().getString("generator", null);
+
         if (gen == null)
-            return ;
+            return;
+
         if (gen.equalsIgnoreCase("bigcrack"))
             world.getPopulators().add(new BigCrackPopulator());
         else if (gen.equalsIgnoreCase("chunkapocalypse"))
             world.getPopulators().add(new ChunkApocalypsePopulator());
         else
-            return ;
+            return;
+
         this.plugin.getLogger().info("Added " + gen + " generator");
     }
 }

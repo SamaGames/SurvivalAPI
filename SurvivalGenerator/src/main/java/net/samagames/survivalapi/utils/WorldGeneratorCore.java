@@ -115,7 +115,7 @@ package net.samagames.survivalapi.utils;
             // All the fields are static final, and can only be modified by reflection.
             // This is a list of the name of each field an the matching biome.
             // If the MC version changes, these fields and names may be inaccurate. Copy the new ones out of net.minecraft.server.Biomes
-            //net.minecraft.server.v1_9_R2.Biomes
+            //net.minecraft.server.v1_8_R3.Biomes
             ArrayList<KV<String,String>> biomes = new ArrayList<>(62);
             biomes.add(new KV<>("a", "ocean"));
             biomes.add(new KV<>("b", "ocean")); // this seems to be an identical "error" version of ocean, used when an impossible ID turns up

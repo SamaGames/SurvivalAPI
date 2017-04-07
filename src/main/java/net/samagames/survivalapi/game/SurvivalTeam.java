@@ -2,7 +2,7 @@ package net.samagames.survivalapi.game;
 
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.game.types.SurvivalTeamGame;
-import net.samagames.tools.chat.FancyMessage;
+import net.samagames.tools.chat.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -64,7 +64,6 @@ public class SurvivalTeam
             this.team.setCanSeeFriendlyInvisibles(true);
             this.team.setPrefix(chatColor + "");
             this.team.setSuffix(ChatColor.RESET + "");
-            this.team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.FOR_OTHER_TEAMS);
         });
 
     }

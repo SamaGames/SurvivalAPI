@@ -6,6 +6,7 @@ import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
 import net.samagames.survivalapi.modules.utility.DropTaggingModule;
 import net.samagames.survivalapi.utils.Meta;
+import net.samagames.tools.ParticleEffect;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -62,7 +63,8 @@ public class RiskyRetrievalModule extends AbstractSurvivalModule
         this.chestLocation = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
         this.chestLocation.setY(this.chestLocation.getWorld().getHighestBlockYAt(this.chestLocation));
         this.chestLocation.getBlock().setType(Material.ENDER_CHEST);
-        this.plugin.getServer().getScheduler().runTaskTimer(this.plugin, () -> this.chestLocation.getWorld().spawnParticle(Particle.PORTAL, this.chestLocation.clone().add(random.nextDouble() % 3D - 1.5D, random.nextDouble() % 3D - 1.5D, random.nextDouble() % 3D - 1.5D), 1), 4, 4);
+
+        this.plugin.getServer().getScheduler().runTaskTimer(this.plugin, () -> ParticleEffect.PORTAL.display(random.nextFloat() % 3F - 1.5F, random.nextFloat() % 3F - 1.5F, random.nextFloat() % 3F - 1.5F, 1F, 3, this.chestLocation, 100.0D), 4, 4);
     }
 
     /**

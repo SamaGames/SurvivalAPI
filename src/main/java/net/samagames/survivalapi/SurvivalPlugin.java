@@ -1,26 +1,17 @@
 package net.samagames.survivalapi;
 
 import com.google.gson.JsonPrimitive;
-import com.sk89q.bukkit.util.DynamicPluginCommand;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.game.WorldLoader;
 import net.samagames.survivalapi.game.commands.CommandNextEvent;
 import net.samagames.survivalapi.game.commands.CommandUHC;
 import net.samagames.survivalapi.nms.NMSPatcher;
-import net.samagames.tools.Reflection;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.SimpleCommandMap;
-import org.bukkit.craftbukkit.v1_10_R1.CraftServer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 /**
  * SurvivalAPI Plugin
@@ -46,9 +37,8 @@ public class SurvivalPlugin extends JavaPlugin
         try
         {
             NMSPatcher nmsPatcher = new NMSPatcher(this);
+            nmsPatcher.patchBiomes();
             nmsPatcher.patchPotions();
-            nmsPatcher.patchAnimals();
-            nmsPatcher.patchReeds();
 
             if (SamaGamesAPI.get().getGameManager().getGameProperties().getOption("patch-stackable", new JsonPrimitive(false)).getAsBoolean())
                 nmsPatcher.patchStackable();
@@ -87,7 +77,6 @@ public class SurvivalPlugin extends JavaPlugin
         long lastTime = System.currentTimeMillis();
 
         this.getLogger().info("Computing world top for tower detection...");
-        world.getClass(); //For Sonar, beacause of unused argument
         this.getLogger().info("Compute done in " + (System.currentTimeMillis() - lastTime) + " ms");
         this.getLogger().info("Done!");
 
@@ -102,32 +91,7 @@ public class SurvivalPlugin extends JavaPlugin
     private void postInit()
     {
         this.startTimer.cancel();
-
-        try
-        {
-            this.removeWorldEditCommand();
-        }
-        catch (NoSuchFieldException | IllegalAccessException e)
-        {
-            this.getLogger().log(Level.SEVERE, "Error removing commands", e);
-        }
-
         this.api.fireEvents(SurvivalAPI.EventType.POSTINIT);
-    }
-
-    /**
-     * Called to remove WorldEdit's command
-     *
-     * @throws NoSuchFieldException
-     * @throws IllegalAccessException
-     */
-    private void removeWorldEditCommand() throws NoSuchFieldException, IllegalAccessException
-    {
-        SimpleCommandMap scm = ((CraftServer) Bukkit.getServer()).getCommandMap();
-        Map<String, Command> knownCommands = (Map) Reflection.getValue(scm, true, "knownCommands");
-        List<String> toRemove = knownCommands.entrySet().stream().filter(entry -> entry.getValue() instanceof DynamicPluginCommand).map(Map.Entry::getKey).collect(Collectors.toList());
-
-        toRemove.forEach(knownCommands::remove);
     }
 
     public SurvivalAPI getApi()
