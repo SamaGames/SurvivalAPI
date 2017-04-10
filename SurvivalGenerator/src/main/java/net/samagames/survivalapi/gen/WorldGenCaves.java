@@ -62,24 +62,8 @@ public class WorldGenCaves extends net.minecraft.server.v1_8_R3.WorldGenCaves
     {
         World craftworld = ((CraftWorld) world).getHandle();
 
-        Object chunkProviderServer = getFieldValue(World.class, "chunkProvider", craftworld);
-        Object normalChunkProvider = getFieldValue(ChunkProviderServer.class, "chunkGenerator", chunkProviderServer);
-        Object chunkProviderGenerate = getFieldValue(NormalChunkGenerator.class, "generator", normalChunkProvider);
-
-        changeFieldValue(ChunkProviderGenerate.class, "u", chunkProviderGenerate, new WorldGenCaves(amountOfCaves));
-    }
-
-    private static void changeFieldValue(Class clazz, String fieldName, Object object, Object value) throws NoSuchFieldException, IllegalAccessException
-    {
-        Field field = clazz.getDeclaredField(fieldName);
+        Field field = ChunkProviderGenerate.class.getDeclaredField("u");
         field.setAccessible(true);
-        field.set(object, value);
-    }
-
-    private static Object getFieldValue(Class clazz, String fieldName, Object object) throws NoSuchFieldException, IllegalAccessException
-    {
-        Field field = clazz.getDeclaredField(fieldName);
-        field.setAccessible(true);
-        return field.get(object);
+        field.set(craftworld.worldProvider.getChunkProvider(), new WorldGenCaves(amountOfCaves));
     }
 }

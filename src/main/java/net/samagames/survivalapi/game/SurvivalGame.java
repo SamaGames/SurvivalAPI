@@ -214,8 +214,11 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
 
         if (!worldDownloader.checkAndDownloadWorld(worldDir, getDownloadWorldLink()))
         {
-            apiplugin.getLogger().severe("Error during map downloading. Aborting!");
-            Bukkit.shutdown();
+            if (!new File(worldDir, "override.tmp").exists())
+            {
+                apiplugin.getLogger().severe("Error during map downloading. Aborting!");
+                Bukkit.shutdown();
+            }
         }
     }
 
