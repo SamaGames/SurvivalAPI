@@ -2,6 +2,7 @@ package net.samagames.survivalapi.gen;
 
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.generator.NormalChunkGenerator;
 
 import java.lang.reflect.Field;
 
@@ -59,10 +60,14 @@ public class WorldGenCaves extends net.minecraft.server.v1_8_R3.WorldGenCaves
      */
     public static void loadForWorld(org.bukkit.World world, int amountOfCaves) throws NoSuchFieldException, IllegalAccessException
     {
-        World craftworld = ((CraftWorld) world).getHandle();
+        World craftWorld = ((CraftWorld) world).getHandle();
+        NormalChunkGenerator normalChunkGenerator = (NormalChunkGenerator) ((ChunkProviderServer) craftWorld.N()).chunkProvider;
 
-        Field field = ChunkProviderGenerate.class.getDeclaredField("u");
-        field.setAccessible(true);
-        field.set(craftworld.worldProvider.getChunkProvider(), new WorldGenCaves(amountOfCaves));
+        Field chunkProvider = NormalChunkGenerator.class.getDeclaredField("provider");
+        chunkProvider.setAccessible(true);
+
+        Field worldGenCaveField = ChunkProviderGenerate.class.getDeclaredField("u");
+        worldGenCaveField.setAccessible(true);
+        worldGenCaveField.set(chunkProvider.get(normalChunkGenerator), new WorldGenCaves(amountOfCaves));
     }
 }

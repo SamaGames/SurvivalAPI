@@ -44,7 +44,7 @@ public class DoubleRunnerGame extends AbstractGame
     {
         try
         {
-            WorldGenCaves.loadForWorld(world, 8);
+            WorldGenCaves.loadForWorld(world, 9);
         }
         catch (NoSuchFieldException | IllegalAccessException e)
         {
