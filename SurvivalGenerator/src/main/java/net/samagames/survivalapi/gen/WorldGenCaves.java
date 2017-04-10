@@ -2,7 +2,6 @@ package net.samagames.survivalapi.gen;
 
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R3.generator.NormalChunkGenerator;
 
 import java.lang.reflect.Field;
 

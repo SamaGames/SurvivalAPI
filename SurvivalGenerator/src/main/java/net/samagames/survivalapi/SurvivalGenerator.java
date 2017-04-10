@@ -94,7 +94,7 @@ public class SurvivalGenerator extends JavaPlugin
                 if (!biomesMap.containsKey(biomes[i].ah))
                     biomes[i] = defaultBiome;
 
-                this.setReedsPerChunk(biomes[i], 14);
+                this.setReedsPerChunk(biomes[i], 64);
             }
         }
 
