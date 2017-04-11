@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 /**
  * @author Florian Cassayre (6infinity8)
  */
-public class WorldGenCaves extends net.minecraft.server.v1_8_R3.WorldGenCaves
+public class WorldGenCavesPatched extends WorldGenCaves
 {
     private final int amount;
 
@@ -20,7 +20,7 @@ public class WorldGenCaves extends net.minecraft.server.v1_8_R3.WorldGenCaves
      * <p>Note: this may affect your server performance by <code>amountOfCaves * -5%</code>.</p>
      * @param amountOfCaves number of times the cave generator method should be called.
      */
-    public WorldGenCaves(int amountOfCaves)
+    public WorldGenCavesPatched(int amountOfCaves)
     {
         this.amount = amountOfCaves;
     }
@@ -51,13 +51,6 @@ public class WorldGenCaves extends net.minecraft.server.v1_8_R3.WorldGenCaves
         }
     }
 
-    /**
-     * Loads the module for a world with a parameter.
-     * @param world the world to alter generation.
-     * @param amountOfCaves amount of caves.
-     * @throws NoSuchFieldException
-     * @throws IllegalAccessException
-     */
     public static void loadForWorld(org.bukkit.World world, int amountOfCaves) throws NoSuchFieldException, IllegalAccessException
     {
         World craftWorld = ((CraftWorld) world).getHandle();
@@ -68,6 +61,6 @@ public class WorldGenCaves extends net.minecraft.server.v1_8_R3.WorldGenCaves
 
         Field worldGenCaveField = ChunkProviderGenerate.class.getDeclaredField("u");
         worldGenCaveField.setAccessible(true);
-        worldGenCaveField.set(chunkProvider.get(normalChunkGenerator), new WorldGenCaves(amountOfCaves));
+        worldGenCaveField.set(chunkProvider.get(normalChunkGenerator), new WorldGenCavesPatched(amountOfCaves));
     }
 }
