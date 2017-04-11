@@ -1,9 +1,12 @@
 package net.samagames.survivalapi.games.uhcrun;
 
+import net.minecraft.server.v1_8_R3.BiomeBase;
 import net.samagames.survivalapi.SurvivalGenerator;
 import net.samagames.survivalapi.games.AbstractGame;
+import net.samagames.survivalapi.gen.BetterCenter;
 import net.samagames.survivalapi.gen.OrePopulator;
-import net.samagames.survivalapi.gen.WorldGenCaves;
+import net.samagames.survivalapi.gen.WorldGenCavesPatched;
+import net.samagames.survivalapi.gen.WorldGenMonumentPatched;
 import org.bukkit.Material;
 import org.bukkit.World;
 
@@ -19,6 +22,22 @@ public class UHCRunGame extends AbstractGame
     {
         this.plugin.saveResource("uhcrun_nether_1.schematic", true);
         this.plugin.saveResource("uhcrun_nether_2.schematic", true);
+
+        this.plugin.addBiomeToRemove(BiomeBase.FROZEN_RIVER);
+        this.plugin.addBiomeToRemove(BiomeBase.ICE_PLAINS);
+        this.plugin.addBiomeToRemove(BiomeBase.ICE_MOUNTAINS);
+        this.plugin.addBiomeToRemove(BiomeBase.MUSHROOM_ISLAND);
+        this.plugin.addBiomeToRemove(BiomeBase.MUSHROOM_SHORE);
+        this.plugin.addBiomeToRemove(BiomeBase.JUNGLE);
+        this.plugin.addBiomeToRemove(BiomeBase.JUNGLE_HILLS);
+        this.plugin.addBiomeToRemove(BiomeBase.JUNGLE_EDGE);
+        this.plugin.addBiomeToRemove(BiomeBase.COLD_BEACH);
+        this.plugin.addBiomeToRemove(BiomeBase.COLD_TAIGA);
+        this.plugin.addBiomeToRemove(BiomeBase.COLD_TAIGA_HILLS);
+        this.plugin.addBiomeToRemove(BiomeBase.MEGA_TAIGA);
+        this.plugin.addBiomeToRemove(BiomeBase.MEGA_TAIGA_HILLS);
+        this.plugin.addBiomeToRemove(BiomeBase.MESA);
+        this.plugin.addBiomeToRemove(BiomeBase.STONE_BEACH);
     }
 
     @Override
@@ -26,9 +45,12 @@ public class UHCRunGame extends AbstractGame
     {
         try
         {
-            WorldGenCaves.loadForWorld(world, 9);
+            BetterCenter.load();
+
+            WorldGenCavesPatched.load(world, 9);
+            WorldGenMonumentPatched.load(world);
         }
-        catch (NoSuchFieldException | IllegalAccessException e)
+        catch (ReflectiveOperationException e)
         {
             e.printStackTrace();
         }

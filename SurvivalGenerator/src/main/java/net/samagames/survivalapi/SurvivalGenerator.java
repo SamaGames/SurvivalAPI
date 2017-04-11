@@ -52,7 +52,7 @@ public class SurvivalGenerator extends JavaPlugin
         this.startTimer.cancel();
         this.worldLoaded = true;
 
-        this.worldLoader = new WorldLoader(this, this.getConfig().getInt("size", 1000));
+        this.worldLoader = new WorldLoader(this, this.getConfig().getInt("size", 1000), this.getConfig().getBoolean("strict", true));
         this.worldLoader.begin(this.getServer().getWorld("world"));
     }
 

@@ -2,6 +2,7 @@ package net.samagames.survivalapi.games.uhcrandom;
 
 import net.samagames.survivalapi.SurvivalGenerator;
 import net.samagames.survivalapi.games.AbstractGame;
+import net.samagames.survivalapi.gen.WorldGenMonumentPatched;
 import org.bukkit.World;
 
 public class UHCRandomGame extends AbstractGame
@@ -12,11 +13,20 @@ public class UHCRandomGame extends AbstractGame
     }
 
     @Override
-    public void preInit() {}
+    public void preInit(){}
 
     @Override
     public void init(World world)
     {
+        try
+        {
+            WorldGenMonumentPatched.load(world);
+        }
+        catch (NoSuchFieldException | IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
+
         String gen = this.plugin.getConfig().getString("generator", null);
 
         if (gen == null)

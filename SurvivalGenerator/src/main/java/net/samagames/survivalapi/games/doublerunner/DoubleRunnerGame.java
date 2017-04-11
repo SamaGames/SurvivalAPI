@@ -3,9 +3,7 @@ package net.samagames.survivalapi.games.doublerunner;
 import net.minecraft.server.v1_8_R3.BiomeBase;
 import net.samagames.survivalapi.SurvivalGenerator;
 import net.samagames.survivalapi.games.AbstractGame;
-import net.samagames.survivalapi.gen.OrePopulator;
-import net.samagames.survivalapi.gen.OreRemoverPopulator;
-import net.samagames.survivalapi.gen.WorldGenCaves;
+import net.samagames.survivalapi.gen.*;
 import org.bukkit.Material;
 import org.bukkit.World;
 
@@ -32,11 +30,8 @@ public class DoubleRunnerGame extends AbstractGame
         this.plugin.addBiomeToRemove(BiomeBase.COLD_TAIGA_HILLS);
         this.plugin.addBiomeToRemove(BiomeBase.MEGA_TAIGA);
         this.plugin.addBiomeToRemove(BiomeBase.MEGA_TAIGA_HILLS);
-        this.plugin.addBiomeToRemove(BiomeBase.SAVANNA);
-        this.plugin.addBiomeToRemove(BiomeBase.SAVANNA_PLATEAU);
         this.plugin.addBiomeToRemove(BiomeBase.MESA);
-        this.plugin.addBiomeToRemove(BiomeBase.MESA_PLATEAU);
-        this.plugin.addBiomeToRemove(BiomeBase.MESA_PLATEAU_F);
+        this.plugin.addBiomeToRemove(BiomeBase.STONE_BEACH);
     }
 
     @Override
@@ -44,9 +39,12 @@ public class DoubleRunnerGame extends AbstractGame
     {
         try
         {
-            WorldGenCaves.loadForWorld(world, 9);
+            BetterCenter.load();
+
+            WorldGenCavesPatched.load(world, 9);
+            WorldGenMonumentPatched.load(world);
         }
-        catch (NoSuchFieldException | IllegalAccessException e)
+        catch (ReflectiveOperationException e)
         {
             e.printStackTrace();
         }

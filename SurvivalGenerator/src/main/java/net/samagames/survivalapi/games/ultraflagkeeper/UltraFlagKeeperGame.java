@@ -3,9 +3,7 @@ package net.samagames.survivalapi.games.ultraflagkeeper;
 import net.minecraft.server.v1_8_R3.BiomeBase;
 import net.samagames.survivalapi.SurvivalGenerator;
 import net.samagames.survivalapi.games.AbstractGame;
-import net.samagames.survivalapi.gen.OrePopulator;
-import net.samagames.survivalapi.gen.OreRemoverPopulator;
-import net.samagames.survivalapi.gen.WorldGenCaves;
+import net.samagames.survivalapi.gen.*;
 import org.bukkit.Material;
 import org.bukkit.World;
 
@@ -19,6 +17,8 @@ public class UltraFlagKeeperGame extends AbstractGame
     @Override
     public void preInit()
     {
+        this.plugin.saveResource("ufk_flag.schematic", true);
+
         this.plugin.addBiomeToRemove(BiomeBase.FROZEN_RIVER);
         this.plugin.addBiomeToRemove(BiomeBase.ICE_PLAINS);
         this.plugin.addBiomeToRemove(BiomeBase.ICE_MOUNTAINS);
@@ -32,13 +32,8 @@ public class UltraFlagKeeperGame extends AbstractGame
         this.plugin.addBiomeToRemove(BiomeBase.COLD_TAIGA_HILLS);
         this.plugin.addBiomeToRemove(BiomeBase.MEGA_TAIGA);
         this.plugin.addBiomeToRemove(BiomeBase.MEGA_TAIGA_HILLS);
-        this.plugin.addBiomeToRemove(BiomeBase.SAVANNA);
-        this.plugin.addBiomeToRemove(BiomeBase.SAVANNA_PLATEAU);
         this.plugin.addBiomeToRemove(BiomeBase.MESA);
-        this.plugin.addBiomeToRemove(BiomeBase.MESA_PLATEAU);
-        this.plugin.addBiomeToRemove(BiomeBase.MESA_PLATEAU_F);
-
-        this.plugin.saveResource("ufk_flag.schematic", true);
+        this.plugin.addBiomeToRemove(BiomeBase.STONE_BEACH);
     }
 
     @SuppressWarnings("Duplicates")
@@ -47,9 +42,12 @@ public class UltraFlagKeeperGame extends AbstractGame
     {
         try
         {
-            WorldGenCaves.loadForWorld(world, 9);
+            BetterCenter.load();
+
+            WorldGenCavesPatched.load(world, 9);
+            WorldGenMonumentPatched.load(world);
         }
-        catch (NoSuchFieldException | IllegalAccessException e)
+        catch (ReflectiveOperationException e)
         {
             e.printStackTrace();
         }

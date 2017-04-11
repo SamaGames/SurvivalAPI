@@ -1,6 +1,8 @@
 package net.samagames.survivalapi.gen;
 
 import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_8_R3.ChunkSnapshot;
+import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.generator.NormalChunkGenerator;
 
@@ -13,13 +15,6 @@ public class WorldGenCavesPatched extends WorldGenCaves
 {
     private final int amount;
 
-    /**
-     * <p>Used to control the world generation.
-     * This module can amplify or reduce the amount of caves in the world.</p>
-     * <p>Setting the parameter to 0 will totally remove caves from the world. Setting it to 2 will double the amount of caves.</p>
-     * <p>Note: this may affect your server performance by <code>amountOfCaves * -5%</code>.</p>
-     * @param amountOfCaves number of times the cave generator method should be called.
-     */
     public WorldGenCavesPatched(int amountOfCaves)
     {
         this.amount = amountOfCaves;
@@ -51,16 +46,22 @@ public class WorldGenCavesPatched extends WorldGenCaves
         }
     }
 
-    public static void loadForWorld(org.bukkit.World world, int amountOfCaves) throws NoSuchFieldException, IllegalAccessException
+    public static void load(org.bukkit.World world, int amountOfCaves) throws NoSuchFieldException, IllegalAccessException
     {
         World craftWorld = ((CraftWorld) world).getHandle();
-        NormalChunkGenerator normalChunkGenerator = (NormalChunkGenerator) ((ChunkProviderServer) craftWorld.N()).chunkProvider;
 
-        Field chunkProvider = NormalChunkGenerator.class.getDeclaredField("provider");
-        chunkProvider.setAccessible(true);
+        Field chunkProviderWorldField = World.class.getDeclaredField("chunkProvider");
+        chunkProviderWorldField.setAccessible(true);
+
+        Field chunkProviderChunkProviderField = ChunkProviderServer.class.getDeclaredField("chunkProvider");
+        chunkProviderChunkProviderField.setAccessible(true);
+
+        Field chunkProviderField = NormalChunkGenerator.class.getDeclaredField("provider");
+        chunkProviderField.setAccessible(true);
 
         Field worldGenCaveField = ChunkProviderGenerate.class.getDeclaredField("u");
         worldGenCaveField.setAccessible(true);
-        worldGenCaveField.set(chunkProvider.get(normalChunkGenerator), new WorldGenCavesPatched(amountOfCaves));
+
+        worldGenCaveField.set(chunkProviderField.get(chunkProviderChunkProviderField.get(chunkProviderWorldField.get(craftWorld))), new WorldGenCavesPatched(amountOfCaves));
     }
 }

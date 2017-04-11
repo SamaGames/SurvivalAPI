@@ -3,39 +3,94 @@ package net.samagames.survivalapi.gen;
 import net.samagames.survivalapi.SurvivalGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 
 public class WorldLoader
 {
+    private static final List<Biome> WHITELISTED_CENTER_BIOMES = Arrays.asList(
+            Biome.PLAINS, Biome.SUNFLOWER_PLAINS, Biome.DESERT, Biome.DESERT_HILLS,
+            Biome.MESA_PLATEAU, Biome.MESA_PLATEAU_FOREST, Biome.SAVANNA, Biome.SAVANNA_PLATEAU,
+            Biome.FOREST, Biome.FOREST_HILLS, Biome.BIRCH_FOREST, Biome.BIRCH_FOREST_HILLS,
+            Biome.FLOWER_FOREST, Biome.ROOFED_FOREST
+    );
+
     private final SurvivalGenerator plugin;
     private final int size;
+    private final boolean strict;
     private BukkitTask task;
     private int lastShow;
     private int numberChunk;
     private long startTime;
 
-    public WorldLoader(SurvivalGenerator plugin, int size)
+    public WorldLoader(SurvivalGenerator plugin, int size, boolean strict)
     {
         this.plugin = plugin;
         this.size = (size + 100);
+        this.strict = strict;
 
         this.lastShow = -1;
     }
 
-    public static int getHighestNaturalBlockAt(int x, int z)
-    {
-        return Pos.getY(x, z);
-    }
-
     public void begin(final World world)
     {
-        startTime = System.currentTimeMillis();
+        this.startTime = System.currentTimeMillis();
+
+        if (this.strict)
+        {
+            int accepted = 0;
+            int refused = 0;
+            int liquids = 0;
+
+            for (int x = -64; x <= 64; x++)
+            {
+                for (int z = -64; z <= 64; z++)
+                {
+                    Block blockToTest = world.getBlockAt(x, 80, z);
+                    blockToTest.getChunk().load(true);
+
+                    Biome biomeToTest = blockToTest.getBiome();
+
+                    if (WHITELISTED_CENTER_BIOMES.contains(biomeToTest))
+                        accepted++;
+                    else
+                        refused++;
+
+                    if (world.getHighestBlockAt(x, z).isLiquid())
+                        liquids++;
+                }
+            }
+
+            this.plugin.getLogger().info("Blocks accepted: " + accepted);
+            this.plugin.getLogger().info("Blocks refused: " + refused);
+            this.plugin.getLogger().info("Blocks liquids: " + liquids);
+
+            int total = accepted + refused;
+
+            if ((refused * 100 / total > 10) || (liquids * 100 / total > 10))
+            {
+                this.plugin.getLogger().info("Too much blocks refused. Cancelling generation.");
+
+                try
+                {
+                    File invalidMarker = new File(world.getWorldFolder(), "invalid.tmp");
+                    invalidMarker.createNewFile();
+
+                    Bukkit.shutdown();
+                    return;
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
 
         this.task = Bukkit.getScheduler().runTaskTimer(this.plugin, new Runnable()
         {
@@ -47,6 +102,7 @@ public class WorldLoader
             public void run()
             {
                 int i = 0;
+
                 while (i < 50)
                 {
                     world.getChunkAt(world.getBlockAt(this.x, 64, this.z)).load(true);
@@ -116,11 +172,13 @@ public class WorldLoader
                         writer.close();
                         task.cancel();
                         callback.run();
-                        return ;
+
+                        return;
                     }
 
                     for (int z = -size; z < size; z++)
                         writer.write(new byte[]{(byte)world.getHighestBlockAt(x, z).getY()});
+
                     x++;
                 }
                 catch (Exception exception)
@@ -134,48 +192,5 @@ public class WorldLoader
     public long getStartTime()
     {
         return startTime;
-    }
-
-    private static final class Pos
-    {
-        private static ArrayList<Pos> highestBlocks = new ArrayList<>();
-        private int x, y, z;
-
-        Pos(int x, int y, int z)
-        {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
-
-        public int getX()
-        {
-            return this.x;
-        }
-
-        public int getY()
-        {
-            return this.y;
-        }
-
-        public int getZ()
-        {
-            return this.z;
-        }
-
-        public static int getY(int x, int z)
-        {
-            for (Pos pos : highestBlocks)
-                if (pos.getX() == x && pos.getZ() == z)
-                    return pos.getY();
-
-            return 255;
-        }
-
-        public static void registerY(int x, int y, int z)
-        {
-            highestBlocks.add(new Pos(x, y, z));
-        }
     }
 }
