@@ -42,7 +42,7 @@ public class ConstantPotionModule extends AbstractSurvivalModule
         super(plugin, api, moduleConfiguration);
         Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
 
-        this.potionEffects = (ArrayList<PotionEffect>) this.moduleConfiguration.get("potion-effects");
+        this.potionEffects = (ArrayList<PotionEffect>) this.moduleConfiguration.get("effects");
     }
 
     /**
@@ -97,7 +97,7 @@ public class ConstantPotionModule extends AbstractSurvivalModule
         {
             HashMap<String, Object> moduleConfiguration = new HashMap<>();
 
-            moduleConfiguration.put("potion-effects", this.potionEffects);
+            moduleConfiguration.put("effects", this.potionEffects);
 
             return moduleConfiguration;
         }
@@ -105,9 +105,9 @@ public class ConstantPotionModule extends AbstractSurvivalModule
         @Override
         public Map<String, Object> buildFromJson(Map<String, JsonElement> configuration) throws Exception
         {
-            if (configuration.containsKey("potion-effects"))
+            if (configuration.containsKey("effects"))
             {
-                JsonArray potionEffectsJson = configuration.get("potion-effects").getAsJsonArray();
+                JsonArray potionEffectsJson = configuration.get("effects").getAsJsonArray();
 
                 for (int i = 0; i < potionEffectsJson.size(); i++)
                 {

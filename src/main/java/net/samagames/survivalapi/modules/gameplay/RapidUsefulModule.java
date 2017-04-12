@@ -12,13 +12,11 @@ import net.samagames.survivalapi.utils.Meta;
 import net.samagames.tools.ItemUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
-import org.bukkit.TreeSpecies;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Tree;
 
 import java.util.*;
 
@@ -172,9 +170,7 @@ public class RapidUsefulModule extends AbstractSurvivalModule
 
             this.addDrop(new ItemStack(Material.SAPLING, 1, (short) -1), (base, random) ->
             {
-                double percent = ((Tree) base.getData()).getSpecies().equals(TreeSpecies.GENERIC) ? 0.1D : 0.3D;
-
-                if (random.nextDouble() <= percent)
+                if (random.nextDouble() <= 0.3D)
                     return new ItemStack(Material.APPLE, 1);
                 else
                     return null;
