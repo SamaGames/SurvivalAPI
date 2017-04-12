@@ -40,7 +40,7 @@ public class StockupModule extends AbstractSurvivalModule
     }
 
     /**
-     * Give 1 absorption to all players on deaths
+     * Give x absorption to all players on deaths
      *
      * @param event The player death event instance
      */

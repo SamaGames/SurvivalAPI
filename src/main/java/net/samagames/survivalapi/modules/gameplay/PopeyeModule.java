@@ -68,7 +68,7 @@ public class PopeyeModule extends AbstractSurvivalModule
             Player p = player.getPlayerIfOnline();
 
             if (p != null)
-                p.getInventory().addItem(spinash);
+                p.getInventory().addItem(this.spinash);
         }
     }
 

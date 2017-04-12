@@ -47,7 +47,7 @@ public class HighwayToHellModule extends AbstractSurvivalModule
             if (p == null)
                 continue;
 
-            p.getInventory().addItem(new ItemStack(Material.OBSIDIAN, 4));
+            p.getInventory().addItem(new ItemStack(Material.OBSIDIAN, 14));
             p.getInventory().addItem(new ItemStack(Material.FLINT_AND_STEEL));
             p.getInventory().addItem(new ItemStack(Material.LAVA_BUCKET));
             p.getInventory().addItem(new ItemStack(Material.IRON_PICKAXE));
