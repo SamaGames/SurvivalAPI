@@ -1,11 +1,14 @@
 package net.samagames.survivalapi.modules.gameplay;
 
+import com.google.gson.JsonElement;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.survivalapi.modules.IConfigurationBuilder;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -15,6 +18,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -35,6 +39,7 @@ public class PyroTechnicsModule extends AbstractSurvivalModule
     public PyroTechnicsModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
+        Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
     }
 
     /**
@@ -60,13 +65,48 @@ public class PyroTechnicsModule extends AbstractSurvivalModule
     @EventHandler(priority = EventPriority.LOWEST)
     public void onDamage(EntityDamageEvent event)
     {
-        if (((SurvivalGame)SamaGamesAPI.get().getGameManager().getGame()).isDamagesActivated()
+        if (((SurvivalGame) SamaGamesAPI.get().getGameManager().getGame()).isDamagesActivated()
                 && event.getEntityType() == EntityType.PLAYER
                 && event.getCause() != EntityDamageEvent.DamageCause.FIRE
                 && event.getCause() != EntityDamageEvent.DamageCause.FIRE_TICK
                 && event.getDamage() > 0
                 && !event.isCancelled())
-            event.getEntity().setFireTicks(100);
+            event.getEntity().setFireTicks((int) this.moduleConfiguration.get("fire-time") * 20);
+    }
+
+    public static class ConfigurationBuilder implements IConfigurationBuilder
+    {
+        private int fireTime;
+
+        public ConfigurationBuilder()
+        {
+            this.fireTime = 5;
+        }
+
+        @Override
+        public Map<String, Object> build()
+        {
+            Map<String, Object> moduleConfiguration = new HashMap<>();
+
+            moduleConfiguration.put("fire-time", this.fireTime);
+
+            return moduleConfiguration;
+        }
+
+        @Override
+        public Map<String, Object> buildFromJson(Map<String, JsonElement> configuration) throws Exception
+        {
+            if (configuration.containsKey("fire-time"))
+                this.setFireTime(configuration.get("fire-time").getAsInt());
+
+            return this.build();
+        }
+
+        public PyroTechnicsModule.ConfigurationBuilder setFireTime(int fireTime)
+        {
+            this.fireTime = fireTime;
+            return this;
+        }
     }
 }
 

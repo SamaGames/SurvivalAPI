@@ -42,11 +42,14 @@ public class NightmareModule extends AbstractSurvivalModule
         World world = this.plugin.getServer().getWorlds().get(0);
         world.setGameRuleValue("doDaylightCycle", "false");
         world.setTime(15000);
+
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
         {
             Player p = player.getPlayerIfOnline();
+
             if (p == null)
-                continue ;
+                continue;
+
             p.playSound(p.getLocation(), Sound.WITHER_SPAWN, 0.9F, 1F);
         }
     }

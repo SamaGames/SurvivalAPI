@@ -50,13 +50,15 @@ public class NinjanautModule extends AbstractSurvivalModule
         super.onGameStart(game);
         Map map = game.getInGamePlayers();
         int r = new Random().nextInt(map.size());
+
         for (SurvivalPlayer player : (Collection<SurvivalPlayer>)map.values())
         {
             if (r == 0)
             {
-                setNinjaNaut(game, player, true);
-                return ;
+                this.setNinjaNaut(game, player, true);
+                return;
             }
+
             r--;
         }
     }
@@ -71,21 +73,26 @@ public class NinjanautModule extends AbstractSurvivalModule
     {
         if (this.ninjanaut == null || !event.getEntity().getUniqueId().equals(this.ninjanaut) || event.getEntity().getKiller() == null
                 || event.getEntity().getKiller() == event.getEntity())
-            return ;
+            return;
+
         SurvivalGame game = (SurvivalGame)SamaGamesAPI.get().getGameManager().getGame();
         SurvivalPlayer player = (SurvivalPlayer)game.getPlayer(event.getEntity().getKiller().getUniqueId());
+
         if (player != null)
-            setNinjaNaut(game, player, false);
+            this.setNinjaNaut(game, player, false);
     }
 
     private void setNinjaNaut(SurvivalGame game, SurvivalPlayer player, boolean first)
     {
         if (!player.isOnline() || player.isSpectator())
-            return ;
+            return;
+
         this.ninjanaut = player.getUUID();
+
         game.getCoherenceMachine().getMessageManager().writeCustomMessage(player.getPlayerData().getDisplayName() + (first ? " a été choisi comme Ninjanaut" : " a tué le Ninjanaut, et prends donc sa place") + ". Il sera plus résistant, tuez le pour prendre sa place.", true);
-        Player bukkitPlayer = player.getPlayerIfOnline();
-        bukkitPlayer.addPotionEffect(PotionEffectType.SPEED.createEffect(Integer.MAX_VALUE, 2));
-        bukkitPlayer.addPotionEffect(PotionEffectType.INCREASE_DAMAGE.createEffect(Integer.MAX_VALUE, 2));
+
+        Player p = player.getPlayerIfOnline();
+        p.addPotionEffect(PotionEffectType.SPEED.createEffect(Integer.MAX_VALUE, 2));
+        p.addPotionEffect(PotionEffectType.INCREASE_DAMAGE.createEffect(Integer.MAX_VALUE, 2));
     }
 }

@@ -1,8 +1,10 @@
 package net.samagames.survivalapi.modules.block;
 
+import com.google.gson.JsonElement;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.survivalapi.modules.IConfigurationBuilder;
 import net.samagames.survivalapi.modules.utility.DropTaggingModule;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
@@ -65,7 +67,7 @@ public class TorchThanCoalModule extends AbstractSurvivalModule
         return requiredModules;
     }
 
-    public static class ConfigurationBuilder
+    public static class ConfigurationBuilder implements IConfigurationBuilder
     {
         private int torch;
 
@@ -74,6 +76,7 @@ public class TorchThanCoalModule extends AbstractSurvivalModule
             this.torch = 3;
         }
 
+        @Override
         public Map<String, Object> build()
         {
             Map<String, Object> moduleConfiguration = new HashMap<>();
@@ -81,6 +84,15 @@ public class TorchThanCoalModule extends AbstractSurvivalModule
             moduleConfiguration.put("torch", this.torch);
 
             return moduleConfiguration;
+        }
+
+        @Override
+        public Map<String, Object> buildFromJson(Map<String, JsonElement> configuration) throws Exception
+        {
+            if (configuration.containsKey("torch"))
+                this.setTorchAmount(configuration.get("torch").getAsInt());
+
+            return this.build();
         }
 
         public ConfigurationBuilder setTorchAmount(int torch)

@@ -31,7 +31,7 @@ public class SurvivalPlugin extends JavaPlugin
     @Override
     public void onEnable()
     {
-        this.worldLoader = new WorldLoader(this, SamaGamesAPI.get().getGameManager().getGameProperties().getOption("size", new JsonPrimitive(1000)).getAsInt());
+        this.worldLoader = new WorldLoader(this, SamaGamesAPI.get().getGameManager().getGameProperties().getGameOption("size", new JsonPrimitive(1000)).getAsInt());
         this.api = new SurvivalAPI(this);
 
         try
@@ -40,7 +40,7 @@ public class SurvivalPlugin extends JavaPlugin
             nmsPatcher.patchBiomes();
             nmsPatcher.patchPotions();
 
-            if (SamaGamesAPI.get().getGameManager().getGameProperties().getOption("patch-stackable", new JsonPrimitive(false)).getAsBoolean())
+            if (SamaGamesAPI.get().getGameManager().getGameProperties().getGameOption("patch-stackable", new JsonPrimitive(false)).getAsBoolean())
                 nmsPatcher.patchStackable();
         }
         catch (Exception e)
@@ -73,15 +73,7 @@ public class SurvivalPlugin extends JavaPlugin
     public void finishGeneration(World world, long time)
     {
         this.getLogger().info("Ready in " + time + "ms");
-
-        long lastTime = System.currentTimeMillis();
-
-        this.getLogger().info("Computing world top for tower detection...");
-        this.getLogger().info("Compute done in " + (System.currentTimeMillis() - lastTime) + " ms");
-        this.getLogger().info("Done!");
-
         this.getServer().setSpawnRadius(0);
-
         this.api.fireEvents(SurvivalAPI.EventType.AFTERGENERATION);
     }
 

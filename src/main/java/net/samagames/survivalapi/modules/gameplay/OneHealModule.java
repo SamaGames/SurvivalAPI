@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public class OneHealModule extends AbstractSurvivalModule
 {
-    private ItemStack hoe;
+    private final ItemStack hoe;
 
     /**
      * Constructor
@@ -37,6 +37,7 @@ public class OneHealModule extends AbstractSurvivalModule
     public OneHealModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
+
         this.hoe = new ItemStack(Material.GOLD_HOE);
         ItemMeta meta = this.hoe.getItemMeta();
         meta.setLore(Arrays.asList("Utilisez là pour vous regen toute votre vie.", "Attention, elle est à usage unique."));
@@ -54,9 +55,10 @@ public class OneHealModule extends AbstractSurvivalModule
     {
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
         {
-            Player player1 = player.getPlayerIfOnline();
-            if (player1 != null)
-                player1.getInventory().addItem(hoe);
+            Player p = player.getPlayerIfOnline();
+
+            if (p != null)
+                p.getInventory().addItem(this.hoe);
         }
     }
 
@@ -67,7 +69,7 @@ public class OneHealModule extends AbstractSurvivalModule
     @EventHandler
     public void onInteract(PlayerInteractEvent event)
     {
-        if (event.getItem() != null && event.getItem().isSimilar(hoe))
+        if (event.getItem() != null && event.getItem().isSimilar(this.hoe))
         {
             event.getPlayer().setHealth(event.getPlayer().getMaxHealth());
             event.getPlayer().setItemInHand(new ItemStack(Material.AIR));

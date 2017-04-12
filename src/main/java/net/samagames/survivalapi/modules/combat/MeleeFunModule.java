@@ -40,7 +40,8 @@ public class MeleeFunModule extends AbstractSurvivalModule
     public void onEntityDamage(EntityDamageByEntityEvent event)
     {
         if (!(event.getEntity() instanceof Player) || (!(event.getDamager() instanceof Player)) && !(event.getDamager() instanceof Projectile))
-            return ;
+            return;
+
         ((Player) event.getEntity()).setNoDamageTicks(0);
         this.plugin.getServer().getScheduler().runTaskLater(this.plugin, () -> ((Player)event.getEntity()).setNoDamageTicks(0), 1);
     }

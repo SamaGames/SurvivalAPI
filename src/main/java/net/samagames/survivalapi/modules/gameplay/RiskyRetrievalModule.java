@@ -39,6 +39,7 @@ public class RiskyRetrievalModule extends AbstractSurvivalModule
             Material.DIAMOND_ORE, Material.DIAMOND,
             Material.QUARTZ
     };
+
     private Inventory inventory;
     private Location chestLocation;
     private Random random;
@@ -95,7 +96,8 @@ public class RiskyRetrievalModule extends AbstractSurvivalModule
     public void onInventoryClick(InventoryClickEvent event)
     {
         if (event.getClickedInventory() == null || !event.getClickedInventory().equals(this.inventory))
-            return ;
+            return;
+
         switch (event.getAction())
         {
             case PICKUP_ALL:
@@ -103,9 +105,11 @@ public class RiskyRetrievalModule extends AbstractSurvivalModule
             case PICKUP_ONE:
             case PICKUP_SOME:
                 event.setCancelled(false);
-                break ;
+                break;
+
             default:
                 event.setCancelled(true);
+                break;
         }
     }
 
@@ -120,13 +124,15 @@ public class RiskyRetrievalModule extends AbstractSurvivalModule
         if (event.getEntityType() != EntityType.DROPPED_ITEM
                 || Meta.hasMeta(event.getEntity().getItemStack())
                 || event.getEntity().hasMetadata("playerDrop"))
-            return ;
+            return;
 
         for (int i = 0; i < MATERIALS.length; i++)
         {
             ItemStack stack = event.getEntity().getItemStack();
+
             if (MATERIALS[i] != stack.getType())
-                continue ;
+                continue;
+
             ItemStack newStack = stack.clone();
             this.inventory.addItem(Meta.addMeta(newStack));
             event.getEntity().setItemStack(Meta.addMeta(event.getEntity().getItemStack()));

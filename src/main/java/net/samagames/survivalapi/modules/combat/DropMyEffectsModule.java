@@ -1,8 +1,11 @@
 package net.samagames.survivalapi.modules.combat;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.survivalapi.modules.IConfigurationBuilder;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
@@ -74,7 +77,7 @@ public class DropMyEffectsModule extends AbstractSurvivalModule
         }
     }
 
-    public static class ConfigurationBuilder
+    public static class ConfigurationBuilder implements IConfigurationBuilder
     {
         private final ArrayList<PotionEffectType> blacklist;
 
@@ -83,6 +86,7 @@ public class DropMyEffectsModule extends AbstractSurvivalModule
             this.blacklist = new ArrayList<>();
         }
 
+        @Override
         public Map<String, Object> build()
         {
             HashMap<String, Object> moduleConfiguration = new HashMap<>();
@@ -90,6 +94,18 @@ public class DropMyEffectsModule extends AbstractSurvivalModule
             moduleConfiguration.put("blacklist", this.blacklist);
 
             return moduleConfiguration;
+        }
+
+        @Override
+        public Map<String, Object> buildFromJson(Map<String, JsonElement> configuration) throws Exception
+        {
+            if (configuration.containsKey("blacklist"))
+            {
+                JsonArray blacklistJson = configuration.get("blacklist").getAsJsonArray();
+                blacklistJson.forEach(jsonElement -> this.blacklistPotionEffect(PotionEffectType.getByName(jsonElement.getAsString())));
+            }
+
+            return this.build();
         }
 
         public ConfigurationBuilder blacklistPotionEffect(PotionEffectType potionEffectType)

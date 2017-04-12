@@ -56,13 +56,16 @@ public class HardObsidianModule extends AbstractSurvivalModule
         {
             ItemStack item = event.getPlayer().getItemInHand();
             item.setDurability((short) (item.getDurability() + 500));
+
             if (item.getDurability() > item.getType().getMaxDurability())
             {
                 event.getPlayer().getWorld().playSound(event.getPlayer().getLocation(), Sound.ITEM_BREAK, 1, 1);
                 event.getPlayer().getInventory().setItemInHand(new ItemStack(Material.AIR));
             }
             else
+            {
                 event.getPlayer().getInventory().setItemInHand(item);
+            }
         }
     }
 }

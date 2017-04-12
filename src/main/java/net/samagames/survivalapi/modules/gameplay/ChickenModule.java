@@ -1,15 +1,19 @@
 package net.samagames.survivalapi.modules.gameplay;
 
+import com.google.gson.JsonElement;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.survivalapi.modules.IConfigurationBuilder;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -30,6 +34,7 @@ public class ChickenModule extends AbstractSurvivalModule
     public ChickenModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
+        Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
     }
 
     /**
@@ -43,10 +48,58 @@ public class ChickenModule extends AbstractSurvivalModule
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
         {
             Player p = player.getPlayerIfOnline();
+
             if (p == null)
-                continue ;
-            p.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE, 1, (short)1));
-            p.setHealth(3);
+                continue;
+
+            p.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE, (int) this.moduleConfiguration.get("golden-apples"), (short) 1));
+            p.setHealth((double) this.moduleConfiguration.get("start-health"));
+        }
+    }
+
+    public static class ConfigurationBuilder implements IConfigurationBuilder
+    {
+        private double startHealth;
+        private int goldenApples;
+
+        public ConfigurationBuilder()
+        {
+            this.startHealth = 3.0D;
+        }
+
+        @Override
+        public Map<String, Object> build()
+        {
+            Map<String, Object> moduleConfiguration = new HashMap<>();
+
+            moduleConfiguration.put("start-health", this.startHealth);
+            moduleConfiguration.put("golden-apples", this.goldenApples);
+
+            return moduleConfiguration;
+        }
+
+        @Override
+        public Map<String, Object> buildFromJson(Map<String, JsonElement> configuration) throws Exception
+        {
+            if (configuration.containsKey("start-health"))
+                this.setStartHealth(configuration.get("start-health").getAsDouble());
+
+            if (configuration.containsKey("golden-apples"))
+                this.setGoldenApples(configuration.get("golden-apples").getAsInt());
+
+            return this.build();
+        }
+
+        public ChickenModule.ConfigurationBuilder setStartHealth(double startHealth)
+        {
+            this.startHealth = startHealth;
+            return this;
+        }
+
+        public ChickenModule.ConfigurationBuilder setGoldenApples(int goldenApples)
+        {
+            this.goldenApples = goldenApples;
+            return this;
         }
     }
 }

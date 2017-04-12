@@ -1,10 +1,16 @@
 package net.samagames.survivalapi.modules.gameplay;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.survivalapi.modules.IConfigurationBuilder;
 import net.samagames.survivalapi.modules.utility.DropTaggingModule;
+import net.samagames.tools.ItemUtils;
 import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -123,7 +129,7 @@ public class RapidFoodModule extends AbstractSurvivalModule
         return requiredModules;
     }
 
-    public static class ConfigurationBuilder
+    public static class ConfigurationBuilder implements IConfigurationBuilder
     {
         private final Map<EntityType, List<IRapidFoodHook>> drops;
 
@@ -132,6 +138,7 @@ public class RapidFoodModule extends AbstractSurvivalModule
             this.drops = new HashMap<>();
         }
 
+        @Override
         public Map<String, Object> build()
         {
             Map<String, Object> moduleConfiguration = new HashMap<>();
@@ -139,6 +146,98 @@ public class RapidFoodModule extends AbstractSurvivalModule
             moduleConfiguration.put("drops", this.drops);
 
             return moduleConfiguration;
+        }
+
+        @Override
+        public Map<String, Object> buildFromJson(Map<String, JsonElement> configuration) throws Exception
+        {
+            if (configuration.containsKey("drops"))
+            {
+                JsonArray dropsJson = configuration.get("drops").getAsJsonArray();
+
+                for (int i = 0; i < dropsJson.size(); i++)
+                {
+                    JsonObject dropJson = dropsJson.get(i).getAsJsonObject();
+                    EntityType entityType = EntityType.valueOf(dropJson.get("entity").getAsString());
+
+                    JsonArray stacksJson = dropJson.get("stacks").getAsJsonArray();
+                    Map<Material, Pair<ItemStack, String>> matchStack = new HashMap<>();
+                    List<Pair<ItemStack, String>> addStacks = new ArrayList<>();
+
+                    for (int j = 0; j < stacksJson.size(); j++)
+                    {
+                        JsonObject stackJson = stacksJson.get(j).getAsJsonObject();
+                        String stackType = stackJson.get("type").getAsString();
+
+                        ItemStack drop = ItemUtils.strToStack(stackJson.get("drop").getAsString());
+                        String quantity = "1";
+
+                        JsonObject quantityJson = stackJson.get("quantity").getAsJsonObject();
+                        String quantityType = quantityJson.get("type").getAsString();
+                        String quantityValue = quantityJson.get("value").getAsString();
+
+                        if (quantityType.equals("multiply") && !stackType.equals("add"))
+                            quantity = "M" + quantityValue;
+                        else if (quantityType.equals("fixed"))
+                            quantity = "F" + quantityValue;
+                        else if (quantityType.equals("random"))
+                            quantity = "R" + quantityValue;
+
+                        if (stackType.equals("replace"))
+                        {
+                            Material match = Material.matchMaterial(stackJson.get("match").getAsString());
+                            matchStack.put(match, Pair.of(drop, quantity));
+                        }
+                        else if (stackType.equals("add"))
+                        {
+                            addStacks.add(Pair.of(drop, quantity));
+                        }
+                    }
+
+                    this.addDrop(entityType, (drops, random) ->
+                    {
+                        List<ItemStack> newDrops = new ArrayList<>();
+
+                        for (ItemStack stack : drops)
+                        {
+                            if (matchStack.containsKey(stack.getType()))
+                            {
+                                Pair<ItemStack, String> newDropPair = matchStack.get(stack.getType());
+                                ItemStack newDrop = newDropPair.getKey();
+                                int quantity = 1;
+
+                                if (newDropPair.getValue().startsWith("M"))
+                                    quantity = stack.getAmount() * Integer.parseInt(newDropPair.getValue().substring(1));
+                                else if (newDropPair.getValue().startsWith("F"))
+                                    quantity = Integer.parseInt(newDropPair.getValue().substring(1));
+                                else if (newDropPair.getValue().startsWith("R"))
+                                    quantity = random.nextInt(Integer.parseInt(newDropPair.getValue().substring(1))) + 1;
+
+                                newDrop.setAmount(quantity);
+                                newDrops.add(newDrop);
+                            }
+                        }
+
+                        for (Pair<ItemStack, String> stack : addStacks)
+                        {
+                            ItemStack newDrop = stack.getKey();
+                            int quantity = 1;
+
+                            if (stack.getValue().startsWith("F"))
+                                quantity = Integer.parseInt(stack.getValue().substring(1));
+                            else if (stack.getValue().startsWith("R"))
+                                quantity = random.nextInt(Integer.parseInt(stack.getValue().substring(1))) + 1;
+
+                            newDrop.setAmount(quantity);
+                            newDrops.add(newDrop);
+                        }
+
+                        return newDrops;
+                    }, true);
+                }
+            }
+
+            return this.build();
         }
 
         public ConfigurationBuilder addDefaults()

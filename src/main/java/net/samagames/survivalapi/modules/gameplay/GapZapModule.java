@@ -42,8 +42,7 @@ public class GapZapModule extends AbstractSurvivalModule
     @EventHandler(priority = EventPriority.LOWEST)
     public void onDamage(EntityDamageEvent event)
     {
-        if (((SurvivalGame)SamaGamesAPI.get().getGameManager().getGame()).isDamagesActivated()
-                && event.getEntityType() == EntityType.PLAYER)
+        if (((SurvivalGame)SamaGamesAPI.get().getGameManager().getGame()).isDamagesActivated() && event.getEntityType() == EntityType.PLAYER)
             ((Player)event.getEntity()).removePotionEffect(PotionEffectType.REGENERATION);
     }
 }

@@ -51,8 +51,7 @@ public class OneWorkbenchModule extends AbstractSurvivalModule
     {
         this.onCraftItem(event.getRecipe(), event.getInventory(), event.getWhoClicked());
 
-        if (event.getRecipe().getResult().getType() == Material.WORKBENCH
-                && !this.crafters.contains(event.getWhoClicked().getUniqueId()))
+        if (event.getRecipe().getResult().getType() == Material.WORKBENCH && !this.crafters.contains(event.getWhoClicked().getUniqueId()))
             this.crafters.add(event.getWhoClicked().getUniqueId());
     }
 

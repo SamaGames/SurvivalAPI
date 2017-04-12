@@ -41,15 +41,16 @@ public class SwitcherooModule extends AbstractSurvivalModule
     @EventHandler(priority = EventPriority.LOWEST)
     public void onDamage(EntityDamageByEntityEvent event)
     {
-        if (!event.isCancelled()
-                && event.getDamager() instanceof Arrow
-                && event.getEntity() instanceof Player)
+        if (!event.isCancelled() && event.getDamager() instanceof Arrow && event.getEntity() instanceof Player)
         {
             ProjectileSource source = ((Arrow)event.getDamager()).getShooter();
+
             if (source == null || !(source instanceof Player))
-                return ;
+                return;
+
             Player player = (Player)source;
             Location tmp = player.getLocation();
+
             player.teleport(event.getEntity());
             event.getEntity().teleport(tmp);
         }

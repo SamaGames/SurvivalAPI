@@ -1,10 +1,13 @@
 package net.samagames.survivalapi.modules.block;
 
+import com.google.gson.JsonElement;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.survivalapi.modules.IConfigurationBuilder;
 import net.samagames.survivalapi.modules.utility.DropTaggingModule;
 import net.samagames.survivalapi.utils.Meta;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -33,6 +36,8 @@ public class DiamondFlowerModule extends AbstractSurvivalModule
     public DiamondFlowerModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
+        Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
+
         this.random = new Random();
     }
 
@@ -56,8 +61,9 @@ public class DiamondFlowerModule extends AbstractSurvivalModule
                     || (event.getEntity().getItemStack().getDurability() > 1 && event.getEntity().getItemStack().getDurability() < 4)))
             return;
 
-        if (this.random.nextInt(100) <= 30)
-            event.getEntity().getWorld().dropItemNaturally(event.getLocation(), Meta.addMeta(new ItemStack(Material.DIAMOND, 1)));
+        if (this.random.nextDouble() <= (double) this.moduleConfiguration.get("chance"))
+            event.getEntity().getWorld().dropItemNaturally(event.getLocation(), Meta.addMeta(new ItemStack(Material.DIAMOND, (int) this.moduleConfiguration.get("diamonds"))));
+
         event.setCancelled(true);
     }
 
@@ -69,5 +75,52 @@ public class DiamondFlowerModule extends AbstractSurvivalModule
         requiredModules.add(DropTaggingModule.class);
 
         return requiredModules;
+    }
+
+    public static class ConfigurationBuilder implements IConfigurationBuilder
+    {
+        private int diamonds;
+        private double chance;
+
+        public ConfigurationBuilder()
+        {
+            this.diamonds = 1;
+            this.chance = 0.3D;
+        }
+
+        @Override
+        public Map<String, Object> build()
+        {
+            Map<String, Object> moduleConfiguration = new HashMap<>();
+
+            moduleConfiguration.put("diamonds", this.diamonds);
+            moduleConfiguration.put("chance", this.chance);
+
+            return moduleConfiguration;
+        }
+
+        @Override
+        public Map<String, Object> buildFromJson(Map<String, JsonElement> configuration) throws Exception
+        {
+            if (configuration.containsKey("diamonds"))
+                this.setDiamondAmount(configuration.get("diamonds").getAsInt());
+
+            if (configuration.containsKey("chance"))
+                this.setChance(configuration.get("chance").getAsDouble());
+
+            return this.build();
+        }
+
+        public DiamondFlowerModule.ConfigurationBuilder setDiamondAmount(int diamonds)
+        {
+            this.diamonds = diamonds;
+            return this;
+        }
+
+        public DiamondFlowerModule.ConfigurationBuilder setChance(double chance)
+        {
+            this.chance = chance;
+            return this;
+        }
     }
 }

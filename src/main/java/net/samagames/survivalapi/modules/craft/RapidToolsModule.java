@@ -1,8 +1,10 @@
 package net.samagames.survivalapi.modules.craft;
 
+import com.google.gson.JsonElement;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.survivalapi.modules.IConfigurationBuilder;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -75,7 +77,7 @@ public class RapidToolsModule extends AbstractSurvivalModule
         return Material.valueOf(((ConfigurationBuilder.ToolMaterial) this.moduleConfiguration.get("material")).name().toUpperCase() + "_" + material.name().split("_")[1]);
     }
 
-    public static class ConfigurationBuilder
+    public static class ConfigurationBuilder implements IConfigurationBuilder
     {
         public enum ToolMaterial { WOOD, STONE, IRON, GOLD, DIAMOND }
 
@@ -86,6 +88,7 @@ public class RapidToolsModule extends AbstractSurvivalModule
             this.material = ToolMaterial.STONE;
         }
 
+        @Override
         public Map<String, Object> build()
         {
             Map<String, Object> moduleConfiguration = new HashMap<>();
@@ -93,6 +96,15 @@ public class RapidToolsModule extends AbstractSurvivalModule
             moduleConfiguration.put("material", this.material);
 
             return moduleConfiguration;
+        }
+
+        @Override
+        public Map<String, Object> buildFromJson(Map<String, JsonElement> configuration) throws Exception
+        {
+            if (configuration.containsKey("material"))
+                this.setToolsMaterial(ToolMaterial.valueOf(configuration.get("material").getAsString().toUpperCase()));
+
+            return this.build();
         }
 
         public ConfigurationBuilder setToolsMaterial(ToolMaterial material)

@@ -1,8 +1,13 @@
 package net.samagames.survivalapi.modules.entity;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.survivalapi.modules.IConfigurationBuilder;
+import net.samagames.tools.ItemUtils;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -46,7 +51,7 @@ public class EntityDropModule extends AbstractSurvivalModule
             Collections.addAll(event.getDrops(), drops.get(event.getEntity().getType()));
     }
 
-    public static class ConfigurationBuilder
+    public static class ConfigurationBuilder implements IConfigurationBuilder
     {
         private final Map<EntityType, ItemStack[]> drops;
 
@@ -55,6 +60,7 @@ public class EntityDropModule extends AbstractSurvivalModule
             this.drops = new HashMap<>();
         }
 
+        @Override
         public Map<String, Object> build()
         {
             Map<String, Object> moduleConfiguration = new HashMap<>();
@@ -62,6 +68,31 @@ public class EntityDropModule extends AbstractSurvivalModule
             moduleConfiguration.put("drops", this.drops);
 
             return moduleConfiguration;
+        }
+
+        @Override
+        public Map<String, Object> buildFromJson(Map<String, JsonElement> configuration) throws Exception
+        {
+            if (configuration.containsKey("drops"))
+            {
+                JsonArray dropsJson = configuration.get("drops").getAsJsonArray();
+
+                for (int i = 0; i < dropsJson.size(); i++)
+                {
+                    JsonObject dropJson = dropsJson.get(i).getAsJsonObject();
+
+                    EntityType entityType = EntityType.valueOf(dropJson.get("entity").getAsString().toUpperCase());
+                    JsonArray stacksJson = dropJson.get("stacks").getAsJsonArray();
+                    ItemStack[] stacks = new ItemStack[stacksJson.size()];
+
+                    for (int j = 0; j < stacksJson.size(); j++)
+                        stacks[j] = ItemUtils.strToStack(stacksJson.get(i).getAsString());
+
+                    this.addCustomDrops(entityType, stacks);
+                }
+            }
+
+            return this.build();
         }
 
         public ConfigurationBuilder addCustomDrops(EntityType entity, ItemStack... stacks)

@@ -46,9 +46,10 @@ public class EveryRoseModule extends AbstractSurvivalModule
 
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
         {
-            Player player1 = player.getPlayerIfOnline();
-            if (player1 != null)
-                player1.getInventory().setChestplate(chestplate);
+            Player p = player.getPlayerIfOnline();
+
+            if (p != null)
+                p.getInventory().setChestplate(chestplate);
         }
     }
 }

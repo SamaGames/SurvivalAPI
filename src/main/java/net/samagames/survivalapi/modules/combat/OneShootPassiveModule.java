@@ -41,7 +41,7 @@ public class OneShootPassiveModule extends AbstractSurvivalModule
         if ((event.getEntity() instanceof Animals || event.getEntity() instanceof Ambient || event.getEntity() instanceof Squid) && (event.getDamager() instanceof Player || event.getDamager() instanceof Projectile))
         {
             ((LivingEntity)event.getEntity()).damage(150.0D);
-            event.getDamager().getWorld().spawn(event.getEntity().getLocation().add(1, 0, 0), ExperienceOrb.class).setExperience(1+ new Random().nextInt(5));
+            event.getDamager().getWorld().spawn(event.getEntity().getLocation().add(1, 0, 0), ExperienceOrb.class).setExperience(1 + new Random().nextInt(5));
         }
     }
 }

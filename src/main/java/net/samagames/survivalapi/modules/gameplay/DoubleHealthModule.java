@@ -40,11 +40,13 @@ public class DoubleHealthModule extends AbstractSurvivalModule
     {
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
         {
-            Player player1 = player.getPlayerIfOnline();
-            if (player1 == null)
-                continue ;
-            player1.setMaxHealth(40.0D);
-            player1.setHealth(40.0D);
+            Player p = player.getPlayerIfOnline();
+
+            if (p == null)
+                continue;
+
+            p.setMaxHealth(40.0D);
+            p.setHealth(40.0D);
         }
     }
 }

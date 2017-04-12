@@ -1,10 +1,15 @@
 package net.samagames.survivalapi.modules.gameplay;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.survivalapi.modules.IConfigurationBuilder;
 import net.samagames.survivalapi.modules.utility.DropTaggingModule;
 import net.samagames.survivalapi.utils.Meta;
+import net.samagames.tools.ItemUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
@@ -23,7 +28,7 @@ import java.util.*;
  * Copyright (c) for SamaGames
  * All right reserved
  */
-public class RapidUsefullModule extends AbstractSurvivalModule
+public class RapidUsefulModule extends AbstractSurvivalModule
 {
     private final Map<ItemStack, ConfigurationBuilder.IRapidUsefulHook> drops;
     private final Random random;
@@ -35,7 +40,7 @@ public class RapidUsefullModule extends AbstractSurvivalModule
      * @param api API instance
      * @param moduleConfiguration Module configuration
      */
-    public RapidUsefullModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
+    public RapidUsefulModule(SurvivalPlugin plugin, SurvivalAPI api, Map<String, Object> moduleConfiguration)
     {
         super(plugin, api, moduleConfiguration);
         Validate.notNull(moduleConfiguration, "Configuration cannot be null!");
@@ -100,7 +105,7 @@ public class RapidUsefullModule extends AbstractSurvivalModule
         return requiredModules;
     }
 
-    public static class ConfigurationBuilder
+    public static class ConfigurationBuilder implements IConfigurationBuilder
     {
         private final Map<ItemStack, IRapidUsefulHook> drops;
 
@@ -109,6 +114,7 @@ public class RapidUsefullModule extends AbstractSurvivalModule
             this.drops = new HashMap<>();
         }
 
+        @Override
         public Map<String, Object> build()
         {
             Map<String, Object> moduleConfiguration = new HashMap<>();
@@ -118,11 +124,39 @@ public class RapidUsefullModule extends AbstractSurvivalModule
             return moduleConfiguration;
         }
 
+        @Override
+        public Map<String, Object> buildFromJson(Map<String, JsonElement> configuration) throws Exception
+        {
+            if (configuration.containsKey("drops"))
+            {
+                JsonArray dropsJson = configuration.get("drops").getAsJsonArray();
+
+                for (int i = 0; i < dropsJson.size(); i++)
+                {
+                    JsonObject dropJson = dropsJson.get(i).getAsJsonObject();
+
+                    ItemStack match = ItemUtils.strToStack(dropJson.get("match").getAsString());
+                    ItemStack stack = ItemUtils.strToStack(dropJson.get("stack").getAsString());
+                    double chance = dropJson.get("chance").getAsDouble();
+
+                    this.addDrop(match, (base, random) ->
+                    {
+                        if (random.nextDouble() <= chance)
+                            return stack;
+                        else
+                            return base;
+                    }, true);
+                }
+            }
+
+            return this.build();
+        }
+
         public ConfigurationBuilder addDefaults()
         {
             this.addDrop(new ItemStack(Material.GRAVEL, 1), (base, random) ->
             {
-                if (random.nextDouble() < 0.75D)
+                if (random.nextDouble() <= 0.75D)
                     return new ItemStack(Material.ARROW, 3);
                 else
                     return base;
@@ -130,7 +164,7 @@ public class RapidUsefullModule extends AbstractSurvivalModule
 
             this.addDrop(new ItemStack(Material.FLINT, 1), (base, random) ->
             {
-                if (random.nextDouble() < 0.75D)
+                if (random.nextDouble() <= 0.75D)
                     return new ItemStack(Material.ARROW, 3);
                 else
                     return base;

@@ -1,13 +1,18 @@
 package net.samagames.survivalapi.modules.block;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.minecraft.server.v1_8_R3.EntityExperienceOrb;
 import net.minecraft.server.v1_8_R3.MathHelper;
 import net.minecraft.server.v1_8_R3.World;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.survivalapi.modules.IConfigurationBuilder;
 import net.samagames.survivalapi.modules.utility.DropTaggingModule;
 import net.samagames.survivalapi.utils.Meta;
+import net.samagames.tools.ItemUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
@@ -128,7 +133,7 @@ public class RapidOresModule extends AbstractSurvivalModule
         return requiredModules;
     }
 
-    public static class ConfigurationBuilder
+    public static class ConfigurationBuilder implements IConfigurationBuilder
     {
         private final Map<ItemStack, IRapidOresHook> drops;
 
@@ -137,6 +142,7 @@ public class RapidOresModule extends AbstractSurvivalModule
             this.drops = new HashMap<>();
         }
 
+        @Override
         public Map<String, Object> build()
         {
             Map<String, Object> moduleConfiguration = new HashMap<>();
@@ -144,6 +150,54 @@ public class RapidOresModule extends AbstractSurvivalModule
             moduleConfiguration.put("drops", this.drops);
 
             return moduleConfiguration;
+        }
+
+        @Override
+        public Map<String, Object> buildFromJson(Map<String, JsonElement> configuration) throws Exception
+        {
+            if (configuration.containsKey("drops"))
+            {
+                JsonArray dropsJson = (JsonArray) configuration.get("drops");
+
+                for (int i = 0; i < dropsJson.size(); i++)
+                {
+                    JsonObject dropJson = dropsJson.get(i).getAsJsonObject();
+
+                    ItemStack base = ItemUtils.strToStack(dropJson.get("match").getAsString());
+                    ItemStack drop;
+
+                    if (SurvivalAPI.get().isModuleEnabled(TorchThanCoalModule.class) && base.getType() == Material.COAL)
+                        drop = null;
+                    else
+                        drop = ItemUtils.strToStack(dropJson.get("drop").getAsString());
+
+                    JsonObject experienceJson = dropJson.get("experience").getAsJsonObject();
+                    String experienceType = experienceJson.get("type").getAsString();
+                    String experienceValueString = experienceJson.get("value").getAsString();
+
+                    this.addDrop(base, new IRapidOresHook()
+                    {
+                        @Override
+                        public ItemStack getDrop(ItemStack base, Random random)
+                        {
+                            return drop;
+                        }
+
+                        @Override
+                        public int getExperienceModifier(Random random)
+                        {
+                            if (experienceType.equals("fixed"))
+                                return Integer.parseInt(experienceValueString);
+                            else if (experienceType.equals("random"))
+                                return MathHelper.nextInt(random, Integer.parseInt(experienceValueString.split(", ")[0]), Integer.parseInt(experienceValueString.split(", ")[1]));
+                            else
+                                return 0;
+                        }
+                    }, true);
+                }
+            }
+
+            return this.build();
         }
 
         public ConfigurationBuilder addDefaults()

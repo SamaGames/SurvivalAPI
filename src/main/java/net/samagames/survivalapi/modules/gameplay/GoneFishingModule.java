@@ -54,9 +54,10 @@ public class GoneFishingModule extends AbstractSurvivalModule
 
         for (GamePlayer player : (Collection<GamePlayer>) game.getInGamePlayers().values())
         {
-            Player player1 = player.getPlayerIfOnline();
-            if (player1 != null)
-                player1.getInventory().addItem(rod);
+            Player p = player.getPlayerIfOnline();
+
+            if (p != null)
+                p.getInventory().addItem(rod);
         }
     }
 

@@ -50,14 +50,18 @@ public class CookieHeadModule extends AbstractSurvivalModule
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event)
     {
-        ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short)3);
+        ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+
         SkullMeta skullMeta = (SkullMeta)head.getItemMeta();
         skullMeta.setOwner(event.getEntity().getName());
         skullMeta.setDisplayName(ChatColor.AQUA + "Tête de " + event.getEntity().getName());
+
         head.setItemMeta(skullMeta);
         event.getDrops().add(head);
+
         List<PotionEffect> effectList = new ArrayList<>();
         effectList.addAll(event.getEntity().getActivePotionEffects());
+
         this.effects.put(event.getEntity().getName(), effectList);
     }
 
@@ -71,9 +75,11 @@ public class CookieHeadModule extends AbstractSurvivalModule
     {
         if (event.getItem() == null || event.getItem().getType() != Material.SKULL_ITEM || event.getItem().getDurability() != 3
                 || (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK))
-            return ;
+            return;
+
         SkullMeta skullMeta = (SkullMeta)event.getItem().getItemMeta();
         List<PotionEffect> effectList = this.effects.get(skullMeta.getOwner());
+
         if (effectList != null)
         {
             effectList.forEach(event.getPlayer()::addPotionEffect);

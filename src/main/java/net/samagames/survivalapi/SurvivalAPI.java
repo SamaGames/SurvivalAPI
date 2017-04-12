@@ -1,7 +1,12 @@
 package net.samagames.survivalapi;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import net.samagames.api.SamaGamesAPI;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.survivalapi.modules.IConfigurationBuilder;
 import org.bukkit.event.HandlerList;
 
 import java.lang.reflect.InvocationTargetException;
@@ -84,14 +89,70 @@ public class SurvivalAPI
      * Load a SurvivalAPI's module
      *
      * @param moduleClass Module class
-     * @param moduleConfiguration Module's configuration. Can be a default configuration {@link net.samagames.survivalapi.modules.block.RapidOresModule}
+     * @param defaultModuleConfiguration Module's configuration. Can be a default configuration {@link net.samagames.survivalapi.modules.block.RapidOresModule}
      */
-    public void loadModule(Class<? extends AbstractSurvivalModule> moduleClass, Map<String, Object> moduleConfiguration)
+    public void loadModule(Class<? extends AbstractSurvivalModule> moduleClass, Map<String, Object> defaultModuleConfiguration)
     {
         if(!this.modulesLoaded.containsKey(moduleClass.getSimpleName()))
         {
             try
             {
+                JsonObject gameOptions = SamaGamesAPI.get().getGameManager().getGameProperties().getGameOptions();
+                Map<String, Object> moduleConfiguration = defaultModuleConfiguration;
+
+                if (gameOptions.has("modules"))
+                {
+                    if (gameOptions.getAsJsonObject("modules").has(moduleClass.getSimpleName()))
+                    {
+                        JsonObject moduleConfigurationJson = gameOptions.getAsJsonObject("modules").get(moduleClass.getSimpleName()).getAsJsonObject();
+
+                        if (moduleConfigurationJson.has("enabled") && moduleConfigurationJson.get("enabled").getAsBoolean())
+                        {
+                            Map<String, JsonElement> moduleConfigurationRaw = new HashMap<>();
+
+                            for (Map.Entry<String,JsonElement> entry : moduleConfigurationJson.entrySet())
+                                moduleConfigurationRaw.put(entry.getKey(), entry.getValue());
+
+                            try
+                            {
+                                Class<?> moduleConfigurationBuilderClass = Class.forName(moduleClass.getName() + "$ConfigurationBuilder");
+
+                                if (IConfigurationBuilder.class.isAssignableFrom(moduleConfigurationBuilderClass))
+                                {
+                                    IConfigurationBuilder moduleConfigurationBuilder = (IConfigurationBuilder) moduleConfigurationBuilderClass.newInstance();
+
+                                    try
+                                    {
+                                        moduleConfiguration = moduleConfigurationBuilder.buildFromJson(moduleConfigurationRaw);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        this.plugin.getLogger().severe("An error occured while creating the custom module configuration of the module " + moduleClass.getSimpleName() + "!");
+                                    }
+                                }
+                                else
+                                {
+                                    this.plugin.getLogger().severe("The ConfigurationBuilder of the module " + moduleClass.getSimpleName() + " is not implementing the IConfigurationBuilder interface. Using default configuration.");
+                                }
+                            }
+                            catch (ClassNotFoundException ignored)
+                            {
+                                this.plugin.getLogger().warning("A custom configuration was found but no ConfigurationBuilder was found for the module " + moduleClass.getSimpleName() + "!");
+                            }
+                            catch (IllegalAccessException | InstantiationException e)
+                            {
+                                this.plugin.getLogger().severe("Failed to create the custom configuration for the module " + moduleClass.getSimpleName() + "!");
+                                e.printStackTrace();
+                            }
+                        }
+                        else
+                        {
+                            this.plugin.getLogger().info("The custom configuration specify that the module " + moduleClass.getSimpleName() + " has to remain disabled. Passing...");
+                            return;
+                        }
+                    }
+                }
+
                 AbstractSurvivalModule module = moduleClass.getConstructor(SurvivalPlugin.class, SurvivalAPI.class, Map.class).newInstance(this.plugin, this, moduleConfiguration);
 
                 for (Class<? extends AbstractSurvivalModule> requiredModule : module.getRequiredModules())

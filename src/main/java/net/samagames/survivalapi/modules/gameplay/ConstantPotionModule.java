@@ -1,11 +1,15 @@
 package net.samagames.survivalapi.modules.gameplay;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.game.SurvivalGame;
 import net.samagames.survivalapi.game.SurvivalPlayer;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.survivalapi.modules.IConfigurationBuilder;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -79,7 +83,7 @@ public class ConstantPotionModule extends AbstractSurvivalModule
         });
     }
 
-    public static class ConfigurationBuilder
+    public static class ConfigurationBuilder implements IConfigurationBuilder
     {
         private final ArrayList<PotionEffect> potionEffects;
 
@@ -88,6 +92,7 @@ public class ConstantPotionModule extends AbstractSurvivalModule
             this.potionEffects = new ArrayList<>();
         }
 
+        @Override
         public Map<String, Object> build()
         {
             HashMap<String, Object> moduleConfiguration = new HashMap<>();
@@ -95,6 +100,23 @@ public class ConstantPotionModule extends AbstractSurvivalModule
             moduleConfiguration.put("potion-effects", this.potionEffects);
 
             return moduleConfiguration;
+        }
+
+        @Override
+        public Map<String, Object> buildFromJson(Map<String, JsonElement> configuration) throws Exception
+        {
+            if (configuration.containsKey("potion-effects"))
+            {
+                JsonArray potionEffectsJson = configuration.get("potion-effects").getAsJsonArray();
+
+                for (int i = 0; i < potionEffectsJson.size(); i++)
+                {
+                    JsonObject potionEffectJson = potionEffectsJson.get(i).getAsJsonObject();
+                    this.addPotionEffect(PotionEffectType.getByName(potionEffectJson.get("effect").getAsString()), potionEffectJson.get("level").getAsInt());
+                }
+            }
+
+            return this.build();
         }
 
         public ConfigurationBuilder addPotionEffect(PotionEffectType potionEffectType, int level)

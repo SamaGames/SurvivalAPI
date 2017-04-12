@@ -67,7 +67,7 @@ Les modules sont disposés dans des catégories différentes par question d'orga
 
 ### JavaDoc
 
-[Link](http://aperture.samagames.net/javadoc-super-secrete-456FG45UJ/)
+[Link](http://blackmesa.samagames.net/javadoc-super-secrete-456FG45UJ/)
 
 ### Auteur
 

@@ -68,8 +68,10 @@ public class InventorsModule extends AbstractSurvivalModule
             default:
                 name = null;
         }
+
         if (name == null)
-            return ;
+            return;
+
         StringBuilder builder = new StringBuilder();
         builder.append(ChatColor.GOLD).append("[").append(ChatColor.YELLOW);
         builder.append("Inventors");

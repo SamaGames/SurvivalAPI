@@ -1,9 +1,14 @@
 package net.samagames.survivalapi.modules.block;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.samagames.survivalapi.SurvivalAPI;
 import net.samagames.survivalapi.SurvivalPlugin;
 import net.samagames.survivalapi.modules.AbstractSurvivalModule;
+import net.samagames.survivalapi.modules.IConfigurationBuilder;
 import net.samagames.survivalapi.utils.Meta;
+import net.samagames.tools.ItemUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
@@ -124,7 +129,7 @@ public class RandomChestModule extends AbstractSurvivalModule
             event.getBlockPlaced().getState().setMetadata("playerInteracted", new FixedMetadataValue(this.plugin, true));
     }
 
-    public static class ConfigurationBuilder
+    public static class ConfigurationBuilder implements IConfigurationBuilder
     {
         private final Map<ItemStack, Integer> items;
 
@@ -133,6 +138,7 @@ public class RandomChestModule extends AbstractSurvivalModule
             this.items = new HashMap<>();
         }
 
+        @Override
         public Map<String, Object> build()
         {
             Map<String, Object> moduleConfiguration = new HashMap<>();
@@ -140,6 +146,23 @@ public class RandomChestModule extends AbstractSurvivalModule
             moduleConfiguration.put("items", this.items);
 
             return moduleConfiguration;
+        }
+
+        @Override
+        public Map<String, Object> buildFromJson(Map<String, JsonElement> configuration) throws Exception
+        {
+            if (configuration.containsKey("items"))
+            {
+                JsonArray itemsJson = configuration.get("items").getAsJsonArray();
+
+                for (int i = 0; i < itemsJson.size(); i++)
+                {
+                    JsonObject itemJson = itemsJson.get(i).getAsJsonObject();
+                    this.addItemWithPercentage(ItemUtils.strToStack(itemJson.get("stack").getAsString()), itemJson.get("probability").getAsInt());
+                }
+            }
+
+            return this.build();
         }
 
         public ConfigurationBuilder addItemWithPercentage(ItemStack itemStack, int probability)
