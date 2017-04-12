@@ -165,7 +165,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
                 defaults.add(new JsonPrimitive(45.0F));
                 defaults.add(new JsonPrimitive(0.0F));
 
-                JsonArray spawnPos = this.gameManager.getGameProperties().getOption("spawnPos", defaults).getAsJsonArray();
+                JsonArray spawnPos = this.gameManager.getGameProperties().getGameOption("spawnPos", defaults).getAsJsonArray();
 
                 this.lobbySpawnLocation = new Location(this.world, spawnPos.get(0).getAsDouble(), spawnPos.get(1).getAsDouble(), spawnPos.get(2).getAsDouble(), spawnPos.get(3).getAsFloat(), spawnPos.get(4).getAsFloat());
                 this.world.setSpawnLocation(this.lobbySpawnLocation.getBlockX(), this.lobbySpawnLocation.getBlockY(), this.lobbySpawnLocation.getBlockZ());
@@ -206,7 +206,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
         apiplugin.getLogger().info("World's folder found... Checking for arena file...");
         WorldDownloader worldDownloader = new WorldDownloader(apiplugin);
 
-        if (SamaGamesAPI.get().getGameManager().getGameProperties().getConfig("local-map", new JsonPrimitive(false)).getAsBoolean())
+        if (SamaGamesAPI.get().getGameManager().getGameProperties().getMapProperty("local-map", new JsonPrimitive(false)).getAsBoolean())
         {
             apiplugin.getLogger().info("Using local map instead of downloading one");
             return ;
@@ -228,7 +228,7 @@ public abstract class SurvivalGame<SURVIVALLOOP extends SurvivalGameLoop> extend
      */
     public String getDownloadWorldLink()
     {
-        JsonElement worldStorage = SamaGamesAPI.get().getGameManager().getGameProperties().getConfig("worldStorage", null);
+        JsonElement worldStorage = SamaGamesAPI.get().getGameManager().getGameProperties().getMapProperty("worldStorage", null);
         if (worldStorage == null)
             return null;
         String map = worldStorage.getAsString();

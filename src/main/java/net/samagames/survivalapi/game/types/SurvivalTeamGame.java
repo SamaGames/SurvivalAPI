@@ -81,7 +81,7 @@ public class SurvivalTeamGame<SURVIVALLOOP extends SurvivalGameLoop> extends Sur
         temporaryTeams.add(new SurvivalTeam(this, "Gris", DyeColor.GRAY, ChatColor.GRAY));
         temporaryTeams.add(new SurvivalTeam(this, "Noir", DyeColor.BLACK, ChatColor.BLACK));
 
-        for (int i = 0; i < SamaGamesAPI.get().getGameManager().getGameProperties().getOption("teams", new JsonPrimitive(12)).getAsInt(); i++)
+        for (int i = 0; i < SamaGamesAPI.get().getGameManager().getGameProperties().getGameOption("teams", new JsonPrimitive(12)).getAsInt(); i++)
         {
             if (i > temporaryTeams.size())
                 break;

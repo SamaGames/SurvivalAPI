@@ -39,7 +39,7 @@ public interface RunBasedGame
 
         SurvivalAPI.get().loadModule(RapidOresModule.class, new RapidOresModule.ConfigurationBuilder().addDefaults().build());
         SurvivalAPI.get().loadModule(RapidFoodModule.class, new RapidFoodModule.ConfigurationBuilder().addDefaults().build());
-        SurvivalAPI.get().loadModule(RapidUsefullModule.class, new RapidUsefullModule.ConfigurationBuilder().addDefaults().build());
+        SurvivalAPI.get().loadModule(RapidUsefulModule.class, new RapidUsefulModule.ConfigurationBuilder().addDefaults().build());
         SurvivalAPI.get().loadModule(RapidToolsModule.class, new RapidToolsModule.ConfigurationBuilder().build());
         SurvivalAPI.get().loadModule(RapidStackingModule.class, null);
 
