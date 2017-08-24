@@ -1,6 +1,6 @@
 ![SamaGames](https://assets.samagames.net/images/logo.png "SamaGames logo")
 
-## SamaGames - SortEmAll
+## SamaGames - SurvivalAPI
 
 Ce projet vous est mis a disposition dans une volonté de partage suite à la fermeture du serveur Minecraft [**SamaGames**](http://samagames.net).
 
@@ -9,12 +9,12 @@ Pour plus de détails, référez-vous au texte de licence disponible [ici](LICEN
 
 ------------------------------------
 
-- Nom : SortEmAll
-- Type : Mini-Jeu
-- État : Non terminé
+- Nom : SurvivalAPI
+- Type : Infrastructure
+- État : Progression continuelle
 - Développeur(s) : BlueSlime, Rigner
 - CDC (Si existant) : 
 
 
 ## Description
-SormEmAll est un projet dans lequel les joueurs doivent trier des PNJ de plus en plus nombreux.
+SurvivalAPI est un projet permettant de centraliser la logique de jeu des jeux Ultra Hard Core.
