@@ -1,8 +1,5 @@
 package net.samagames.survivalapi.utils;
 
-/**
- * Created by Silva on 28/11/2015.
- */
 import java.io.BufferedInputStream;
 import java.io.DataInput;
 import java.io.DataInputStream;
